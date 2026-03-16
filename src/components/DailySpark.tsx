@@ -217,7 +217,7 @@ export default function DailySpark({ token }: DailySparkProps) {
           >
             {/* Background image */}
             <div style={{
-              backgroundImage: "url('/bg.jpg')",
+              backgroundImage: "url('/bg.webp')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               position: 'absolute',
