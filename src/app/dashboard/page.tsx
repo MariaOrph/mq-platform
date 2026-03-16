@@ -59,9 +59,10 @@ function getGreeting() {
   return 'Good evening'
 }
 
-function getFirstName(full: string | null) {
-  if (!full) return 'there'
-  return full.split(' ')[0]
+function getFirstName(full: string | null, email?: string) {
+  if (full?.trim()) return full.trim().split(' ')[0]
+  if (email) return email.split('@')[0].split('.')[0].replace(/^\w/, c => c.toUpperCase())
+  return ''
 }
 
 function getJourneyDay(completedAt: string | null) {
@@ -115,8 +116,8 @@ function getDimScore(a: Assessment, dimId: number): number | null {
 
 function MQLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const [logoError, setLogoError] = useState(false)
-  const dims = size === 'sm' ? 'w-7 h-7' : size === 'lg' ? 'w-14 h-14' : 'w-9 h-9'
-  const text = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-xl' : 'text-sm'
+  const dims = size === 'sm' ? 'w-8 h-8' : size === 'lg' ? 'w-20 h-20' : 'w-12 h-12'
+  const text = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-2xl' : 'text-sm'
   return !logoError ? (
     <img
       src="/logo.png"
@@ -206,7 +207,7 @@ export default function ParticipantDashboard() {
 
     const focusDimId    = getFocusDimension(assessment)
     const dimScore      = getDimScore(assessment, focusDimId) ?? 50
-    const firstName     = getFirstName(profile.full_name)
+    const firstName     = getFirstName(profile.full_name, profile.email)
     const role          = assessment.participant_role ?? 'leader'
 
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -249,7 +250,7 @@ export default function ParticipantDashboard() {
   }
 
   // ── Derived values ──────────────────────────────────────────────────────────
-  const firstName    = getFirstName(profile?.full_name ?? null)
+  const firstName    = getFirstName(profile?.full_name ?? null, profile?.email)
   const journeyDay   = getJourneyDay(assessment?.completed_at ?? null)
   const focusDimId   = assessment ? getFocusDimension(assessment) : 1
   const focusDim     = DIMS[focusDimId - 1]
