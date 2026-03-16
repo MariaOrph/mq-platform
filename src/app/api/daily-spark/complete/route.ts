@@ -1,90 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY ?? '' })
+import { CARD_LIBRARY, getDimOrder, getDimForCard, getCardVariant } from '../card-library'
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
-
-const DIMENSION_NAMES: Record<number, string> = {
-  1: 'Self-awareness',
-  2: 'Cognitive flexibility',
-  3: 'Emotional regulation',
-  4: 'Values clarity',
-  5: 'Relational mindset',
-  6: 'Adaptive resilience',
-}
-
-function getDimOrder(scores: (number | null)[]): number[] {
-  return scores
-    .map((s, i) => ({ s: s ?? 999, id: i + 1 }))
-    .sort((a, b) => a.s - b.s)
-    .map(d => d.id)
-}
-
-function getDimForCard(cardNumber: number, dimOrder: number[]): number {
-  return dimOrder[Math.floor((cardNumber - 1) / 4)]
-}
-
-function getCardVariant(cardNumber: number): number {
-  return ((cardNumber - 1) % 4) + 1
-}
-
-async function generateCardContent(
-  dimId: number,
-  cardVariant: number,
-  dimScore: number,
-  role: string
-) {
-  const dimName = DIMENSION_NAMES[dimId]
-  const prompt = `You are a world-class executive coach generating a daily practice card for the MQ (Mindset Quotient) leadership development programme.
-
-Dimension: ${dimName}
-Card variant: ${cardVariant} of 4 (each card must be COMPLETELY different — different angle, different exercise)
-Leadership role: ${role}
-Dimension score: ${dimScore}/100 (lower score = bigger development opportunity)
-
-Generate a JSON object with EXACTLY these keys:
-
-"title": A ritual-style name for this practice (3-6 words). Think: "The Values Audit", "Name the Pattern", "The Perspective Ladder". Evocative, memorable, coach-like.
-
-"teaser": One punchy sentence preview (max 10 words). Start with an action verb. E.g. "Uncover the values quietly running your decisions."
-
-"insight": A genuinely surprising, specific psychological or leadership insight about this dimension. NOT generic. Reference real research, cognitive patterns, or counterintuitive truths. (2-3 sentences).
-
-"exercise": A specific, structured exercise achievable in under 10 minutes. Be CONCRETE — give exact steps, lists to write, questions to answer. This should feel like real coaching work — not vague journaling prompts.
-
-Tone: Premium, direct, expert. Like a top executive coach who respects the reader's intelligence.
-Return ONLY valid JSON. No markdown, no extra text.`
-
-  try {
-    const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const text = message.content[0].type === 'text' ? message.content[0].text : '{}'
-    const parsed = JSON.parse(text.trim())
-    return {
-      title:      parsed.title    ?? `${dimName} Practice ${cardVariant}`,
-      teaser:     parsed.teaser   ?? 'A practice to develop your leadership mindset.',
-      reflection: null,
-      exercise:   parsed.exercise ?? 'Take 5 minutes to complete this practice today.',
-      insight:    parsed.insight  ?? `${dimName} is one of the most powerful predictors of effective leadership.`,
-    }
-  } catch {
-    return {
-      title:      `${dimName} — Practice ${cardVariant}`,
-      teaser:     'A practice to strengthen your leadership mindset.',
-      reflection: null,
-      exercise:   `Today, choose one moment to consciously practise ${dimName.toLowerCase()}. Write down one specific situation where you could apply this and what you would do differently.`,
-      insight:    `${dimName} is one of the most powerful predictors of effective leadership. Small daily practices create lasting change.`,
-    }
-  }
-}
 
 // ── POST ──────────────────────────────────────────────────────────────────────
 
@@ -98,10 +19,9 @@ export async function POST(req: NextRequest) {
   const participantId = user.id
   const { cardId } = await req.json()
 
-  const today = new Date().toISOString().split('T')[0]
+  const today    = new Date().toISOString().split('T')[0]
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0]
 
-  // Mark current card complete
   const { data: completed } = await supabaseAdmin
     .from('daily_sparks')
     .update({ status: 'complete', completed_date: today })
@@ -110,22 +30,18 @@ export async function POST(req: NextRequest) {
     .select()
     .single()
 
-  if (!completed) {
-    return NextResponse.json({ error: 'Card not found' }, { status: 404 })
-  }
+  if (!completed) return NextResponse.json({ error: 'Card not found' }, { status: 404 })
 
   const totalCompleted = completed.card_number
-  const isMilestone = [4, 8, 12, 16, 20, 24].includes(totalCompleted)
-  const isComplete = totalCompleted === 24
+  const isMilestone    = [4, 8, 12, 16, 20, 24].includes(totalCompleted)
+  const isComplete     = totalCompleted === 24
 
-  // Pre-generate the next card (if not finished)
   if (!isComplete) {
     const nextCardNumber = completed.card_number + 1
 
-    // Get assessment for dim ordering
     const { data: assessments } = await supabaseAdmin
       .from('assessments')
-      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, participant_role')
+      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score')
       .eq('participant_id', participantId)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
@@ -133,30 +49,28 @@ export async function POST(req: NextRequest) {
 
     const assessment = assessments?.[0]
     if (assessment) {
-      const scores = [
-        assessment.d1_score, assessment.d2_score, assessment.d3_score,
-        assessment.d4_score, assessment.d5_score, assessment.d6_score,
-      ]
-      const dimOrder = getDimOrder(scores)
-      const dimId = getDimForCard(nextCardNumber, dimOrder)
+      const scores  = [assessment.d1_score, assessment.d2_score, assessment.d3_score, assessment.d4_score, assessment.d5_score, assessment.d6_score]
+      const dimOrder   = getDimOrder(scores)
+      const dimId      = getDimForCard(nextCardNumber, dimOrder)
       const cardVariant = getCardVariant(nextCardNumber)
-      const dimScore = (scores[dimId - 1] ?? 50) as number
-      const role = assessment.participant_role ?? 'leader'
+      const content    = CARD_LIBRARY[dimId]?.[cardVariant]
 
-      const content = await generateCardContent(dimId, cardVariant, dimScore, role)
-
-      await supabaseAdmin
-        .from('daily_sparks')
-        .insert({
-          participant_id: participantId,
-          card_number:    nextCardNumber,
-          dimension_id:   dimId,
-          assigned_date:  tomorrow,
-          status:         'active',
-          ...content,
-        })
-        .select()
-        .single()
+      if (content) {
+        await supabaseAdmin
+          .from('daily_sparks')
+          .insert({
+            participant_id: participantId,
+            card_number:    nextCardNumber,
+            dimension_id:   dimId,
+            assigned_date:  tomorrow,
+            status:         'active',
+            title:          content.title,
+            teaser:         content.teaser,
+            insight:        content.insight,
+            exercise:       content.exercise,
+            reflection:     null,
+          })
+      }
     }
   }
 

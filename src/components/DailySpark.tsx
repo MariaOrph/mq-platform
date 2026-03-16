@@ -193,15 +193,17 @@ export default function DailySpark({ token }: DailySparkProps) {
           </a>
         </div>
       ) : currentCard && dim ? (
+        /* Outer wrapper — relative so the absolute hidden card sits inside it */
         <div style={{ position: 'relative' }}>
 
           {/* ── CARD FRONT ───────────────────────────────────── */}
+          {/* position: relative when visible (takes space), absolute when hidden (takes no space) */}
           <div
-            onClick={() => setIsFlipped(true)}
+            onClick={() => !isFlipped ? setIsFlipped(true) : undefined}
             className="rounded-2xl overflow-hidden cursor-pointer"
             style={{
-              // BG image with coloured overlay
-              position: 'relative',
+              position: isFlipped ? 'absolute' : 'relative',
+              top: 0, left: 0, right: 0,
               minHeight: 300,
               opacity: isFlipped ? 0 : 1,
               transform: isFlipped
@@ -209,25 +211,23 @@ export default function DailySpark({ token }: DailySparkProps) {
                 : 'perspective(900px) rotateY(0deg) scale(1)',
               transition: 'opacity 0.22s ease, transform 0.22s ease',
               pointerEvents: isFlipped ? 'none' : 'auto',
-              // When hidden, collapse so back can take space
-              maxHeight: isFlipped ? 0 : 1000,
-              overflow: 'hidden',
-              boxShadow: `0 8px 32px ${dim.color}44`,
+              zIndex: isFlipped ? 0 : 1,
+              boxShadow: `0 8px 32px ${dim.color}33`,
+              background: '#0A2E2A',
             }}
           >
-            {/* Background image */}
+            {/* Glow accents */}
             <div style={{
-              backgroundImage: "url('/bg.webp')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              position: 'absolute',
-              inset: 0,
+              position: 'absolute', inset: 0,
+              background: `radial-gradient(ellipse at 80% 20%, ${dim.color}22 0%, transparent 60%),
+                           radial-gradient(ellipse at 15% 80%, rgba(10,243,205,0.10) 0%, transparent 50%)`,
             }} />
-            {/* Subtle dark overlay for text legibility only */}
+            {/* Subtle top border line in dim colour */}
             <div style={{
-              background: 'linear-gradient(160deg, rgba(10,46,42,0.45) 0%, rgba(10,46,42,0.65) 100%)',
-              position: 'absolute',
-              inset: 0,
+              position: 'absolute', top: 0, left: 0, right: 0,
+              height: 3,
+              background: `linear-gradient(90deg, transparent, ${dim.color}, transparent)`,
+              borderRadius: '16px 16px 0 0',
             }} />
 
             {/* Content */}
@@ -235,51 +235,53 @@ export default function DailySpark({ token }: DailySparkProps) {
               {/* Top row */}
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}>
+                      style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)' }}>
                   Practice #{currentCard.card_number}
                 </span>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}>
+                      style={{ backgroundColor: `${dim.color}22`, color: dim.color, border: `1px solid ${dim.color}44` }}>
                   {dim.emoji} {dim.name}
                 </span>
               </div>
 
-              {/* Centre — title + teaser, no large emoji */}
+              {/* Centre — title + teaser */}
               <div className="py-6">
-                <h2 className="text-2xl font-black mb-3 leading-tight"
-                    style={{ color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
+                <h2 className="text-2xl font-black mb-3 leading-tight" style={{ color: 'white' }}>
                   {currentCard.title}
                 </h2>
-                <p className="text-sm font-medium leading-relaxed"
-                   style={{ color: 'rgba(255,255,255,0.78)' }}>
+                <p className="text-sm font-medium leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
                   {currentCard.teaser}
                 </p>
               </div>
 
               {/* Bottom hint */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                  Tap to reveal your practice ↓
+              <div className="flex items-center gap-1.5">
+                <div style={{ width: 20, height: 1, backgroundColor: dim.color, opacity: 0.6 }} />
+                <span className="text-xs font-medium" style={{ color: `${dim.color}99` }}>
+                  Tap to reveal your practice
                 </span>
               </div>
             </div>
           </div>
 
           {/* ── CARD BACK ────────────────────────────────────── */}
+          {/* position: relative when visible (takes space), absolute when hidden (takes no space) */}
           <div
-            className="rounded-2xl overflow-hidden"
+            className="rounded-2xl"
             style={{
+              position: isFlipped ? 'relative' : 'absolute',
+              top: 0, left: 0, right: 0,
               backgroundColor: 'white',
-              border: `2px solid ${dim.color}44`,
-              boxShadow: `0 8px 32px ${dim.color}22`,
+              border: `1.5px solid ${dim.color}44`,
+              boxShadow: `0 8px 32px ${dim.color}18`,
               opacity: isFlipped ? 1 : 0,
               transform: isFlipped
                 ? 'perspective(900px) rotateY(0deg) scale(1)'
                 : 'perspective(900px) rotateY(90deg) scale(0.96)',
               transition: isFlipped ? 'opacity 0.22s ease 0.18s, transform 0.22s ease 0.18s' : 'none',
               pointerEvents: isFlipped ? 'auto' : 'none',
-              maxHeight: isFlipped ? 2000 : 0,
-              overflow: isFlipped ? 'visible' : 'hidden',
+              zIndex: isFlipped ? 1 : 0,
+              overflow: 'hidden',
             }}
           >
             <div className="p-5 space-y-3">
