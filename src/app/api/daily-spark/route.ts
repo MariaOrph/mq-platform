@@ -146,7 +146,7 @@ export async function GET(req: NextRequest) {
         const dimScore = (scores[dimId - 1] ?? 50) as number
 
         // Generate content
-        let content = { title: '', teaser: '', reflection: '', exercise: '', insight: '' }
+        let content: { title: string; teaser: string; reflection: string | null; exercise: string; insight: string } = { title: '', teaser: '', reflection: null, exercise: '', insight: '' }
         try {
           content = await generateCardContent(dimId, cardVariant, dimScore, role)
         } catch (err) {
