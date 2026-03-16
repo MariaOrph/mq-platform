@@ -40,21 +40,25 @@ async function generateCardContent(
   role: string
 ) {
   const dimName = DIMENSION_NAMES[dimId]
-  const prompt = `You are generating a daily practice card for the MQ (Mindset Quotient) leadership coaching programme.
+  const prompt = `You are a world-class executive coach generating a daily practice card for the MQ (Mindset Quotient) leadership development programme.
 
 Dimension: ${dimName}
-Card variant: ${cardVariant} of 4 for this dimension (make each card distinctly different)
+Card variant: ${cardVariant} of 4 (each card must be COMPLETELY different — different angle, different exercise)
 Leadership role: ${role}
-Dimension score: ${dimScore}/100
+Dimension score: ${dimScore}/100 (lower score = bigger development opportunity)
 
-Generate a JSON object with keys: "title", "teaser", "reflection", "exercise", "insight".
-- title: A compelling practice name (3-6 words)
-- teaser: One punchy sentence (max 10 words), start with action verb
-- reflection: A thought-provoking question (2-3 sentences)
-- exercise: A concrete activity for today, under 10 minutes (2-3 sentences)
-- insight: A surprising insight about why this matters for leadership (2 sentences)
+Generate a JSON object with EXACTLY these keys:
 
-Return ONLY valid JSON.`
+"title": A ritual-style name for this practice (3-6 words). Think: "The Values Audit", "Name the Pattern", "The Perspective Ladder". Evocative, memorable, coach-like.
+
+"teaser": One punchy sentence preview (max 10 words). Start with an action verb. E.g. "Uncover the values quietly running your decisions."
+
+"insight": A genuinely surprising, specific psychological or leadership insight about this dimension. NOT generic. Reference real research, cognitive patterns, or counterintuitive truths. (2-3 sentences).
+
+"exercise": A specific, structured exercise achievable in under 10 minutes. Be CONCRETE — give exact steps, lists to write, questions to answer. This should feel like real coaching work — not vague journaling prompts.
+
+Tone: Premium, direct, expert. Like a top executive coach who respects the reader's intelligence.
+Return ONLY valid JSON. No markdown, no extra text.`
 
   try {
     const message = await anthropic.messages.create({
@@ -65,19 +69,19 @@ Return ONLY valid JSON.`
     const text = message.content[0].type === 'text' ? message.content[0].text : '{}'
     const parsed = JSON.parse(text.trim())
     return {
-      title:      parsed.title      ?? `${dimName} Practice ${cardVariant}`,
-      teaser:     parsed.teaser     ?? 'A practice to develop your leadership mindset.',
-      reflection: parsed.reflection ?? `Reflect on your ${dimName.toLowerCase()} today.`,
-      exercise:   parsed.exercise   ?? 'Take 5 minutes to practise this today.',
-      insight:    parsed.insight    ?? `${dimName} is key to effective leadership.`,
+      title:      parsed.title    ?? `${dimName} Practice ${cardVariant}`,
+      teaser:     parsed.teaser   ?? 'A practice to develop your leadership mindset.',
+      reflection: null,
+      exercise:   parsed.exercise ?? 'Take 5 minutes to complete this practice today.',
+      insight:    parsed.insight  ?? `${dimName} is one of the most powerful predictors of effective leadership.`,
     }
   } catch {
     return {
       title:      `${dimName} — Practice ${cardVariant}`,
       teaser:     'A practice to strengthen your leadership mindset.',
-      reflection: `Think about a recent situation where your ${dimName.toLowerCase()} was tested.`,
-      exercise:   `Today, choose one moment to consciously practise ${dimName.toLowerCase()}.`,
-      insight:    `${dimName} is one of the most powerful predictors of effective leadership.`,
+      reflection: null,
+      exercise:   `Today, choose one moment to consciously practise ${dimName.toLowerCase()}. Write down one specific situation where you could apply this and what you would do differently.`,
+      insight:    `${dimName} is one of the most powerful predictors of effective leadership. Small daily practices create lasting change.`,
     }
   }
 }

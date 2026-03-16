@@ -209,7 +209,7 @@ export default function ParticipantDashboard() {
 
         {/* ── Stats row ────────────────────────────────────────────────────── */}
         {assessment && (
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {/* MQ Score */}
             <div className="rounded-2xl p-4 flex flex-col items-center justify-center" style={cardStyle}>
               <div className="w-14 h-14 rounded-full flex items-center justify-center mb-1.5"
@@ -232,13 +232,6 @@ export default function ParticipantDashboard() {
               </div>
             </div>
 
-            {/* Journey day */}
-            <div className="rounded-2xl p-4 flex flex-col items-center justify-center" style={cardStyle}>
-              <p className="text-3xl font-black leading-none mb-1" style={{ color: '#0AF3CD' }}>
-                {journeyDay ?? '1'}
-              </p>
-              <p className="text-xs font-semibold" style={{ color: '#05A88E' }}>day</p>
-            </div>
           </div>
         )}
 

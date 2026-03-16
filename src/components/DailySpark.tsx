@@ -223,9 +223,9 @@ export default function DailySpark({ token }: DailySparkProps) {
               position: 'absolute',
               inset: 0,
             }} />
-            {/* Colour gradient overlay */}
+            {/* Subtle dark overlay for text legibility only */}
             <div style={{
-              background: `linear-gradient(145deg, ${dim.color}cc 0%, ${dim.color}77 40%, rgba(10,46,42,0.82) 100%)`,
+              background: 'linear-gradient(160deg, rgba(10,46,42,0.45) 0%, rgba(10,46,42,0.65) 100%)',
               position: 'absolute',
               inset: 0,
             }} />
@@ -235,30 +235,30 @@ export default function DailySpark({ token }: DailySparkProps) {
               {/* Top row */}
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.9)' }}>
+                      style={{ backgroundColor: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}>
                   Practice #{currentCard.card_number}
                 </span>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.9)' }}>
+                      style={{ backgroundColor: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.9)' }}>
                   {dim.emoji} {dim.name}
                 </span>
               </div>
 
-              {/* Centre */}
-              <div className="text-center py-6">
-                <div className="text-5xl mb-4 drop-shadow-lg">{dim.emoji}</div>
-                <h2 className="text-2xl font-black mb-3 leading-tight drop-shadow-sm"
-                    style={{ color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              {/* Centre — title + teaser, no large emoji */}
+              <div className="py-6">
+                <h2 className="text-2xl font-black mb-3 leading-tight"
+                    style={{ color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                   {currentCard.title}
                 </h2>
-                <p className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                <p className="text-sm font-medium leading-relaxed"
+                   style={{ color: 'rgba(255,255,255,0.78)' }}>
                   {currentCard.teaser}
                 </p>
               </div>
 
               {/* Bottom hint */}
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>
                   Tap to reveal your practice ↓
                 </span>
               </div>
@@ -296,33 +296,28 @@ export default function DailySpark({ token }: DailySparkProps) {
                 </button>
               </div>
 
-              {/* Reflection */}
-              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
-                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>
-                  💭 Reflect
-                </p>
-                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  {currentCard.reflection}
-                </p>
-              </div>
+              {/* Title on back */}
+              <p className="text-base font-black leading-snug" style={{ color: '#0A2E2A' }}>
+                {currentCard.title}
+              </p>
 
-              {/* Exercise */}
-              <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg }}>
+              {/* Insight — shown first */}
+              <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg, border: `1px solid ${dim.color}33` }}>
                 <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
-                  🎯 Practice
-                </p>
-                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  {currentCard.exercise}
-                </p>
-              </div>
-
-              {/* Insight */}
-              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
-                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>
-                  💡 Insight
+                  💡 Why this matters
                 </p>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
                   {currentCard.insight}
+                </p>
+              </div>
+
+              {/* Exercise — practical, structured */}
+              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#374151' }}>
+                  🎯 Today's practice
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {currentCard.exercise}
                 </p>
               </div>
 
