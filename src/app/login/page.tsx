@@ -40,20 +40,11 @@ export default function LoginPage() {
         className="hidden lg:flex lg:w-1/2 relative flex-col items-center justify-center overflow-hidden"
         style={{ backgroundColor: '#0A2E2A' }}
       >
-        {/* Background image — add /public/bg.jpg to show it */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/bg.webp')",
-            opacity: 0.55,
-          }}
-        />
-
         {/* Gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, rgba(10,46,42,0.85) 0%, rgba(10,46,42,0.4) 50%, rgba(5,168,142,0.3) 100%)',
+            background: 'linear-gradient(135deg, rgba(10,46,42,1) 0%, rgba(10,46,42,0.85) 50%, rgba(5,168,142,0.5) 100%)',
           }}
         />
 
