@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [logoError, setLogoError]       = useState(false)
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -68,21 +69,21 @@ export default function LoginPage() {
 
         {/* Content */}
         <div className="relative z-10 px-12 text-center">
-          {/* Logo image — add /public/logo.png to show it, falls back to text mark */}
+          {/* Logo */}
           <div className="flex justify-center mb-8">
-            <img
-              src="/logo.png"
-              alt="MQ"
-              className="h-16 w-auto"
-              onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-            />
-            <div
-              className="h-16 w-auto px-5 rounded-2xl items-center justify-center hidden"
-              id="logo-fallback"
-              style={{ backgroundColor: 'rgba(10,243,205,0.15)', display: 'flex' }}
-            >
-              <span className="text-3xl font-bold tracking-tight" style={{ color: '#0AF3CD' }}>MQ</span>
-            </div>
+            {!logoError ? (
+              <img
+                src="/logo.png"
+                alt="MQ"
+                className="h-16 w-auto"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="h-16 px-5 rounded-2xl flex items-center justify-center"
+                   style={{ backgroundColor: 'rgba(10,243,205,0.15)' }}>
+                <span className="text-3xl font-bold tracking-tight" style={{ color: '#0AF3CD' }}>MQ</span>
+              </div>
+            )}
           </div>
 
           <h2 className="text-3xl font-semibold mb-4 leading-tight" style={{ color: '#E8FDF7' }}>
@@ -110,23 +111,19 @@ export default function LoginPage() {
 
           {/* Mobile logo (hidden on desktop) */}
           <div className="flex justify-center mb-8 lg:hidden">
-            <img
-              src="/logo.png"
-              alt="MQ"
-              className="h-12 w-auto"
-              onError={e => {
-                const el = e.target as HTMLImageElement
-                el.style.display = 'none'
-                const fallback = el.nextElementSibling as HTMLElement
-                if (fallback) fallback.style.display = 'flex'
-              }}
-            />
-            <div
-              className="h-12 px-4 rounded-xl items-center justify-center"
-              style={{ backgroundColor: '#0A2E2A', display: 'none' }}
-            >
-              <span className="text-xl font-bold" style={{ color: '#0AF3CD' }}>MQ</span>
-            </div>
+            {!logoError ? (
+              <img
+                src="/logo.png"
+                alt="MQ"
+                className="h-12 w-auto"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="h-12 px-4 rounded-xl flex items-center justify-center"
+                   style={{ backgroundColor: '#0A2E2A' }}>
+                <span className="text-xl font-bold" style={{ color: '#0AF3CD' }}>MQ</span>
+              </div>
+            )}
           </div>
 
           <h1 className="text-2xl font-semibold mb-1" style={{ color: '#0A2E2A' }}>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import CoachingRoom from '@/components/CoachingRoom'
 
-// ── Dimension config (coaching colours per spec) ──────────────────────────────
+// ── Dimension config ───────────────────────────────────────────────────────────
 
 const DIMS = [
   { id: 1, name: 'Self-awareness',       color: '#0AF3CD', bg: '#D0FAF3' },
@@ -26,7 +26,7 @@ const CONTEXT_CHIPS = [
   'Giving difficult feedback',
 ]
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Assessment {
   overall_score:    number | null
@@ -50,7 +50,7 @@ interface SessionSummary {
 
 type View = 'loading' | 'home' | 'context' | 'generating'
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -94,7 +94,6 @@ function computeWeekAndStreak(sessions: SessionSummary[]) {
       done:  completedDates.has(dateStr),
     })
   }
-  // Streak: consecutive done days from today backwards
   let streak = 0
   const startIdx = week[6].done ? 6 : 5
   for (let i = startIdx; i >= 0; i--) {
@@ -112,7 +111,36 @@ function getDimScore(a: Assessment, dimId: number): number | null {
   return a[map[dimId]] as number | null
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Logo component ─────────────────────────────────────────────────────────────
+
+function MQLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+  const [logoError, setLogoError] = useState(false)
+  const dims = size === 'sm' ? 'w-7 h-7' : size === 'lg' ? 'w-14 h-14' : 'w-9 h-9'
+  const text = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-xl' : 'text-sm'
+  return !logoError ? (
+    <img
+      src="/logo.png"
+      alt="MQ"
+      className={`${dims} object-contain rounded-xl`}
+      onError={() => setLogoError(true)}
+    />
+  ) : (
+    <div className={`${dims} rounded-xl flex items-center justify-center`}
+         style={{ backgroundColor: '#0AF3CD' }}>
+      <span className={`font-black ${text}`} style={{ color: '#0A2E2A' }}>MQ</span>
+    </div>
+  )
+}
+
+// ── Card wrapper ───────────────────────────────────────────────────────────────
+
+const cardStyle = {
+  backgroundColor: 'white',
+  border: '1px solid #E8FDF7',
+  boxShadow: '0 2px 12px rgba(10,46,42,0.07)',
+}
+
+// ── Main component ─────────────────────────────────────────────────────────────
 
 export default function ParticipantDashboard() {
   const router   = useRouter()
@@ -127,7 +155,7 @@ export default function ParticipantDashboard() {
   const [showCoachingRoom, setShowCoachingRoom] = useState(false)
   const [authToken,        setAuthToken]        = useState<string | null>(null)
 
-  // ── Load data ──────────────────────────────────────────────────────────────
+  // ── Load data ───────────────────────────────────────────────────────────────
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
     if (!authSession) { window.location.href = '/login'; return }
@@ -145,7 +173,6 @@ export default function ParticipantDashboard() {
 
     setProfile({ id: prof.id, full_name: prof.full_name, email: prof.email })
 
-    // Latest completed assessment
     const { data: assessments } = await supabase
       .from('assessments')
       .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, completed_at, participant_role')
@@ -156,7 +183,6 @@ export default function ParticipantDashboard() {
 
     if (assessments?.[0]) setAssessment(assessments[0])
 
-    // Coaching sessions — last 7 days
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6)
     const { data: sess } = await supabase
@@ -172,7 +198,7 @@ export default function ParticipantDashboard() {
 
   useEffect(() => { loadData() }, [loadData])
 
-  // ── Generate coaching moment ───────────────────────────────────────────────
+  // ── Generate coaching moment ────────────────────────────────────────────────
   async function generate(ctx: string) {
     if (!profile || !assessment) return
     setView('generating')
@@ -216,13 +242,13 @@ export default function ParticipantDashboard() {
     }
   }
 
-  // ── Sign out ───────────────────────────────────────────────────────────────
+  // ── Sign out ────────────────────────────────────────────────────────────────
   async function signOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
   }
 
-  // ── Derived values ─────────────────────────────────────────────────────────
+  // ── Derived values ──────────────────────────────────────────────────────────
   const firstName    = getFirstName(profile?.full_name ?? null)
   const journeyDay   = getJourneyDay(assessment?.completed_at ?? null)
   const focusDimId   = assessment ? getFocusDimension(assessment) : 1
@@ -231,15 +257,17 @@ export default function ParticipantDashboard() {
   const todaySession = sessions.find(s => s.session_date === todayStr) ?? null
   const { week, streak } = computeWeekAndStreak(sessions)
 
-  // ── Generating screen ──────────────────────────────────────────────────────
+  // ── Generating screen ───────────────────────────────────────────────────────
   if (view === 'generating') {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center px-6"
             style={{ backgroundColor: '#0A2E2A' }}>
-        <div className="text-center max-w-sm">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-8"
-               style={{ backgroundColor: '#0AF3CD' }}>
-            <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>MQ</span>
+        {/* Decorative glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+             style={{ backgroundColor: 'rgba(10,243,205,0.08)' }} />
+        <div className="relative z-10 text-center max-w-sm">
+          <div className="flex justify-center mb-8">
+            <MQLogo size="lg" />
           </div>
           <p className="text-lg font-semibold mb-3" style={{ color: '#0AF3CD' }}>
             Creating your coaching moment…
@@ -247,11 +275,10 @@ export default function ParticipantDashboard() {
           <p className="text-sm italic mb-8" style={{ color: '#B9F8DD' }}>
             {context.trim() ? `"${context.trim()}"` : 'Tailoring a session for you…'}
           </p>
-          {/* Pulsing bars */}
           <div className="space-y-3">
             {[100, 80, 60].map((w, i) => (
-              <div key={i} className="h-2 rounded-full mx-auto animate-pulse"
-                   style={{ width: `${w}%`, backgroundColor: 'rgba(10,243,205,0.25)' }} />
+              <div key={i} className="h-1.5 rounded-full mx-auto animate-pulse"
+                   style={{ width: `${w}%`, backgroundColor: 'rgba(10,243,205,0.2)' }} />
             ))}
           </div>
         </div>
@@ -259,26 +286,26 @@ export default function ParticipantDashboard() {
     )
   }
 
-  // ── Context question screen ────────────────────────────────────────────────
+  // ── Context question screen ─────────────────────────────────────────────────
   if (view === 'context') {
     return (
-      <main className="min-h-screen flex flex-col" style={{ backgroundColor: '#E8FDF7' }}>
+      <main className="min-h-screen flex flex-col" style={{ backgroundColor: '#F4FDF9' }}>
         {/* Header */}
-        <div className="px-6 py-4 flex items-center gap-4" style={{ backgroundColor: '#0A2E2A' }}>
-          <button onClick={() => setView('home')} className="text-sm" style={{ color: '#B9F8DD' }}>
-            ← Back
-          </button>
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-               style={{ backgroundColor: '#0AF3CD' }}>
-            <span className="text-xs font-black" style={{ color: '#0A2E2A' }}>MQ</span>
+        <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-4">
+            <button onClick={() => setView('home')} className="text-sm" style={{ color: '#B9F8DD' }}>
+              ← Back
+            </button>
+            <MQLogo size="sm" />
           </div>
         </div>
 
         <div className="flex-1 flex flex-col max-w-lg mx-auto w-full px-6 py-10">
           {/* Focus badge */}
-          <div className="inline-flex items-center gap-2 mb-6 self-start">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: focusDim.color }} />
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#05A88E' }}>
+          <div className="inline-flex items-center gap-2 mb-6 self-start px-3 py-1.5 rounded-full"
+               style={{ backgroundColor: focusDim.bg }}>
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: focusDim.color }} />
+            <span className="text-xs font-semibold" style={{ color: focusDim.color }}>
               Today's focus: {focusDim.name}
             </span>
           </div>
@@ -290,17 +317,15 @@ export default function ParticipantDashboard() {
             The more specific you are, the more relevant today's session will be.
           </p>
 
-          {/* Text area */}
           <textarea
             value={context}
             onChange={e => setContext(e.target.value)}
             placeholder="e.g. I have a one-to-one coming up with someone who's been disengaged…"
             rows={4}
-            className="w-full rounded-xl px-4 py-3 text-sm outline-none mb-4 resize-none"
-            style={{ border: '2px solid #B9F8DD', backgroundColor: 'white', color: '#0A2E2A' }}
+            className="w-full rounded-2xl px-4 py-3 text-sm outline-none mb-4 resize-none"
+            style={{ border: '2px solid #B9F8DD', backgroundColor: 'white', color: '#0A2E2A', boxShadow: '0 2px 8px rgba(10,46,42,0.05)' }}
           />
 
-          {/* Chips */}
           <div className="flex flex-wrap gap-2 mb-8">
             {CONTEXT_CHIPS.map(chip => (
               <button
@@ -311,6 +336,7 @@ export default function ParticipantDashboard() {
                   backgroundColor: context === chip ? '#0AF3CD' : 'white',
                   color:           context === chip ? '#0A2E2A' : '#05A88E',
                   border:          `1px solid ${context === chip ? '#0AF3CD' : '#B9F8DD'}`,
+                  boxShadow:       context === chip ? 'none' : '0 1px 3px rgba(10,46,42,0.06)',
                 }}
               >
                 {chip}
@@ -318,10 +344,9 @@ export default function ParticipantDashboard() {
             ))}
           </div>
 
-          {/* CTA */}
           <button
             onClick={() => generate(context)}
-            className="w-full py-3 rounded-xl text-sm font-bold mb-3"
+            className="w-full py-3 rounded-xl text-sm font-bold mb-3 hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
           >
             Get my coaching moment →
@@ -338,82 +363,63 @@ export default function ParticipantDashboard() {
     )
   }
 
-  // ── Loading screen ─────────────────────────────────────────────────────────
+  // ── Loading screen ──────────────────────────────────────────────────────────
   if (view === 'loading') {
     return (
-      <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#E8FDF7' }}>
+      <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F4FDF9' }}>
         <p className="text-sm" style={{ color: '#05A88E' }}>Loading…</p>
       </main>
     )
   }
 
-  // ── Home screen ────────────────────────────────────────────────────────────
+  // ── Home screen ─────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#E8FDF7' }}>
+    <main className="min-h-screen" style={{ backgroundColor: '#F4FDF9' }}>
 
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: '#0A2E2A' }}>
-        <div className="max-w-2xl mx-auto px-6 py-5 flex items-start justify-between">
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      <div className="relative overflow-hidden" style={{ backgroundColor: '#0A2E2A' }}>
+        {/* Decorative glow */}
+        <div className="absolute top-0 right-0 w-64 h-32 rounded-full blur-3xl pointer-events-none"
+             style={{ backgroundColor: 'rgba(10,243,205,0.07)' }} />
+        <div className="absolute bottom-0 left-1/4 w-32 h-16 rounded-full blur-2xl pointer-events-none"
+             style={{ backgroundColor: 'rgba(5,168,142,0.1)' }} />
+
+        <div className="relative max-w-2xl mx-auto px-6 py-5 flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                 style={{ backgroundColor: '#0AF3CD' }}>
-              <span className="font-black text-sm" style={{ color: '#0A2E2A' }}>MQ</span>
-            </div>
+            <MQLogo size="md" />
             <div>
               <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
                 {getGreeting()}, {firstName}.
               </h1>
               {journeyDay && (
                 <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
-                  You're on day {journeyDay} of your MQ journey.
+                  Day {journeyDay} of your MQ journey
                 </p>
               )}
             </div>
           </div>
           <button
             onClick={signOut}
-            className="text-xs px-3 py-1.5 rounded-lg flex-shrink-0"
-            style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}
+            className="text-xs px-3 py-1.5 rounded-lg flex-shrink-0 hover:opacity-80 transition-opacity"
+            style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
           >
             Sign out
           </button>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 py-6 space-y-5">
+      <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
 
-        {/* ── Error banner ──────────────────────────────────────────────── */}
+        {/* ── Error banner ─────────────────────────────────────────────────── */}
         {genError && (
-          <div className="rounded-xl px-5 py-3 text-sm" style={{ backgroundColor: '#FAECE7', color: '#993C1D' }}>
+          <div className="rounded-2xl px-5 py-3 text-sm" style={{ backgroundColor: '#FAECE7', color: '#993C1D' }}>
             {genError}
           </div>
         )}
 
-        {/* ── Notification banner ───────────────────────────────────────── */}
-        {assessment && (
-          <div className="rounded-xl px-5 py-4 flex items-center justify-between"
-               style={{ backgroundColor: '#0A2E2A' }}>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: '#0AF3CD' }}>
-                {todaySession?.status === 'complete'
-                  ? '✓ Completed today'
-                  : 'Your coaching moment is ready'}
-              </p>
-              <p className="text-sm" style={{ color: '#B9F8DD' }}>
-                {todaySession?.status === 'complete'
-                  ? 'Great work. See you tomorrow.'
-                  : `Today's focus: ${focusDim.name}`}
-              </p>
-            </div>
-            {todaySession?.status !== 'complete' && (
-              <span className="text-lg ml-4">✦</span>
-            )}
-          </div>
-        )}
-
-        {/* ── No assessment state ───────────────────────────────────────── */}
+        {/* ── No assessment state ──────────────────────────────────────────── */}
         {!assessment && (
-          <div className="rounded-xl p-6 text-center" style={{ backgroundColor: 'white', border: '2px solid #0AF3CD' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ ...cardStyle, border: '2px solid #0AF3CD' }}>
             <p className="text-base font-semibold mb-1" style={{ color: '#0A2E2A' }}>
               Start with your MQ assessment
             </p>
@@ -421,101 +427,21 @@ export default function ParticipantDashboard() {
               Your coaching moments are personalised to your results. Take the assessment first — it takes about 10 minutes.
             </p>
             <a href="/assessment"
-               className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold"
+               className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
               Take my assessment →
             </a>
           </div>
         )}
 
-        {/* ── Stats row ─────────────────────────────────────────────────── */}
+        {/* ── Today's coaching moment card ─────────────────────────────────── */}
         {assessment && (
-          <div className="grid grid-cols-3 gap-3">
-
-            {/* MQ Score circle */}
-            <div className="rounded-xl p-4 flex flex-col items-center justify-center"
-                 style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-1"
-                   style={{ backgroundColor: '#0AF3CD' }}>
-                <span className="text-xl font-black" style={{ color: '#0A2E2A' }}>
-                  {assessment.overall_score ?? '—'}
-                </span>
-              </div>
-              <p className="text-xs text-center font-semibold" style={{ color: '#05A88E' }}>
-                MQ Score
-              </p>
-            </div>
-
-            {/* Focus area */}
-            <div className="rounded-xl p-4 flex flex-col justify-center"
-                 style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#05A88E' }}>
-                Focus area
-              </p>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: focusDim.color }} />
-                <p className="text-xs font-bold leading-tight" style={{ color: '#0A2E2A' }}>
-                  {focusDim.name}
-                </p>
-              </div>
-            </div>
-
-            {/* Streak */}
-            <div className="rounded-xl p-4 flex flex-col items-center justify-center"
-                 style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-              <p className="text-3xl font-black" style={{ color: streak > 0 ? '#F59E0B' : '#D1D5DB' }}>
-                {streak}
-              </p>
-              <p className="text-xs font-semibold" style={{ color: '#05A88E' }}>
-                day streak
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* ── 7-day streak dots ──────────────────────────────────────────── */}
-        {assessment && (
-          <div className="rounded-xl px-5 py-4" style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-            <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#05A88E' }}>
-              This week
-            </p>
-            <div className="flex justify-between">
-              {week.map((day, i) => {
-                const isToday = i === 6
-                return (
-                  <div key={day.date} className="flex flex-col items-center gap-1.5">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                         style={{
-                           backgroundColor: day.done
-                             ? '#0AF3CD'
-                             : isToday
-                               ? 'transparent'
-                               : '#F3F4F6',
-                           border: isToday && !day.done ? '2px solid #0AF3CD' : 'none',
-                         }}>
-                      {day.done && (
-                        <span className="text-xs font-bold" style={{ color: '#0A2E2A' }}>✓</span>
-                      )}
-                    </div>
-                    <span className="text-xs" style={{ color: isToday ? '#05A88E' : '#9CA3AF', fontWeight: isToday ? 700 : 400 }}>
-                      {day.label}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ── Today's coaching moment card ──────────────────────────────── */}
-        {assessment && (
-          <div className="rounded-xl overflow-hidden" style={{ border: '2px solid #0AF3CD' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 4px 20px rgba(10,46,42,0.12)', border: '1.5px solid rgba(10,243,205,0.4)' }}>
             {/* Card header */}
-            <div className="px-5 py-3 flex items-center justify-between"
+            <div className="px-5 py-3.5 flex items-center justify-between"
                  style={{ backgroundColor: '#0A2E2A' }}>
               <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#0AF3CD' }}>
-                Today's coaching moment
+                {todaySession?.status === 'complete' ? '✓ Today\'s session complete' : 'Today\'s coaching moment'}
               </p>
               <span className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold"
                     style={{ backgroundColor: focusDim.bg, color: focusDim.color }}>
@@ -532,7 +458,7 @@ export default function ParticipantDashboard() {
                     {todaySession.heading}
                   </p>
                   <p className="text-xs mb-4" style={{ color: '#05A88E' }}>
-                    {todaySession.status === 'complete' ? '✓ Completed' : 'In progress'}
+                    {todaySession.status === 'complete' ? '✓ Completed · Great work today' : 'In progress'}
                   </p>
                 </>
               ) : (
@@ -549,7 +475,7 @@ export default function ParticipantDashboard() {
               {todaySession ? (
                 <button
                   onClick={() => router.push(`/dashboard/coaching?session=${todaySession.id}`)}
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold"
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
                   style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
                 >
                   {todaySession.status === 'complete' ? 'Review session →' : 'Continue session →'}
@@ -557,7 +483,7 @@ export default function ParticipantDashboard() {
               ) : (
                 <button
                   onClick={() => setView('context')}
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold"
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
                   style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
                 >
                   Start today's coaching moment →
@@ -567,31 +493,112 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* ── MQ profile bars ───────────────────────────────────────────── */}
+        {/* ── Stats row ────────────────────────────────────────────────────── */}
         {assessment && (
-          <div className="rounded-xl p-5" style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#05A88E' }}>
+          <div className="grid grid-cols-3 gap-3">
+
+            {/* MQ Score */}
+            <div className="rounded-2xl p-4 flex flex-col items-center justify-center" style={cardStyle}>
+              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-1.5"
+                   style={{ backgroundColor: '#0AF3CD' }}>
+                <span className="text-xl font-black" style={{ color: '#0A2E2A' }}>
+                  {assessment.overall_score ?? '—'}
+                </span>
+              </div>
+              <p className="text-xs text-center font-semibold" style={{ color: '#05A88E' }}>
+                MQ Score
+              </p>
+            </div>
+
+            {/* Focus area */}
+            <div className="rounded-2xl p-4 flex flex-col justify-center" style={cardStyle}>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>
+                Focus
+              </p>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: focusDim.color }} />
+                <p className="text-xs font-bold leading-tight" style={{ color: '#0A2E2A' }}>
+                  {focusDim.name}
+                </p>
+              </div>
+            </div>
+
+            {/* Streak */}
+            <div className="rounded-2xl p-4 flex flex-col items-center justify-center" style={cardStyle}>
+              <p className="text-3xl font-black leading-none mb-1" style={{ color: streak > 0 ? '#F59E0B' : '#D1D5DB' }}>
+                {streak}
+              </p>
+              <p className="text-xs font-semibold" style={{ color: '#05A88E' }}>
+                day streak
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── 7-day streak tracker ─────────────────────────────────────────── */}
+        {assessment && (
+          <div className="rounded-2xl px-5 py-4" style={cardStyle}>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>
+              This week
+            </p>
+            <div className="flex justify-between">
+              {week.map((day, i) => {
+                const isToday = i === 6
+                return (
+                  <div key={day.date} className="flex flex-col items-center gap-1.5">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center transition-all"
+                         style={{
+                           backgroundColor: day.done ? '#0AF3CD' : isToday ? 'transparent' : '#F3F4F6',
+                           border: isToday && !day.done ? '2px solid #0AF3CD' : 'none',
+                         }}>
+                      {day.done && (
+                        <span className="text-xs font-bold" style={{ color: '#0A2E2A' }}>✓</span>
+                      )}
+                    </div>
+                    <span className="text-xs" style={{
+                      color: isToday ? '#05A88E' : '#9CA3AF',
+                      fontWeight: isToday ? 700 : 400,
+                    }}>
+                      {day.label}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── MQ profile bars ───────────────────────────────────────────────── */}
+        {assessment && (
+          <div className="rounded-2xl p-5" style={cardStyle}>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
               Your MQ profile
             </p>
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {DIMS.map(dim => {
                 const score = getDimScore(assessment, dim.id)
                 const isFocus = dim.id === focusDimId
                 return (
                   <div key={dim.id}>
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dim.color }} />
-                        <span className="text-xs font-medium" style={{ color: isFocus ? dim.color : '#0A2E2A' }}>
+                    <div className="flex justify-between items-center mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
+                        <span className="text-xs font-medium" style={{ color: isFocus ? dim.color : '#374151' }}>
                           {dim.name}
-                          {isFocus && <span className="ml-1.5 text-xs font-bold" style={{ color: dim.color }}>← focus</span>}
+                          {isFocus && (
+                            <span className="ml-2 text-xs font-bold px-1.5 py-0.5 rounded-full"
+                                  style={{ backgroundColor: dim.bg, color: dim.color }}>
+                              focus
+                            </span>
+                          )}
                         </span>
                       </div>
                       <span className="text-xs font-bold" style={{ color: dim.color }}>
                         {score ?? '—'}
                       </span>
                     </div>
-                    <div className="h-1.5 rounded-full" style={{ backgroundColor: '#E8FDF7' }}>
+                    <div className="h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
                       <div
                         className="h-1.5 rounded-full transition-all duration-700"
                         style={{
@@ -607,25 +614,17 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* Retake assessment link */}
-        {assessment && (
-          <div className="text-center pb-4">
-            <a href="/assessment" className="text-xs" style={{ color: '#05A88E' }}>
-              Retake assessment
-            </a>
-          </div>
-        )}
-
-        {/* ── The Coaching Room CTA ──────────────────────────────────────── */}
+        {/* ── The Coaching Room ─────────────────────────────────────────────── */}
         <div
-          className="rounded-2xl p-5 flex items-center justify-between mb-2"
-          style={{ backgroundColor: '#0A2E2A', border: '2px solid rgba(10,243,205,0.3)' }}
+          className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
+          style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.15)' }}
         >
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-              style={{ backgroundColor: 'rgba(10,243,205,0.15)' }}
-            >
+          {/* Glow */}
+          <div className="absolute right-0 top-0 w-32 h-full rounded-full blur-3xl pointer-events-none"
+               style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
+          <div className="flex items-center gap-3 relative z-10">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                 style={{ backgroundColor: 'rgba(10,243,205,0.12)' }}>
               🧠
             </div>
             <div>
@@ -637,16 +636,25 @@ export default function ParticipantDashboard() {
           </div>
           <button
             onClick={() => setShowCoachingRoom(true)}
-            className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3"
+            className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
           >
             Open →
           </button>
         </div>
 
+        {/* Retake link */}
+        {assessment && (
+          <div className="text-center pb-4">
+            <a href="/assessment" className="text-xs" style={{ color: '#9CA3AF' }}>
+              Retake assessment
+            </a>
+          </div>
+        )}
+
       </div>
 
-      {/* ── Coaching Room overlay ────────────────────────────────────────── */}
+      {/* ── Coaching Room overlay ──────────────────────────────────────────── */}
       {showCoachingRoom && authToken && (
         <CoachingRoom
           token={authToken}
