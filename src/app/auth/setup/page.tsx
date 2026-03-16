@@ -7,11 +7,13 @@ import { createClient } from '@/lib/supabase/client'
 // being redirected to their dashboard for the first time.
 
 export default function SetupPage() {
-  const [password, setPassword]       = useState('')
-  const [confirm, setConfirm]         = useState('')
-  const [submitting, setSubmitting]   = useState(false)
-  const [error, setError]             = useState('')
-  const [checkingSession, setChecking] = useState(true)
+  const [password, setPassword]         = useState('')
+  const [confirm, setConfirm]           = useState('')
+  const [submitting, setSubmitting]     = useState(false)
+  const [error, setError]               = useState('')
+  const [checkingSession, setChecking]  = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm]   = useState(false)
 
   useEffect(() => {
     // Make sure they actually have a session (came via valid invite link)
@@ -83,30 +85,74 @@ export default function SetupPage() {
               <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
                 New password
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="At least 8 characters"
-                required
-                className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
-                style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="At least 8 characters"
+                  required
+                  className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none pr-12"
+                  style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+                  style={{ color: '#05A88E' }}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
                 Confirm password
               </label>
-              <input
-                type="password"
-                value={confirm}
-                onChange={e => setConfirm(e.target.value)}
-                placeholder="Repeat your password"
-                required
-                className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
-                style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
-              />
+              <div className="relative">
+                <input
+                  type={showConfirm ? 'text' : 'password'}
+                  value={confirm}
+                  onChange={e => setConfirm(e.target.value)}
+                  placeholder="Repeat your password"
+                  required
+                  className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none pr-12"
+                  style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+                  style={{ color: '#05A88E' }}
+                  tabIndex={-1}
+                >
+                  {showConfirm ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             {error && (
