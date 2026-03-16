@@ -22,7 +22,7 @@ interface DailySparkProps {
   token: string
 }
 
-// ── Dimension config ───────────────────────────────────────────────────────────
+// ── Config ─────────────────────────────────────────────────────────────────────
 
 const DIMS: Record<number, { name: string; color: string; bg: string; emoji: string }> = {
   1: { name: 'Self-awareness',       color: '#fdcb5e', bg: '#FEF5D9', emoji: '🪞' },
@@ -37,7 +37,7 @@ const MILESTONES: Record<number, { label: string; emoji: string; message: string
   4:  { label: 'First dimension complete!', emoji: '🔥', message: 'You\'ve completed your first 4 practices. Your mindset is already shifting.' },
   8:  { label: 'Building momentum!',        emoji: '⚡', message: 'Eight practices in. You\'re building a real daily habit.' },
   12: { label: 'Halfway there!',            emoji: '✨', message: 'You\'ve reached the halfway point of your MQ journey. Keep going.' },
-  16: { label: 'In the zone!',              emoji: '🎯', message: 'Sixteen practices complete. This is where the real breakthroughs happen.' },
+  16: { label: 'In the zone!',              emoji: '🎯', message: 'Sixteen practices complete. This is where real breakthroughs happen.' },
   20: { label: 'Almost there!',             emoji: '🌟', message: 'Four practices left. You\'ve come so far — finish strong.' },
   24: { label: 'Full cycle complete!',      emoji: '🏆', message: 'You\'ve completed all 24 Daily Spark practices. Time to see how much you\'ve grown.' },
 }
@@ -100,10 +100,12 @@ export default function DailySpark({ token }: DailySparkProps) {
 
   if (loading) {
     return (
-      <div className="rounded-2xl p-6 flex items-center justify-center" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)', minHeight: 200 }}>
+      <div className="rounded-2xl p-6 flex items-center justify-center"
+           style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)', minHeight: 200 }}>
         <div className="flex gap-1.5">
           {[0, 1, 2].map(i => (
-            <div key={i} className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#0AF3CD', animationDelay: `${i * 0.15}s` }} />
+            <div key={i} className="w-2 h-2 rounded-full animate-bounce"
+                 style={{ backgroundColor: '#0AF3CD', animationDelay: `${i * 0.15}s` }} />
           ))}
         </div>
       </div>
@@ -112,40 +114,37 @@ export default function DailySpark({ token }: DailySparkProps) {
 
   if (noAssessment) return null
 
-  const dim = currentCard ? DIMS[currentCard.dimension_id] : null
+  const dim      = currentCard ? DIMS[currentCard.dimension_id] : null
   const progress = Math.round((totalCompleted / 24) * 100)
   const allComplete = totalCompleted === 24
 
   return (
     <div className="space-y-4">
 
-      {/* ── Milestone celebration ───────────────────────────────────────── */}
+      {/* ── Milestone celebration ─────────────────────────────────────────── */}
       {milestone && (
-        <div
-          className="rounded-2xl p-5 text-center relative overflow-hidden"
-          style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.15)' }}
-        >
+        <div className="rounded-2xl p-6 text-center relative overflow-hidden"
+             style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}>
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
-               style={{ fontSize: 120, opacity: 0.06 }}>
+               style={{ fontSize: 120, opacity: 0.05 }}>
             {milestone.emoji}
           </div>
           <div className="relative z-10">
-            <div className="text-4xl mb-2">{milestone.emoji}</div>
-            <p className="font-bold text-base mb-1" style={{ color: '#0AF3CD' }}>{milestone.label}</p>
-            <p className="text-sm mb-4" style={{ color: '#B9F8DD' }}>{milestone.message}</p>
-            <button
-              onClick={() => setMilestone(null)}
-              className="px-5 py-2 rounded-xl text-sm font-bold"
-              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-            >
+            <div className="text-4xl mb-3">{milestone.emoji}</div>
+            <p className="font-bold text-base mb-2" style={{ color: '#0AF3CD' }}>{milestone.label}</p>
+            <p className="text-sm mb-5" style={{ color: '#B9F8DD' }}>{milestone.message}</p>
+            <button onClick={() => setMilestone(null)}
+                    className="px-5 py-2.5 rounded-xl text-sm font-bold"
+                    style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
               {totalCompleted === 24 ? 'Retake my assessment →' : 'Keep going →'}
             </button>
           </div>
         </div>
       )}
 
-      {/* ── Header + progress ───────────────────────────────────────────── */}
-      <div className="rounded-2xl p-5" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+      {/* ── Progress header ───────────────────────────────────────────────── */}
+      <div className="rounded-2xl p-5"
+           style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-lg">✨</span>
@@ -162,201 +161,199 @@ export default function DailySpark({ token }: DailySparkProps) {
 
         {/* Progress bar */}
         <div className="h-2 rounded-full mb-2" style={{ backgroundColor: '#F3F4F6' }}>
-          <div
-            className="h-2 rounded-full transition-all duration-700"
-            style={{
-              width: `${progress}%`,
-              background: dim
-                ? `linear-gradient(90deg, ${dim.color}, ${dim.color}cc)`
-                : 'linear-gradient(90deg, #0AF3CD, #05A88E)',
-            }}
-          />
+          <div className="h-2 rounded-full transition-all duration-700"
+               style={{
+                 width: `${progress}%`,
+                 background: dim ? `linear-gradient(90deg, ${dim.color}, ${dim.color}cc)` : 'linear-gradient(90deg, #0AF3CD, #05A88E)',
+               }} />
         </div>
 
         {/* Milestone markers */}
         <div className="flex justify-between px-0.5">
           {[4, 8, 12, 16, 20, 24].map(n => (
             <div key={n} className="flex flex-col items-center gap-0.5">
-              <div
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: totalCompleted >= n ? (dim?.color ?? '#0AF3CD') : '#E5E7EB' }}
-              />
-              <span className="text-xs" style={{ color: totalCompleted >= n ? '#6B7280' : '#D1D5DB', fontSize: 9 }}>{n}</span>
+              <div className="w-1.5 h-1.5 rounded-full"
+                   style={{ backgroundColor: totalCompleted >= n ? (dim?.color ?? '#0AF3CD') : '#E5E7EB' }} />
+              <span style={{ color: totalCompleted >= n ? '#6B7280' : '#D1D5DB', fontSize: 9 }}>{n}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Current card ────────────────────────────────────────────────── */}
+      {/* ── Current card ──────────────────────────────────────────────────── */}
       {allComplete ? (
-        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'white', border: '2px solid #0AF3CD', boxShadow: '0 4px 20px rgba(10,46,42,0.08)' }}>
+        <div className="rounded-2xl p-6 text-center"
+             style={{ backgroundColor: 'white', border: '2px solid #0AF3CD', boxShadow: '0 4px 20px rgba(10,46,42,0.08)' }}>
           <div className="text-4xl mb-3">🏆</div>
           <p className="font-bold text-base mb-1" style={{ color: '#0A2E2A' }}>You've completed all 24 practices!</p>
-          <p className="text-sm mb-4" style={{ color: '#05A88E' }}>You've worked through every dimension of your MQ profile. Ready to see how much you've grown?</p>
-          <a href="/assessment"
-             className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold"
+          <p className="text-sm mb-4" style={{ color: '#05A88E' }}>Ready to see how much you've grown?</p>
+          <a href="/assessment" className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold"
              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
             Retake my assessment →
           </a>
         </div>
       ) : currentCard && dim ? (
-        <div>
-          {/* Flip card */}
-          <div style={{ perspective: '1200px', minHeight: 320 }}>
-            <div
-              style={{
-                transformStyle: 'preserve-3d',
-                transition: 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                position: 'relative',
-                minHeight: 320,
-              }}
-            >
-              {/* ── Card front ─────────────────────────────────── */}
-              <div
-                className="absolute inset-0 rounded-2xl overflow-hidden cursor-pointer"
-                style={{
-                  backfaceVisibility: 'hidden',
-                  background: `linear-gradient(135deg, ${dim.color} 0%, ${dim.color}bb 100%)`,
-                  boxShadow: `0 8px 30px ${dim.color}44`,
-                }}
-                onClick={() => setIsFlipped(true)}
-              >
-                {/* Decorative circles */}
-                <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full opacity-20"
-                     style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} />
-                <div className="absolute -bottom-12 -left-8 w-48 h-48 rounded-full opacity-10"
-                     style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} />
+        <div style={{ position: 'relative' }}>
 
-                <div className="relative z-10 p-6 flex flex-col h-full justify-between" style={{ minHeight: 320 }}>
-                  {/* Top: card number + dim badge */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                          style={{ backgroundColor: 'rgba(255,255,255,0.25)', color: 'rgba(0,0,0,0.7)' }}>
-                      Practice #{currentCard.card_number}
-                    </span>
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                          style={{ backgroundColor: 'rgba(255,255,255,0.25)', color: 'rgba(0,0,0,0.7)' }}>
-                      {dim.emoji} {dim.name}
-                    </span>
-                  </div>
+          {/* ── CARD FRONT ───────────────────────────────────── */}
+          <div
+            onClick={() => setIsFlipped(true)}
+            className="rounded-2xl overflow-hidden cursor-pointer"
+            style={{
+              // BG image with coloured overlay
+              position: 'relative',
+              minHeight: 300,
+              opacity: isFlipped ? 0 : 1,
+              transform: isFlipped
+                ? 'perspective(900px) rotateY(-90deg) scale(0.96)'
+                : 'perspective(900px) rotateY(0deg) scale(1)',
+              transition: 'opacity 0.22s ease, transform 0.22s ease',
+              pointerEvents: isFlipped ? 'none' : 'auto',
+              // When hidden, collapse so back can take space
+              maxHeight: isFlipped ? 0 : 1000,
+              overflow: 'hidden',
+              boxShadow: `0 8px 32px ${dim.color}44`,
+            }}
+          >
+            {/* Background image */}
+            <div style={{
+              backgroundImage: "url('/bg.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              position: 'absolute',
+              inset: 0,
+            }} />
+            {/* Colour gradient overlay */}
+            <div style={{
+              background: `linear-gradient(145deg, ${dim.color}cc 0%, ${dim.color}77 40%, rgba(10,46,42,0.82) 100%)`,
+              position: 'absolute',
+              inset: 0,
+            }} />
 
-                  {/* Centre: emoji + title + teaser */}
-                  <div className="text-center py-4">
-                    <div className="text-5xl mb-4">{dim.emoji}</div>
-                    <h2 className="text-2xl font-black mb-2 leading-tight" style={{ color: 'rgba(0,0,0,0.85)' }}>
-                      {currentCard.title}
-                    </h2>
-                    <p className="text-sm font-medium" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                      {currentCard.teaser}
-                    </p>
-                  </div>
-
-                  {/* Bottom: flip hint */}
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce"
-                           style={{ backgroundColor: 'rgba(0,0,0,0.35)', animationDelay: '0s' }} />
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce"
-                           style={{ backgroundColor: 'rgba(0,0,0,0.35)', animationDelay: '0.15s' }} />
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce"
-                           style={{ backgroundColor: 'rgba(0,0,0,0.35)', animationDelay: '0.3s' }} />
-                    </div>
-                    <span className="text-xs font-semibold" style={{ color: 'rgba(0,0,0,0.45)' }}>
-                      Tap to reveal your practice
-                    </span>
-                  </div>
-                </div>
+            {/* Content */}
+            <div className="relative z-10 p-6 flex flex-col justify-between" style={{ minHeight: 300 }}>
+              {/* Top row */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.9)' }}>
+                  Practice #{currentCard.card_number}
+                </span>
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.9)' }}>
+                  {dim.emoji} {dim.name}
+                </span>
               </div>
 
-              {/* ── Card back ──────────────────────────────────── */}
-              <div
-                className="absolute inset-0 rounded-2xl overflow-hidden"
-                style={{
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)',
-                  backgroundColor: 'white',
-                  border: `2px solid ${dim.color}44`,
-                  boxShadow: `0 8px 30px ${dim.color}22`,
-                }}
-              >
-                <div className="p-5 flex flex-col gap-4" style={{ minHeight: 320 }}>
-                  {/* Dim badge */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                          style={{ backgroundColor: dim.bg, color: dim.color }}>
-                      {dim.emoji} {dim.name}
-                    </span>
-                    <button
-                      onClick={() => setIsFlipped(false)}
-                      className="text-xs px-2.5 py-1 rounded-full"
-                      style={{ color: '#9CA3AF', backgroundColor: '#F9FAFB' }}
-                    >
-                      ← flip back
-                    </button>
-                  </div>
+              {/* Centre */}
+              <div className="text-center py-6">
+                <div className="text-5xl mb-4 drop-shadow-lg">{dim.emoji}</div>
+                <h2 className="text-2xl font-black mb-3 leading-tight drop-shadow-sm"
+                    style={{ color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+                  {currentCard.title}
+                </h2>
+                <p className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                  {currentCard.teaser}
+                </p>
+              </div>
 
-                  {/* Reflection */}
-                  <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>
-                      💭 Reflect
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                      {currentCard.reflection}
-                    </p>
-                  </div>
-
-                  {/* Exercise */}
-                  <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg }}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: dim.color }}>
-                      🎯 Practice
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                      {currentCard.exercise}
-                    </p>
-                  </div>
-
-                  {/* Insight */}
-                  <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>
-                      💡 Insight
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                      {currentCard.insight}
-                    </p>
-                  </div>
-
-                  {/* Complete button */}
-                  <button
-                    onClick={handleComplete}
-                    disabled={completing}
-                    className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
-                    style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.8)' }}
-                  >
-                    {completing ? 'Saving…' : '✓ Mark as complete'}
-                  </button>
-                </div>
+              {/* Bottom hint */}
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  Tap to reveal your practice ↓
+                </span>
               </div>
             </div>
           </div>
+
+          {/* ── CARD BACK ────────────────────────────────────── */}
+          <div
+            className="rounded-2xl overflow-hidden"
+            style={{
+              backgroundColor: 'white',
+              border: `2px solid ${dim.color}44`,
+              boxShadow: `0 8px 32px ${dim.color}22`,
+              opacity: isFlipped ? 1 : 0,
+              transform: isFlipped
+                ? 'perspective(900px) rotateY(0deg) scale(1)'
+                : 'perspective(900px) rotateY(90deg) scale(0.96)',
+              transition: isFlipped ? 'opacity 0.22s ease 0.18s, transform 0.22s ease 0.18s' : 'none',
+              pointerEvents: isFlipped ? 'auto' : 'none',
+              maxHeight: isFlipped ? 2000 : 0,
+              overflow: isFlipped ? 'visible' : 'hidden',
+            }}
+          >
+            <div className="p-5 space-y-3">
+              {/* Back header */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full"
+                      style={{ backgroundColor: dim.bg, color: dim.color }}>
+                  {dim.emoji} {dim.name}
+                </span>
+                <button onClick={() => setIsFlipped(false)}
+                        className="text-xs px-2.5 py-1 rounded-full hover:opacity-80"
+                        style={{ color: '#9CA3AF', backgroundColor: '#F9FAFB' }}>
+                  ← flip back
+                </button>
+              </div>
+
+              {/* Reflection */}
+              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>
+                  💭 Reflect
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {currentCard.reflection}
+                </p>
+              </div>
+
+              {/* Exercise */}
+              <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
+                  🎯 Practice
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {currentCard.exercise}
+                </p>
+              </div>
+
+              {/* Insight */}
+              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>
+                  💡 Insight
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {currentCard.insight}
+                </p>
+              </div>
+
+              {/* Complete button */}
+              <button
+                onClick={handleComplete}
+                disabled={completing}
+                className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.75)' }}
+              >
+                {completing ? 'Saving…' : '✓ Mark as complete'}
+              </button>
+            </div>
+          </div>
+
         </div>
       ) : (
-        /* Waiting for tomorrow */
-        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+        <div className="rounded-2xl p-6 text-center"
+             style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
           <div className="text-3xl mb-3">🌙</div>
-          <p className="font-semibold text-sm mb-1" style={{ color: '#0A2E2A' }}>Today's spark is coming tomorrow</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Complete yesterday's practice first, or check back tomorrow for a new one.</p>
+          <p className="font-semibold text-sm mb-1" style={{ color: '#0A2E2A' }}>Your next spark arrives tomorrow</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Check back tomorrow for your next practice.</p>
         </div>
       )}
 
-      {/* ── Completed cards history ──────────────────────────────────────── */}
+      {/* ── Past cards ────────────────────────────────────────────────────── */}
       {completedSparks.length > 0 && (
         <div>
-          <button
-            onClick={() => setShowHistory(v => !v)}
-            className="w-full flex items-center justify-between py-2 px-1"
-            style={{ color: '#6B7280' }}
-          >
+          <button onClick={() => setShowHistory(v => !v)}
+                  className="w-full flex items-center justify-between py-2 px-1"
+                  style={{ color: '#9CA3AF' }}>
             <span className="text-xs font-semibold uppercase tracking-wider">
               Past practices ({completedSparks.length})
             </span>
@@ -368,11 +365,8 @@ export default function DailySpark({ token }: DailySparkProps) {
               {[...completedSparks].reverse().map(spark => {
                 const d = DIMS[spark.dimension_id]
                 return (
-                  <div
-                    key={spark.id}
-                    className="rounded-xl p-3 flex flex-col gap-1"
-                    style={{ backgroundColor: d.bg, border: `1px solid ${d.color}33` }}
-                  >
+                  <div key={spark.id} className="rounded-xl p-3 flex flex-col gap-1"
+                       style={{ backgroundColor: d.bg, border: `1px solid ${d.color}33` }}>
                     <div className="flex items-center justify-between">
                       <span className="text-base">{d.emoji}</span>
                       <span className="text-xs font-bold" style={{ color: d.color }}>#{spark.card_number}</span>
