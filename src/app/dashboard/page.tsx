@@ -68,8 +68,12 @@ function getFirstName(full: string | null, email?: string) {
 function getJourneyDay(completedAt: string | null) {
   if (!completedAt) return null
   const start = new Date(completedAt)
-  const today = new Date()
-  return Math.max(1, Math.floor((today.getTime() - start.getTime()) / 86400000) + 1)
+  // Compare calendar dates, not raw hours — so Sunday→Monday = Day 2 regardless of time of day
+  const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate())
+  const today     = new Date()
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  const diffDays  = Math.floor((todayDate.getTime() - startDate.getTime()) / 86400000)
+  return diffDays + 1
 }
 
 function getFocusDimension(a: Assessment): number {
