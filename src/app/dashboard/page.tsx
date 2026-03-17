@@ -334,19 +334,29 @@ export default function ParticipantDashboard() {
         {assessment && (
           <button
             onClick={() => setShowMQModal(true)}
-            className="w-full rounded-2xl p-5 flex items-center gap-5 hover:opacity-80 transition-opacity"
-            style={cardStyle}
+            className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
+            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
           >
-            <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
-                 style={{ backgroundColor: '#0AF3CD' }}>
-              <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>
-                {assessment.overall_score ?? '—'}
-              </span>
+            {/* Background glow */}
+            <div style={{ position: 'absolute', top: -30, right: -30, width: 160, height: 160, borderRadius: '50%',
+                          background: 'radial-gradient(circle, rgba(10,243,205,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            {/* Brain watermark */}
+            <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
+                          fontSize: 80, opacity: 0.07, lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>
+              🧠
             </div>
-            <div className="text-left">
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Score</p>
-              <p className="text-xs mt-0.5" style={{ color: '#05A88E' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
-              <p className="text-xs mt-1" style={{ color: '#9CA3AF', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
+            <div className="relative z-10 p-5 flex items-center gap-5">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
+                   style={{ backgroundColor: '#0AF3CD' }}>
+                <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>
+                  {assessment.overall_score ?? '—'}
+                </span>
+              </div>
+              <div className="text-left">
+                <p className="text-base font-black" style={{ color: 'white' }}>MQ Score</p>
+                <p className="text-sm mt-0.5 font-semibold" style={{ color: '#0AF3CD' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(185,248,221,0.5)', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
+              </div>
             </div>
           </button>
         )}
