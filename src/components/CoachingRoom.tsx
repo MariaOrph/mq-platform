@@ -370,7 +370,37 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                         "I feel like I'm losing confidence",
                         'I need help managing up',
                       ].map(prompt => (
-                        <button key={prompt} onClick={() => setInput(prompt)}
+                        <button key={prompt}
+                                onClick={() => {
+                                  setInput('')
+                                  setLoading(true)
+                                  setMessages([
+                                    { role: 'user', content: prompt, pending: false },
+                                    { role: 'assistant', content: '', pending: true },
+                                  ])
+                                  fetch('/api/coaching-room', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                    body: JSON.stringify({ message: prompt, sessionId: activeSession!.id }),
+                                  }).then(r => r.json()).then(data => {
+                                    const reply = data.reply ?? 'Something went wrong. Please try again.'
+                                    setMessages([
+                                      { role: 'user', content: prompt },
+                                      { role: 'assistant', content: reply },
+                                    ])
+                                    const newTitle = prompt.length > 52 ? prompt.slice(0, 49) + '…' : prompt
+                                    setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
+                                    setSessions(prev => prev.map(s => s.id === activeSession!.id ? { ...s, title: newTitle } : s))
+                                  }).catch(() => {
+                                    setMessages([
+                                      { role: 'user', content: prompt },
+                                      { role: 'assistant', content: 'Something went wrong. Please try again.' },
+                                    ])
+                                  }).finally(() => {
+                                    setLoading(false)
+                                    setTimeout(() => inputRef.current?.focus(), 50)
+                                  })
+                                }}
                                 onMouseEnter={() => setHoveredPrompt(prompt)}
                                 onMouseLeave={() => setHoveredPrompt(null)}
                                 className="text-xs px-3 py-1.5 rounded-full transition-all duration-150"
