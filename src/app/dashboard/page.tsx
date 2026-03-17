@@ -172,6 +172,46 @@ const cardStyle = {
   boxShadow: '0 2px 12px rgba(10,46,42,0.07)',
 }
 
+// ── Daily quote ────────────────────────────────────────────────────────────────
+
+const DAILY_QUOTES = [
+  { text: 'Between stimulus and response there is a space. In that space is our power to choose our response.', author: 'Viktor Frankl' },
+  { text: 'You cannot manage others well if you cannot manage yourself.', author: 'Peter Drucker' },
+  { text: 'The most common form of despair is not being who you are.', author: 'Søren Kierkegaard' },
+  { text: 'Leadership is not about being in charge. It is about taking care of those in your charge.', author: 'Simon Sinek' },
+  { text: 'What lies behind us and what lies before us are tiny matters compared to what lies within us.', author: 'Ralph Waldo Emerson' },
+  { text: 'The quality of your thinking determines the quality of your leadership.', author: 'MQ' },
+  { text: 'Knowing yourself is the beginning of all wisdom.', author: 'Aristotle' },
+  { text: 'In the middle of difficulty lies opportunity.', author: 'Albert Einstein' },
+  { text: 'Great leaders don\'t set out to be a leader. They set out to make a difference.', author: 'Lisa Haisha' },
+  { text: 'The mind is everything. What you think, you become.', author: 'Buddha' },
+  { text: 'An unexamined life is not worth living.', author: 'Socrates' },
+  { text: 'Your values are the architecture of your leadership. Build them consciously.', author: 'MQ' },
+  { text: 'It is not the strongest species that survives, nor the most intelligent — it is the most adaptable.', author: 'Charles Darwin' },
+  { text: 'People don\'t care how much you know until they know how much you care.', author: 'Theodore Roosevelt' },
+  { text: 'The measure of intelligence is the ability to change.', author: 'Albert Einstein' },
+  { text: 'Do not wait for extraordinary circumstances to do good; try to use ordinary situations.', author: 'Jean Paul Richter' },
+  { text: 'Emotional intelligence is not about being nice. It\'s about being accurate.', author: 'MQ' },
+  { text: 'We cannot solve our problems with the same thinking we used when we created them.', author: 'Albert Einstein' },
+  { text: 'The curious paradox is that when I accept myself just as I am, then I can change.', author: 'Carl Rogers' },
+  { text: 'Resilience is not about bouncing back to where you were. It\'s about growing forward.', author: 'MQ' },
+  { text: 'To lead people, walk beside them.', author: 'Lao Tzu' },
+  { text: 'Almost everything will work again if you unplug it for a few minutes — including you.', author: 'Anne Lamott' },
+  { text: 'The privilege of a lifetime is to become who you truly are.', author: 'Carl Jung' },
+  { text: 'Leadership is practised not so much in words as in attitude and in actions.', author: 'Harold S. Geneen' },
+  { text: 'You manage things; you lead people.', author: 'Grace Murray Hopper' },
+  { text: 'Strength does not come from physical capacity. It comes from an indomitable will.', author: 'Mahatma Gandhi' },
+  { text: 'The real voyage of discovery consists not in seeking new landscapes, but in having new eyes.', author: 'Marcel Proust' },
+  { text: 'A good leader takes a little more than their share of the blame and a little less than their share of the credit.', author: 'Arnold H. Glasow' },
+  { text: 'Mindset is the lens through which everything is filtered. Choose it carefully.', author: 'MQ' },
+  { text: 'Between who you are and who you could be lies the work you are willing to do on yourself.', author: 'MQ' },
+]
+
+function getDailyQuote() {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000)
+  return DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length]
+}
+
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function ParticipantDashboard() {
@@ -224,6 +264,7 @@ export default function ParticipantDashboard() {
   const journeyDay = getJourneyDay(assessment?.completed_at ?? null)
   const focusDimId = assessment ? getFocusDimension(assessment) : 1
   const focusDim   = DIMS[focusDimId - 1]
+  const dailyQuote = getDailyQuote()
 
   // ── Loading ─────────────────────────────────────────────────────────────────
   if (loading) {
@@ -251,6 +292,12 @@ export default function ParticipantDashboard() {
               <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
                 {getGreeting()}, {firstName}.
               </h1>
+              <p className="text-xs mt-1 italic leading-snug" style={{ color: 'rgba(185,248,221,0.75)', maxWidth: 260 }}>
+                "{dailyQuote.text}"
+                <span className="not-italic font-semibold ml-1" style={{ color: 'rgba(185,248,221,0.5)' }}>
+                  — {dailyQuote.author}
+                </span>
+              </p>
             </div>
           </div>
           <button
