@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
     ? `\n\nWhat you know about ${firstName} from previous coaching sessions:\n${profile.coaching_memory}\n\nUse this to personalise your coaching. Reference past themes naturally.`
     : ''
   const valuesContext = valuesWithRatings
-    ? `\n\n${firstName}'s company values and how they self-rated their own behaviours:\n${valuesWithRatings}\n\nUse this to make coaching more specific. Reference behaviours they rated low (Rarely/Sometimes) as growth edges. Reference behaviours rated high (Consistently) as strengths to build on.`
+    ? `\n\n${firstName}'s company values and how they self-rated their own behaviours:\n${valuesWithRatings}\n\nUse this to make coaching more specific. Reference behaviours they rated low (Rarely/Sometimes) as growth opportunities. Reference behaviours rated high (Consistently) as strengths to build on.`
     : companyValues
       ? `\n\nOrganisation values: ${companyValues}. Reference where relevant.`
       : ''

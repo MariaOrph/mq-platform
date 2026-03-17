@@ -276,7 +276,7 @@ export default function ReportPage() {
               { range: '90–100', label: 'Exceptional', desc: 'A standout strength. Leverage and model this for others.', col: '#00c9a7' },
               { range: '75–89',  label: 'Strong',      desc: 'A real asset. Build from a position of genuine capability.', col: '#05A88E' },
               { range: '60–74',  label: 'Solid',       desc: 'A foundation, not a gap. Focused development builds this into a strength.', col: '#fdcb5e' },
-              { range: '40–59',  label: 'Developing',  desc: 'Active growth edge. Awareness here unlocks meaningful development.', col: '#ff9f43' },
+              { range: '40–59',  label: 'Developing',  desc: 'Active growth opportunity. Awareness here unlocks meaningful development.', col: '#ff9f43' },
               { range: '0–39',   label: 'Growth area', desc: 'Significant opportunity. Many leaders describe this as unlocking something previously hidden.', col: '#ff7b7a' },
             ].map(row => (
               <div key={row.range} className="flex items-start gap-3">

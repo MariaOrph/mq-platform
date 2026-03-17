@@ -91,7 +91,7 @@ function getScoreBand(score: number): { label: string; description: string; colo
   }
   return {
     label: 'Growth area',
-    description: 'This dimension represents a significant growth edge for you right now. That\'s not a judgement — it\'s a starting point. Leaders who develop in areas like this often describe it as unlocking something that was quietly limiting them for years. Your coaching and practices are focused here for good reason.',
+    description: 'This dimension represents a significant growth opportunity for you right now. That\'s not a judgement — it\'s a starting point. Leaders who develop in areas like this often describe it as unlocking something that was quietly limiting them for years. Your coaching and practices are focused here for good reason.',
     colour: '#ff7b7a',
   }
 }
