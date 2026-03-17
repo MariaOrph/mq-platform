@@ -515,10 +515,10 @@ export default function ParticipantDashboard() {
                             <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
                             <span className="text-xs" style={{ color: '#374151' }}>{dim.name}</span>
                           </div>
-                          <div className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
-                            <div className="h-1.5 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: '#0A2E2A' }} />
+                          <div className="flex-1 h-2 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+                            <div className="h-2 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: dim.color }} />
                           </div>
-                          <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: '#0A2E2A' }}>{s ?? '—'}</span>
+                          <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: '#374151' }}>{s ?? '—'}</span>
                         </div>
                       )
                     })}
