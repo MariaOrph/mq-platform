@@ -288,7 +288,7 @@ export default function ParticipantDashboard() {
             <div>
               <p className="text-sm font-bold" style={{ color: 'white' }}>The Coaching Room</p>
               <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
-                Unlimited coaching · any challenge · anytime
+                Always personalised to you
               </p>
             </div>
           </div>
