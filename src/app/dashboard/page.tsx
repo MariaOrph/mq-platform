@@ -339,13 +339,13 @@ export default function ParticipantDashboard() {
           >
             {/* Concentric rings */}
             <svg
-              style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+              style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', filter: 'drop-shadow(0 0 6px rgba(10,243,205,0.4))' }}
               width="110" height="110" viewBox="0 0 110 110" fill="none"
             >
-              <circle cx="110" cy="55" r="25" stroke="rgba(10,243,205,0.18)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="42" stroke="rgba(10,243,205,0.13)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="60" stroke="rgba(10,243,205,0.09)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="78" stroke="rgba(10,243,205,0.06)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="25" stroke="rgba(10,243,205,0.7)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="42" stroke="rgba(10,243,205,0.5)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="60" stroke="rgba(10,243,205,0.3)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="78" stroke="rgba(10,243,205,0.15)" strokeWidth="1.5" fill="none" />
             </svg>
             <div className="relative z-10 p-5 flex items-center gap-5">
               <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
