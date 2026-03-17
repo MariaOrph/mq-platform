@@ -330,37 +330,25 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* ── Stats row ────────────────────────────────────────────────────── */}
+        {/* ── MQ Score card ─────────────────────────────────────────────────── */}
         {assessment && (
-          <div className="grid grid-cols-2 gap-3">
-            {/* MQ Score */}
-            <button
-              onClick={() => setShowMQModal(true)}
-              className="rounded-2xl p-4 flex flex-col items-center justify-center hover:opacity-80 transition-opacity"
-              style={cardStyle}
-            >
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-1.5"
-                   style={{ backgroundColor: '#0AF3CD' }}>
-                <span className="text-xl font-black" style={{ color: '#0A2E2A' }}>
-                  {assessment.overall_score ?? '—'}
-                </span>
-              </div>
-              <p className="text-xs text-center font-semibold" style={{ color: '#05A88E' }}>MQ Score</p>
-              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
-            </button>
-
-            {/* Focus dimension */}
-            <div className="rounded-2xl p-4 flex flex-col justify-center" style={cardStyle}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>
-                Focus
-              </p>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: focusDim.color }} />
-                <p className="text-xs font-bold leading-tight" style={{ color: '#0A2E2A' }}>{focusDim.name}</p>
-              </div>
+          <button
+            onClick={() => setShowMQModal(true)}
+            className="w-full rounded-2xl p-5 flex items-center gap-5 hover:opacity-80 transition-opacity"
+            style={cardStyle}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
+                 style={{ backgroundColor: '#0AF3CD' }}>
+              <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>
+                {assessment.overall_score ?? '—'}
+              </span>
             </div>
-
-          </div>
+            <div className="text-left">
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Score</p>
+              <p className="text-xs mt-0.5" style={{ color: '#05A88E' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
+              <p className="text-xs mt-1" style={{ color: '#9CA3AF', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
+            </div>
+          </button>
         )}
 
         {/* ── Daily Spark ──────────────────────────────────────────────────── */}
