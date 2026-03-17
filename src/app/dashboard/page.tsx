@@ -223,6 +223,7 @@ export default function ParticipantDashboard() {
   const [showCoachingRoom, setShowCoachingRoom] = useState(false)
   const [authToken,        setAuthToken]        = useState<string | null>(null)
   const [dimModal,         setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
+  const [showMQModal,      setShowMQModal]      = useState(false)
 
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -333,7 +334,11 @@ export default function ParticipantDashboard() {
         {assessment && (
           <div className="grid grid-cols-2 gap-3">
             {/* MQ Score */}
-            <div className="rounded-2xl p-4 flex flex-col items-center justify-center" style={cardStyle}>
+            <button
+              onClick={() => setShowMQModal(true)}
+              className="rounded-2xl p-4 flex flex-col items-center justify-center hover:opacity-80 transition-opacity"
+              style={cardStyle}
+            >
               <div className="w-14 h-14 rounded-full flex items-center justify-center mb-1.5"
                    style={{ backgroundColor: '#0AF3CD' }}>
                 <span className="text-xl font-black" style={{ color: '#0A2E2A' }}>
@@ -341,7 +346,8 @@ export default function ParticipantDashboard() {
                 </span>
               </div>
               <p className="text-xs text-center font-semibold" style={{ color: '#05A88E' }}>MQ Score</p>
-            </div>
+              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
+            </button>
 
             {/* Focus dimension */}
             <div className="rounded-2xl p-4 flex flex-col justify-center" style={cardStyle}>
@@ -438,14 +444,121 @@ export default function ParticipantDashboard() {
           </button>
         </div>
 
-        {/* Retake link */}
+        {/* Retake + Download report */}
         {assessment && (
-          <div className="text-center pb-4">
+          <div className="flex items-center justify-center gap-4 pb-4">
             <a href="/assessment" className="text-xs" style={{ color: '#9CA3AF' }}>Retake assessment</a>
+            <span style={{ color: '#D1D5DB' }}>·</span>
+            <a
+              href="/dashboard/report"
+              target="_blank"
+              className="text-xs flex items-center gap-1 font-medium"
+              style={{ color: '#05A88E' }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download report
+            </a>
           </div>
         )}
 
       </div>
+
+      {/* ── MQ Score modal ─────────────────────────────────────────────────── */}
+      {showMQModal && assessment && (() => {
+        const score = assessment.overall_score ?? 0
+        const band  = getScoreBand(score)
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+            style={{ backgroundColor: 'rgba(10,46,42,0.55)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setShowMQModal(false)}
+          >
+            <div
+              className="w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden"
+              style={{ backgroundColor: 'white', maxHeight: '85vh' }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="px-6 pt-5 pb-4" style={{ background: 'linear-gradient(135deg, #0A2E2A, #0d3830)' }}>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#0AF3CD' }}>Your result</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
+                           style={{ backgroundColor: '#0AF3CD' }}>
+                        <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>{score}</span>
+                      </div>
+                      <div>
+                        <p className="text-xl font-black" style={{ color: 'white' }}>MQ Score</p>
+                        <p className="text-sm font-semibold" style={{ color: '#0AF3CD' }}>{band.label}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowMQModal(false)}
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-lg flex-shrink-0 ml-3"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white' }}
+                  >×</button>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="overflow-y-auto px-6 py-5 space-y-4" style={{ maxHeight: '60vh' }}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>What is MQ?</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                    MQ — Mindset Quotient — measures your capacity to notice your own thoughts, beliefs and emotional patterns, and to consciously choose how you respond rather than being driven by them automatically. It's the foundation of self-directed, effective leadership.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>What your score means</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{band.description}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>Your dimension breakdown</p>
+                  <div className="space-y-2">
+                    {DIMS.map(dim => {
+                      const s = getDimScore(assessment, dim.id)
+                      return (
+                        <div key={dim.id} className="flex items-center gap-3">
+                          <span className="text-xs w-32 flex-shrink-0" style={{ color: '#374151' }}>{dim.name}</span>
+                          <div className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+                            <div className="h-1.5 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: dim.color }} />
+                          </div>
+                          <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: dim.color }}>{s ?? '—'}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+                {/* Score guide */}
+                <div className="rounded-2xl p-4" style={{ backgroundColor: '#F9FAFB', border: '1px solid #F3F4F6' }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Score guide</p>
+                  {[
+                    { range: '90–100', label: 'Exceptional', col: '#00c9a7' },
+                    { range: '75–89',  label: 'Strong',      col: '#0AF3CD' },
+                    { range: '60–74',  label: 'Solid',       col: '#fdcb5e' },
+                    { range: '40–59',  label: 'Developing',  col: '#ff9f43' },
+                    { range: '0–39',   label: 'Growth area', col: '#ff7b7a' },
+                  ].map(row => (
+                    <div key={row.range} className="flex items-center gap-2.5 mb-2 last:mb-0">
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: row.col }} />
+                      <span className="text-xs w-14 flex-shrink-0" style={{ color: '#6B7280' }}>{row.range}</span>
+                      <span className="text-xs font-medium" style={{ color: '#374151' }}>{row.label}</span>
+                      {score >= parseInt(row.range) && score <= parseInt(row.range.split('–')[1] ?? '100') && (
+                        <span className="text-xs px-1.5 py-0.5 rounded-full font-bold ml-auto"
+                              style={{ backgroundColor: '#E8FDF7', color: '#05A88E' }}>you</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* ── Coaching Room overlay ──────────────────────────────────────────── */}
       {showCoachingRoom && authToken && (
