@@ -1043,6 +1043,315 @@ function AllCohortsTab({
   )
 }
 
+// ── Values & Behaviours Tab ───────────────────────────────────────────────────
+
+interface CompanyValue {
+  id: string
+  value_name: string
+  value_order: number
+  behaviours: string[]
+}
+
+function ValuesTab({
+  companyId,
+  isMqAdmin,
+  companies,
+}: {
+  companyId: string | null
+  isMqAdmin: boolean
+  companies: Company[]
+}) {
+  const supabase = createClient()
+
+  const [values,        setValues]        = useState<CompanyValue[]>([])
+  const [loadingValues, setLoadingValues] = useState(true)
+  const [selectedCompanyId, setSelectedCompanyId] = useState(companyId ?? '')
+
+  // Form state — adding / editing a value
+  const [editing,       setEditing]       = useState<string | null>(null)  // id or 'new'
+  const [valueName,     setValueName]     = useState('')
+  const [behaviours,    setBehaviours]    = useState<string[]>(['', '', ''])
+  const [saving,        setSaving]        = useState(false)
+  const [saveError,     setSaveError]     = useState('')
+
+  const activeCompanyId = isMqAdmin ? selectedCompanyId : (companyId ?? '')
+
+  async function loadValues() {
+    if (!activeCompanyId) { setValues([]); setLoadingValues(false); return }
+    setLoadingValues(true)
+    const { data } = await supabase
+      .from('company_value_behaviours')
+      .select('id, value_name, value_order, behaviours')
+      .eq('company_id', activeCompanyId)
+      .order('value_order')
+    setValues((data ?? []).map(r => ({ ...r, behaviours: r.behaviours as string[] })))
+    setLoadingValues(false)
+  }
+
+  useEffect(() => { loadValues() }, [activeCompanyId])
+
+  function openNew() {
+    setEditing('new')
+    setValueName('')
+    setBehaviours(['', '', ''])
+    setSaveError('')
+  }
+
+  function openEdit(v: CompanyValue) {
+    setEditing(v.id)
+    setValueName(v.value_name)
+    const padded = [...v.behaviours]
+    while (padded.length < 3) padded.push('')
+    setBehaviours(padded)
+    setSaveError('')
+  }
+
+  function cancelEdit() {
+    setEditing(null)
+    setValueName('')
+    setBehaviours(['', '', ''])
+    setSaveError('')
+  }
+
+  function updateBehaviour(i: number, val: string) {
+    setBehaviours(prev => prev.map((b, idx) => idx === i ? val : b))
+  }
+
+  function addBehaviourRow() {
+    if (behaviours.length < 6) setBehaviours(prev => [...prev, ''])
+  }
+
+  function removeBehaviourRow(i: number) {
+    if (behaviours.length > 1) setBehaviours(prev => prev.filter((_, idx) => idx !== i))
+  }
+
+  async function saveValue() {
+    if (!valueName.trim()) { setSaveError('Please enter a value name.'); return }
+    const clean = behaviours.map(b => b.trim()).filter(Boolean)
+    if (clean.length === 0) { setSaveError('Add at least one behaviour.'); return }
+    if (!activeCompanyId) { setSaveError('No company selected.'); return }
+    setSaving(true)
+    setSaveError('')
+
+    if (editing === 'new') {
+      const nextOrder = values.length > 0 ? Math.max(...values.map(v => v.value_order)) + 1 : 0
+      const { error } = await supabase.from('company_value_behaviours').insert({
+        company_id:  activeCompanyId,
+        value_name:  valueName.trim(),
+        value_order: nextOrder,
+        behaviours:  clean,
+      })
+      if (error) { setSaveError(error.message); setSaving(false); return }
+    } else {
+      const { error } = await supabase.from('company_value_behaviours').update({
+        value_name: valueName.trim(),
+        behaviours: clean,
+        updated_at: new Date().toISOString(),
+      }).eq('id', editing!)
+      if (error) { setSaveError(error.message); setSaving(false); return }
+    }
+    setSaving(false)
+    cancelEdit()
+    await loadValues()
+  }
+
+  async function deleteValue(id: string) {
+    if (!confirm('Delete this value and all its behaviours?')) return
+    await supabase.from('company_value_behaviours').delete().eq('id', id)
+    await loadValues()
+  }
+
+  const VALUE_COLOURS = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#2d4a8a','#a78bfa','#0AF3CD','#f472b6']
+
+  return (
+    <div className="space-y-6">
+
+      {/* Header */}
+      <div className="flex items-start justify-between flex-wrap gap-4">
+        <div>
+          <h2 className="text-lg font-bold" style={{ color: '#0A2E2A' }}>Values &amp; Behaviours</h2>
+          <p className="text-sm mt-1" style={{ color: '#6B7280' }}>
+            Define the observable behaviours that bring each company value to life.
+            These power the participant Values in Action check-in and personalise coaching.
+          </p>
+        </div>
+        {editing === null && (
+          <button
+            onClick={openNew}
+            disabled={!activeCompanyId}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold disabled:opacity-40"
+            style={{ backgroundColor: '#0A2E2A', color: '#0AF3CD' }}
+          >
+            <span className="text-lg leading-none">+</span> Add value
+          </button>
+        )}
+      </div>
+
+      {/* MQ Admin: company picker */}
+      {isMqAdmin && (
+        <div className="flex items-center gap-3">
+          <label className="text-xs font-semibold" style={{ color: '#05A88E' }}>Company:</label>
+          <select
+            value={selectedCompanyId}
+            onChange={e => setSelectedCompanyId(e.target.value)}
+            className="rounded-lg px-3 py-2 text-sm border"
+            style={{ borderColor: '#B9F8DD', color: '#0A2E2A', backgroundColor: 'white' }}
+          >
+            <option value="">Select company…</option>
+            {companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!loadingValues && values.length === 0 && editing === null && (
+        <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: 'white', border: '2px dashed #B9F8DD' }}>
+          <p className="text-sm font-semibold mb-1" style={{ color: '#0A2E2A' }}>No values defined yet</p>
+          <p className="text-sm mb-4" style={{ color: '#9CA3AF' }}>
+            Add your company values and the specific behaviours that bring them to life.
+          </p>
+          <button
+            onClick={openNew}
+            disabled={!activeCompanyId}
+            className="px-5 py-2 rounded-xl text-sm font-semibold disabled:opacity-40"
+            style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+          >
+            + Add first value
+          </button>
+        </div>
+      )}
+
+      {/* Existing values */}
+      {!loadingValues && values.length > 0 && (
+        <div className="space-y-3">
+          {values.map((v, vi) => (
+            <div key={v.id} className="rounded-2xl overflow-hidden"
+                 style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 1px 8px rgba(10,46,42,0.06)' }}>
+              <div className="flex items-center justify-between px-5 py-4"
+                   style={{ borderBottom: v.behaviours.length > 0 ? '1px solid #F3F4F6' : 'none' }}>
+                <div className="flex items-center gap-3">
+                  <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: VALUE_COLOURS[vi % VALUE_COLOURS.length], flexShrink: 0 }} />
+                  <span className="font-bold text-sm" style={{ color: '#0A2E2A' }}>{v.value_name}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: '#F3F4F6', color: '#6B7280' }}>
+                    {v.behaviours.length} behaviour{v.behaviours.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => openEdit(v)}
+                          className="text-xs px-3 py-1.5 rounded-lg font-medium"
+                          style={{ backgroundColor: '#E8FDF7', color: '#05A88E', border: '1px solid #B9F8DD' }}>
+                    Edit
+                  </button>
+                  <button onClick={() => deleteValue(v.id)}
+                          className="text-xs px-3 py-1.5 rounded-lg font-medium"
+                          style={{ backgroundColor: '#FEF2F2', color: '#EF4444', border: '1px solid #FECACA' }}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+              {v.behaviours.length > 0 && (
+                <div className="px-5 py-3 space-y-2">
+                  {v.behaviours.map((b, bi) => (
+                    <div key={bi} className="flex gap-2 items-start">
+                      <span style={{ color: VALUE_COLOURS[vi % VALUE_COLOURS.length], fontSize: 12, marginTop: 2, flexShrink: 0 }}>→</span>
+                      <p className="text-sm" style={{ color: '#4B5563' }}>{b}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add / Edit form */}
+      {editing !== null && (
+        <div className="rounded-2xl p-6 space-y-5"
+             style={{ backgroundColor: 'white', border: '2px solid #0AF3CD', boxShadow: '0 4px 20px rgba(10,243,205,0.1)' }}>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold" style={{ color: '#0A2E2A' }}>
+              {editing === 'new' ? 'Add a value' : 'Edit value'}
+            </h3>
+            <button onClick={cancelEdit} className="text-gray-400 text-xl leading-none">×</button>
+          </div>
+
+          {/* Value name */}
+          <div>
+            <label className="text-xs font-semibold mb-1.5 block" style={{ color: '#05A88E' }}>
+              Value name
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Integrity"
+              value={valueName}
+              onChange={e => setValueName(e.target.value)}
+              className="w-full rounded-xl px-4 py-2.5 text-sm border outline-none focus:ring-2"
+              style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+            />
+          </div>
+
+          {/* Behaviours */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold" style={{ color: '#05A88E' }}>
+                Observable behaviours <span className="font-normal text-gray-400">(how this value shows up in practice)</span>
+              </label>
+            </div>
+            <div className="space-y-2">
+              {behaviours.map((b, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <span className="text-xs font-bold w-5 text-right flex-shrink-0" style={{ color: '#9CA3AF' }}>{i + 1}.</span>
+                  <input
+                    type="text"
+                    placeholder={`e.g. ${['I give honest feedback even when it\'s uncomfortable','I flag problems early rather than hoping they resolve','I follow through on commitments even when inconvenient','I speak up when I see something that conflicts with our values','I own my mistakes openly and learn from them'][i] ?? 'Describe the behaviour…'}`}
+                    value={b}
+                    onChange={e => updateBehaviour(i, e.target.value)}
+                    className="flex-1 rounded-xl px-4 py-2 text-sm border outline-none focus:ring-2"
+                    style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+                  />
+                  {behaviours.length > 1 && (
+                    <button onClick={() => removeBehaviourRow(i)}
+                            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-sm"
+                            style={{ backgroundColor: '#F3F4F6', color: '#9CA3AF' }}>
+                      −
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            {behaviours.length < 6 && (
+              <button onClick={addBehaviourRow}
+                      className="mt-2 text-xs font-medium flex items-center gap-1"
+                      style={{ color: '#05A88E' }}>
+                <span>+</span> Add another behaviour
+              </button>
+            )}
+            <p className="text-xs text-gray-400 mt-2">
+              Tip: write behaviours in first person ("I…") — they read more naturally in the participant experience.
+            </p>
+          </div>
+
+          {saveError && <p className="text-xs" style={{ color: '#EF4444' }}>{saveError}</p>}
+
+          <div className="flex gap-3">
+            <button
+              onClick={saveValue}
+              disabled={saving}
+              className="px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+            >
+              {saving ? 'Saving…' : editing === 'new' ? 'Save value' : 'Update value'}
+            </button>
+            <button onClick={cancelEdit} className="px-5 py-2.5 rounded-xl text-sm text-gray-500">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Change Password Button ────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1123,7 +1432,7 @@ export default function AdminDashboard() {
   const [selectedCohortId, setSelectedCohortId] = useState('')
   const [participants, setParticipants] = useState<CohortParticipant[]>([])
   const [participantsLoading, setParticipantsLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'overview' | 'cohort-view' | 'before-after' | 'all-cohorts'>('all-cohorts')
+  const [activeTab, setActiveTab] = useState<'overview' | 'cohort-view' | 'before-after' | 'all-cohorts' | 'values'>('all-cohorts')
 
   // ── Auth ────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -1275,6 +1584,7 @@ export default function AdminDashboard() {
     { id: 'cohort-view'  as const, label: 'Cohort view'   },
     { id: 'before-after' as const, label: 'Before & After' },
     { id: 'all-cohorts'  as const, label: 'All cohorts'   },
+    { id: 'values'       as const, label: 'Values'        },
   ]
 
   return (
@@ -1368,6 +1678,15 @@ export default function AdminDashboard() {
         {/* Before & After */}
         {activeTab === 'before-after' && (
           <BeforeAfterTab cohorts={cohorts} fetchParticipants={fetchParticipants} />
+        )}
+
+        {/* Values & Behaviours */}
+        {activeTab === 'values' && (
+          <ValuesTab
+            companyId={profile?.company_id ?? null}
+            isMqAdmin={isMqAdmin}
+            companies={companies}
+          />
         )}
 
       </div>
