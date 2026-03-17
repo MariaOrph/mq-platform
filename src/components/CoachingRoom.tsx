@@ -60,6 +60,8 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   const [sessionsLoaded, setSessionsLoaded] = useState(false)
   const [msgLoaded,      setMsgLoaded]      = useState(false)
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
+  const [hoveredPrompt,  setHoveredPrompt]  = useState<string | null>(null)
+  const [hoveredDim,     setHoveredDim]     = useState<number | null>(null)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
@@ -369,8 +371,14 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                         'I need help with a decision',
                       ].map(prompt => (
                         <button key={prompt} onClick={() => setInput(prompt)}
-                                className="text-xs px-3 py-1.5 rounded-full"
-                                style={{ backgroundColor: 'white', color: '#05A88E', border: '1px solid #B9F8DD' }}>
+                                onMouseEnter={() => setHoveredPrompt(prompt)}
+                                onMouseLeave={() => setHoveredPrompt(null)}
+                                className="text-xs px-3 py-1.5 rounded-full transition-all duration-150"
+                                style={{
+                                  backgroundColor: hoveredPrompt === prompt ? '#0A2E2A' : 'white',
+                                  color: hoveredPrompt === prompt ? 'white' : '#05A88E',
+                                  border: `1px solid ${hoveredPrompt === prompt ? '#0A2E2A' : '#B9F8DD'}`,
+                                }}>
                           {prompt}
                         </button>
                       ))}
@@ -419,11 +427,18 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                               })
                             }, 0)
                           }}
-                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left hover:opacity-80 transition-opacity"
-                          style={{ backgroundColor: dim.bg, border: `1px solid ${dim.color}30` }}
+                          onMouseEnter={() => setHoveredDim(dim.id)}
+                          onMouseLeave={() => setHoveredDim(null)}
+                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left transition-all duration-150"
+                          style={{
+                            backgroundColor: hoveredDim === dim.id ? dim.color : dim.bg,
+                            border: `1px solid ${dim.color}`,
+                          }}
                         >
-                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
-                          <span className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>
+                          <span className="w-2 h-2 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: hoveredDim === dim.id ? 'white' : dim.color }} />
+                          <span className="text-xs font-semibold"
+                                style={{ color: hoveredDim === dim.id ? 'white' : '#0A2E2A' }}>
                             {dim.name}
                           </span>
                         </button>
