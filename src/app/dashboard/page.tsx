@@ -227,6 +227,7 @@ export default function ParticipantDashboard() {
   const [authToken,        setAuthToken]        = useState<string | null>(null)
   const [dimModal,         setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
   const [showMQModal,      setShowMQModal]      = useState(false)
+  const [valuesStatus,     setValuesStatus]     = useState<{ total: number; rated: number; avgRating: number } | null>(null)
 
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -254,6 +255,31 @@ export default function ParticipantDashboard() {
       .limit(1)
 
     if (assessments?.[0]) setAssessment(assessments[0])
+
+    // Fetch values check-in status
+    try {
+      const valuesRes = await fetch('/api/values-checkin', {
+        headers: { Authorization: `Bearer ${authSession.access_token}` },
+      })
+      if (valuesRes.ok) {
+        const { values, ratings } = await valuesRes.json()
+        if (values && values.length > 0) {
+          let total = 0
+          let rated = 0
+          let ratingSum = 0
+          for (const v of values) {
+            const behaviours = (v.behaviours as string[]) ?? []
+            total += behaviours.length
+            for (let i = 0; i < behaviours.length; i++) {
+              const r = ratings[`${v.id}_${i}`]
+              if (r) { rated++; ratingSum += r.rating }
+            }
+          }
+          if (total > 0) setValuesStatus({ total, rated, avgRating: rated > 0 ? ratingSum / rated : 0 })
+        }
+      }
+    } catch { /* no values data */ }
+
     setLoading(false)
   }, [supabase])
 
@@ -484,29 +510,44 @@ export default function ParticipantDashboard() {
         )}
 
         {/* ── Values in Action card ────────────────────────────────────────── */}
-        {assessment && (
-          <a
-            href="/dashboard/values"
-            className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
-            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                   style={{ backgroundColor: '#EDE9FE' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
+        {assessment && valuesStatus && valuesStatus.total > 0 && (() => {
+          const { total, rated, avgRating } = valuesStatus
+          const isComplete  = rated === total
+          const isStarted   = rated > 0
+          const ratingLabel = avgRating >= 3.5 ? 'Consistently' : avgRating >= 2.5 ? 'Usually' : avgRating >= 1.5 ? 'Sometimes' : 'Rarely'
+          const statusText  = !isStarted  ? 'Rate how your behaviours reflect your company values'
+                            : !isComplete ? `${rated} of ${total} behaviours rated`
+                            : `All ${total} behaviours rated · avg: ${ratingLabel}`
+          const ctaText     = !isStarted ? 'Start →' : 'Update →'
+          return (
+            <a
+              href="/dashboard/values"
+              className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
+              style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                     style={{ backgroundColor: '#EDE9FE' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Values in Action</p>
+                  <p className="text-xs mt-0.5" style={{ color: isComplete ? '#a78bfa' : '#9CA3AF' }}>
+                    {statusText}
+                  </p>
+                  {isStarted && !isComplete && (
+                    <div className="mt-1.5 h-1.5 rounded-full overflow-hidden w-32" style={{ backgroundColor: '#EDE9FE' }}>
+                      <div className="h-full rounded-full" style={{ width: `${(rated / total) * 100}%`, backgroundColor: '#a78bfa' }} />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Values in Action</p>
-                <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
-                  Rate how your behaviours reflect your company values
-                </p>
-              </div>
-            </div>
-            <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#a78bfa' }}>Start →</span>
-          </a>
-        )}
+              <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#a78bfa' }}>{ctaText}</span>
+            </a>
+          )
+        })()}
 
         {/* ── The Coaching Room ─────────────────────────────────────────────── */}
         <div
