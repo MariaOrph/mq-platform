@@ -171,11 +171,6 @@ export default function ParticipantDashboard() {
               <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
                 {getGreeting()}, {firstName}.
               </h1>
-              {journeyDay && (
-                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
-                  Day {journeyDay} of your MQ journey
-                </p>
-              )}
             </div>
           </div>
           <button

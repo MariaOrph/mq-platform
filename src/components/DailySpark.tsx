@@ -212,52 +212,89 @@ export default function DailySpark({ token }: DailySparkProps) {
               transition: 'opacity 0.22s ease, transform 0.22s ease',
               pointerEvents: isFlipped ? 'none' : 'auto',
               zIndex: isFlipped ? 0 : 1,
-              boxShadow: `0 8px 32px ${dim.color}33`,
-              background: '#0A2E2A',
+              boxShadow: `0 12px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.06)`,
+              background: 'linear-gradient(145deg, #071f1b 0%, #0A2E2A 55%, #0d3830 100%)',
             }}
           >
-            {/* Glow accents */}
+            {/* Large glowing orb — top right, in dimension colour */}
             <div style={{
-              position: 'absolute', inset: 0,
-              background: `radial-gradient(ellipse at 80% 20%, ${dim.color}22 0%, transparent 60%),
-                           radial-gradient(ellipse at 15% 80%, rgba(10,243,205,0.10) 0%, transparent 50%)`,
+              position: 'absolute',
+              top: -70, right: -70,
+              width: 240, height: 240,
+              borderRadius: '50%',
+              background: `radial-gradient(circle, ${dim.color}40 0%, ${dim.color}10 45%, transparent 70%)`,
+              filter: 'blur(8px)',
             }} />
-            {/* Subtle top border line in dim colour */}
+
+            {/* Secondary glow — bottom left, teal */}
+            <div style={{
+              position: 'absolute',
+              bottom: -50, left: -30,
+              width: 180, height: 180,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(10,243,205,0.15) 0%, transparent 70%)',
+              filter: 'blur(12px)',
+            }} />
+
+            {/* Large watermark number — bottom right */}
+            <div style={{
+              position: 'absolute',
+              bottom: -16, right: 16,
+              fontSize: 130,
+              fontWeight: 900,
+              color: 'white',
+              opacity: 0.05,
+              lineHeight: 1,
+              userSelect: 'none',
+              letterSpacing: '-4px',
+            }}>
+              {String(currentCard.card_number).padStart(2, '0')}
+            </div>
+
+            {/* Top colour stripe — bolder */}
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0,
-              height: 3,
-              background: `linear-gradient(90deg, transparent, ${dim.color}, transparent)`,
+              height: 4,
+              background: `linear-gradient(90deg, transparent 0%, ${dim.color} 25%, ${dim.color} 75%, transparent 100%)`,
               borderRadius: '16px 16px 0 0',
             }} />
 
+            {/* Left accent stripe */}
+            <div style={{
+              position: 'absolute', top: 24, left: 0, bottom: 24,
+              width: 4,
+              background: `linear-gradient(180deg, transparent 0%, ${dim.color}88 30%, ${dim.color}88 70%, transparent 100%)`,
+              borderRadius: '0 4px 4px 0',
+            }} />
+
             {/* Content */}
-            <div className="relative z-10 p-6 flex flex-col justify-between" style={{ minHeight: 300 }}>
+            <div className="relative z-10 p-6 pl-8 flex flex-col justify-between" style={{ minHeight: 300 }}>
               {/* Top row */}
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                  Practice #{currentCard.card_number}
+                      style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.1)', letterSpacing: '0.04em' }}>
+                  #{currentCard.card_number} of 24
                 </span>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                      style={{ backgroundColor: `${dim.color}22`, color: dim.color, border: `1px solid ${dim.color}44` }}>
+                <span className="text-xs font-bold px-3 py-1.5 rounded-full"
+                      style={{ backgroundColor: `${dim.color}25`, color: dim.color, border: `1px solid ${dim.color}50` }}>
                   {dim.emoji} {dim.name}
                 </span>
               </div>
 
               {/* Centre — title + teaser */}
-              <div className="py-6">
-                <h2 className="text-2xl font-black mb-3 leading-tight" style={{ color: 'white' }}>
+              <div className="py-5">
+                <h2 className="text-2xl font-black mb-3 leading-tight" style={{ color: 'white', textShadow: `0 0 40px ${dim.color}33` }}>
                   {currentCard.title}
                 </h2>
-                <p className="text-sm font-medium leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   {currentCard.teaser}
                 </p>
               </div>
 
               {/* Bottom hint */}
-              <div className="flex items-center gap-1.5">
-                <div style={{ width: 20, height: 1, backgroundColor: dim.color, opacity: 0.6 }} />
-                <span className="text-xs font-medium" style={{ color: `${dim.color}99` }}>
+              <div className="flex items-center gap-2">
+                <div style={{ width: 24, height: 1.5, background: `linear-gradient(90deg, ${dim.color}, transparent)` }} />
+                <span className="text-xs font-semibold tracking-wide" style={{ color: `${dim.color}bb` }}>
                   Tap to reveal your practice
                 </span>
               </div>
