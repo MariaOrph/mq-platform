@@ -335,16 +335,18 @@ export default function ParticipantDashboard() {
           <button
             onClick={() => setShowMQModal(true)}
             className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
-            style={{ background: 'linear-gradient(90deg, #0A2E2A 0%, #0d3830 40%, #1a6b58 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
+            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
           >
-            {/* Background glow */}
-            <div style={{ position: 'absolute', top: -30, right: -30, width: 160, height: 160, borderRadius: '50%',
-                          background: 'radial-gradient(circle, rgba(10,243,205,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
-            {/* Brain watermark */}
-            <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
-                          fontSize: 80, opacity: 0.45, lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>
-              🧠
-            </div>
+            {/* Concentric rings */}
+            <svg
+              style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+              width="110" height="110" viewBox="0 0 110 110" fill="none"
+            >
+              <circle cx="110" cy="55" r="25" stroke="rgba(10,243,205,0.18)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="42" stroke="rgba(10,243,205,0.13)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="60" stroke="rgba(10,243,205,0.09)" strokeWidth="1.5" fill="none" />
+              <circle cx="110" cy="55" r="78" stroke="rgba(10,243,205,0.06)" strokeWidth="1.5" fill="none" />
+            </svg>
             <div className="relative z-10 p-5 flex items-center gap-5">
               <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
                    style={{ backgroundColor: '#0AF3CD' }}>
