@@ -335,7 +335,7 @@ export default function ParticipantDashboard() {
           <button
             onClick={() => setShowMQModal(true)}
             className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
-            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
+            style={{ background: 'linear-gradient(90deg, #0A2E2A 0%, #0d3830 40%, #1a6b58 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
           >
             {/* Background glow */}
             <div style={{ position: 'absolute', top: -30, right: -30, width: 160, height: 160, borderRadius: '50%',

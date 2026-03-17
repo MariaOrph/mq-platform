@@ -383,19 +383,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
           <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>Check back tomorrow for your next practice.</p>
           <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#F4FDF9', border: '1px solid #B9F8DD' }}>
             <p className="text-xs leading-relaxed" style={{ color: '#05A88E' }}>
-              In the meantime, your{' '}
-              {onOpenCoachingRoom ? (
-                <button
-                  onClick={onOpenCoachingRoom}
-                  className="font-semibold underline hover:opacity-70 transition-opacity"
-                  style={{ color: '#05A88E' }}
-                >
-                  MQ Coaching Room
-                </button>
-              ) : (
-                <span className="font-semibold">MQ Coaching Room</span>
-              )}{' '}
-              is always open — bring anything you want to think through, work on, or get support with.
+              In the meantime, your <span className="font-semibold">MQ Coaching Room</span> below is always open — bring anything you want to think through, work on, or get support with.
             </p>
           </div>
         </div>
