@@ -452,6 +452,33 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
+        {/* ── Report + Retake buttons ───────────────────────────────────────── */}
+        {assessment && (
+          <div className="flex gap-3">
+            <a
+              href="/dashboard/report"
+              target="_blank"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download my report
+            </a>
+            <a
+              href="/assessment"
+              className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: 'white', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
+              </svg>
+              Retake
+            </a>
+          </div>
+        )}
+
         {/* ── The Coaching Room ─────────────────────────────────────────────── */}
         <div
           className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
@@ -480,24 +507,6 @@ export default function ParticipantDashboard() {
           </button>
         </div>
 
-        {/* Retake + Download report */}
-        {assessment && (
-          <div className="flex items-center justify-center gap-4 pb-4">
-            <a href="/assessment" className="text-xs" style={{ color: '#9CA3AF' }}>Retake assessment</a>
-            <span style={{ color: '#D1D5DB' }}>·</span>
-            <a
-              href="/dashboard/report"
-              target="_blank"
-              className="text-xs flex items-center gap-1 font-medium"
-              style={{ color: '#05A88E' }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download report
-            </a>
-          </div>
-        )}
 
       </div>
 
