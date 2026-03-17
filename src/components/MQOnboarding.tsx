@@ -38,7 +38,7 @@ const SLIDES = [
               {item.icon}
             </div>
             <span style={{ fontSize: 10, fontWeight: 600, color: item.color }}>{item.label}</span>
-            {i < 3 && <div style={{ width: 1, height: 8, backgroundColor: 'rgba(255,255,255,0.2)' }} />}
+            {i < 3 && <div style={{ width: 1, height: 8, backgroundColor: 'rgba(10,46,42,0.12)' }} />}
           </div>
         ))}
       </div>
@@ -60,7 +60,7 @@ const SLIDES = [
           <div key={i} style={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ width: layer.width, padding: '10px 16px', borderRadius: 12, backgroundColor: `${layer.color}20`, border: `1.5px solid ${layer.color}40`, textAlign: 'center' }}>
               <p style={{ fontSize: 13, fontWeight: 700, color: layer.color, margin: 0 }}>{layer.label}</p>
-              <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', margin: 0 }}>{layer.sub}</p>
+              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.5)', margin: 0 }}>{layer.sub}</p>
             </div>
           </div>
         ))}
@@ -109,7 +109,7 @@ const SLIDES = [
               <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: d.color, flexShrink: 0 }} />
               <p style={{ fontSize: 12, fontWeight: 700, color: d.color, margin: 0 }}>{d.name}</p>
             </div>
-            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5 }}>{d.desc}</p>
+            <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.5 }}>{d.desc}</p>
           </div>
         ))}
       </div>
@@ -133,7 +133,7 @@ const SLIDES = [
               <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: d.color, flexShrink: 0 }} />
               <p style={{ fontSize: 12, fontWeight: 700, color: d.color, margin: 0 }}>{d.name}</p>
             </div>
-            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5 }}>{d.desc}</p>
+            <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.5 }}>{d.desc}</p>
           </div>
         ))}
       </div>
@@ -157,7 +157,7 @@ const SLIDES = [
             <span style={{ fontSize: 10, fontWeight: 800, color: s.color, flexShrink: 0, marginTop: 2 }}>{s.step}</span>
             <div>
               <p style={{ fontSize: 12, fontWeight: 700, color: s.color, margin: '0 0 2px' }}>{s.label}</p>
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', margin: 0 }}>{s.desc}</p>
+              <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0 }}>{s.desc}</p>
             </div>
           </div>
         ))}
@@ -193,7 +193,7 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 1000,
-      backgroundColor: 'rgba(10,46,42,0.85)',
+      backgroundColor: 'rgba(230,248,244,0.92)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 20,
       opacity: exiting ? 0 : 1,
@@ -201,18 +201,18 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
     }}>
       <div style={{
         width: '100%', maxWidth: 460,
-        backgroundColor: '#0A2E2A',
+        backgroundColor: '#f0faf6',
         borderRadius: 24,
-        border: '1px solid rgba(10,243,205,0.2)',
-        boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+        border: '1px solid rgba(10,46,42,0.1)',
+        boxShadow: '0 24px 80px rgba(10,46,42,0.15)',
         overflow: 'hidden',
       }}>
         {/* Top bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid rgba(10,243,205,0.1)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid rgba(10,46,42,0.08)' }}>
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0AF3CD' }}>
             {current.tag}
           </span>
-          <button onClick={finish} style={{ fontSize: 11, color: 'rgba(185,248,221,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button onClick={finish} style={{ fontSize: 11, color: 'rgba(10,46,42,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
             Skip intro
           </button>
         </div>
@@ -222,21 +222,21 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
           {SLIDES.map((_, i) => (
             <button key={i} onClick={() => setSlide(i)}
               style={{ width: i === slide ? 20 : 6, height: 6, borderRadius: 3, border: 'none', cursor: 'pointer',
-                       backgroundColor: i === slide ? '#0AF3CD' : i < slide ? 'rgba(10,243,205,0.4)' : 'rgba(255,255,255,0.15)',
+                       backgroundColor: i === slide ? '#0AF3CD' : i < slide ? 'rgba(10,243,205,0.6)' : 'rgba(10,46,42,0.15)',
                        transition: 'all 0.3s ease', padding: 0 }} />
           ))}
         </div>
 
         {/* Content */}
         <div style={{ padding: '20px 24px 8px' }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: 'white', margin: '0 0 4px', lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: '#0A2E2A', margin: '0 0 4px', lineHeight: 1.2 }}>
             {current.title}
           </h2>
           <p style={{ fontSize: 13, color: '#0AF3CD', margin: '0 0 12px', fontWeight: 500 }}>
             {current.subtitle}
           </p>
           {current.body && (
-            <p style={{ fontSize: 13, color: 'rgba(185,248,221,0.75)', lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: 13, color: 'rgba(10,46,42,0.65)', lineHeight: 1.7, margin: 0 }}>
               {current.body}
             </p>
           )}
@@ -251,8 +251,8 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
         <div style={{ display: 'flex', gap: 10, padding: '0 24px 24px' }}>
           {slide > 0 && (
             <button onClick={prev}
-              style={{ flex: '0 0 auto', padding: '12px 20px', borderRadius: 14, border: '1px solid rgba(10,243,205,0.2)',
-                       backgroundColor: 'transparent', color: 'rgba(185,248,221,0.6)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+              style={{ flex: '0 0 auto', padding: '12px 20px', borderRadius: 14, border: '1px solid rgba(10,46,42,0.15)',
+                       backgroundColor: 'white', color: 'rgba(10,46,42,0.5)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
               ← Back
             </button>
           )}
