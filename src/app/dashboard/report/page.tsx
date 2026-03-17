@@ -71,12 +71,24 @@ interface Assessment {
   completed_at: string | null
   participant_role: string | null
 }
+interface CompanyValue { id: string; value_name: string; behaviours: string[] }
+type RatingsMap = Record<string, number>
+
+const RATING_LABELS: Record<number, { label: string; colour: string; bg: string }> = {
+  1: { label: 'Rarely',       colour: '#ff7b7a', bg: '#FFF0F0' },
+  2: { label: 'Sometimes',    colour: '#ff9f43', bg: '#FFF5EB' },
+  3: { label: 'Usually',      colour: '#fdcb5e', bg: '#FFFAE8' },
+  4: { label: 'Consistently', colour: '#00c9a7', bg: '#E8FDF7' },
+}
+const VALUE_COLOURS = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#2d4a8a','#a78bfa']
 
 export default function ReportPage() {
   const supabase = createClient()
-  const [profile,    setProfile]    = useState<Profile | null>(null)
-  const [assessment, setAssessment] = useState<Assessment | null>(null)
-  const [loading,    setLoading]    = useState(true)
+  const [profile,      setProfile]      = useState<Profile | null>(null)
+  const [assessment,   setAssessment]   = useState<Assessment | null>(null)
+  const [companyValues, setCompanyValues] = useState<CompanyValue[]>([])
+  const [ratings,      setRatings]      = useState<RatingsMap>({})
+  const [loading,      setLoading]      = useState(true)
 
   const load = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -94,6 +106,21 @@ export default function ReportPage() {
 
     if (prof) setProfile({ full_name: prof.full_name, email: prof.email })
     if (assessments?.[0]) setAssessment(assessments[0])
+
+    // Fetch values + ratings via API
+    try {
+      const res = await fetch('/api/values-checkin', {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+      const data = await res.json()
+      setCompanyValues(data.values ?? [])
+      const flat: RatingsMap = {}
+      for (const [key, val] of Object.entries(data.ratings ?? {})) {
+        flat[key] = (val as { rating: number }).rating
+      }
+      setRatings(flat)
+    } catch { /* no values */ }
+
     setLoading(false)
   }, [supabase])
 
@@ -262,6 +289,56 @@ export default function ReportPage() {
             ))}
           </div>
         </div>
+
+        {/* ── Values in Action ──────────────────────────────────────────────── */}
+        {companyValues.length > 0 && Object.keys(ratings).length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>Values in Action</p>
+            <div className="space-y-4">
+              {companyValues.map((v, vi) => {
+                const ratedBehaviours = v.behaviours.map((b, bi) => ({
+                  behaviour: b,
+                  rating: ratings[`${v.id}_${bi}`] ?? 0,
+                })).filter(r => r.rating > 0)
+                if (ratedBehaviours.length === 0) return null
+                const avgRating = ratedBehaviours.reduce((s, r) => s + r.rating, 0) / ratedBehaviours.length
+                const avgLabel = RATING_LABELS[Math.round(avgRating)]
+                return (
+                  <div key={v.id} className="rounded-2xl overflow-hidden"
+                       style={{ border: `1px solid ${VALUE_COLOURS[vi % VALUE_COLOURS.length]}33` }}>
+                    <div className="px-5 py-3 flex items-center justify-between"
+                         style={{ backgroundColor: `${VALUE_COLOURS[vi % VALUE_COLOURS.length]}12`, borderBottom: `1px solid ${VALUE_COLOURS[vi % VALUE_COLOURS.length]}20` }}>
+                      <div className="flex items-center gap-2">
+                        <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: VALUE_COLOURS[vi % VALUE_COLOURS.length] }} />
+                        <span className="text-sm font-bold" style={{ color: '#0A2E2A' }}>{v.value_name}</span>
+                      </div>
+                      {avgLabel && (
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                              style={{ backgroundColor: avgLabel.bg, color: avgLabel.colour }}>
+                          Avg: {avgLabel.label}
+                        </span>
+                      )}
+                    </div>
+                    <div className="divide-y" style={{ borderColor: '#F9FAFB' }}>
+                      {ratedBehaviours.map((r, i) => {
+                        const rl = RATING_LABELS[r.rating]
+                        return (
+                          <div key={i} className="px-5 py-3 flex items-start justify-between gap-4">
+                            <p className="text-xs leading-relaxed flex-1" style={{ color: '#374151' }}>{r.behaviour}</p>
+                            <span className="text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: rl.bg, color: rl.colour }}>
+                              {rl.label}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         {/* ── Footer ────────────────────────────────────────────────────────── */}
         <div className="text-center pb-4">

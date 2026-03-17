@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import CoachingRoom from '@/components/CoachingRoom'
 import DailySpark from '@/components/DailySpark'
+import MQOnboarding, { shouldShowOnboarding } from '@/components/MQOnboarding'
 
 // ── Dimension config ───────────────────────────────────────────────────────────
 
@@ -221,6 +222,7 @@ export default function ParticipantDashboard() {
   const [profile,          setProfile]          = useState<{ id: string; full_name: string | null; email: string } | null>(null)
   const [assessment,       setAssessment]       = useState<Assessment | null>(null)
   const [showCoachingRoom, setShowCoachingRoom] = useState(false)
+  const [showOnboarding,   setShowOnboarding]   = useState(false)
   const [authToken,        setAuthToken]        = useState<string | null>(null)
   const [dimModal,         setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
   const [showMQModal,      setShowMQModal]      = useState(false)
@@ -255,6 +257,7 @@ export default function ParticipantDashboard() {
   }, [supabase])
 
   useEffect(() => { loadData() }, [loadData])
+  useEffect(() => { setShowOnboarding(shouldShowOnboarding()) }, [])
 
   async function signOut() {
     await supabase.auth.signOut()
@@ -776,6 +779,11 @@ export default function ParticipantDashboard() {
           </div>
         )
       })()}
+
+      {/* ── Onboarding carousel ──────────────────────────────────────────── */}
+      {showOnboarding && (
+        <MQOnboarding onComplete={() => setShowOnboarding(false)} />
+      )}
 
     </main>
   )

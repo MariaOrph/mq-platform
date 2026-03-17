@@ -184,8 +184,43 @@ Tone: warm, expert, human. Never clinical. Never mention specific numbers in the
     // Non-fatal — return data without analysis
   }
 
+  // ── Fetch values + aggregate behaviour ratings ────────────────────────────
+  let valuesAlignment: {
+    id: string
+    value_name: string
+    behaviours: { text: string; avgRating: number | null; ratingCount: number }[]
+  }[] = []
+
+  try {
+    const { data: valueRows } = await supabaseAdmin
+      .from('company_value_behaviours')
+      .select('id, value_name, behaviours, value_order')
+      .eq('company_id', cohort.company_id)
+      .order('value_order')
+
+    if (valueRows && valueRows.length > 0 && participantIds.length > 0) {
+      const { data: ratingRows } = await supabaseAdmin
+        .from('participant_values_ratings')
+        .select('company_value_id, behaviour_index, rating, participant_id')
+        .in('participant_id', participantIds)
+
+      valuesAlignment = valueRows.map(v => {
+        const behaviours = (v.behaviours as string[]).map((text, bi) => {
+          const relevantRatings = (ratingRows ?? [])
+            .filter(r => r.company_value_id === v.id && r.behaviour_index === bi)
+            .map(r => r.rating)
+          const avgRating = relevantRatings.length > 0
+            ? Math.round((relevantRatings.reduce((a, b) => a + b, 0) / relevantRatings.length) * 10) / 10
+            : null
+          return { text, avgRating, ratingCount: relevantRatings.length }
+        })
+        return { id: v.id, value_name: v.value_name, behaviours }
+      })
+    }
+  } catch { /* no values data */ }
+
   return NextResponse.json({
     cohortId, cohortName: cohort.name, companyName, cohortType: cohort.type,
-    totalInvited, completed, scores, analysis,
+    totalInvited, completed, scores, analysis, valuesAlignment,
   })
 }

@@ -12,6 +12,12 @@ interface DimAnalysis {
   opportunities: string[]
 }
 
+interface ValuesAlignment {
+  id: string
+  value_name: string
+  behaviours: { text: string; avgRating: number | null; ratingCount: number }[]
+}
+
 interface ReportData {
   cohortId: string
   cohortName: string
@@ -28,6 +34,7 @@ interface ReportData {
     executive_summary: string
     dimensions: Record<string, DimAnalysis>
   } | null
+  valuesAlignment: ValuesAlignment[]
 }
 
 // ── Dimension config ─────────────────────────────────────────────────────────
@@ -335,6 +342,86 @@ export default function CohortReportPage() {
               )
             })}
           </div>
+
+          {/* ── Values in Action ── */}
+          {report.valuesAlignment && report.valuesAlignment.length > 0 && report.valuesAlignment.some(v => v.behaviours.some(b => b.ratingCount > 0)) && (
+            <>
+              <div className="page-break" />
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 16 }}>
+                Values in Action — Team Alignment
+              </p>
+              <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 20, lineHeight: 1.6 }}>
+                Average self-ratings across participants who completed the Values in Action check-in.
+                Scores reflect how consistently the team collectively demonstrates each behaviour.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {report.valuesAlignment.map((v, vi) => {
+                  const ratedBehaviours = v.behaviours.filter(b => b.ratingCount > 0)
+                  if (ratedBehaviours.length === 0) return null
+                  const overallAvg = ratedBehaviours.reduce((s, b) => s + (b.avgRating ?? 0), 0) / ratedBehaviours.length
+                  const RATING_BG: Record<string, string> = { '1': '#FFF0F0', '2': '#FFF5EB', '3': '#FFFAE8', '4': '#E8FDF7' }
+                  const RATING_COL: Record<string, string> = { '1': '#ff7b7a', '2': '#ff9f43', '3': '#fdcb5e', '4': '#00c9a7' }
+                  const RATING_LABEL: Record<string, string> = { '1': 'Rarely', '2': 'Sometimes', '3': 'Usually', '4': 'Consistently' }
+                  const avgKey = String(Math.round(overallAvg))
+                  const VALUE_COLOURS = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#2d4a8a','#a78bfa']
+                  const vColour = VALUE_COLOURS[vi % VALUE_COLOURS.length]
+                  return (
+                    <div key={v.id} className="rounded-2xl" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)', overflow: 'hidden' }}>
+                      <div style={{ padding: '14px 20px', borderBottom: '1px solid #F3F4F6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: vColour }} />
+                          <span style={{ fontSize: 15, fontWeight: 800, color: '#0A2E2A' }}>{v.value_name}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{ fontSize: 11, color: '#9CA3AF' }}>{ratedBehaviours[0].ratingCount} participant{ratedBehaviours[0].ratingCount !== 1 ? 's' : ''} rated</span>
+                          {RATING_COL[avgKey] && (
+                            <span style={{ fontSize: 11, fontWeight: 600, color: RATING_COL[avgKey], backgroundColor: RATING_BG[avgKey], padding: '3px 10px', borderRadius: 20 }}>
+                              Avg: {RATING_LABEL[avgKey]}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        {ratedBehaviours.map((b, bi) => {
+                          const bKey = String(Math.round(b.avgRating ?? 0))
+                          const barWidth = b.avgRating !== null ? `${(b.avgRating / 4) * 100}%` : '0%'
+                          return (
+                            <div key={bi} style={{ padding: '12px 20px', borderBottom: bi < ratedBehaviours.length - 1 ? '1px solid #F9FAFB' : 'none' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 6 }}>
+                                <p style={{ fontSize: 12, color: '#4B5563', margin: 0, lineHeight: 1.5, flex: 1 }}>{b.text}</p>
+                                {RATING_COL[bKey] && (
+                                  <span style={{ fontSize: 11, fontWeight: 600, color: RATING_COL[bKey], backgroundColor: RATING_BG[bKey], padding: '2px 8px', borderRadius: 16, flexShrink: 0 }}>
+                                    {b.avgRating?.toFixed(1)} — {RATING_LABEL[bKey]}
+                                  </span>
+                                )}
+                              </div>
+                              <div style={{ height: 5, borderRadius: 3, backgroundColor: '#F3F4F6' }}>
+                                <div style={{ height: 5, borderRadius: 3, backgroundColor: RATING_COL[bKey] ?? vColour, width: barWidth }} />
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Values rating guide */}
+              <div className="rounded-2xl mt-4" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB', padding: '16px 20px' }}>
+                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 10 }}>Values rating scale</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+                  {[['1', 'Rarely', '#ff7b7a'], ['2', 'Sometimes', '#ff9f43'], ['3', 'Usually', '#fdcb5e'], ['4', 'Consistently', '#00c9a7']].map(([n, label, col]) => (
+                    <div key={n} style={{ textAlign: 'center', padding: '8px', borderRadius: 8, backgroundColor: `${col}12`, border: `1px solid ${col}30` }}>
+                      <p style={{ fontSize: 13, fontWeight: 800, color: col, margin: '0 0 2px' }}>{n}</p>
+                      <p style={{ fontSize: 10, color: '#6B7280', margin: 0 }}>{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* ── Score guide ── */}
           <div className="rounded-2xl mt-8" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)', padding: '24px 28px' }}>
