@@ -184,7 +184,7 @@ function CoachingContent() {
 
           <p className="text-sm leading-relaxed mb-2" style={{ color: '#B9F8DD' }}>
             You've completed today's <strong style={{ color: '#0AF3CD' }}>{dim.name}</strong> coaching moment.
-            Taking time to reflect like this is exactly what develops your MQ — one moment at a time.
+            Taking time to reflect like this is exactly what develops your MQ, one moment at a time.
           </p>
 
           <p className="text-sm mb-8" style={{ color: '#B9F8DD' }}>
@@ -275,7 +275,7 @@ function CoachingContent() {
               Your reflection
             </p>
             <p className="text-xs" style={{ color: 'rgba(10,46,42,0.6)' }}>
-              {saving ? 'Saving…' : 'Private — only visible to you'}
+              {saving ? 'Saving…' : 'Private: only visible to you'}
             </p>
           </div>
           <div style={{ backgroundColor: '#E8FDF7' }}>

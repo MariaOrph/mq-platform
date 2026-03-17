@@ -45,7 +45,7 @@ function UnsubscribeContent() {
               You've been unsubscribed
             </h1>
             <p className="text-sm mb-6" style={{ color: '#05A88E', lineHeight: 1.7 }}>
-              You won't receive daily coaching reminder emails anymore. Your account and coaching progress are still active — you can always log in directly.
+              You won't receive daily coaching reminder emails anymore. Your account and coaching progress are still active; you can always log in directly.
             </p>
             <a
               href="/dashboard"

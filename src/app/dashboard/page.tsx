@@ -25,44 +25,44 @@ const DIM_DETAIL: Record<number, {
   low: string
 }> = {
   1: {
-    tagline: 'The ability to see yourself clearly — in real time.',
+    tagline: 'The ability to see yourself clearly in real time.',
     what: 'Self-awareness is the capacity to notice your own thoughts, feelings, assumptions and behavioural patterns as they arise, without being swept along by them. It\'s the internal observer that watches how you\'re showing up.',
     why: 'Leaders who lack self-awareness act on unconscious biases, react impulsively under pressure, and misread how they\'re landing on others. Self-aware leaders can pause before reacting, understand what\'s driving them, and choose how to respond rather than defaulting to autopilot. Research consistently shows self-awareness as one of the strongest predictors of leadership effectiveness.',
     high: 'You have a strong internal observer. You notice patterns in your thinking, catch your own triggers before they escalate, and tend to seek honest feedback rather than avoid it.',
-    low: 'You may find yourself reacting before you\'ve had a chance to choose your response — or discovering your impact on others after the fact rather than in the moment.',
+    low: 'You may find yourself reacting before you\'ve had a chance to choose your response, or discovering your impact on others after the fact rather than in the moment.',
   },
   2: {
     tagline: 'The capacity to think in multiple directions at once.',
     what: 'Cognitive flexibility is the ability to hold several perspectives simultaneously, update your thinking when new information arrives, and move fluidly between different mental models. It\'s the opposite of rigid, either/or thinking.',
     why: 'Rigid thinking is one of the most common causes of leadership blind spots. The world rarely fits the frameworks we already have. Cognitively flexible leaders can revise their assumptions, see the same situation from multiple angles, and avoid the trap of \'I already know how this works.\' In fast-moving environments, this is a survival skill.',
     high: 'You readily update your mental models, entertain contradictory ideas, and avoid black-and-white thinking. People likely experience you as open-minded and intellectually curious.',
-    low: 'You may default to familiar frameworks even when the situation calls for fresh thinking — or find it uncomfortable when others challenge your interpretation of events.',
+    low: 'You may default to familiar frameworks even when the situation calls for fresh thinking, or find it uncomfortable when others challenge your interpretation of events.',
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
-    what: 'Emotional regulation is the ability to manage your emotional responses — especially under pressure — so they serve your goals rather than derail them. This isn\'t about suppressing emotion; it\'s about processing it so you can respond wisely.',
+    what: 'Emotional regulation is the ability to manage your emotional responses (especially under pressure) so they serve your goals rather than derail them. This isn\'t about suppressing emotion; it\'s about processing it so you can respond wisely.',
     why: 'Emotions are contagious in teams. A leader who stays grounded under pressure creates psychological safety; one who doesn\'t spreads anxiety. Your emotional state directly shapes the emotional climate of the people around you. Leaders with strong emotional regulation make better decisions under stress, hold difficult conversations more effectively, and recover faster from setbacks.',
     high: 'You stay grounded under pressure and can experience emotional intensity without being controlled by it. Others likely experience you as steady and safe to bring problems to.',
     low: 'Emotional intensity may sometimes hijack your thinking or limit your presence in high-stakes moments. You might notice you regret things you said under pressure, or that you shut down when things get difficult.',
   },
   4: {
-    tagline: 'Knowing what you stand for — and acting like it.',
-    what: 'Values clarity is about knowing what you actually believe in — and more importantly, whether your decisions and day-to-day behaviour genuinely reflect those values. It\'s the alignment between your stated principles and your lived ones.',
-    why: 'Values are the invisible architecture of leadership. When leaders act consistently with their values, they build deep trust. When there\'s a gap between what they say they value and how they actually behave, people notice — even if they can\'t articulate it. Values-clear leaders make faster decisions, attract aligned talent, and create cultures of integrity.',
-    high: 'Your decisions are anchored by a clear internal compass. Others experience you as consistent and trustworthy — they know what you stand for because your behaviour demonstrates it.',
+    tagline: 'Knowing what you stand for and acting like it.',
+    what: 'Values clarity is about knowing what you actually believe in and, more importantly, whether your decisions and day-to-day behaviour genuinely reflect those values. It\'s the alignment between your stated principles and your lived ones.',
+    why: 'Values are the invisible architecture of leadership. When leaders act consistently with their values, they build deep trust. When there\'s a gap between what they say they value and how they actually behave, people notice, even if they can\'t articulate it. Values-clear leaders make faster decisions, attract aligned talent, and create cultures of integrity.',
+    high: 'Your decisions are anchored by a clear internal compass. Others experience you as consistent and trustworthy; they know what you stand for because your behaviour demonstrates it.',
     low: 'You may hold values you believe in but haven\'t fully translated into consistent, visible behaviours. The gap between intention and action may be wider than you\'d like.',
   },
   5: {
     tagline: 'The quality of presence you bring to every interaction.',
-    what: 'Relational mindset describes the intention and quality of attention you bring to your relationships — whether you genuinely seek to understand others, or primarily see people through the lens of what they can do for you.',
+    what: 'Relational mindset describes the intention and quality of attention you bring to your relationships, whether you genuinely seek to understand others, or primarily see people through the lens of what they can do for you.',
     why: 'Leadership happens in relationship. The way you listen, the assumptions you hold about people, and the quality of your presence in conversations directly shape team performance, trust, and psychological safety. Transactional leadership produces compliance; relational leadership produces commitment.',
     high: 'You approach relationships with genuine curiosity and care. People feel seen and heard by you, which builds loyalty and creates conditions where others do their best work.',
-    low: 'Under pressure, you may shift into transactional mode — treating relationships as means to an end, or giving people less real attention than they need to feel genuinely valued.',
+    low: 'Under pressure, you may shift into transactional mode, treating relationships as means to an end, or giving people less real attention than they need to feel genuinely valued.',
   },
   6: {
     tagline: 'Bouncing forward, not just back.',
-    what: 'Adaptive resilience is the ability to sustain performance under sustained pressure, recover from setbacks, and find meaning in adversity rather than being destabilised by it. It\'s not toughness — it\'s flexibility under load.',
-    why: 'Leadership is inherently uncertain, often difficult, and sometimes brutal. Resilient leaders don\'t just survive hard times — they model equanimity for their teams, make better decisions under stress, and treat difficulty as developmental. This profoundly affects team culture: teams take their cue from how leaders handle adversity.',
+    what: 'Adaptive resilience is the ability to sustain performance under sustained pressure, recover from setbacks, and find meaning in adversity rather than being destabilised by it. It\'s not toughness; it\'s flexibility under load.',
+    why: 'Leadership is inherently uncertain, often difficult, and sometimes brutal. Resilient leaders don\'t just survive hard times; they model equanimity for their teams, make better decisions under stress, and treat difficulty as developmental. This profoundly affects team culture: teams take their cue from how leaders handle adversity.',
     high: 'You have strong internal resources for navigating difficulty. Setbacks tend to become learning rather than defeat, and you likely recover your equilibrium faster than most.',
     low: 'Sustained pressure may be depleting your capacity in ways that affect your thinking, your relationships, and your decision-making. Rest and recovery may not be getting the attention they need.',
   },
@@ -71,7 +71,7 @@ const DIM_DETAIL: Record<number, {
 function getScoreBand(score: number): { label: string; description: string; colour: string } {
   if (score >= 90) return {
     label: 'Exceptional',
-    description: 'This dimension is a genuine standout in your leadership. You\'re operating at a level that most leaders aspire to. The opportunity now is to leverage this strength intentionally — to model it for others, to mentor, and to consider where this capacity can have its greatest impact.',
+    description: 'This dimension is a genuine standout in your leadership. You\'re operating at a level that most leaders aspire to. The opportunity now is to leverage this strength intentionally: model it for others, mentor, and consider where this capacity can have its greatest impact.',
     colour: '#00c9a7',
   }
   if (score >= 75) return {
@@ -81,12 +81,12 @@ function getScoreBand(score: number): { label: string; description: string; colo
   }
   if (score >= 60) return {
     label: 'Solid',
-    description: 'You have meaningful capacity here — this isn\'t a gap, it\'s a foundation. With focused development, this dimension can become a genuine strength. The practices in your Daily Spark are well-suited to helping you build on what\'s already working.',
+    description: 'You have meaningful capacity here. This isn\'t a gap; it\'s a foundation. With focused development, this dimension can become a genuine strength. The practices in your Daily Spark are well-suited to helping you build on what\'s already working.',
     colour: '#fdcb5e',
   }
   if (score >= 40) return {
     label: 'Developing',
-    description: 'You\'re in the zone of active development here. The awareness itself is valuable — many leaders never see clearly where their edges are. This is where the most meaningful growth often happens, and your Daily Spark practices are specifically calibrated to support you here.',
+    description: 'You\'re in the zone of active development here. The awareness itself is valuable; many leaders never see clearly where their edges are. This is where the most meaningful growth often happens, and your Daily Spark practices are specifically calibrated to support you here.',
     colour: '#ff9f43',
   }
   return {

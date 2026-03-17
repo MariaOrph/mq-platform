@@ -8,7 +8,7 @@ const SLIDES = [
     tag: 'Welcome',
     title: 'Welcome to MQ',
     subtitle: 'Your leadership development journey starts here.',
-    body: 'MQ — Mindset Quotient — is a leadership development platform built around a simple but powerful idea: the most effective leaders aren\'t just technically skilled. They understand themselves, manage their inner world, and bring that awareness into how they lead others.',
+    body: 'MQ (Mindset Quotient) is a leadership development platform built around a simple but powerful idea: the most effective leaders aren\'t just technically skilled. They understand themselves, manage their inner world, and bring that awareness into how they lead others.',
     visual: (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
         <div style={{ position: 'relative', width: 120, height: 120 }}>
@@ -24,7 +24,7 @@ const SLIDES = [
     tag: 'What is MQ?',
     title: 'Mindset Quotient',
     subtitle: 'The ability to choose how you respond.',
-    body: 'MQ is defined as the ability to notice your own thoughts, beliefs and emotional triggers — and choose how you respond to them, rather than being unconsciously driven by them. It\'s the difference between reacting on autopilot and leading with intention.',
+    body: 'MQ is defined as the ability to notice your own thoughts, beliefs and emotional triggers, and choose how you respond to them, rather than being unconsciously driven by them. It\'s the difference between reacting on autopilot and leading with intention.',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
         {[
@@ -124,7 +124,7 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
         {[
-          { name: 'Values clarity', color: '#00c9a7', desc: 'Knowing what you stand for — and acting like it.' },
+          { name: 'Values clarity', color: '#00c9a7', desc: 'Knowing what you stand for and acting like it.' },
           { name: 'Relational mindset', color: '#2d4a8a', desc: 'The quality of presence and attention you bring to every interaction.' },
           { name: 'Adaptive resilience', color: '#a78bfa', desc: 'Sustaining performance under pressure and shaping a resilient culture.' },
         ].map((d, i) => (
@@ -151,7 +151,7 @@ const SLIDES = [
           { step: '01', label: 'MQ Assessment', desc: '~10 minutes. Measures your 6 dimensions.', color: '#0AF3CD' },
           { step: '02', label: 'Your Results', desc: 'A personal profile with scores and explanations.', color: '#fdcb5e' },
           { step: '03', label: 'Daily Spark', desc: 'A short practice each day, tailored to your focus area.', color: '#ff9f43' },
-          { step: '04', label: 'Coaching Room', desc: 'Your personal AI coach — always in context.', color: '#a78bfa' },
+          { step: '04', label: 'Coaching Room', desc: 'Your personal AI coach, always in context.', color: '#a78bfa' },
         ].map((s, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 14px', borderRadius: 14, backgroundColor: `${s.color}12`, border: `1px solid ${s.color}25` }}>
             <span style={{ fontSize: 10, fontWeight: 800, color: s.color, flexShrink: 0, marginTop: 2 }}>{s.step}</span>

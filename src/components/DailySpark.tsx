@@ -39,7 +39,7 @@ const MILESTONES: Record<number, { label: string; emoji: string; message: string
   8:  { label: 'Building momentum!',        emoji: '⚡', message: 'Eight practices in. You\'re building a real daily habit.' },
   12: { label: 'Halfway there!',            emoji: '✨', message: 'You\'ve reached the halfway point of your MQ journey. Keep going.' },
   16: { label: 'In the zone!',              emoji: '🎯', message: 'Sixteen practices complete. This is where real breakthroughs happen.' },
-  20: { label: 'Almost there!',             emoji: '🌟', message: 'Four practices left. You\'ve come so far — finish strong.' },
+  20: { label: 'Almost there!',             emoji: '🌟', message: 'Four practices left. You\'ve come so far; finish strong.' },
   24: { label: 'Full cycle complete!',      emoji: '🏆', message: 'You\'ve completed all 24 Daily Spark practices. Time to see how much you\'ve grown.' },
 }
 
@@ -383,7 +383,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
           <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>Check back tomorrow for your next practice.</p>
           <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#F4FDF9', border: '1px solid #B9F8DD' }}>
             <p className="text-xs leading-relaxed" style={{ color: '#05A88E' }}>
-              In the meantime, your <span className="font-semibold">MQ Coaching Room</span> below is always open — bring anything you want to think through, work on, or get support with.
+              In the meantime, your <span className="font-semibold">MQ Coaching Room</span> below is always open. Bring anything you want to think through, work on, or get support with.
             </p>
           </div>
         </div>

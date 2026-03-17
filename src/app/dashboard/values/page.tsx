@@ -176,7 +176,7 @@ export default function ValuesCheckinPage() {
         <div className="rounded-2xl p-5" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
             For each behaviour below, rate how consistently you demonstrate it in your day-to-day leadership.
-            Be honest — this is for your own development, not a performance review.
+            Be honest: this is for your own development, not a performance review.
             {hasExisting && <span className="font-medium" style={{ color: '#05A88E' }}> You can update your ratings any time.</span>}
           </p>
 

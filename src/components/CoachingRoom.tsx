@@ -241,7 +241,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     Hey {firstName}, I'm your MQ Coach.
                   </p>
                   <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                    Bring me anything — a tricky conversation, a leadership challenge, something you're working through.
+                    Bring me anything: a tricky conversation, a leadership challenge, something you're working through.
                   </p>
                 </div>
               )}
@@ -340,7 +340,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     What's on your mind, {firstName}?
                   </p>
                   <p className="text-sm mb-6 max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                    Bring me anything — a challenge, a decision, a conversation you're preparing for.
+                    Bring me anything: a challenge, a decision, a conversation you're preparing for.
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {[

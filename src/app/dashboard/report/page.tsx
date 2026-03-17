@@ -14,10 +14,10 @@ const DIMS = [
 
 const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: string; low: string }> = {
   1: {
-    tagline: 'The ability to see yourself clearly — in real time.',
+    tagline: 'The ability to see yourself clearly in real time.',
     what: 'The capacity to notice your own thoughts, feelings, assumptions and behavioural patterns as they arise, without being swept along by them.',
     high: 'Strong internal observer. You notice patterns in your thinking, catch your own triggers early, and tend to seek honest feedback.',
-    low: 'May react before choosing your response — or discover your impact on others after the fact rather than in the moment.',
+    low: 'May react before choosing your response, or discover your impact on others after the fact rather than in the moment.',
   },
   2: {
     tagline: 'The capacity to think in multiple directions at once.',
@@ -27,21 +27,21 @@ const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: st
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
-    what: 'The ability to manage your emotional responses — especially under pressure — so they serve your goals rather than derail them.',
+    what: 'The ability to manage your emotional responses (especially under pressure) so they serve your goals rather than derail them.',
     high: 'Stays grounded under pressure. Others experience you as steady and safe to bring problems to.',
     low: 'Emotional intensity may sometimes hijack thinking or limit presence in high-stakes moments.',
   },
   4: {
-    tagline: 'Knowing what you stand for — and acting like it.',
-    what: 'Knowing what you actually believe in — and whether your decisions and day-to-day behaviour genuinely reflect those values.',
+    tagline: 'Knowing what you stand for and acting like it.',
+    what: 'Knowing what you actually believe in and whether your decisions and day-to-day behaviour genuinely reflect those values.',
     high: 'Decisions anchored by a clear internal compass. Others experience you as consistent and trustworthy.',
     low: 'May hold values not yet fully translated into consistent, visible behaviours.',
   },
   5: {
     tagline: 'The quality of presence you bring to every interaction.',
-    what: 'The intention and quality of attention you bring to your relationships — whether you genuinely seek to understand others.',
+    what: 'The intention and quality of attention you bring to your relationships, whether you genuinely seek to understand others.',
     high: 'Approaches relationships with genuine curiosity and care. People feel seen and heard.',
-    low: 'Under pressure, may shift into transactional mode — giving people less real attention than they need.',
+    low: 'Under pressure, may shift into transactional mode, giving people less real attention than they need.',
   },
   6: {
     tagline: 'Bouncing forward, not just back.',
@@ -209,7 +209,7 @@ export default function ReportPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>About MQ</p>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-            MQ — Mindset Quotient — measures your capacity to notice your own thoughts, beliefs and emotional patterns,
+            MQ (Mindset Quotient) measures your capacity to notice your own thoughts, beliefs and emotional patterns,
             and to consciously choose how you respond rather than being driven by them automatically. It is measured
             across six dimensions that together define the internal landscape of effective leadership.
           </p>

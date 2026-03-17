@@ -393,11 +393,11 @@ function BeforeAfterTab({
     if (overallDelta !== null) {
       if (overallDelta > 0) {
         lines.push(
-          `Overall, the team's average MQ score improved by ${overallDelta} point${overallDelta === 1 ? '' : 's'} — from ${avgBase} to ${avgPost}.`
+          `Overall, the team's average MQ score improved by ${overallDelta} point${overallDelta === 1 ? '' : 's'}: from ${avgBase} to ${avgPost}.`
         )
       } else if (overallDelta < 0) {
         lines.push(
-          `Overall, the team's average MQ score shifted by ${overallDelta} points — from ${avgBase} to ${avgPost}.`
+          `Overall, the team's average MQ score shifted by ${overallDelta} points: from ${avgBase} to ${avgPost}.`
         )
       } else {
         lines.push(`The team's overall MQ score held steady at ${avgBase}.`)
@@ -451,7 +451,7 @@ function BeforeAfterTab({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-1.5 block" style={{ color: '#0A2E2A' }}>
-            Before — Baseline cohort
+            Before: Baseline cohort
           </label>
           <select
             value={baselineId}
@@ -465,7 +465,7 @@ function BeforeAfterTab({
         </div>
         <div>
           <label className="text-sm font-medium mb-1.5 block" style={{ color: '#0A2E2A' }}>
-            After — Post-programme cohort
+            After: Post-programme cohort
           </label>
           <select
             value={postId}
@@ -507,13 +507,13 @@ function BeforeAfterTab({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               {
-                label:      'Before — avg MQ',
+                label:      'Before: avg MQ',
                 value:      avgBase !== null ? String(avgBase) : '—',
                 sub:        baselineCohort?.name ?? 'Baseline',
                 valueColor: '#0A2E2A',
               },
               {
-                label:      'After — avg MQ',
+                label:      'After: avg MQ',
                 value:      avgPost !== null ? String(avgPost) : '—',
                 sub:        postCohort?.name ?? 'Post-programme',
                 valueColor: '#0A2E2A',
@@ -735,7 +735,7 @@ function AllCohortsTab({
       })
       const data = await res.json()
       if (res.ok) {
-        setInviteMsg(`✓ Sent ${data.invited} invitation(s)${data.skipped > 0 ? ` — ${data.skipped} already invited` : ''}`)
+        setInviteMsg(`✓ Sent ${data.invited} invitation(s)${data.skipped > 0 ? `, ${data.skipped} already invited` : ''}`)
         setInviteEmails('')
         onRefresh()
       } else {

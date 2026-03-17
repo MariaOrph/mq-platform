@@ -348,7 +348,7 @@ export default function CohortReportPage() {
             <>
               <div className="page-break" />
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 16 }}>
-                Values in Action — Team Alignment
+                Values in Action: Team Alignment
               </p>
               <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 20, lineHeight: 1.6 }}>
                 Average self-ratings across participants who completed the Values in Action check-in.

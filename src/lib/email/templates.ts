@@ -71,7 +71,7 @@ export function inviteEmailHtml({
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
 
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
-      MQ — Mindset Quotient — is the ability to notice your thoughts, beliefs and emotional triggers
+      MQ (Mindset Quotient) is the ability to notice your thoughts, beliefs and emotional triggers
       and choose how you respond to them, rather than being unconsciously driven by them. Your MQ
       journey is a personalised development experience designed to help you lead yourself and others
       more intentionally.
@@ -121,7 +121,7 @@ export function inviteEmailText({
 
 You've been invited to your MQ journey.
 
-MQ — Mindset Quotient — is the ability to notice your thoughts, beliefs and emotional triggers and choose how you respond to them, rather than being unconsciously driven by them. Your MQ journey is a personalised development experience designed to help you lead yourself and others more intentionally.
+MQ (Mindset Quotient) is the ability to notice your thoughts, beliefs and emotional triggers and choose how you respond to them, rather than being unconsciously driven by them. Your MQ journey is a personalised development experience designed to help you lead yourself and others more intentionally.
 
 You've been invited to take the MQ Assessment as part of ${cohortName} at ${companyName}. It takes around 5 minutes and gives you a personalised MQ score and insights across 6 dimensions of mindset intelligence.
 
