@@ -25,6 +25,17 @@ interface CoachingRoomProps {
   onClose:   () => void
 }
 
+// ── Dimension config ───────────────────────────────────────────────────────────
+
+const DIMENSIONS = [
+  { id: 1, name: 'Self-awareness',       color: '#0AF3CD', bg: '#D0FAF3' },
+  { id: 2, name: 'Cognitive flexibility', color: '#05A88E', bg: '#CCEFEA' },
+  { id: 3, name: 'Emotional regulation',  color: '#F97316', bg: '#FEE9D7' },
+  { id: 4, name: 'Values clarity',        color: '#3B82F6', bg: '#DBEAFE' },
+  { id: 5, name: 'Relational mindset',    color: '#8B5CF6', bg: '#EDE9FE' },
+  { id: 6, name: 'Adaptive resilience',   color: '#F59E0B', bg: '#FEF3C7' },
+]
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function formatDate(iso: string) {
@@ -333,28 +344,91 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
               {/* Empty state */}
               {msgLoaded && messages.length === 0 && (
-                <div className="text-center py-10">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
-                       style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
-                  <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
-                    What's on your mind, {firstName}?
-                  </p>
-                  <p className="text-sm mb-6 max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                    Bring me anything: a challenge, a decision, a conversation you're preparing for.
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {[
-                      'I have a difficult conversation coming up',
-                      "I'm struggling to motivate my team",
-                      'I feel like I\'m losing confidence',
-                      'I need help with a decision',
-                    ].map(prompt => (
-                      <button key={prompt} onClick={() => setInput(prompt)}
-                              className="text-xs px-3 py-1.5 rounded-full"
-                              style={{ backgroundColor: 'white', color: '#05A88E', border: '1px solid #B9F8DD' }}>
-                        {prompt}
-                      </button>
-                    ))}
+                <div className="py-8">
+                  <div className="text-center mb-8">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+                         style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
+                    <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
+                      What's on your mind, {firstName}?
+                    </p>
+                    <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
+                      Bring me a challenge, a decision, or choose a dimension to work on.
+                    </p>
+                  </div>
+
+                  {/* Situational prompts */}
+                  <div className="mb-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
+                      Work through something
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {[
+                        'I have a difficult conversation coming up',
+                        "I'm struggling to motivate my team",
+                        "I feel like I'm losing confidence",
+                        'I need help with a decision',
+                      ].map(prompt => (
+                        <button key={prompt} onClick={() => setInput(prompt)}
+                                className="text-xs px-3 py-1.5 rounded-full"
+                                style={{ backgroundColor: 'white', color: '#05A88E', border: '1px solid #B9F8DD' }}>
+                          {prompt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Dimension prompts */}
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
+                      Build your MQ
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {DIMENSIONS.map(dim => (
+                        <button
+                          key={dim.id}
+                          onClick={() => {
+                            const msg = `Help me build my ${dim.name.toLowerCase()}`
+                            setInput(msg)
+                            setTimeout(() => {
+                              setInput('')
+                              setLoading(true)
+                              setMessages([
+                                { role: 'user', content: msg, pending: false },
+                                { role: 'assistant', content: '', pending: true },
+                              ])
+                              fetch('/api/coaching-room', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                body: JSON.stringify({ message: msg, sessionId: activeSession!.id }),
+                              }).then(r => r.json()).then(data => {
+                                const reply = data.reply ?? 'Something went wrong. Please try again.'
+                                setMessages([
+                                  { role: 'user', content: msg },
+                                  { role: 'assistant', content: reply },
+                                ])
+                                setActiveSession(prev => prev ? { ...prev, title: `Build: ${dim.name}` } : prev)
+                                setSessions(prev => prev.map(s => s.id === activeSession!.id ? { ...s, title: `Build: ${dim.name}` } : s))
+                              }).catch(() => {
+                                setMessages([
+                                  { role: 'user', content: msg },
+                                  { role: 'assistant', content: 'Something went wrong. Please try again.' },
+                                ])
+                              }).finally(() => {
+                                setLoading(false)
+                                setTimeout(() => inputRef.current?.focus(), 50)
+                              })
+                            }, 0)
+                          }}
+                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left hover:opacity-80 transition-opacity"
+                          style={{ backgroundColor: dim.bg, border: `1px solid ${dim.color}30` }}
+                        >
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
+                          <span className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>
+                            {dim.name}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
