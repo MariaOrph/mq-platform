@@ -98,6 +98,44 @@ export async function POST(req: NextRequest) {
     if (cr) companyValues = (cr.cohorts as { company_values?: string | null } | null)?.company_values ?? null
   } catch { /* no cohort */ }
 
+  // Fetch structured values + behaviours + participant ratings
+  let valuesWithRatings: string | null = null
+  try {
+    const { data: profData } = await supabaseAdmin
+      .from('profiles').select('company_id').eq('id', participantId).single()
+
+    if (profData?.company_id) {
+      const { data: companyValueRows } = await supabaseAdmin
+        .from('company_value_behaviours')
+        .select('id, value_name, behaviours')
+        .eq('company_id', profData.company_id)
+        .order('value_order')
+
+      if (companyValueRows && companyValueRows.length > 0) {
+        const { data: ratingRows } = await supabaseAdmin
+          .from('participant_values_ratings')
+          .select('company_value_id, behaviour_index, rating')
+          .eq('participant_id', participantId)
+
+        const LABELS: Record<number, string> = { 1: 'Rarely', 2: 'Sometimes', 3: 'Usually', 4: 'Consistently' }
+        const ratingMap: Record<string, number> = {}
+        for (const r of ratingRows ?? []) {
+          ratingMap[`${r.company_value_id}_${r.behaviour_index}`] = r.rating
+        }
+
+        const lines = companyValueRows.map(v => {
+          const behaviours = (v.behaviours as string[]).map((b, i) => {
+            const rating = ratingMap[`${v.id}_${i}`]
+            return rating ? `  • "${b}" → ${LABELS[rating]}` : `  • "${b}" → not yet rated`
+          })
+          return `${v.value_name}:\n${behaviours.join('\n')}`
+        })
+
+        valuesWithRatings = lines.join('\n\n')
+      }
+    }
+  } catch { /* no values data */ }
+
   const scoresSummary = assessment
     ? `Overall MQ: ${assessment.overall_score}/100 | Self-awareness: ${assessment.d1_score} | Cognitive flexibility: ${assessment.d2_score} | Emotional regulation: ${assessment.d3_score} | Values clarity: ${assessment.d4_score} | Relational mindset: ${assessment.d5_score} | Adaptive resilience: ${assessment.d6_score} | Focus: ${focusDimName}`
     : 'Assessment not yet completed.'
@@ -105,7 +143,11 @@ export async function POST(req: NextRequest) {
   const memoryContext = profile?.coaching_memory
     ? `\n\nWhat you know about ${firstName} from previous coaching sessions:\n${profile.coaching_memory}\n\nUse this to personalise your coaching. Reference past themes naturally.`
     : ''
-  const valuesContext = companyValues ? `\n\nOrganisation values: ${companyValues}. Reference where relevant.` : ''
+  const valuesContext = valuesWithRatings
+    ? `\n\n${firstName}'s company values and how they self-rated their own behaviours:\n${valuesWithRatings}\n\nUse this to make coaching more specific. Reference behaviours they rated low (Rarely/Sometimes) as growth edges. Reference behaviours rated high (Consistently) as strengths to build on.`
+    : companyValues
+      ? `\n\nOrganisation values: ${companyValues}. Reference where relevant.`
+      : ''
 
   const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ is the ability to notice your thoughts, beliefs and emotional triggers — and choose how you respond rather than being driven by them unconsciously.
 
