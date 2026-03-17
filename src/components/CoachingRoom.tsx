@@ -375,9 +375,10 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                                 onMouseLeave={() => setHoveredPrompt(null)}
                                 className="text-xs px-3 py-1.5 rounded-full transition-all duration-150"
                                 style={{
-                                  backgroundColor: hoveredPrompt === prompt ? '#0A2E2A' : 'white',
-                                  color: hoveredPrompt === prompt ? 'white' : '#05A88E',
-                                  border: `1px solid ${hoveredPrompt === prompt ? '#0A2E2A' : '#B9F8DD'}`,
+                                  backgroundColor: hoveredPrompt === prompt ? '#E6F9F4' : 'white',
+                                  color: '#05A88E',
+                                  border: `1px solid ${hoveredPrompt === prompt ? '#05A88E' : '#B9F8DD'}`,
+                                  boxShadow: hoveredPrompt === prompt ? '0 2px 8px rgba(10,46,42,0.1)' : 'none',
                                 }}>
                           {prompt}
                         </button>
@@ -431,14 +432,15 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                           onMouseLeave={() => setHoveredDim(null)}
                           className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left transition-all duration-150"
                           style={{
-                            backgroundColor: hoveredDim === dim.id ? dim.color : dim.bg,
-                            border: `1px solid ${dim.color}`,
+                            backgroundColor: dim.bg,
+                            border: `1px solid ${hoveredDim === dim.id ? dim.color : dim.color + '50'}`,
+                            boxShadow: hoveredDim === dim.id ? `0 2px 10px ${dim.color}40` : 'none',
                           }}
                         >
                           <span className="w-2 h-2 rounded-full flex-shrink-0"
-                                style={{ backgroundColor: hoveredDim === dim.id ? 'white' : dim.color }} />
+                                style={{ backgroundColor: dim.color }} />
                           <span className="text-xs font-semibold"
-                                style={{ color: hoveredDim === dim.id ? 'white' : '#0A2E2A' }}>
+                                style={{ color: '#0A2E2A' }}>
                             {dim.name}
                           </span>
                         </button>
