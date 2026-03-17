@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const companyName = (cohort.companies as { name: string } | null)?.name ?? 'Unknown company'
+  const companyName = (cohort.companies as unknown as { name: string } | null)?.name ?? 'Unknown company'
 
   // ── Fetch participants + their assessments ────────────────────────────────
   const { data: participants } = await supabaseAdmin
