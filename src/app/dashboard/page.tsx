@@ -523,11 +523,14 @@ export default function ParticipantDashboard() {
                       const s = getDimScore(assessment, dim.id)
                       return (
                         <div key={dim.id} className="flex items-center gap-3">
-                          <span className="text-xs w-32 flex-shrink-0" style={{ color: '#374151' }}>{dim.name}</span>
-                          <div className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
-                            <div className="h-1.5 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: dim.color }} />
+                          <div className="flex items-center gap-1.5 w-36 flex-shrink-0">
+                            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
+                            <span className="text-xs" style={{ color: '#374151' }}>{dim.name}</span>
                           </div>
-                          <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: dim.color }}>{s ?? '—'}</span>
+                          <div className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+                            <div className="h-1.5 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: '#0A2E2A' }} />
+                          </div>
+                          <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: '#0A2E2A' }}>{s ?? '—'}</span>
                         </div>
                       )
                     })}
