@@ -54,6 +54,7 @@ export default function DailySpark({ token }: DailySparkProps) {
   const [milestone,       setMilestone]       = useState<typeof MILESTONES[number] | null>(null)
   const [showHistory,     setShowHistory]     = useState(false)
   const [noAssessment,    setNoAssessment]    = useState(false)
+  const [selectedSpark,   setSelectedSpark]   = useState<SparkCard | null>(null)
 
   const loadSparks = useCallback(async () => {
     setLoading(true)
@@ -399,8 +400,12 @@ export default function DailySpark({ token }: DailySparkProps) {
               {[...completedSparks].reverse().map(spark => {
                 const d = DIMS[spark.dimension_id]
                 return (
-                  <div key={spark.id} className="rounded-xl p-3 flex flex-col gap-1"
-                       style={{ backgroundColor: d.bg, border: `1px solid ${d.color}33` }}>
+                  <button
+                    key={spark.id}
+                    onClick={() => setSelectedSpark(spark)}
+                    className="rounded-xl p-3 flex flex-col gap-1 text-left hover:opacity-80 transition-opacity"
+                    style={{ backgroundColor: d.bg, border: `1px solid ${d.color}33` }}
+                  >
                     <div className="flex items-center justify-between">
                       <span className="text-base">{d.emoji}</span>
                       <span className="text-xs font-bold" style={{ color: d.color }}>#{spark.card_number}</span>
@@ -408,14 +413,85 @@ export default function DailySpark({ token }: DailySparkProps) {
                     <p className="text-xs font-semibold leading-tight" style={{ color: '#374151' }}>
                       {spark.title}
                     </p>
-                    <span className="text-xs" style={{ color: d.color }}>✓ done</span>
-                  </div>
+                    <span className="text-xs font-medium" style={{ color: d.color }}>View →</span>
+                  </button>
                 )
               })}
             </div>
           )}
         </div>
       )}
+
+      {/* ── Past spark modal ──────────────────────────────────────────────── */}
+      {selectedSpark && (() => {
+        const d = DIMS[selectedSpark.dimension_id]
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+            style={{ backgroundColor: 'rgba(10,46,42,0.55)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setSelectedSpark(null)}
+          >
+            <div
+              className="w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden"
+              style={{ backgroundColor: 'white', maxHeight: '85vh' }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="px-5 pt-5 pb-4" style={{ backgroundColor: d.bg }}>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm">{d.emoji}</span>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: `${d.color}25`, color: d.color }}>
+                        {d.name}
+                      </span>
+                      <span className="text-xs font-bold" style={{ color: '#9CA3AF' }}>
+                        #{selectedSpark.card_number} of 24
+                      </span>
+                    </div>
+                    <p className="text-base font-black leading-snug" style={{ color: '#0A2E2A' }}>
+                      {selectedSpark.title}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedSpark(null)}
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-lg flex-shrink-0 ml-3 mt-0.5"
+                    style={{ backgroundColor: 'rgba(10,46,42,0.1)', color: '#0A2E2A' }}
+                  >×</button>
+                </div>
+                <div className="flex items-center gap-1.5 mt-2">
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                        style={{ backgroundColor: `${d.color}30`, color: d.color }}>
+                    ✓ Completed
+                  </span>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="overflow-y-auto px-5 py-4 space-y-3" style={{ maxHeight: '60vh' }}>
+                <div className="rounded-xl p-4" style={{ backgroundColor: d.bg, border: `1px solid ${d.color}33` }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: d.color }}>
+                    💡 Why this matters
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                    {selectedSpark.insight}
+                  </p>
+                </div>
+
+                <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#374151' }}>
+                    🎯 The practice
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                    {selectedSpark.exercise}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
     </div>
   )

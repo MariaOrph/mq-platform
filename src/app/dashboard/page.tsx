@@ -332,12 +332,12 @@ export default function ParticipantDashboard() {
                         <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
                         <button
                           onClick={() => setDimModal({ dimId: dim.id, mode: 'about' })}
-                          className="text-xs font-medium text-left hover:underline"
-                          style={{ color: isFocus ? dim.color : '#374151' }}
+                          className="text-xs font-medium text-left flex items-center gap-1"
+                          style={{ color: isFocus ? dim.color : '#374151', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: isFocus ? dim.color : '#9CA3AF' }}
                         >
                           {dim.name}
                           {isFocus && (
-                            <span className="ml-2 text-xs font-bold px-1.5 py-0.5 rounded-full"
+                            <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full"
                                   style={{ backgroundColor: dim.bg, color: dim.color }}>
                               focus
                             </span>
@@ -346,8 +346,8 @@ export default function ParticipantDashboard() {
                       </div>
                       <button
                         onClick={() => score !== null && setDimModal({ dimId: dim.id, mode: 'score' })}
-                        className="text-xs font-bold hover:opacity-70 transition-opacity"
-                        style={{ color: dim.color, cursor: score !== null ? 'pointer' : 'default' }}
+                        className="text-xs font-bold flex items-center gap-0.5"
+                        style={{ color: dim.color, cursor: score !== null ? 'pointer' : 'default', textDecoration: score !== null ? 'underline' : 'none', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: dim.color }}
                       >
                         {score ?? '—'}
                       </button>
