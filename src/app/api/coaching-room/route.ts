@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
   }
 
   const { data: sessions } = await supabaseAdmin
-    .from('coaching_sessions')
+    .from('coaching_chats')
     .select('id, title, created_at, updated_at, message_count')
     .eq('participant_id', user.id)
     .order('updated_at', { ascending: false })
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       void updateCoachingMemory(participantId, body.prevSessionId)
     }
     const { data: session } = await supabaseAdmin
-      .from('coaching_sessions')
+      .from('coaching_chats')
       .insert({ participant_id: participantId, title: 'New conversation' })
       .select().single()
     return NextResponse.json({ session })
@@ -148,13 +148,13 @@ Respond in 2–4 conversational paragraphs. Ask one good question at the end whe
     supabaseAdmin.from('coaching_room_messages').insert({
       participant_id: participantId, session_id: sessionId, role: 'assistant', content: reply,
     }),
-    supabaseAdmin.from('coaching_sessions')
+    supabaseAdmin.from('coaching_chats')
       .update({ updated_at: new Date().toISOString(), message_count: newCount }).eq('id', sessionId),
   ])
 
   if (pastMessages.length === 0) {
     const title = message.trim().length > 52 ? message.trim().slice(0, 49) + '…' : message.trim()
-    await supabaseAdmin.from('coaching_sessions').update({ title }).eq('id', sessionId)
+    await supabaseAdmin.from('coaching_chats').update({ title }).eq('id', sessionId)
   }
 
   return NextResponse.json({ reply })
@@ -169,7 +169,7 @@ export async function DELETE(req: NextRequest) {
   const sessionId = req.nextUrl.searchParams.get('sessionId')
   if (!sessionId) return NextResponse.json({ error: 'sessionId required' }, { status: 400 })
 
-  await supabaseAdmin.from('coaching_sessions')
+  await supabaseAdmin.from('coaching_chats')
     .delete().eq('id', sessionId).eq('participant_id', user.id)
   return NextResponse.json({ success: true })
 }

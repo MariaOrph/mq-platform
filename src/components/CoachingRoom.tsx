@@ -104,6 +104,10 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
     })
     if (res.ok) {
       const { session } = await res.json()
+      if (!session) {
+        console.error('[coaching-room] new_session returned null session')
+        return
+      }
       setActiveSession(session)
       setMessages([])
       setMsgLoaded(true)
