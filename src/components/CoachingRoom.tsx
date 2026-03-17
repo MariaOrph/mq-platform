@@ -354,7 +354,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                       What's on your mind, {firstName}?
                     </p>
                     <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                      Bring me a challenge, a decision, or choose a dimension to work on.
+                      Bring me a challenge, a decision, or choose one of the 6 MQ dimensions to work on.
                     </p>
                   </div>
 
@@ -368,7 +368,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                         'I have a difficult conversation coming up',
                         "I'm struggling to motivate my team",
                         "I feel like I'm losing confidence",
-                        'I need help with a decision',
+                        'I need help managing up',
                       ].map(prompt => (
                         <button key={prompt} onClick={() => setInput(prompt)}
                                 onMouseEnter={() => setHoveredPrompt(prompt)}
