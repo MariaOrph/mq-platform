@@ -517,7 +517,7 @@ export default function ParticipantDashboard() {
           const ratingLabel = avgRating >= 3.5 ? 'Consistently' : avgRating >= 2.5 ? 'Usually' : avgRating >= 1.5 ? 'Sometimes' : 'Rarely'
           const statusText  = !isStarted  ? 'Rate how your behaviours reflect your company values'
                             : !isComplete ? `${rated} of ${total} behaviours rated`
-                            : `All ${total} behaviours rated · avg: ${ratingLabel}`
+                            : `All ${total} behaviours rated`
           const ctaText     = !isStarted ? 'Start →' : 'Update →'
           return (
             <a
