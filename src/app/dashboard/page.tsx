@@ -342,7 +342,7 @@ export default function ParticipantDashboard() {
                           background: 'radial-gradient(circle, rgba(10,243,205,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
             {/* Brain watermark */}
             <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
-                          fontSize: 80, opacity: 0.25, lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>
+                          fontSize: 80, opacity: 0.45, lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>
               🧠
             </div>
             <div className="relative z-10 p-5 flex items-center gap-5">
@@ -363,7 +363,7 @@ export default function ParticipantDashboard() {
 
         {/* ── Daily Spark ──────────────────────────────────────────────────── */}
         {assessment && authToken && (
-          <DailySpark token={authToken} />
+          <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
         )}
 
         {/* ── MQ profile bars ───────────────────────────────────────────────── */}

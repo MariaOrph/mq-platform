@@ -20,6 +20,7 @@ interface SparkCard {
 
 interface DailySparkProps {
   token: string
+  onOpenCoachingRoom?: () => void
 }
 
 // ── Config ─────────────────────────────────────────────────────────────────────
@@ -44,7 +45,7 @@ const MILESTONES: Record<number, { label: string; emoji: string; message: string
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function DailySpark({ token }: DailySparkProps) {
+export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProps) {
   const [currentCard,     setCurrentCard]     = useState<SparkCard | null>(null)
   const [completedSparks, setCompletedSparks] = useState<SparkCard[]>([])
   const [totalCompleted,  setTotalCompleted]  = useState(0)
@@ -382,7 +383,19 @@ export default function DailySpark({ token }: DailySparkProps) {
           <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>Check back tomorrow for your next practice.</p>
           <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#F4FDF9', border: '1px solid #B9F8DD' }}>
             <p className="text-xs leading-relaxed" style={{ color: '#05A88E' }}>
-              In the meantime, your 🧠 <span className="font-semibold">Coaching Room</span> is always open — bring anything you want to think through, work on, or get support with.
+              In the meantime, your{' '}
+              {onOpenCoachingRoom ? (
+                <button
+                  onClick={onOpenCoachingRoom}
+                  className="font-semibold underline hover:opacity-70 transition-opacity"
+                  style={{ color: '#05A88E' }}
+                >
+                  MQ Coaching Room
+                </button>
+              ) : (
+                <span className="font-semibold">MQ Coaching Room</span>
+              )}{' '}
+              is always open — bring anything you want to think through, work on, or get support with.
             </p>
           </div>
         </div>
