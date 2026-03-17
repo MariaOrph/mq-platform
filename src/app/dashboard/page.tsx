@@ -337,16 +337,52 @@ export default function ParticipantDashboard() {
             className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
             style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
           >
-            {/* Concentric rings */}
-            <svg
-              style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', filter: 'drop-shadow(0 0 6px rgba(10,243,205,0.4))' }}
-              width="110" height="110" viewBox="0 0 110 110" fill="none"
-            >
-              <circle cx="110" cy="55" r="25" stroke="rgba(10,243,205,0.7)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="42" stroke="rgba(10,243,205,0.5)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="60" stroke="rgba(10,243,205,0.3)" strokeWidth="1.5" fill="none" />
-              <circle cx="110" cy="55" r="78" stroke="rgba(10,243,205,0.15)" strokeWidth="1.5" fill="none" />
-            </svg>
+            {/* Mini radar chart — user's actual 6-dimension profile */}
+            {(() => {
+              const cx = 55, cy = 55, maxR = 43
+              const scores = [1,2,3,4,5,6].map(id => getDimScore(assessment, id))
+              const angles = [-90, -30, 30, 90, 150, 210].map(a => a * Math.PI / 180)
+              const gridLevels = [0.33, 0.66, 1.0]
+              const gridPaths = gridLevels.map(level =>
+                angles.map(a => `${cx + maxR * level * Math.cos(a)},${cy + maxR * level * Math.sin(a)}`).join(' ')
+              )
+              const scorePts = scores.map((s, i) => {
+                const r = ((s ?? 50) / 100) * maxR
+                return `${cx + r * Math.cos(angles[i])},${cy + r * Math.sin(angles[i])}`
+              }).join(' ')
+              const dotColours = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#7ba3ea','#a78bfa']
+              return (
+                <svg
+                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none',
+                           filter: 'drop-shadow(0 0 8px rgba(10,243,205,0.35))' }}
+                  width="110" height="110" viewBox="0 0 110 110" fill="none"
+                >
+                  {/* Grid rings */}
+                  {gridPaths.map((pts, i) => (
+                    <polygon key={i} points={pts}
+                             stroke={`rgba(10,243,205,${0.1 + i * 0.07})`} strokeWidth="0.75" fill="none" />
+                  ))}
+                  {/* Axis spokes */}
+                  {angles.map((a, i) => (
+                    <line key={i} x1={cx} y1={cy}
+                          x2={cx + maxR * Math.cos(a)} y2={cy + maxR * Math.sin(a)}
+                          stroke="rgba(10,243,205,0.12)" strokeWidth="0.75" />
+                  ))}
+                  {/* Score area */}
+                  <polygon points={scorePts} fill="rgba(10,243,205,0.18)" stroke="rgba(10,243,205,0.75)" strokeWidth="1.5" strokeLinejoin="round" />
+                  {/* Dimension dots */}
+                  {scores.map((s, i) => {
+                    const r = ((s ?? 50) / 100) * maxR
+                    return (
+                      <circle key={i}
+                              cx={cx + r * Math.cos(angles[i])}
+                              cy={cy + r * Math.sin(angles[i])}
+                              r="3" fill={dotColours[i]} />
+                    )
+                  })}
+                </svg>
+              )
+            })()}
             <div className="relative z-10 p-5 flex items-center gap-5">
               <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
                    style={{ backgroundColor: '#0AF3CD' }}>
