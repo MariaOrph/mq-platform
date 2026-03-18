@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
-  DIMENSIONS, ALL_QUESTIONS, SCALE_OPTIONS,
+  DIMENSIONS, ALL_QUESTIONS, TOTAL_QUESTIONS, SCALE_OPTIONS,
   calculateAllScores, getScoreLabel, getDimensionInsight, getPersonalisedMessage,
 } from '@/lib/assessment/data'
 
@@ -16,13 +16,13 @@ export default function AssessmentPage() {
   const [step, setStep]                     = useState<Step>('welcome')
   const [firstName, setFirstName]           = useState('')
   const [participantRole, setParticipantRole] = useState<ParticipantRole | ''>('')
-  const [responses, setResponses]           = useState<number[]>(Array(24).fill(0))
+  const [responses, setResponses]           = useState<number[]>(Array(TOTAL_QUESTIONS).fill(0))
   const [currentQ, setCurrentQ]             = useState(0)
   const [scores, setScores]                 = useState<Scores | null>(null)
 
   const currentQuestion = ALL_QUESTIONS[currentQ]
   const currentDimension = currentQuestion.dimension
-  const progressPercent = ((currentQ + 1) / 24) * 100
+  const progressPercent = ((currentQ + 1) / TOTAL_QUESTIONS) * 100
   const currentResponse = responses[currentQ]
 
   function handleSelect(value: number) {
@@ -32,7 +32,7 @@ export default function AssessmentPage() {
   }
 
   function handleNext() {
-    if (currentQ < 23) {
+    if (currentQ < TOTAL_QUESTIONS - 1) {
       setCurrentQ(currentQ + 1)
     } else {
       handleComplete()
@@ -70,6 +70,7 @@ export default function AssessmentPage() {
         d4_score:         newScores.dimensionScores[3],
         d5_score:         newScores.dimensionScores[4],
         d6_score:         newScores.dimensionScores[5],
+        d7_score:         newScores.dimensionScores[6],
         overall_score:    newScores.overall,
       })
     } catch (err) {
@@ -187,10 +188,10 @@ export default function AssessmentPage() {
           <div className="flex justify-between items-center mb-3">
             <span className="text-sm font-semibold"
                   style={{ color: currentDimension.color }}>
-              {currentDimension.name} &nbsp;·&nbsp; Dimension {currentQuestion.dimensionIndex + 1} of 6
+              {currentDimension.name} &nbsp;·&nbsp; Dimension {currentQuestion.dimensionIndex + 1} of 7
             </span>
             <span className="text-sm" style={{ color: '#05A88E' }}>
-              Question {currentQ + 1} of 24
+              Question {currentQ + 1} of {TOTAL_QUESTIONS}
             </span>
           </div>
           <div className="w-full h-2 rounded-full" style={{ backgroundColor: '#E8FDF7' }}>
@@ -256,7 +257,7 @@ export default function AssessmentPage() {
             disabled={currentResponse === 0}
             className="flex-1 py-4 rounded-xl text-sm font-semibold disabled:opacity-40 hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
-            {currentQ === 23 ? 'See my results →' : 'Next →'}
+            {currentQ === TOTAL_QUESTIONS - 1 ? 'See my results →' : 'Next →'}
           </button>
         </div>
       </div>

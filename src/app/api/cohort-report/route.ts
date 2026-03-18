@@ -10,14 +10,15 @@ const supabaseAdmin = createClient(
 
 const DIMENSION_NAMES: Record<string, string> = {
   d1: 'Self-awareness',
-  d2: 'Cognitive flexibility',
+  d2: 'Ego & identity',
   d3: 'Emotional regulation',
-  d4: 'Values clarity',
-  d5: 'Relational mindset',
-  d6: 'Adaptive resilience',
+  d4: 'Cognitive flexibility',
+  d5: 'Values & purpose',
+  d6: 'Relational mindset',
+  d7: 'Adaptive resilience',
 }
 
-const DIMENSION_KEYS = ['d1','d2','d3','d4','d5','d6'] as const
+const DIMENSION_KEYS = ['d1','d2','d3','d4','d5','d6','d7'] as const
 
 function avg(nums: (number | null)[]): number | null {
   const valid = nums.filter((n): n is number => n !== null)
@@ -84,12 +85,13 @@ export async function GET(req: NextRequest) {
     overall_score: number | null
     d1_score: number | null; d2_score: number | null; d3_score: number | null
     d4_score: number | null; d5_score: number | null; d6_score: number | null
+    d7_score: number | null
   }[] = []
 
   if (participantIds.length > 0) {
     const { data: rows } = await supabaseAdmin
       .from('assessments')
-      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score')
+      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score')
       .in('participant_id', participantIds)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
@@ -110,7 +112,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       cohortId, cohortName: cohort.name, companyName,
       totalInvited, completed: 0,
-      scores: { overall: null, d1: null, d2: null, d3: null, d4: null, d5: null, d6: null },
+      scores: { overall: null, d1: null, d2: null, d3: null, d4: null, d5: null, d6: null, d7: null },
       analysis: null,
     })
   }
@@ -124,6 +126,7 @@ export async function GET(req: NextRequest) {
     d4: avg(assessmentRows.map(r => r.d4_score)),
     d5: avg(assessmentRows.map(r => r.d5_score)),
     d6: avg(assessmentRows.map(r => r.d6_score)),
+    d7: avg(assessmentRows.map(r => r.d7_score)),
   }
 
   // ── Generate AI analysis ──────────────────────────────────────────────────
@@ -139,7 +142,7 @@ Aggregate dimension scores:
 ${dimLines}
 - Overall team MQ: ${scores.overall !== null ? `${scores.overall}/100 (${getScoreBand(scores.overall)})` : 'pending'}
 
-MQ is defined as the ability to notice your thoughts, beliefs, and emotional triggers — and choose how to respond rather than being unconsciously driven by them. The 6 dimensions measure: Self-awareness (internal observer), Cognitive flexibility (holding multiple perspectives), Emotional regulation (managing emotional responses under pressure), Values clarity (alignment between stated and lived values), Relational mindset (quality of attention in relationships), and Adaptive resilience (sustaining performance under pressure).
+MQ is defined as the ability to notice your thoughts, beliefs, and emotional triggers — and choose how to respond rather than being unconsciously driven by them. The 7 dimensions measure: Self-awareness (internal observer), Ego & identity (leading from values not ego protection), Emotional regulation (managing emotional responses under pressure), Cognitive flexibility (holding multiple perspectives), Values & purpose (alignment between stated values, lived behaviour, and sense of direction), Relational mindset (quality of attention in relationships), and Adaptive resilience (sustaining performance under pressure).
 
 Return a JSON object with this exact structure:
 {

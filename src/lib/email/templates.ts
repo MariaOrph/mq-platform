@@ -137,12 +137,13 @@ mindsetquo.com`
 // ── Daily reminder email ───────────────────────────────────────────────────────
 
 const DIMENSION_ONE_LINERS: Record<string, string> = {
-  'Self-awareness':       'The foundation of everything — the more you notice your own patterns, the more choice you have in how you show up.',
-  'Cognitive flexibility':'Your ability to reframe, adapt and stay open — even when it\'s uncomfortable.',
-  'Emotional regulation': 'Learning to notice your triggers and choose your response — the skill that transforms difficult conversations.',
-  'Values clarity':       'Getting clear on what you stand for — so your leadership becomes consistent, trustworthy and intentional.',
-  'Relational mindset':   'Moving from doing to enabling — so your impact works through your people, not just through you.',
-  'Adaptive resilience':  'Staying grounded when the pressure is on — so your team takes their cues from your calm, not your stress.',
+  'Self-awareness':        'The foundation of everything — the more you notice your own patterns, the more choice you have in how you show up.',
+  'Ego & identity':        'Leading from your values, not your ego — the shift that unlocks real authority and lasting trust.',
+  'Emotional regulation':  'Learning to notice your triggers and choose your response — the skill that transforms difficult conversations.',
+  'Cognitive flexibility': 'Your ability to reframe, adapt and stay open — even when it\'s uncomfortable.',
+  'Values & purpose':      'Getting clear on what you stand for and where you\'re going — so your leadership becomes consistent, trustworthy and intentional.',
+  'Relational mindset':    'Moving from doing to enabling — so your impact works through your people, not just through you.',
+  'Adaptive resilience':   'Staying grounded when the pressure is on — so your team takes their cues from your calm, not your stress.',
 }
 
 const SUBJECT_LINES = [

@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
   // Fetch assessment scores
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
-    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, participant_role')
+    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role')
     .eq('participant_id', participantId).not('overall_score', 'is', null)
     .order('completed_at', { ascending: false }).limit(1)
 
@@ -205,7 +205,7 @@ export async function POST(req: NextRequest) {
   const role       = assessment?.participant_role ?? 'leader'
 
   const mqContext = assessment
-    ? `${firstName}'s MQ scores: Overall ${assessment.overall_score}/100 | Self-awareness ${assessment.d1_score} | Cognitive flexibility ${assessment.d2_score} | Emotional regulation ${assessment.d3_score} | Values clarity ${assessment.d4_score} | Relational mindset ${assessment.d5_score} | Adaptive resilience ${assessment.d6_score}. Use these as context but do not make them the centre of conversation — this space is about culture and team dynamics, not individual MQ.`
+    ? `${firstName}'s MQ scores: Overall ${assessment.overall_score}/100 | Self-awareness ${assessment.d1_score} | Ego & identity ${assessment.d2_score} | Emotional regulation ${assessment.d3_score} | Cognitive flexibility ${assessment.d4_score} | Values & purpose ${assessment.d5_score} | Relational mindset ${assessment.d6_score} | Adaptive resilience ${assessment.d7_score}. Use these as context but do not make them the centre of conversation — this space is about culture and team dynamics, not individual MQ.`
     : 'MQ assessment not yet completed.'
 
   // Fetch company values + participant ratings (for values topic and general context)

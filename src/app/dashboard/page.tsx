@@ -9,12 +9,13 @@ import MQOnboarding, { shouldShowOnboarding } from '@/components/MQOnboarding'
 // ── Dimension config ───────────────────────────────────────────────────────────
 
 const DIMS = [
-  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Values clarity',        color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 5, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 6, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
+  { id: 1, name: 'Self-awareness',        color: '#0AF3CD', bg: '#E6FDF9' },
+  { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
+  { id: 3, name: 'Emotional regulation',  color: '#F97316', bg: '#FFF0E6' },
+  { id: 4, name: 'Cognitive flexibility', color: '#05A88E', bg: '#D4F5EF' },
+  { id: 5, name: 'Values & purpose',      color: '#3B82F6', bg: '#EFF6FF' },
+  { id: 6, name: 'Relational mindset',    color: '#8B5CF6', bg: '#EDE9FE' },
+  { id: 7, name: 'Adaptive resilience',   color: '#F59E0B', bg: '#FFFBEB' },
 ]
 
 const DIM_DETAIL: Record<number, {
@@ -32,11 +33,11 @@ const DIM_DETAIL: Record<number, {
     low: 'You may find yourself reacting before you\'ve had a chance to choose your response, or discovering your impact on others after the fact rather than in the moment.',
   },
   2: {
-    tagline: 'The capacity to think in multiple directions at once.',
-    what: 'Cognitive flexibility is the ability to hold several perspectives simultaneously, update your thinking when new information arrives, and move fluidly between different mental models. It\'s the opposite of rigid, either/or thinking.',
-    why: 'Rigid thinking is one of the most common causes of leadership blind spots. The world rarely fits the frameworks we already have. Cognitively flexible leaders can revise their assumptions, see the same situation from multiple angles, and avoid the trap of \'I already know how this works.\' In fast-moving environments, this is a survival skill.',
-    high: 'You readily update your mental models, entertain contradictory ideas, and avoid black-and-white thinking. People likely experience you as open-minded and intellectually curious.',
-    low: 'You may default to familiar frameworks even when the situation calls for fresh thinking, or find it uncomfortable when others challenge your interpretation of events.',
+    tagline: 'Leading from strength, not from the need for approval.',
+    what: 'Ego & identity describes the degree to which your leadership is driven by genuine values versus by the unconscious need to protect your image, status, or sense of self. It\'s the difference between leading from strength and leading from fear of looking bad.',
+    why: 'When ego needs are running the show, leaders defend bad decisions, avoid feedback, over-control their teams, and struggle to acknowledge mistakes. The research is clear: psychological ego defences are one of the most common — and least examined — causes of poor leadership. Leaders who have done this work lead with far greater openness, courage, and authenticity.',
+    high: 'You lead from a relatively secure sense of self. You can receive feedback without becoming defensive, admit mistakes without it threatening your identity, and share credit without feeling diminished.',
+    low: 'You may notice a pull towards protecting your image in certain situations — perhaps avoiding feedback, over-explaining mistakes, or becoming defensive when challenged. This is normal, and it\'s the most important edge to develop.',
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
@@ -46,20 +47,27 @@ const DIM_DETAIL: Record<number, {
     low: 'Emotional intensity may sometimes hijack your thinking or limit your presence in high-stakes moments. You might notice you regret things you said under pressure, or that you shut down when things get difficult.',
   },
   4: {
-    tagline: 'Knowing what you stand for and acting like it.',
-    what: 'Values clarity is about knowing what you actually believe in and, more importantly, whether your decisions and day-to-day behaviour genuinely reflect those values. It\'s the alignment between your stated principles and your lived ones.',
-    why: 'Values are the invisible architecture of leadership. When leaders act consistently with their values, they build deep trust. When there\'s a gap between what they say they value and how they actually behave, people notice, even if they can\'t articulate it. Values-clear leaders make faster decisions, attract aligned talent, and create cultures of integrity.',
-    high: 'Your decisions are anchored by a clear internal compass. Others experience you as consistent and trustworthy; they know what you stand for because your behaviour demonstrates it.',
-    low: 'You may hold values you believe in but haven\'t fully translated into consistent, visible behaviours. The gap between intention and action may be wider than you\'d like.',
+    tagline: 'The capacity to think in multiple directions at once.',
+    what: 'Cognitive flexibility is the ability to hold several perspectives simultaneously, update your thinking when new information arrives, and move fluidly between different mental models. It\'s the opposite of rigid, either/or thinking.',
+    why: 'Rigid thinking is one of the most common causes of leadership blind spots. The world rarely fits the frameworks we already have. Cognitively flexible leaders can revise their assumptions, see the same situation from multiple angles, and avoid the trap of \'I already know how this works.\' In fast-moving environments, this is a survival skill.',
+    high: 'You readily update your mental models, entertain contradictory ideas, and avoid black-and-white thinking. People likely experience you as open-minded and intellectually curious.',
+    low: 'You may default to familiar frameworks even when the situation calls for fresh thinking, or find it uncomfortable when others challenge your interpretation of events.',
   },
   5: {
+    tagline: 'Knowing what you stand for — and where you\'re going.',
+    what: 'Values & purpose is about knowing what you genuinely believe in and having a clear sense of direction that motivates your leadership beyond personal gain. It\'s the alignment between your stated principles, your lived behaviour, and your sense of meaningful contribution.',
+    why: 'Purpose-driven leaders make faster decisions, sustain their energy through difficulty, attract aligned talent, and create cultures of integrity. Values are the invisible architecture of leadership: when they\'re clear and consistently acted on, people feel they can trust you. When there\'s a gap between what you say you value and how you behave under pressure, people notice — even if they can\'t articulate it.',
+    high: 'Your decisions are anchored by a clear internal compass and a sense of what you\'re building. Others experience you as consistent and trustworthy; they know what you stand for because your behaviour demonstrates it.',
+    low: 'You may hold values you believe in but haven\'t fully translated into consistent, visible behaviour. Or your day-to-day work may feel disconnected from a larger sense of purpose. The gap between intention and action may be wider than you\'d like.',
+  },
+  6: {
     tagline: 'The quality of presence you bring to every interaction.',
     what: 'Relational mindset describes the intention and quality of attention you bring to your relationships, whether you genuinely seek to understand others, or primarily see people through the lens of what they can do for you.',
     why: 'Leadership happens in relationship. The way you listen, the assumptions you hold about people, and the quality of your presence in conversations directly shape team performance, trust, and psychological safety. Transactional leadership produces compliance; relational leadership produces commitment.',
     high: 'You approach relationships with genuine curiosity and care. People feel seen and heard by you, which builds loyalty and creates conditions where others do their best work.',
     low: 'Under pressure, you may shift into transactional mode, treating relationships as means to an end, or giving people less real attention than they need to feel genuinely valued.',
   },
-  6: {
+  7: {
     tagline: 'Bouncing forward, not just back.',
     what: 'Adaptive resilience is the ability to sustain performance under sustained pressure, recover from setbacks, and find meaning in adversity rather than being destabilised by it. It\'s not toughness; it\'s flexibility under load.',
     why: 'Leadership is inherently uncertain, often difficult, and sometimes brutal. Resilient leaders don\'t just survive hard times; they model equanimity for their teams, make better decisions under stress, and treat difficulty as developmental. This profoundly affects team culture: teams take their cue from how leaders handle adversity.',
@@ -106,6 +114,7 @@ interface Assessment {
   d4_score:         number | null
   d5_score:         number | null
   d6_score:         number | null
+  d7_score:         number | null
   completed_at:     string | null
   participant_role: string | null
 }
@@ -136,7 +145,7 @@ function getJourneyDay(completedAt: string | null) {
 }
 
 function getFocusDimension(a: Assessment): number {
-  const scores = [a.d1_score, a.d2_score, a.d3_score, a.d4_score, a.d5_score, a.d6_score]
+  const scores = [a.d1_score, a.d2_score, a.d3_score, a.d4_score, a.d5_score, a.d6_score, a.d7_score]
   const valid  = scores.map((s, i) => ({ s: s ?? 999, i }))
   valid.sort((a, b) => a.s - b.s)
   return valid[0].i + 1
@@ -145,7 +154,7 @@ function getFocusDimension(a: Assessment): number {
 function getDimScore(a: Assessment, dimId: number): number | null {
   const map: Record<number, keyof Assessment> = {
     1: 'd1_score', 2: 'd2_score', 3: 'd3_score',
-    4: 'd4_score', 5: 'd5_score', 6: 'd6_score',
+    4: 'd4_score', 5: 'd5_score', 6: 'd6_score', 7: 'd7_score',
   }
   return a[map[dimId]] as number | null
 }
@@ -248,7 +257,7 @@ export default function ParticipantDashboard() {
 
     const { data: assessments } = await supabase
       .from('assessments')
-      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, completed_at, participant_role')
+      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role')
       .eq('participant_id', authSession.user.id)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })

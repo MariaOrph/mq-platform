@@ -55,8 +55,8 @@ Return ONLY a valid JSON object with keys: title, teaser, insight, exercise. No 
 
 // ── Milestone sets ─────────────────────────────────────────────────────────────
 
-const MILESTONES_24 = new Set([4, 8, 12, 16, 20, 24])
-const MILESTONES_30 = new Set([5, 10, 15, 20, 25, 30])
+const MILESTONES_28 = new Set([4, 8, 12, 16, 20, 24, 28])
+const MILESTONES_34 = new Set([5, 10, 15, 20, 25, 30, 34])
 
 // ── POST ──────────────────────────────────────────────────────────────────────
 
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
   }
 
   const totalCards     = companyValues.length > 0 ? TOTAL_CARDS_WITH_VALUES : TOTAL_CARDS_BASE
-  const milestoneSet   = totalCards === TOTAL_CARDS_WITH_VALUES ? MILESTONES_30 : MILESTONES_24
+  const milestoneSet   = totalCards === TOTAL_CARDS_WITH_VALUES ? MILESTONES_34 : MILESTONES_28
 
   const totalCompleted = completed.card_number
   const isMilestone    = milestoneSet.has(totalCompleted)
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
 
     const { data: assessments } = await supabaseAdmin
       .from('assessments')
-      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score')
+      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score')
       .eq('participant_id', participantId)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
       const scores  = [
         assessment.d1_score, assessment.d2_score, assessment.d3_score,
         assessment.d4_score, assessment.d5_score, assessment.d6_score,
+        assessment.d7_score,
       ]
       const dimOrder = getDimOrder(scores)
 

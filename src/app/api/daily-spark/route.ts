@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
   // Assessment scores
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
-    .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, overall_score')
+    .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, overall_score')
     .eq('participant_id', participantId)
     .not('overall_score', 'is', null)
     .order('completed_at', { ascending: false })
@@ -80,6 +80,7 @@ export async function GET(req: NextRequest) {
   const scores = [
     assessment.d1_score, assessment.d2_score, assessment.d3_score,
     assessment.d4_score, assessment.d5_score, assessment.d6_score,
+    assessment.d7_score,
   ]
   const dimOrder = getDimOrder(scores)
 

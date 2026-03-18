@@ -9,8 +9,13 @@ const supabaseAdmin = createClient(
 )
 
 const DIMENSION_NAMES: Record<number, string> = {
-  1: 'Self-awareness', 2: 'Cognitive flexibility', 3: 'Emotional regulation',
-  4: 'Values clarity',  5: 'Relational mindset',    6: 'Adaptive resilience',
+  1: 'Self-awareness',
+  2: 'Ego & identity',
+  3: 'Emotional regulation',
+  4: 'Cognitive flexibility',
+  5: 'Values & purpose',
+  6: 'Relational mindset',
+  7: 'Adaptive resilience',
 }
 
 function getFocusDimension(scores: (number | null)[]): number {
@@ -75,7 +80,7 @@ export async function POST(req: NextRequest) {
 
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
-    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, participant_role')
+    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role')
     .eq('participant_id', participantId).not('overall_score', 'is', null)
     .order('completed_at', { ascending: false }).limit(1)
 
@@ -86,7 +91,8 @@ export async function POST(req: NextRequest) {
   let focusDimName = 'general mindset'
   if (assessment) {
     const scores = [assessment.d1_score, assessment.d2_score, assessment.d3_score,
-                    assessment.d4_score, assessment.d5_score, assessment.d6_score]
+                    assessment.d4_score, assessment.d5_score, assessment.d6_score,
+                    assessment.d7_score]
     focusDimName = DIMENSION_NAMES[getFocusDimension(scores)]
   }
 
@@ -137,7 +143,7 @@ export async function POST(req: NextRequest) {
   } catch { /* no values data */ }
 
   const scoresSummary = assessment
-    ? `Overall MQ: ${assessment.overall_score}/100 | Self-awareness: ${assessment.d1_score} | Cognitive flexibility: ${assessment.d2_score} | Emotional regulation: ${assessment.d3_score} | Values clarity: ${assessment.d4_score} | Relational mindset: ${assessment.d5_score} | Adaptive resilience: ${assessment.d6_score} | Focus: ${focusDimName}`
+    ? `Overall MQ: ${assessment.overall_score}/100 | Self-awareness: ${assessment.d1_score} | Ego & identity: ${assessment.d2_score} | Emotional regulation: ${assessment.d3_score} | Cognitive flexibility: ${assessment.d4_score} | Values & purpose: ${assessment.d5_score} | Relational mindset: ${assessment.d6_score} | Adaptive resilience: ${assessment.d7_score} | Focus: ${focusDimName}`
     : 'Assessment not yet completed.'
 
   const memoryContext = profile?.coaching_memory
@@ -179,11 +185,13 @@ If ${firstName} asks to "build" or "develop" or "improve" a specific MQ dimensio
 
    - Self-awareness: "Self-awareness is about seeing yourself clearly: how you come across, what drives your reactions, and the impact you have on others. Before we dig in, can you think of a recent moment where you only understood how you'd come across after the fact, when it was too late to change it?"
 
-   - Cognitive flexibility: "Cognitive flexibility is about being able to hold more than one perspective at once and update your thinking when the situation calls for it, rather than sticking with the first interpretation that feels right. Tell me about a situation recently where you found it hard to shift your view, even when part of you suspected you should."
+   - Ego & identity: "Ego & identity is about the degree to which your leadership is driven by genuine values versus by the unconscious need to protect your image, status, or sense of self. It's not about whether you have an ego — everyone does. It's about how much it's running the show. Think of a recent moment where you received critical feedback or were challenged in front of others. What was your first instinct, and how did you actually respond?"
 
    - Emotional regulation: "Emotional regulation isn't about suppressing how you feel. It's about making sure your emotional responses serve you rather than derail you, especially under pressure. Can you think of a recent moment where your reaction got ahead of you in a way you weren't happy with?"
 
-   - Values clarity: "Values clarity is about knowing what you stand for as a leader and consistently acting in line with that, even when it's inconvenient. When did you last make a decision that felt slightly off, like you'd compromised something important without fully meaning to?"
+   - Cognitive flexibility: "Cognitive flexibility is about being able to hold more than one perspective at once and update your thinking when the situation calls for it, rather than sticking with the first interpretation that feels right. Tell me about a situation recently where you found it hard to shift your view, even when part of you suspected you should."
+
+   - Values & purpose: "Values and purpose is about knowing what you stand for as a leader, and having a clear sense of what you're building beyond the day-to-day. When did you last make a decision that felt slightly off, like you'd compromised something important without fully meaning to? And equally: when you think about why your work matters, what's the answer that actually motivates you?"
 
    - Relational mindset: "Relational mindset is about the quality of attention and presence you bring to your working relationships: how well you build trust, listen, and connect, especially with people who are different from you or who challenge you. Think of a working relationship that isn't as strong as it could be. What do you notice about how you show up in it?"
 

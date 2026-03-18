@@ -4,50 +4,57 @@ import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 const DIMS = [
-  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Values clarity',        color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 5, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 6, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
+  { id: 1, name: 'Self-awareness',       color: '#0AF3CD', bg: '#E8FDF7' },
+  { id: 2, name: 'Ego & identity',       color: '#EC4899', bg: '#FDF2F8' },
+  { id: 3, name: 'Emotional regulation', color: '#F97316', bg: '#FFF4ED' },
+  { id: 4, name: 'Cognitive flexibility',color: '#05A88E', bg: '#E6FAF6' },
+  { id: 5, name: 'Values & purpose',     color: '#3B82F6', bg: '#EFF6FF' },
+  { id: 6, name: 'Relational mindset',   color: '#8B5CF6', bg: '#F5F3FF' },
+  { id: 7, name: 'Adaptive resilience',  color: '#F59E0B', bg: '#FFFBEB' },
 ]
 
 const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: string; low: string }> = {
   1: {
     tagline: 'The ability to see yourself clearly in real time.',
-    what: 'The capacity to notice your own thoughts, feelings, assumptions and behavioural patterns as they arise, without being swept along by them.',
-    high: 'Strong internal observer. You notice patterns in your thinking, catch your own triggers early, and tend to seek honest feedback.',
+    what: 'The capacity to notice your own thoughts, emotions and patterns as they are happening — not just in reflection after the fact.',
+    high: 'Strong internal observer. You notice your patterns in the moment, catch triggers early, and tend to question the stories you tell yourself.',
     low: 'May react before choosing your response, or discover your impact on others after the fact rather than in the moment.',
   },
   2: {
-    tagline: 'The capacity to think in multiple directions at once.',
-    what: 'The ability to hold several perspectives simultaneously, update your thinking when new information arrives, and move fluidly between different mental models.',
-    high: 'Readily updates mental models, entertains contradictory ideas, and avoids black-and-white thinking.',
-    low: 'May default to familiar frameworks even when the situation calls for fresh thinking.',
+    tagline: 'Leading from purpose, not from the need to be right.',
+    what: 'The capacity to acknowledge mistakes, receive challenge with curiosity, and notice when ego protection is driving behaviour rather than genuine purpose.',
+    high: 'Leads with real security — not the kind that comes from always being right, but the kind that comes from knowing who you are.',
+    low: 'Ego protection may show up as defensiveness, reluctance to admit mistakes, or difficulty hearing challenge without feeling threatened.',
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
-    what: 'The ability to manage your emotional responses (especially under pressure) so they serve your goals rather than derail them.',
-    high: 'Stays grounded under pressure. Others experience you as steady and safe to bring problems to.',
-    low: 'Emotional intensity may sometimes hijack thinking or limit presence in high-stakes moments.',
+    what: 'The capacity to stay resourceful under pressure — noticing and acknowledging emotions without being governed by them.',
+    high: 'Stays grounded under pressure. Others experience you as steady and safe to bring difficult things to.',
+    low: 'Emotional intensity may sometimes hijack thinking or limit presence in high-stakes conversations.',
   },
   4: {
-    tagline: 'Knowing what you stand for and acting like it.',
-    what: 'Knowing what you actually believe in and whether your decisions and day-to-day behaviour genuinely reflect those values.',
-    high: 'Decisions anchored by a clear internal compass. Others experience you as consistent and trustworthy.',
-    low: 'May hold values not yet fully translated into consistent, visible behaviours.',
+    tagline: 'Holding your own thinking lightly.',
+    what: 'The capacity to challenge your own assumptions, reframe setbacks as information, and genuinely consider perspectives that differ from your own.',
+    high: 'Readily updates mental models and avoids black-and-white thinking. Setbacks become data rather than failure.',
+    low: 'May default to familiar frameworks even when the situation calls for fresh thinking, or hold beliefs more rigidly than the evidence warrants.',
   },
   5: {
-    tagline: 'The quality of presence you bring to every interaction.',
-    what: 'The intention and quality of attention you bring to your relationships, whether you genuinely seek to understand others.',
-    high: 'Approaches relationships with genuine curiosity and care. People feel seen and heard.',
-    low: 'Under pressure, may shift into transactional mode, giving people less real attention than they need.',
+    tagline: 'Knowing what you stand for — and why you lead.',
+    what: 'The capacity to make decisions from a clear sense of what you value and what you are ultimately in service of, rather than from fear, habit or external pressure.',
+    high: 'Decisions anchored by a clear internal compass. Others experience you as consistent, trustworthy and purposeful.',
+    low: 'May hold values not yet fully translated into consistent visible behaviour, or lead more from external expectation than internal conviction.',
   },
   6: {
-    tagline: 'Bouncing forward, not just back.',
-    what: 'The ability to sustain performance under pressure, recover from setbacks, and find meaning in adversity rather than being destabilised by it.',
-    high: 'Strong internal resources for navigating difficulty. Setbacks become learning rather than defeat.',
-    low: 'Sustained pressure may be depleting capacity in ways that affect thinking and relationships.',
+    tagline: 'The quality of presence you bring to every interaction.',
+    what: 'The internal orientation that makes genuine leadership of people possible — curiosity about what drives others, awareness of your emotional impact, and a desire to enable rather than control.',
+    high: 'Approaches relationships with genuine curiosity and care. People feel seen, heard and trusted to do their best work.',
+    low: 'Under pressure, may shift into transactional or controlling mode, giving people less real attention or autonomy than they need.',
+  },
+  7: {
+    tagline: 'Staying resourceful when it matters most.',
+    what: 'The capacity to maintain effectiveness, purpose and identity under conditions of pressure, uncertainty and change — accessing your best thinking precisely when conditions make it hardest.',
+    high: 'Strong internal resources for navigating difficulty. Stays effective and purposeful under pressure rather than going into survival mode.',
+    low: 'Sustained pressure may be reducing access to best thinking in ways that affect decisions, relationships and performance.',
   },
 }
 
@@ -68,6 +75,7 @@ interface Assessment {
   overall_score: number | null
   d1_score: number | null; d2_score: number | null; d3_score: number | null
   d4_score: number | null; d5_score: number | null; d6_score: number | null
+  d7_score: number | null
   completed_at: string | null
   participant_role: string | null
 }
@@ -97,7 +105,7 @@ export default function ReportPage() {
     const [{ data: prof }, { data: assessments }] = await Promise.all([
       supabase.from('profiles').select('full_name, email').eq('id', session.user.id).single(),
       supabase.from('assessments')
-        .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, completed_at, participant_role')
+        .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role')
         .eq('participant_id', session.user.id)
         .not('overall_score', 'is', null)
         .order('completed_at', { ascending: false })
@@ -211,7 +219,7 @@ export default function ReportPage() {
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
             MQ (Mindset Quotient) measures your capacity to notice your own thoughts, beliefs and emotional patterns,
             and to consciously choose how you respond rather than being driven by them automatically. It is measured
-            across six dimensions that together define the internal landscape of effective leadership.
+            across seven dimensions that together define the internal landscape of effective leadership.
           </p>
         </div>
 

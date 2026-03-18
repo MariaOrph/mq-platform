@@ -26,12 +26,13 @@ interface DailySparkProps {
 // ── Config ─────────────────────────────────────────────────────────────────────
 
 const DIMS: Record<number, { name: string; color: string; bg: string; emoji: string }> = {
-  1: { name: 'Self-awareness',       color: '#fdcb5e', bg: '#FEF5D9', emoji: '🪞' },
-  2: { name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0', emoji: '🧩' },
-  3: { name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8', emoji: '🌊' },
-  4: { name: 'Values clarity',        color: '#00c9a7', bg: '#D4F5EF', emoji: '🧭' },
-  5: { name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5', emoji: '🤝' },
-  6: { name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE', emoji: '⚡' },
+  1: { name: 'Self-awareness',       color: '#0AF3CD', bg: '#E6FDF9', emoji: '🪞' },
+  2: { name: 'Ego & identity',       color: '#EC4899', bg: '#FCE7F3', emoji: '🛡️' },
+  3: { name: 'Emotional regulation', color: '#F97316', bg: '#FFF0E6', emoji: '🌊' },
+  4: { name: 'Cognitive flexibility',color: '#05A88E', bg: '#D4F5EF', emoji: '🧩' },
+  5: { name: 'Values & purpose',     color: '#3B82F6', bg: '#EFF6FF', emoji: '🧭' },
+  6: { name: 'Relational mindset',   color: '#8B5CF6', bg: '#EDE9FE', emoji: '🤝' },
+  7: { name: 'Adaptive resilience',  color: '#F59E0B', bg: '#FFFBEB', emoji: '⚡' },
 }
 
 // Amber/gold theme for company values cards
@@ -48,22 +49,24 @@ function getCardDim(card: SparkCard): { name: string; color: string; bg: string;
 
 // ── Milestone sets ─────────────────────────────────────────────────────────────
 
-const MILESTONES_24: Record<number, { label: string; emoji: string; message: string }> = {
+const MILESTONES_28: Record<number, { label: string; emoji: string; message: string }> = {
   4:  { label: 'First dimension complete!', emoji: '🔥', message: 'You\'ve completed your first 4 practices. Your mindset is already shifting.' },
   8:  { label: 'Building momentum!',        emoji: '⚡', message: 'Eight practices in. You\'re building a real daily habit.' },
-  12: { label: 'Halfway there!',            emoji: '✨', message: 'You\'ve reached the halfway point of your MQ journey. Keep going.' },
-  16: { label: 'In the zone!',              emoji: '🎯', message: 'Sixteen practices complete. This is where real breakthroughs happen.' },
-  20: { label: 'Almost there!',             emoji: '🌟', message: 'Four practices left. You\'ve come so far — finish strong.' },
-  24: { label: 'Full cycle complete!',      emoji: '🏆', message: 'You\'ve completed all 24 Daily Spark practices. Time to see how much you\'ve grown.' },
+  12: { label: 'Nearly halfway!',           emoji: '✨', message: 'Twelve practices complete. Three dimensions explored — you\'re finding your rhythm.' },
+  16: { label: 'Halfway there!',            emoji: '🎯', message: 'You\'ve hit the halfway point of your MQ journey. This is where real shifts happen.' },
+  20: { label: 'In the zone!',              emoji: '🌟', message: 'Twenty practices complete. Five dimensions explored. Keep going — you\'re close.' },
+  24: { label: 'Almost there!',             emoji: '💫', message: 'Six dimensions done. Just one to go — finish what you\'ve started.' },
+  28: { label: 'Full cycle complete!',      emoji: '🏆', message: 'You\'ve completed all 28 Daily Spark practices across all 7 MQ dimensions. Time to see how much you\'ve grown.' },
 }
 
-const MILESTONES_30: Record<number, { label: string; emoji: string; message: string }> = {
+const MILESTONES_34: Record<number, { label: string; emoji: string; message: string }> = {
   5:  { label: 'First set complete!',    emoji: '🔥', message: 'Four MQ practices and your first company value explored. You\'re building real momentum.' },
   10: { label: 'Building momentum!',     emoji: '⚡', message: 'Ten practices in. You\'re developing both MQ skills and your grasp of what this company stands for.' },
-  15: { label: 'Halfway there!',         emoji: '✨', message: 'Halfway through your 30-practice journey. Three dimensions and three values explored.' },
-  20: { label: 'In the zone!',           emoji: '🎯', message: 'Twenty practices complete. Four dimensions, four values. You\'re in the groove now.' },
-  25: { label: 'Final stretch!',         emoji: '🌟', message: 'Five practices to go. You\'ve come so far — finish strong.' },
-  30: { label: 'Full cycle complete!',   emoji: '🏆', message: 'You\'ve completed all 30 practices — all 6 MQ dimensions and all 6 company values. Remarkable.' },
+  15: { label: 'Nearly halfway!',        emoji: '✨', message: 'Fifteen practices in. Three dimensions and three values explored — you\'re finding your rhythm.' },
+  20: { label: 'Halfway there!',         emoji: '🎯', message: 'Twenty practices complete. Halfway through your full MQ journey.' },
+  25: { label: 'In the zone!',           emoji: '🌟', message: 'Twenty-five practices in. Five dimensions, five values. You\'re in the groove now.' },
+  30: { label: 'Final stretch!',         emoji: '💫', message: 'Thirty practices complete. All seven dimensions explored — just the last values to go.' },
+  34: { label: 'Full cycle complete!',   emoji: '🏆', message: 'You\'ve completed all 34 practices — all 7 MQ dimensions and all your company values. Remarkable.' },
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -72,7 +75,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const [currentCard,     setCurrentCard]     = useState<SparkCard | null>(null)
   const [completedSparks, setCompletedSparks] = useState<SparkCard[]>([])
   const [totalCompleted,  setTotalCompleted]  = useState(0)
-  const [totalCards,      setTotalCards]      = useState(24)
+  const [totalCards,      setTotalCards]      = useState(28)
   const [loading,         setLoading]         = useState(true)
   const [isFlipped,       setIsFlipped]       = useState(false)
   const [completing,      setCompleting]      = useState(false)
@@ -118,7 +121,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
       const resolvedTotal  = data.totalCards ?? totalCards
       if (data.totalCards) setTotalCards(data.totalCards)
 
-      const milestoneMap = resolvedTotal === 30 ? MILESTONES_30 : MILESTONES_24
+      const milestoneMap = resolvedTotal === 34 ? MILESTONES_34 : MILESTONES_28
       if (data.isMilestone || data.isComplete) {
         setMilestone(milestoneMap[data.totalCompleted] ?? null)
       }
@@ -149,7 +152,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const dim              = currentCard ? getCardDim(currentCard) : null
   const progress         = Math.round((totalCompleted / totalCards) * 100)
   const allComplete      = totalCompleted === totalCards
-  const milestoneNumbers = totalCards === 30 ? [5, 10, 15, 20, 25, 30] : [4, 8, 12, 16, 20, 24]
+  const milestoneNumbers = totalCards === 34 ? [5, 10, 15, 20, 25, 30, 34] : [4, 8, 12, 16, 20, 24, 28]
   const isCurrentValues  = currentCard ? isValuesCard(currentCard) : false
 
   return (

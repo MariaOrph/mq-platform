@@ -11,11 +11,12 @@ const supabaseAdmin = createClient(
 
 const DIMENSION_NAMES: Record<number, string> = {
   1: 'Self-awareness',
-  2: 'Cognitive flexibility',
+  2: 'Ego & identity',
   3: 'Emotional regulation',
-  4: 'Values clarity',
-  5: 'Relational mindset',
-  6: 'Adaptive resilience',
+  4: 'Cognitive flexibility',
+  5: 'Values & purpose',
+  6: 'Relational mindset',
+  7: 'Adaptive resilience',
 }
 
 function getFocusDimension(scores: (number | null)[]): number {
@@ -98,12 +99,12 @@ export async function GET(req: NextRequest) {
   // ── Load latest assessment per participant ────────────────────────────────
   const { data: allAssessments } = await supabaseAdmin
     .from('assessments')
-    .select('participant_id, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, completed_at')
+    .select('participant_id, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at')
     .in('participant_id', toRemind)
     .not('overall_score', 'is', null)
     .order('completed_at', { ascending: false })
 
-  type AssessmentRow = { participant_id: string; d1_score: number | null; d2_score: number | null; d3_score: number | null; d4_score: number | null; d5_score: number | null; d6_score: number | null; completed_at: string }
+  type AssessmentRow = { participant_id: string; d1_score: number | null; d2_score: number | null; d3_score: number | null; d4_score: number | null; d5_score: number | null; d6_score: number | null; d7_score: number | null; completed_at: string }
   // Map to latest assessment per participant
   const latestAssessment: Record<string, AssessmentRow> = {}
   for (const a of allAssessments ?? []) {
@@ -128,7 +129,8 @@ export async function GET(req: NextRequest) {
     if (!assessment) { skipped++; continue } // No assessment = no coaching session to remind about
 
     const scores       = [assessment.d1_score, assessment.d2_score, assessment.d3_score,
-                          assessment.d4_score, assessment.d5_score, assessment.d6_score]
+                          assessment.d4_score, assessment.d5_score, assessment.d6_score,
+                          assessment.d7_score]
     const focusId      = getFocusDimension(scores)
     const dimName      = DIMENSION_NAMES[focusId]
     const firstName    = profile.full_name?.split(' ')[0] ?? 'there'

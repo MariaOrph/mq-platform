@@ -1,6 +1,17 @@
 export type CardContent = { title: string; teaser: string; insight: string; exercise: string }
 
+// 7 dimensions × 4 cards = 28 MQ cards
+// Dimension order:
+//   1 = Self-awareness
+//   2 = Ego & identity      (new)
+//   3 = Emotional regulation
+//   4 = Cognitive flexibility (was 2)
+//   5 = Values & purpose     (was 4)
+//   6 = Relational mindset   (was 5)
+//   7 = Adaptive resilience  (was 6)
+
 export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
+  // ── 1: Self-awareness ────────────────────────────────────────────────────
   1: {
     1: {
       title:    'The Mirror Moment',
@@ -27,32 +38,36 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
       exercise: 'Choose one trusted colleague, direct report, or peer, ideally someone who sees you lead regularly.\n\nSend them this message today (copy it exactly if you like):\n\n"I\'m doing some work on how I show up as a leader. I\'d really value one honest observation from you: something you\'ve noticed about how I come across that I might not be fully aware of. You can be direct, I genuinely want to know."\n\nWhen they respond: do not explain, justify, or minimise what they say. Just say thank you.\n\nAfterwards, write down: What did you hear? What was your instinctive reaction? What would it mean if they were right?',
     },
   },
+
+  // ── 2: Ego & identity ────────────────────────────────────────────────────
   2: {
     1: {
-      title:    'The Opposite View',
-      teaser:   'Argue the case you most disagree with.',
-      insight:  'Studies on cognitive entrenchment show that expertise, paradoxically, reduces mental flexibility. The more senior a leader, the more likely they are to get locked into a single interpretation. The highest-performing leaders deliberately practise perspective rotation: generating multiple valid explanations before settling on one.',
-      exercise: 'Identify a current situation where you have a strong, fixed view. It might be a strategy decision, a judgement about a person, or a conclusion you\'ve reached about why something isn\'t working.\n\nWrite your current position in one sentence.\n\nNow write the strongest possible case for the opposite view. Not a weak strawman but a genuinely compelling argument. Ask yourself:\n- What evidence supports this alternative view?\n- Who is a smart person who holds this view, and why?\n- What might I be missing or filtering out?\n- What would have to be true for them to be right?\n\nDoes anything shift? You don\'t have to change your view, but you should be able to hold both.',
+      title:    'The Defence Response',
+      teaser:   'Notice what you protect — and what it costs you.',
+      insight:  'Robert Kegan and Lisa Laskow Lahey\'s research on "immunity to change" shows that most leadership development failures are not caused by a lack of skill. They are caused by hidden commitments to protecting our self-image: the need to appear competent, to be right, to avoid looking uncertain. These protective impulses are entirely human — but they are also the most consistent brake on growth.',
+      exercise: 'Recall a moment in the last two weeks when someone challenged your idea, decision, or judgement. It might have been a direct challenge or something subtler — a question that felt like a test, a comment that stung slightly.\n\nWrite down:\n1. What specifically happened? (Just the facts.)\n2. What was your immediate internal reaction? (Be honest — irritation, dismissal, defensiveness?)\n3. What did you say or do?\n4. What would you have done differently if you had no ego investment in being right?\n\nThe gap between questions 3 and 4 is where your ego is working. The awareness of that gap is already a shift.',
     },
     2: {
-      title:    'Assumption Hunt',
-      teaser:   'Surface the beliefs quietly driving your decisions.',
-      insight:  'Mental models are largely formed before age 25. Research shows that in high-stakes decisions, 60–70% of executives can trace a poor outcome to an untested assumption they never thought to question. The assumption felt so obvious it was invisible.',
-      exercise: 'Choose a current decision or strategy you\'re working on.\n\nWrite down 5 assumptions it depends on being true. Start each with "I\'m assuming that..."\n\nFor example: "I\'m assuming that the team has capacity for this." / "I\'m assuming the market wants what we\'re building." / "I\'m assuming people understood what I asked for."\n\nFor each assumption, ask:\n- How do I know this is true?\n- When did I last actually test it?\n- What would change if it were wrong?\n\nNow pick the assumption you have tested least recently. What is one thing you could do this week to challenge it with real data?',
+      title:    'The Need to Be Right',
+      teaser:   'What would change if being understood mattered more than winning?',
+      insight:  'Neuroscience shows that social threats — being wrong in public, losing status, being challenged — activate the same threat response as physical danger. The brain floods with cortisol, the prefrontal cortex partially shuts down, and we become less able to think clearly precisely when we most need to. The need to be right is not a character flaw; it is biology. But it can be worked with.',
+      exercise: 'Identify a conversation or situation coming up in the next few days where you are likely to have a strong view — a decision to be made, a direction being debated, a meeting where you expect pushback.\n\nBefore it happens, write down:\n1. What is your position?\n2. What is the strongest possible argument against it?\n3. If you are wrong, what would that mean? (Write the fear out explicitly.)\n4. What is more important in this situation — being right, or reaching the best outcome?\n\nGo into the conversation with one deliberate intention: to understand before being understood. Afterwards, note what changed.',
     },
     3: {
-      title:    'The Reframe Lab',
-      teaser:   'Change the frame and you change what\'s possible.',
-      insight:  'When leaders practise intentional reframing, research shows they report lower stress and make measurably better decisions under pressure. A problem framed as a threat activates avoidance; the same problem framed as a challenge activates creativity. The facts do not change, but what becomes possible does.',
-      exercise: 'Write a current problem in one sentence. Start it with "I have to..." or "I\'m stuck with..."\n\nNow rewrite it four ways:\n1. As a challenge: "How might I..."\n2. As a learning: "This is teaching me..."\n3. As a choice: "I\'m choosing to..."\n4. As a question: "What if..."\n\nFor example: "I have to deal with a difficult stakeholder" becomes "How might I build a better working relationship with this person?" or "This is teaching me how to influence without authority."\n\nWhich frame opens up the most energy and possibility? Use that framing for the rest of the week.',
+      title:    'Leading From Purpose, Not Fear',
+      teaser:   'Are your decisions driven by what you want — or what you want to avoid?',
+      insight:  'Much of what looks like leadership conviction is actually fear-based behaviour in disguise. The leader who dominates discussion may be afraid of losing influence. The one who over-prepares may be afraid of looking incompetent. The one who avoids difficult conversations may be afraid of conflict or rejection. Brené Brown\'s research confirms: fear-based leadership consistently produces lower trust, lower performance, and higher attrition.',
+      exercise: 'Look at your decisions from the past week. Pick three significant ones — they can be small.\n\nFor each decision, honestly answer:\n"Was this decision primarily driven by what I wanted to create or achieve — or by what I wanted to avoid or protect against?"\n\nScore each: 1 = mostly fear-driven, 5 = mostly purpose-driven.\n\nFor any scored 1–3, ask: what specifically was I afraid of? And: what would I have decided if that fear were not present?\n\nThis is not about self-criticism. It is about getting precise about what is actually driving you.',
     },
     4: {
-      title:    'Mental Model Audit',
-      teaser:   'Question the rules you forgot you made up.',
-      insight:  'Carol Dweck\'s research shows leaders carry implicit "rules" about how leadership should work, often absorbed from their first manager or a formative early experience. These invisible rules (e.g. "showing emotion is weakness", "the leader must have all the answers") can become the biggest constraint on their growth.',
-      exercise: 'Complete these sentences quickly, without overthinking:\n\n"A good leader always..."\n"A good leader never..."\n"It would be unprofessional to..."\n"People respect a leader who..."\n"Asking for help means..."\n"Showing emotion at work is..."\n\nNow look at each answer and ask:\n- Where did I learn this?\n- Is it actually true, or just familiar?\n- Is it still serving me and the people I lead?\n- What would I do differently if I quietly let this rule go?\n\nChoose one rule to consciously test this week.',
+      title:    'The Vulnerability Edge',
+      teaser:   'The thing that feels weakest is often your greatest leadership asset.',
+      insight:  'Brené Brown\'s decade of research on leadership found that the leaders rated most trustworthy, most inspiring, and most effective were not the ones who projected certainty and control. They were the ones willing to say "I don\'t know", "I got that wrong", "I need your help". Vulnerability — not as oversharing, but as honest acknowledgment of uncertainty — builds the psychological safety that makes teams perform.',
+      exercise: 'There are three questions most leaders never ask their team. Choose one and ask it today:\n\n"What\'s one thing I do that makes your work harder?"\n"Is there something I\'ve done recently that didn\'t land the way I intended?"\n"What\'s something you wish I did differently as your leader?"\n\nThe rule: when they answer, say "thank you" and nothing else. No defending, explaining, or contextualising.\n\nAfterwards, write down what you heard and what it tells you. The act of asking — and listening without defending — is itself a leadership shift.',
     },
   },
+
+  // ── 3: Emotional regulation ──────────────────────────────────────────────
   3: {
     1: {
       title:    'The Pause Protocol',
@@ -79,7 +94,37 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
       exercise: 'Identify your most reliable regulation technique by testing these options:\n\n- 3 slow breaths (in for 4, out for 6)\n- A 5-minute walk outside\n- Cold water on your face or wrists\n- Writing down exactly what you\'re feeling\n- 2 minutes of complete silence\n- Naming 5 things you can see right now\n\nIf you already have a go-to, write it down explicitly so it is concrete and committed.\n\nIf you do not yet have one, try 2 or 3 from the list today and note which most quickly shifts your physical state.\n\nThe goal is a personal protocol you can access within 5 minutes, anywhere, any time.',
     },
   },
+
+  // ── 4: Cognitive flexibility (was 2) ─────────────────────────────────────
   4: {
+    1: {
+      title:    'The Opposite View',
+      teaser:   'Argue the case you most disagree with.',
+      insight:  'Studies on cognitive entrenchment show that expertise, paradoxically, reduces mental flexibility. The more senior a leader, the more likely they are to get locked into a single interpretation. The highest-performing leaders deliberately practise perspective rotation: generating multiple valid explanations before settling on one.',
+      exercise: 'Identify a current situation where you have a strong, fixed view. It might be a strategy decision, a judgement about a person, or a conclusion you\'ve reached about why something isn\'t working.\n\nWrite your current position in one sentence.\n\nNow write the strongest possible case for the opposite view. Not a weak strawman but a genuinely compelling argument. Ask yourself:\n- What evidence supports this alternative view?\n- Who is a smart person who holds this view, and why?\n- What might I be missing or filtering out?\n- What would have to be true for them to be right?\n\nDoes anything shift? You don\'t have to change your view, but you should be able to hold both.',
+    },
+    2: {
+      title:    'Assumption Hunt',
+      teaser:   'Surface the beliefs quietly driving your decisions.',
+      insight:  'Mental models are largely formed before age 25. Research shows that in high-stakes decisions, 60–70% of executives can trace a poor outcome to an untested assumption they never thought to question. The assumption felt so obvious it was invisible.',
+      exercise: 'Choose a current decision or strategy you\'re working on.\n\nWrite down 5 assumptions it depends on being true. Start each with "I\'m assuming that..."\n\nFor example: "I\'m assuming that the team has capacity for this." / "I\'m assuming the market wants what we\'re building." / "I\'m assuming people understood what I asked for."\n\nFor each assumption, ask:\n- How do I know this is true?\n- When did I last actually test it?\n- What would change if it were wrong?\n\nNow pick the assumption you have tested least recently. What is one thing you could do this week to challenge it with real data?',
+    },
+    3: {
+      title:    'The Reframe Lab',
+      teaser:   'Change the frame and you change what\'s possible.',
+      insight:  'When leaders practise intentional reframing, research shows they report lower stress and make measurably better decisions under pressure. A problem framed as a threat activates avoidance; the same problem framed as a challenge activates creativity. The facts do not change, but what becomes possible does.',
+      exercise: 'Write a current problem in one sentence. Start it with "I have to..." or "I\'m stuck with..."\n\nNow rewrite it four ways:\n1. As a challenge: "How might I..."\n2. As a learning: "This is teaching me..."\n3. As a choice: "I\'m choosing to..."\n4. As a question: "What if..."\n\nFor example: "I have to deal with a difficult stakeholder" becomes "How might I build a better working relationship with this person?" or "This is teaching me how to influence without authority."\n\nWhich frame opens up the most energy and possibility? Use that framing for the rest of the week.',
+    },
+    4: {
+      title:    'Mental Model Audit',
+      teaser:   'Question the rules you forgot you made up.',
+      insight:  'Carol Dweck\'s research shows leaders carry implicit "rules" about how leadership should work, often absorbed from their first manager or a formative early experience. These invisible rules (e.g. "showing emotion is weakness", "the leader must have all the answers") can become the biggest constraint on their growth.',
+      exercise: 'Complete these sentences quickly, without overthinking:\n\n"A good leader always..."\n"A good leader never..."\n"It would be unprofessional to..."\n"People respect a leader who..."\n"Asking for help means..."\n"Showing emotion at work is..."\n\nNow look at each answer and ask:\n- Where did I learn this?\n- Is it actually true, or just familiar?\n- Is it still serving me and the people I lead?\n- What would I do differently if I quietly let this rule go?\n\nChoose one rule to consciously test this week.',
+    },
+  },
+
+  // ── 5: Values & purpose (was 4) ──────────────────────────────────────────
+  5: {
     1: {
       title:    'Name What You Stand For',
       teaser:   'You cannot lead from values you have not named.',
@@ -93,10 +138,10 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
       exercise: 'Think of a recent decision you made under time pressure or social pressure. It does not need to be dramatic, just a moment where you felt pulled in different directions.\n\nWrite:\n1. What did you decide?\n2. Which of your values did it reflect?\n3. Which values, if any, did you compromise or sidestep?\n\nNow identify a decision you are facing in the next 2 weeks where the same tension might appear. It might involve: telling someone something they do not want to hear · pushing back on a request · making a call before you have full information · choosing the slower, harder right thing over the faster, easier option.\n\nWrite down what acting from your values looks like in that specific situation.',
     },
     3: {
-      title:    'Your Non-Negotiables',
-      teaser:   'Define your lines before you are asked to cross them.',
-      insight:  'Leaders without clearly defined non-negotiables are more susceptible to gradual ethical drift: small compromises that seem reasonable in isolation but accumulate into significant deviations. Having explicit, pre-committed non-negotiables protects against the rationalisation that high-pressure moments invite.',
-      exercise: 'Complete these sentences. Write quickly and honestly:\n\n"No matter what, I will never..."\n"No matter what, I will always..."\n"I would resign rather than..."\n"The one thing I would not compromise even for a result I wanted is..."\n\nThink of a real scenario coming up in the next month where one of these might be tested. Maybe a budget cut that affects your team, a request to sign off on something you are not comfortable with, or a conversation you have been avoiding.\n\nWrite down exactly what you will say or do if you are asked to cross one of your lines. Having the words ready in advance makes it significantly more likely that you will hold them.',
+      title:    'Your Why',
+      teaser:   'The clearest leaders know what they are ultimately in service of.',
+      insight:  'Viktor Frankl\'s research, developed through extraordinary adversity, showed that sense of purpose is not a luxury — it is the primary driver of resilience, sustained performance, and effective decision-making. Simon Sinek\'s "Start With Why" work demonstrates that leaders who know their why make more consistent decisions and build significantly higher levels of team trust.',
+      exercise: 'Set a timer for 10 minutes and write freely on this question:\n\n"Why do I lead? Not what I do, or how I do it — but why. What am I ultimately trying to create, build, or contribute to through my leadership?"\n\nWhen the timer ends, read back what you wrote. Underline the phrases that feel most true.\n\nNow write one sentence that begins: "I lead because..."\n\nThis is not a final answer — it is the beginning of a question you should keep asking. But having it written makes it more real. Test it: does it help you make a decision you\'re currently uncertain about?',
     },
     4: {
       title:    'The Values Gap',
@@ -105,7 +150,9 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
       exercise: 'Pick one of your core values. Choose something you care about being known for as a leader, for example: fairness, transparency, support, courage, or follow-through.\n\nNow rate yourself honestly out of 10: how consistently do you actually demonstrate this value in your daily behaviour?\n\nNext, estimate: if three people who work closely with you were asked the same question, what score would they give you?\n\nWrite down:\n- One specific thing you did in the last month that supports a high score\n- One specific thing you did (or failed to do) that would lower your score\n- One behaviour change you could make this week that would close the gap\n\nThis is not about self-criticism. It is about precision.',
     },
   },
-  5: {
+
+  // ── 6: Relational mindset (was 5) ────────────────────────────────────────
+  6: {
     1: {
       title:    'The Trust Inventory',
       teaser:   'Map the trust in your most important relationships.',
@@ -131,7 +178,9 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
       exercise: 'Have one unscheduled, informal conversation with someone on your team today. Not about tasks or deliverables — about them and how they are finding things.\n\nUse one of these questions to open it:\n"What\'s getting in your way right now that I might be able to help with?"\n"If you could change one thing about how we work, what would it be?"\n"What\'s something you\'ve been wanting to say but haven\'t had the right moment?"\n\nWhen they answer: listen without defending, fixing, or explaining.\n\nAfterwards, write down the most important thing you heard. What does it tell you about what is actually happening that you might not have seen from where you sit?',
     },
   },
-  6: {
+
+  // ── 7: Adaptive resilience (was 6) ───────────────────────────────────────
+  7: {
     1: {
       title:    'The Bounce-Back Blueprint',
       teaser:   'Build your recovery plan before you need it.',
@@ -166,13 +215,14 @@ export function getDimOrder(scores: (number | null)[]): number[] {
     .map(d => d.id)
 }
 
-// ── 30-card sequence helpers ────────────────────────────────────────────────
-// Positions 5, 10, 15, 20, 25, 30 are company-values cards.
-// The 24 MQ cards occupy all other positions.
+// ── 34-card sequence helpers ─────────────────────────────────────────────────
+// 7 dimensions × 4 cards = 28 MQ cards
+// Values cards at positions 5, 10, 15, 20, 25, 30 (6 cards)
+// Total: 28 MQ + 6 values = 34 cards (with values), 28 without
 
 export const VALUES_CARD_POSITIONS = new Set([5, 10, 15, 20, 25, 30])
-export const TOTAL_CARDS_BASE = 24       // MQ cards only (no values configured)
-export const TOTAL_CARDS_WITH_VALUES = 30 // MQ + 6 values cards
+export const TOTAL_CARDS_BASE = 28        // MQ cards only
+export const TOTAL_CARDS_WITH_VALUES = 34 // MQ + 6 values cards
 
 export function isValuesCard(cardNumber: number): boolean {
   return VALUES_CARD_POSITIONS.has(cardNumber)
@@ -183,7 +233,7 @@ export function getValuesSlotIndex(cardNumber: number): number {
   return cardNumber / 5 - 1
 }
 
-// MQ-only position (1-24) for a non-values card number in the 30-card arc
+// MQ-only position (1-28) for a non-values card in the 34-card arc
 function getMQIndex(cardNumber: number): number {
   return cardNumber - Math.floor(cardNumber / 5)
 }

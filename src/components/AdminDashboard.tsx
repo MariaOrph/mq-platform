@@ -46,6 +46,7 @@ interface CohortParticipant {
   d4_score: number | null
   d5_score: number | null
   d6_score: number | null
+  d7_score: number | null
   completed_at: string | null
 }
 
@@ -294,7 +295,7 @@ function CohortViewTab({ participants, isMqAdmin }: { participants: CohortPartic
                     ) : '—'}
                   </td>
                   {isMqAdmin && (
-                    [p.d1_score, p.d2_score, p.d3_score, p.d4_score, p.d5_score, p.d6_score].map((score, di) => (
+                    [p.d1_score, p.d2_score, p.d3_score, p.d4_score, p.d5_score, p.d6_score, p.d7_score].map((score, di) => (
                       <td key={di} className="py-3 px-2 text-center font-semibold text-xs"
                         style={{ color: score !== null ? DIMENSIONS[di].color : '#D1D5DB' }}>
                         {score ?? '—'}
@@ -1537,7 +1538,7 @@ export default function AdminDashboard() {
       .select(`
         id, email, invited_at, participant_id,
         profiles:participant_id ( full_name ),
-        assessments:assessment_id ( participant_role, overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, completed_at )
+        assessments:assessment_id ( participant_role, overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at )
       `)
       .eq('cohort_id', cohortId)
 
@@ -1557,6 +1558,7 @@ export default function AdminDashboard() {
       d4_score:         row.assessments?.d4_score         ?? null,
       d5_score:         row.assessments?.d5_score         ?? null,
       d6_score:         row.assessments?.d6_score         ?? null,
+      d7_score:         row.assessments?.d7_score         ?? null,
       completed_at:     row.assessments?.completed_at     ?? null,
     }))
   }, [supabase])

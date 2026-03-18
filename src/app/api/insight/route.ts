@@ -19,11 +19,12 @@ interface InsightRequest {
   companyName: string
   scores: {
     d1: number | null   // Self-awareness
-    d2: number | null   // Cognitive flexibility
+    d2: number | null   // Ego & identity
     d3: number | null   // Emotional regulation
-    d4: number | null   // Values clarity
-    d5: number | null   // Relational mindset
-    d6: number | null   // Adaptive resilience
+    d4: number | null   // Cognitive flexibility
+    d5: number | null   // Values & purpose
+    d6: number | null   // Relational mindset
+    d7: number | null   // Adaptive resilience
     overall: number | null
   }
 }
@@ -33,19 +34,20 @@ interface InsightRequest {
 // which triggers a fresh generation.
 
 function buildDataHash(req: InsightRequest): string {
-  const { d1, d2, d3, d4, d5, d6, overall } = req.scores
-  return `${d1}|${d2}|${d3}|${d4}|${d5}|${d6}|${overall}`
+  const { d1, d2, d3, d4, d5, d6, d7, overall } = req.scores
+  return `${d1}|${d2}|${d3}|${d4}|${d5}|${d6}|${d7}|${overall}`
 }
 
 // ── Prompt builder ─────────────────────────────────────────────────────────────
 
 const DIMENSION_NAMES: Record<string, string> = {
   d1: 'Self-awareness',
-  d2: 'Cognitive flexibility',
+  d2: 'Ego & identity',
   d3: 'Emotional regulation',
-  d4: 'Values clarity',
-  d5: 'Relational mindset',
-  d6: 'Adaptive resilience',
+  d4: 'Cognitive flexibility',
+  d5: 'Values & purpose',
+  d6: 'Relational mindset',
+  d7: 'Adaptive resilience',
 }
 
 function buildUserPrompt(req: InsightRequest): string {
