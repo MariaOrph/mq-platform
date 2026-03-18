@@ -75,7 +75,6 @@ const SLIDES = [
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: layer.color, flexShrink: 0 }} />
                 <span style={{ fontSize: 13, fontWeight: 800, color: layer.color }}>{layer.label}</span>
-                <span style={{ fontSize: 10, color: 'rgba(10,46,42,0.4)', marginLeft: 2 }}>— {layer.sub}</span>
               </div>
               <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.55, paddingLeft: 15 }}>
                 {layer.desc}
