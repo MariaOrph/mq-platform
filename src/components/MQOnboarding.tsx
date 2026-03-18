@@ -20,9 +20,9 @@ const SLIDES = [
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         }}>
           <div style={{
-            width: 76, height: 76, borderRadius: '50%', backgroundColor: '#0AF3CD',
+            width: 76, height: 76, borderRadius: '50%', backgroundColor: 'white',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 40px rgba(10,243,205,0.5)',
+            boxShadow: '0 0 40px rgba(255,255,255,0.2)',
           }}>
             <img src="/logo.png" alt="MQ" style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: 10 }} />
           </div>
