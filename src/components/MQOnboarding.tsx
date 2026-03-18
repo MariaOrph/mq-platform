@@ -48,13 +48,13 @@ const SLIDES = [
     tag: 'The MQ Model',
     title: 'Three foundations of great leadership',
     subtitle: 'Mindset · Relationships · Culture',
-    body: 'Great leadership develops in three layers — beginning with how you manage your inner world, building through the quality of your relationships, and ultimately shaping the culture of the teams you lead.',
+    body: 'Great leadership develops in three layers — beginning with how you manage your inner world, building through the relationships you cultivate with others, and scaling through the culture you help shape around you.',
     visual: (
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {([
           {
             label: 'Culture',       sub: 'What you shape',
-            desc: 'The environment, norms and psychological safety you create as a leader.',
+            desc: 'The values, norms, psychological safety and environment you create as a leader.',
             color: '#a78bfa', indent: 0,
           },
           {
