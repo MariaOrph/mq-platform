@@ -9,19 +9,35 @@ const SLIDES = [
     id: 'welcome',
     tag: 'Welcome',
     title: 'Welcome to MQ',
-    subtitle: 'Leadership development from the inside out.',
-    body: 'MQ — Mindset Quotient — is your capacity to notice your own thoughts, beliefs and emotional patterns, and consciously choose how you respond. It\'s the inner foundation that all effective leadership is built on.',
+    subtitle: '',
+    body: '',
     visual: (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, width: '100%' }}>
+        {/* Hero lockup */}
         <div style={{
-          width: 100, height: 100, borderRadius: '50%', backgroundColor: '#0AF3CD',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 0 60px rgba(10,243,205,0.45), 0 0 20px rgba(10,243,205,0.3)',
+          width: '100%', borderRadius: 20, padding: '28px 24px',
+          background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         }}>
-          <span style={{ fontSize: 34, fontWeight: 900, color: '#0A2E2A', letterSpacing: '-1px' }}>MQ</span>
+          <div style={{
+            width: 76, height: 76, borderRadius: '50%', backgroundColor: '#0AF3CD',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 40px rgba(10,243,205,0.5)',
+          }}>
+            <span style={{ fontSize: 26, fontWeight: 900, color: '#0A2E2A', letterSpacing: '-1px' }}>MQ</span>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: 'white', margin: '0 0 4px', letterSpacing: '0.02em' }}>
+              Mindset Quotient
+            </p>
+            <p style={{ fontSize: 11, color: 'rgba(10,243,205,0.7)', margin: 0, lineHeight: 1.5 }}>
+              Your capacity to notice your thoughts, beliefs and emotional patterns — and consciously choose how you respond.
+            </p>
+          </div>
         </div>
-        <p style={{ fontSize: 13, color: 'rgba(10,46,42,0.5)', textAlign: 'center', margin: 0, lineHeight: 1.6, maxWidth: 300 }}>
-          Built for managers and leaders who want to grow from the inside out.
+        {/* Tagline */}
+        <p style={{ fontSize: 12, color: 'rgba(10,46,42,0.45)', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
+          The inner foundation that all effective leadership is built on.
         </p>
       </div>
     ),
