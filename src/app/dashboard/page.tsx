@@ -548,16 +548,16 @@ export default function ParticipantDashboard() {
         <a
           href="/dashboard/resources"
           className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
-          style={{ backgroundColor: 'white', border: '1px solid #ff7b7a', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
+          style={{ backgroundColor: '#FFE8E8', border: '2px solid #ff7b7a', boxShadow: '0 2px 12px rgba(255,123,122,0.15)' }}
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                 style={{ backgroundColor: '#F0FDF4' }}>
+                 style={{ backgroundColor: 'white' }}>
               📚
             </div>
             <div>
               <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+              <p className="text-xs mt-0.5" style={{ color: '#e85555' }}>
                 25 skill guides — management and leadership
               </p>
             </div>
