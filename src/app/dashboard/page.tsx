@@ -548,7 +548,7 @@ export default function ParticipantDashboard() {
         <a
           href="/dashboard/resources"
           className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
-          style={{ backgroundColor: 'white', border: '1px solid #B9F8DD', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
+          style={{ backgroundColor: 'white', border: '1px solid #2d4a8a', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
