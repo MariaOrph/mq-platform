@@ -106,9 +106,9 @@ export default function AssessmentPage() {
 
         <div className="rounded-2xl p-5 mb-8" style={{ backgroundColor: '#B9F8DD' }}>
           <p className="text-sm leading-relaxed" style={{ color: '#0A2E2A' }}>
-            <strong>A note on privacy:</strong> Your overall MQ score will be visible to your
-            programme lead. Your individual answers and all coaching conversations are completely
-            private and will never be shared.
+            <strong>A note on privacy:</strong> Your individual scores, answers, and all coaching
+            conversations are completely private and will never be shared. Programme leads only ever
+            see anonymised, aggregate results across the whole cohort — never individual data.
           </p>
         </div>
 
@@ -332,7 +332,7 @@ export default function AssessmentPage() {
             <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#0AF3CD' }}>Up next</p>
             <p className="text-base font-bold mb-1" style={{ color: 'white' }}>Values in Action</p>
             <p className="text-sm mb-4" style={{ color: 'rgba(185,248,221,0.7)' }}>
-              Complete your Values in Action survey to identify the values that drive your leadership — and how consistently you act on them.
+              Rate yourself on how consistently you embody and lead by example through your organisation's values — and see where the biggest opportunities are.
             </p>
             <a href="/dashboard/values"
                className="block w-full text-center py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
