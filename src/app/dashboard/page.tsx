@@ -401,83 +401,10 @@ export default function ParticipantDashboard() {
           {/* ── LEFT COLUMN ──────────────────────────────────────────────── */}
           <div className="space-y-4">
 
-        {/* ── MQ Score card ─────────────────────────────────────────────────── */}
-          <button
-            onClick={() => setShowMQModal(true)}
-            className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
-            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
-          >
-            {/* Mini radar chart — user's actual 6-dimension profile */}
-            {(() => {
-              const cx = 55, cy = 55, maxR = 43
-              const scores = [1,2,3,4,5,6].map(id => getDimScore(assessment, id))
-              const angles = [-90, -30, 30, 90, 150, 210].map(a => a * Math.PI / 180)
-              const gridLevels = [0.33, 0.66, 1.0]
-              const gridPaths = gridLevels.map(level =>
-                angles.map(a => `${cx + maxR * level * Math.cos(a)},${cy + maxR * level * Math.sin(a)}`).join(' ')
-              )
-              const scorePts = scores.map((s, i) => {
-                const r = ((s ?? 50) / 100) * maxR
-                return `${cx + r * Math.cos(angles[i])},${cy + r * Math.sin(angles[i])}`
-              }).join(' ')
-              const dotColours = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#7ba3ea','#a78bfa']
-              return (
-                <svg
-                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none',
-                           filter: 'drop-shadow(0 0 8px rgba(10,243,205,0.35))' }}
-                  width="110" height="110" viewBox="0 0 110 110" fill="none"
-                >
-                  {/* Grid rings */}
-                  {gridPaths.map((pts, i) => (
-                    <polygon key={i} points={pts}
-                             stroke={`rgba(10,243,205,${0.1 + i * 0.07})`} strokeWidth="0.75" fill="none" />
-                  ))}
-                  {/* Axis spokes */}
-                  {angles.map((a, i) => (
-                    <line key={i} x1={cx} y1={cy}
-                          x2={cx + maxR * Math.cos(a)} y2={cy + maxR * Math.sin(a)}
-                          stroke="rgba(10,243,205,0.12)" strokeWidth="0.75" />
-                  ))}
-                  {/* Score area */}
-                  <polygon points={scorePts} fill="rgba(10,243,205,0.18)" stroke="rgba(10,243,205,0.75)" strokeWidth="1.5" strokeLinejoin="round" />
-                  {/* Dimension dots */}
-                  {scores.map((s, i) => {
-                    const r = ((s ?? 50) / 100) * maxR
-                    return (
-                      <circle key={i}
-                              cx={cx + r * Math.cos(angles[i])}
-                              cy={cy + r * Math.sin(angles[i])}
-                              r="3" fill={dotColours[i]} />
-                    )
-                  })}
-                </svg>
-              )
-            })()}
-            <div className="relative z-10 p-5 flex items-center gap-5">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
-                   style={{ backgroundColor: '#0AF3CD' }}>
-                <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>
-                  {assessment.overall_score ?? '—'}
-                </span>
-              </div>
-              <div className="text-left">
-                <p className="text-base font-black" style={{ color: 'white' }}>MQ Score</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-sm font-semibold" style={{ color: '#0AF3CD' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
-                  {overallDelta !== null && overallDelta !== 0 && (
-                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
-                          style={{
-                            backgroundColor: overallDelta > 0 ? 'rgba(209,250,229,0.2)' : 'rgba(254,226,226,0.2)',
-                            color: overallDelta > 0 ? '#6EE7B7' : '#FCA5A5',
-                          }}>
-                      {overallDelta > 0 ? '+' : ''}{overallDelta}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs mt-1" style={{ color: 'rgba(185,248,221,0.5)', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
-              </div>
-            </div>
-          </button>
+        {/* ── Daily Spark ──────────────────────────────────────────────────── */}
+        {authToken && (
+          <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
+        )}
 
         {/* ── The Coaching Room ─────────────────────────────────────────────── */}
         <div
@@ -557,15 +484,109 @@ export default function ParticipantDashboard() {
             </a>
           </div>
 
+        {/* ── Resource Centre ───────────────────────────────────────────────── */}
+        <a
+          href="/dashboard/resources"
+          className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
+          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                 style={{ backgroundColor: '#F0FDF4' }}>
+              📚
+            </div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
+              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                25 skill guides — management and leadership
+              </p>
+            </div>
+          </div>
+          <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#0AF3CD' }}>Browse →</span>
+        </a>
+
           </div>{/* end left column */}
 
           {/* ── RIGHT COLUMN ─────────────────────────────────────────────── */}
           <div className="space-y-4">
 
-        {/* ── Daily Spark ──────────────────────────────────────────────────── */}
-        {authToken && (
-          <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
-        )}
+        {/* ── MQ Score card ─────────────────────────────────────────────────── */}
+          <button
+            onClick={() => setShowMQModal(true)}
+            className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
+            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
+          >
+            {/* Mini radar chart — user's actual 6-dimension profile */}
+            {(() => {
+              const cx = 55, cy = 55, maxR = 43
+              const scores = [1,2,3,4,5,6].map(id => getDimScore(assessment, id))
+              const angles = [-90, -30, 30, 90, 150, 210].map(a => a * Math.PI / 180)
+              const gridLevels = [0.33, 0.66, 1.0]
+              const gridPaths = gridLevels.map(level =>
+                angles.map(a => `${cx + maxR * level * Math.cos(a)},${cy + maxR * level * Math.sin(a)}`).join(' ')
+              )
+              const scorePts = scores.map((s, i) => {
+                const r = ((s ?? 50) / 100) * maxR
+                return `${cx + r * Math.cos(angles[i])},${cy + r * Math.sin(angles[i])}`
+              }).join(' ')
+              const dotColours = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#7ba3ea','#a78bfa']
+              return (
+                <svg
+                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none',
+                           filter: 'drop-shadow(0 0 8px rgba(10,243,205,0.35))' }}
+                  width="110" height="110" viewBox="0 0 110 110" fill="none"
+                >
+                  {/* Grid rings */}
+                  {gridPaths.map((pts, i) => (
+                    <polygon key={i} points={pts}
+                             stroke={`rgba(10,243,205,${0.1 + i * 0.07})`} strokeWidth="0.75" fill="none" />
+                  ))}
+                  {/* Axis spokes */}
+                  {angles.map((a, i) => (
+                    <line key={i} x1={cx} y1={cy}
+                          x2={cx + maxR * Math.cos(a)} y2={cy + maxR * Math.sin(a)}
+                          stroke="rgba(10,243,205,0.12)" strokeWidth="0.75" />
+                  ))}
+                  {/* Score area */}
+                  <polygon points={scorePts} fill="rgba(10,243,205,0.18)" stroke="rgba(10,243,205,0.75)" strokeWidth="1.5" strokeLinejoin="round" />
+                  {/* Dimension dots */}
+                  {scores.map((s, i) => {
+                    const r = ((s ?? 50) / 100) * maxR
+                    return (
+                      <circle key={i}
+                              cx={cx + r * Math.cos(angles[i])}
+                              cy={cy + r * Math.sin(angles[i])}
+                              r="3" fill={dotColours[i]} />
+                    )
+                  })}
+                </svg>
+              )
+            })()}
+            <div className="relative z-10 p-5 flex items-center gap-5">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
+                   style={{ backgroundColor: '#0AF3CD' }}>
+                <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>
+                  {assessment.overall_score ?? '—'}
+                </span>
+              </div>
+              <div className="text-left">
+                <p className="text-base font-black" style={{ color: 'white' }}>MQ Score</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <p className="text-sm font-semibold" style={{ color: '#0AF3CD' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
+                  {overallDelta !== null && overallDelta !== 0 && (
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                          style={{
+                            backgroundColor: overallDelta > 0 ? 'rgba(209,250,229,0.2)' : 'rgba(254,226,226,0.2)',
+                            color: overallDelta > 0 ? '#6EE7B7' : '#FCA5A5',
+                          }}>
+                      {overallDelta > 0 ? '+' : ''}{overallDelta}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs mt-1" style={{ color: 'rgba(185,248,221,0.5)', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
+              </div>
+            </div>
+          </button>
 
         {/* ── MQ profile bars ───────────────────────────────────────────────── */}
         <div className="rounded-2xl p-5" style={cardStyle}>
@@ -707,26 +728,6 @@ export default function ParticipantDashboard() {
             )}
           </div>
 
-        {/* ── Resource Centre ───────────────────────────────────────────────── */}
-        <a
-          href="/dashboard/resources"
-          className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
-          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                 style={{ backgroundColor: '#F0FDF4' }}>
-              📚
-            </div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
-                25 skill guides — management and leadership
-              </p>
-            </div>
-          </div>
-          <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#0AF3CD' }}>Browse →</span>
-        </a>
 
           </div>
           </div>
