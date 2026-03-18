@@ -154,8 +154,8 @@ const SLIDES = [
           { icon: '⚡', label: 'Complete Daily Spark each day', color: '#fdcb5e' },
           { icon: '💬', label: 'Anytime personalised coaching', color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         color: '#a78bfa' },
-          { icon: '🧪', label: 'Explore the Culture Lab',      color: '#F59E0B' },
-          { icon: '📚', label: 'Resource Centre',              color: '#ff7b7a' },
+          { icon: '🧪', label: 'Build with the Culture Lab',    color: '#F59E0B' },
+          { icon: '📚', label: 'Explore the Resource Centre',  color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'center', gap: 10,
