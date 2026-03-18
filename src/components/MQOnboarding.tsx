@@ -92,7 +92,7 @@ const SLIDES = [
     id: 'dimensions',
     tag: 'The 7 Dimensions',
     title: 'Your 7 MQ dimensions',
-    subtitle: 'Each one maps to a layer of the model.',
+    subtitle: '',
     body: '',
     visual: (
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
