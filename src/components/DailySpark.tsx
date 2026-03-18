@@ -26,13 +26,13 @@ interface DailySparkProps {
 // ── Config ─────────────────────────────────────────────────────────────────────
 
 const DIMS: Record<number, { name: string; color: string; bg: string; emoji: string }> = {
-  1: { name: 'Self-awareness',       color: '#0AF3CD', bg: '#E6FDF9', emoji: '🪞' },
+  1: { name: 'Self-awareness',       color: '#fdcb5e', bg: '#FEF5D9', emoji: '🪞' },
   2: { name: 'Ego & identity',       color: '#EC4899', bg: '#FCE7F3', emoji: '🛡️' },
-  3: { name: 'Emotional regulation', color: '#F97316', bg: '#FFF0E6', emoji: '🌊' },
-  4: { name: 'Cognitive flexibility',color: '#05A88E', bg: '#D4F5EF', emoji: '🧩' },
-  5: { name: 'Values & purpose',     color: '#3B82F6', bg: '#EFF6FF', emoji: '🧭' },
-  6: { name: 'Relational mindset',   color: '#8B5CF6', bg: '#EDE9FE', emoji: '🤝' },
-  7: { name: 'Adaptive resilience',  color: '#F59E0B', bg: '#FFFBEB', emoji: '⚡' },
+  3: { name: 'Emotional regulation', color: '#ff7b7a', bg: '#FFE8E8', emoji: '🌊' },
+  4: { name: 'Cognitive flexibility',color: '#ff9f43', bg: '#FFF0E0', emoji: '🧩' },
+  5: { name: 'Values & purpose',     color: '#00c9a7', bg: '#D4F5EF', emoji: '🧭' },
+  6: { name: 'Relational mindset',   color: '#2d4a8a', bg: '#E0E6F5', emoji: '🤝' },
+  7: { name: 'Adaptive resilience',  color: '#a78bfa', bg: '#EDE9FE', emoji: '⚡' },
 }
 
 // Amber/gold theme for company values cards

@@ -53,10 +53,10 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
         {[
-          { name: 'Self-awareness',       color: '#0AF3CD', desc: 'Noticing your thoughts, feelings and patterns as they arise.' },
-          { name: 'Ego & identity',       color: '#EC4899', desc: 'Leading from values and strength, not from ego protection.' },
-          { name: 'Emotional regulation', color: '#F97316', desc: 'Managing emotional responses so they serve rather than derail you.' },
-          { name: 'Cognitive flexibility', color: '#05A88E', desc: 'Holding multiple perspectives and updating your thinking.' },
+          { name: 'Self-awareness',        color: '#fdcb5e', desc: 'Noticing your thoughts, feelings and patterns as they arise.' },
+          { name: 'Ego & identity',        color: '#EC4899', desc: 'Leading from values and strength, not from ego protection.' },
+          { name: 'Emotional regulation',  color: '#ff7b7a', desc: 'Managing emotional responses so they serve rather than derail you.' },
+          { name: 'Cognitive flexibility', color: '#ff9f43', desc: 'Holding multiple perspectives and updating your thinking.' },
         ].map((d, i) => (
           <div key={i} style={{ padding: '10px 14px', borderRadius: 14, backgroundColor: `${d.color}15`, border: `1px solid ${d.color}30` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
@@ -78,9 +78,9 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
         {[
-          { name: 'Values & purpose',   color: '#3B82F6', desc: 'Knowing what you stand for and leading with a sense of direction.' },
-          { name: 'Relational mindset', color: '#8B5CF6', desc: 'The quality of presence and attention you bring to every interaction.' },
-          { name: 'Adaptive resilience',color: '#F59E0B', desc: 'Sustaining performance under pressure and shaping a resilient culture.' },
+          { name: 'Values & purpose',   color: '#00c9a7', desc: 'Knowing what you stand for and leading with a sense of direction.' },
+          { name: 'Relational mindset', color: '#2d4a8a', desc: 'The quality of presence and attention you bring to every interaction.' },
+          { name: 'Adaptive resilience',color: '#a78bfa', desc: 'Sustaining performance under pressure and shaping a resilient culture.' },
         ].map((d, i) => (
           <div key={i} style={{ padding: '12px 14px', borderRadius: 14, backgroundColor: `${d.color}15`, border: `1px solid ${d.color}30` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>

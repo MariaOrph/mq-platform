@@ -9,13 +9,13 @@ import MQOnboarding, { shouldShowOnboarding } from '@/components/MQOnboarding'
 // ── Dimension config ───────────────────────────────────────────────────────────
 
 const DIMS = [
-  { id: 1, name: 'Self-awareness',        color: '#0AF3CD', bg: '#E6FDF9' },
+  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
   { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
-  { id: 3, name: 'Emotional regulation',  color: '#F97316', bg: '#FFF0E6' },
-  { id: 4, name: 'Cognitive flexibility', color: '#05A88E', bg: '#D4F5EF' },
-  { id: 5, name: 'Values & purpose',      color: '#3B82F6', bg: '#EFF6FF' },
-  { id: 6, name: 'Relational mindset',    color: '#8B5CF6', bg: '#EDE9FE' },
-  { id: 7, name: 'Adaptive resilience',   color: '#F59E0B', bg: '#FFFBEB' },
+  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
+  { id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
+  { id: 5, name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF' },
+  { id: 6, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
+  { id: 7, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
 ]
 
 const DIM_DETAIL: Record<number, {

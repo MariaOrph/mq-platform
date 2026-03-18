@@ -32,7 +32,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 1,
     name: 'Self-awareness',
     shortName: 'Self-awareness',
-    color: '#0AF3CD',
+    color: '#fdcb5e',
     description: 'The capacity to notice your own thoughts, emotions and patterns in real time — not just in reflection.',
     questions: [
       'I notice when my thoughts or mood are influencing my behaviour in the moment.',
@@ -66,7 +66,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 3,
     name: 'Emotional regulation',
     shortName: 'Emotional regulation',
-    color: '#F97316',
+    color: '#ff7b7a',
     description: 'The capacity to stay resourceful under pressure — noticing and acknowledging emotions without being governed by them.',
     questions: [
       'I can stay present and think clearly in difficult conversations, even when under pressure.',
@@ -83,7 +83,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 4,
     name: 'Cognitive flexibility',
     shortName: 'Cognitive flexibility',
-    color: '#05A88E',
+    color: '#ff9f43',
     description: 'The capacity to hold your own thinking lightly — challenging assumptions, reframing setbacks and updating beliefs rather than being trapped by fixed patterns.',
     questions: [
       'When I face a setback, I can genuinely reframe it as information rather than a failure.',
@@ -100,7 +100,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 5,
     name: 'Values & purpose',
     shortName: 'Values & purpose',
-    color: '#3B82F6',
+    color: '#00c9a7',
     description: 'The capacity to make decisions from a clear sense of what you stand for and why you lead — rather than from fear, habit or external pressure.',
     questions: [
       'When facing difficult choices, I act from my values rather than from fear or external pressure.',
@@ -117,7 +117,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 6,
     name: 'Relational mindset',
     shortName: 'Relational mindset',
-    color: '#8B5CF6',
+    color: '#2d4a8a',
     description: 'The internal orientation that makes genuine leadership of people possible — curiosity about what drives others, awareness of your impact on them, and a desire to enable rather than control.',
     questions: [
       'I genuinely seek to understand what motivates and matters to the people I lead.',
@@ -134,7 +134,7 @@ export const DIMENSIONS: Dimension[] = [
     id: 7,
     name: 'Adaptive resilience',
     shortName: 'Adaptive resilience',
-    color: '#F59E0B',
+    color: '#a78bfa',
     description: 'The capacity to maintain your effectiveness, purpose and identity under conditions of pressure, uncertainty and change.',
     questions: [
       'I maintain my effectiveness and sense of purpose during periods of uncertainty or change.',
