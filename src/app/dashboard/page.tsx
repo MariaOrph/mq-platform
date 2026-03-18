@@ -113,6 +113,14 @@ function getScoreBand(score: number): { label: string; description: string; colo
   }
 }
 
+function getOverallScoreDescription(score: number): string {
+  if (score >= 90) return 'Your MQ profile reflects exceptional inner leadership capacity. You demonstrate deep self-awareness, strong emotional regulation and the ability to lead from your values under pressure. The opportunity now is to leverage this intentionally — modelling it for others and using it to create lasting impact around you.'
+  if (score >= 75) return 'Your MQ profile reflects strong inner leadership capacity. You demonstrate consistent self-awareness, emotional stability and purposeful leadership across the board. With continued focus, you have the foundations to lead exceptionally well — and to build those capacities in the people around you.'
+  if (score >= 60) return 'Your MQ profile shows real capability — you\'re already leading with meaningful self-awareness and intentionality. With focused development across your profile, you have strong potential to take your inner leadership capacity to the next level. Your Daily Spark practices are calibrated to help you do exactly that.'
+  if (score >= 40) return 'Your MQ profile shows you\'re actively developing your inner leadership capacity. The awareness you now have of where you are is genuinely valuable — many leaders never see their profile clearly. This is where the most meaningful growth happens, and your practices are specifically calibrated to support you.'
+  return 'Your MQ profile highlights real opportunities to develop your inner leadership capacity. This is an honest starting point — and the most valuable kind. The awareness you\'re building now is the foundation for everything that follows. Your Daily Spark practices are designed to help you build from here.'
+}
+
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 const REASSESS_DAYS = 30
@@ -854,7 +862,7 @@ export default function ParticipantDashboard() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#9CA3AF' }}>What your score means</p>
-                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{band.description}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{getOverallScoreDescription(score)}</p>
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>Your dimension breakdown</p>
