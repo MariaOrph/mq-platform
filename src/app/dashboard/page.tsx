@@ -1006,7 +1006,7 @@ export default function ParticipantDashboard() {
                       </div>
                     </div>
                     <div className="rounded-2xl p-4" style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD' }}>
-                      <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#0284C7' }}>The science</p>
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#0284C7' }}>The evidence</p>
                       <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{detail.science}</p>
                     </div>
                   </>
