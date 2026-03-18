@@ -231,9 +231,16 @@ export default function ResourcesPage() {
               <p className="text-sm font-bold" style={{ color: 'white' }}>Management &amp; Leadership Skills</p>
             </div>
           </div>
-          <div className="text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0"
-               style={{ backgroundColor: 'rgba(10,243,205,0.12)', color: '#0AF3CD' }}>
-            {RESOURCES.length} guides
+          <div className="flex items-center gap-2">
+            <div className="text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0"
+                 style={{ backgroundColor: 'rgba(10,243,205,0.12)', color: '#0AF3CD' }}>
+              {RESOURCES.length} guides
+            </div>
+            <a
+              href="/dashboard"
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', fontSize: 20, lineHeight: 1 }}
+            >{'×'}</a>
           </div>
         </div>
       </div>

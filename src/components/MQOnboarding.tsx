@@ -45,7 +45,7 @@ const SLIDES = [
   {
     id: 'model',
     tag: 'The MQ Model',
-    title: '3 foundations of great leadership',
+    title: 'The 3 foundations of great leadership',
     subtitle: 'Mindset · Relationships · Culture',
     body: 'Great management and leadership develops in three layers — beginning with how you manage your inner world, building through the relationships you cultivate with others, and scaling through the culture you help shape around you.',
     visual: (
@@ -102,7 +102,7 @@ const SLIDES = [
             <p style={{
               fontSize: 10, fontWeight: 700, letterSpacing: '0.07em',
               textTransform: 'uppercase' as const,
-              color: group.color, margin: '0 0 6px', paddingLeft: 2,
+              color: 'rgba(10,46,42,0.5)', margin: '0 0 6px', paddingLeft: 2,
             }}>
               {group.layer}
             </p>
