@@ -70,7 +70,7 @@ const SLIDES = [
           <div key={i} style={{ width: layer.width, alignSelf: 'center' }}>
             <div style={{
               padding: '11px 14px', borderRadius: 14,
-              backgroundColor: 'rgba(10,243,205,0.08)', border: '1.5px solid rgba(10,243,205,0.3)',
+              backgroundColor: 'rgba(10,243,205,0.08)', border: '1.5px solid #0A2E2A',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#0AF3CD' }}>{layer.label}</span>
