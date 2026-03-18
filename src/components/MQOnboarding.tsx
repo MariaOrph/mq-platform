@@ -213,7 +213,7 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
             {current.tag}
           </span>
           <button onClick={finish} style={{
-            fontSize: 11, color: 'rgba(185,248,221,0.45)',
+            fontSize: 11, color: '#0AF3CD',
             background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
           }}>
             Skip intro
