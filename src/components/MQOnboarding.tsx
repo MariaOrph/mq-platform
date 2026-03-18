@@ -127,7 +127,7 @@ const SLIDES = [
   {
     id: 'platform',
     tag: 'The Platform',
-    title: "Here's how to use the MQ app",
+    title: 'How to Use the MQ App',
     subtitle: '',
     body: '',
     visual: (
