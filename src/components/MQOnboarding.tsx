@@ -188,7 +188,7 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
 
   function finish() {
     setExiting(true)
-    try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* */ }
+    try { sessionStorage.setItem(STORAGE_KEY, '1') } catch { /* */ }
     setTimeout(onComplete, 300)
   }
 
@@ -306,5 +306,5 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
 // ── Helper ─────────────────────────────────────────────────────────────────────
 
 export function shouldShowOnboarding(): boolean {
-  try { return !localStorage.getItem(STORAGE_KEY) } catch { return false }
+  try { return !sessionStorage.getItem(STORAGE_KEY) } catch { return false }
 }
