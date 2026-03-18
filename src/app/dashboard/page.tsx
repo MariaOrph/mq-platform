@@ -516,7 +516,7 @@ export default function ParticipantDashboard() {
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
                 <p className="text-xs mt-0.5" style={{ color: '#7c3aed' }}>
-                  Develop your 7 dimensions
+                  Develop your 7 MQ dimensions
                 </p>
               </div>
             </div>
@@ -544,7 +544,7 @@ export default function ParticipantDashboard() {
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
                 <p className="text-xs mt-0.5" style={{ color: '#d97706' }}>
-                  Values · Psych safety · Accountability
+                  Build a high-performing team culture
                 </p>
               </div>
             </div>
