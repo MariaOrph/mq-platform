@@ -90,7 +90,7 @@ function getScoreBand(score: number): { label: string; description: string; colo
   }
   if (score >= 60) return {
     label: 'Solid',
-    description: 'You have meaningful capacity here. This isn\'t a gap; it\'s a foundation. With focused development, this dimension can become a genuine strength. The practices in your Daily Spark are well-suited to helping you build on what\'s already working.',
+    description: 'You\'re already performing well here — this is a genuine strength. With a little more intentional focus, this dimension has the potential to become one of your standout superpowers. The practices in your Daily Spark are well-suited to helping you take it to the next level.',
     colour: '#fdcb5e',
   }
   if (score >= 40) return {

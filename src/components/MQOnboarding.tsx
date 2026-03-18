@@ -14,29 +14,15 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, width: '100%' }}>
         <div style={{
-          width: 88, height: 88, borderRadius: '50%', backgroundColor: '#0AF3CD',
+          width: 100, height: 100, borderRadius: '50%', backgroundColor: '#0AF3CD',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 0 48px rgba(10,243,205,0.4), 0 0 12px rgba(10,243,205,0.25)',
+          boxShadow: '0 0 60px rgba(10,243,205,0.45), 0 0 20px rgba(10,243,205,0.3)',
         }}>
-          <span style={{ fontSize: 30, fontWeight: 900, color: '#0A2E2A', letterSpacing: '-1px' }}>MQ</span>
+          <span style={{ fontSize: 34, fontWeight: 900, color: '#0A2E2A', letterSpacing: '-1px' }}>MQ</span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
-          {([
-            { label: 'Mindset',       sub: 'How you manage your inner world',     color: '#fdcb5e' },
-            { label: 'Relationships', sub: 'How you connect and lead others',       color: '#0AF3CD' },
-            { label: 'Culture',       sub: 'What you build around you',            color: '#a78bfa' },
-          ] as const).map((item, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '9px 14px', borderRadius: 12,
-              backgroundColor: `${item.color}15`, border: `1px solid ${item.color}40`,
-            }}>
-              <div style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: item.color, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: item.color }}>{item.label}</span>
-              <span style={{ fontSize: 11, color: 'rgba(10,46,42,0.5)' }}>{item.sub}</span>
-            </div>
-          ))}
-        </div>
+        <p style={{ fontSize: 13, color: 'rgba(10,46,42,0.5)', textAlign: 'center', margin: 0, lineHeight: 1.6, maxWidth: 300 }}>
+          Built for managers and leaders who want to grow from the inside out.
+        </p>
       </div>
     ),
   },
@@ -105,15 +91,10 @@ const SLIDES = [
             ],
           },
           {
-            layer: 'Relationships', color: '#0AF3CD',
+            layer: 'Relationships & Culture', color: '#0AF3CD',
             dims: [
               { name: 'Values & purpose',   color: '#00c9a7' },
               { name: 'Relational mindset', color: '#2d4a8a' },
-            ],
-          },
-          {
-            layer: 'Culture', color: '#a78bfa',
-            dims: [
               { name: 'Adaptive resilience', color: '#a78bfa' },
             ],
           },
@@ -147,16 +128,17 @@ const SLIDES = [
   {
     id: 'platform',
     tag: 'The Platform',
-    title: "Here's how to use MQ",
+    title: "Here's how to use the MQ app",
     subtitle: '',
     body: '',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
         {([
           { icon: '📊', label: 'Take the MQ Assessment',       desc: 'Measure your 7 dimensions — takes about 10 minutes.',              color: '#0AF3CD' },
+          { icon: '🌟', label: 'Values in Action Assessment',  desc: 'Discover your personal values and how they show up in your leadership.', color: '#fdcb5e' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your focus dimension.',             color: '#fdcb5e' },
-          { icon: '💬', label: 'Use the Coaching Room',         desc: 'Bring any challenge or decision to your AI coach.',                 color: '#0AF3CD' },
-          { icon: '🧠', label: 'Build with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                   color: '#a78bfa' },
+          { icon: '💬', label: 'Use the Coaching Room',         desc: 'Bring any challenge or development goal to your AI coach.',                 color: '#0AF3CD' },
+          { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                   color: '#a78bfa' },
           { icon: '🧪', label: 'Explore the Culture Lab',       desc: 'Build values, psychological safety and accountability in your team.', color: '#F59E0B' },
         ] as const).map((item, i) => (
           <div key={i} style={{

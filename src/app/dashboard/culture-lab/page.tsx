@@ -321,9 +321,6 @@ export default function CultureLabPage() {
             ))}
           </div>
 
-          <p className="text-xs text-center pb-4" style={{ color: '#9CA3AF' }}>
-            Culture Lab is separate from the MQ Coaching Room, which focuses on your individual mindset development.
-          </p>
         </div>
       </main>
     )
