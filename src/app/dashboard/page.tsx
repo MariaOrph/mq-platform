@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import CoachingRoom from '@/components/CoachingRoom'
+import MQBuilder from '@/components/MQBuilder'
 import DailySpark from '@/components/DailySpark'
 import MQOnboarding, { shouldShowOnboarding } from '@/components/MQOnboarding'
 
@@ -248,6 +249,7 @@ export default function ParticipantDashboard() {
   const [assessment,        setAssessment]       = useState<Assessment | null>(null)
   const [prevAssessment,    setPrevAssessment]   = useState<Assessment | null>(null)
   const [showCoachingRoom,  setShowCoachingRoom] = useState(false)
+  const [showMQBuilder,     setShowMQBuilder]    = useState(false)
   const [showOnboarding,    setShowOnboarding]   = useState(false)
   const [authToken,         setAuthToken]        = useState<string | null>(null)
   const [dimModal,          setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
@@ -496,6 +498,34 @@ export default function ParticipantDashboard() {
               onClick={() => setShowCoachingRoom(true)}
               className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+            >
+              Open →
+            </button>
+          </div>
+        )}
+
+        {/* ── MQ Builder ───────────────────────────────────────────────────── */}
+        {assessment && (
+          <div
+            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
+            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
+          >
+            <div className="flex items-center gap-3 relative z-10">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                   style={{ backgroundColor: '#E8FDF7' }}>
+                🧱
+              </div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
+                <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                  Develop your 7 dimensions
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowMQBuilder(true)}
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#0A2E2A', color: '#0AF3CD' }}
             >
               Open →
             </button>
@@ -808,6 +838,15 @@ export default function ParticipantDashboard() {
           token={authToken}
           firstName={firstName}
           onClose={() => setShowCoachingRoom(false)}
+        />
+      )}
+
+      {/* ── MQ Builder overlay ─────────────────────────────────────────────── */}
+      {showMQBuilder && authToken && (
+        <MQBuilder
+          token={authToken}
+          firstName={firstName}
+          onClose={() => setShowMQBuilder(false)}
           dimScores={assessment ? [
             assessment.d1_score, assessment.d2_score, assessment.d3_score,
             assessment.d4_score, assessment.d5_score, assessment.d6_score,

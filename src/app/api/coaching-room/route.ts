@@ -28,7 +28,8 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabaseAdmin.auth.getUser(token)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const sessionId = req.nextUrl.searchParams.get('sessionId')
+  const sessionId   = req.nextUrl.searchParams.get('sessionId')
+  const sessionType = req.nextUrl.searchParams.get('type') // 'coaching' | 'mq_builder'
 
   if (sessionId) {
     const { data: messages } = await supabaseAdmin
@@ -40,11 +41,17 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ messages: messages ?? [] })
   }
 
-  const { data: sessions } = await supabaseAdmin
+  let query = supabaseAdmin
     .from('coaching_chats')
     .select('id, title, created_at, updated_at, message_count')
     .eq('participant_id', user.id)
     .order('updated_at', { ascending: false })
+
+  if (sessionType) {
+    query = query.eq('session_type', sessionType)
+  }
+
+  const { data: sessions } = await query
   return NextResponse.json({ sessions: sessions ?? [] })
 }
 
@@ -55,7 +62,7 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const participantId = user.id
-  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string; focusDimensionId?: number | null }
+  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string; focusDimensionId?: number | null; sessionType?: string; hideTrigger?: boolean }
   try { body = await req.json() } catch {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
@@ -64,9 +71,10 @@ export async function POST(req: NextRequest) {
     if (body.prevSessionId) {
       void updateCoachingMemory(participantId, body.prevSessionId)
     }
+    const sessionType = body.sessionType ?? 'coaching'
     const { data: session } = await supabaseAdmin
       .from('coaching_chats')
-      .insert({ participant_id: participantId, title: 'New conversation' })
+      .insert({ participant_id: participantId, title: 'New conversation', session_type: sessionType })
       .select().single()
     return NextResponse.json({ session })
   }
@@ -283,9 +291,12 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
   const pastMessages = (history ?? []).reverse()
     .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
 
-  await supabaseAdmin.from('coaching_room_messages').insert({
-    participant_id: participantId, session_id: sessionId, role: 'user', content: message.trim(),
-  })
+  // Only persist user message if it's not a hidden trigger (MQ Builder auto-start)
+  if (!body.hideTrigger) {
+    await supabaseAdmin.from('coaching_room_messages').insert({
+      participant_id: participantId, session_id: sessionId, role: 'user', content: message.trim(),
+    })
+  }
 
   let reply: string
   try {
@@ -301,7 +312,7 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
     return NextResponse.json({ error: 'Generation failed' }, { status: 502 })
   }
 
-  const newCount = pastMessages.length + 2
+  const newCount = body.hideTrigger ? pastMessages.length + 1 : pastMessages.length + 2
   await Promise.all([
     supabaseAdmin.from('coaching_room_messages').insert({
       participant_id: participantId, session_id: sessionId, role: 'assistant', content: reply,
@@ -309,11 +320,6 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
     supabaseAdmin.from('coaching_chats')
       .update({ updated_at: new Date().toISOString(), message_count: newCount }).eq('id', sessionId),
   ])
-
-  if (pastMessages.length === 0) {
-    const title = message.trim().length > 52 ? message.trim().slice(0, 49) + '…' : message.trim()
-    await supabaseAdmin.from('coaching_chats').update({ title }).eq('id', sessionId)
-  }
 
   return NextResponse.json({ reply })
 }

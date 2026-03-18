@@ -20,24 +20,10 @@ interface Message {
 }
 
 interface CoachingRoomProps {
-  token:          string
-  firstName:      string
-  onClose:        () => void
-  dimScores?:     (number | null)[]   // [d1…d7] current assessment
-  prevDimScores?: (number | null)[]   // [d1…d7] previous assessment (if reassessed)
+  token:     string
+  firstName: string
+  onClose:   () => void
 }
-
-// ── Dimension config ───────────────────────────────────────────────────────────
-
-const DIMENSIONS = [
-  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
-  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 5, name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 6, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 7, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
-]
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -53,8 +39,8 @@ function formatDate(iso: string) {
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function CoachingRoom({ token, firstName, onClose, dimScores, prevDimScores }: CoachingRoomProps) {
-  const [view,           setView]           = useState<'sessions' | 'dimPicker' | 'chat'>('sessions')
+export default function CoachingRoom({ token, firstName, onClose }: CoachingRoomProps) {
+  const [view,           setView]           = useState<'sessions' | 'chat'>('sessions')
   const [sessions,       setSessions]       = useState<Session[]>([])
   const [activeSession,  setActiveSession]  = useState<Session | null>(null)
   const [messages,       setMessages]       = useState<Message[]>([])
@@ -64,13 +50,6 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
   const [msgLoaded,      setMsgLoaded]      = useState(false)
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
   const [hoveredPrompt,  setHoveredPrompt]  = useState<string | null>(null)
-  const [hoveredDim,     setHoveredDim]     = useState<number | null>(null)
-  const [selectedDimId,  setSelectedDimId]  = useState<number | null>(null)
-
-  // Derive focus dimension (lowest score) from props
-  const focusDimId: number | null = dimScores
-    ? dimScores.map((s, i) => ({ s: s ?? 999, i })).sort((a, b) => a.s - b.s)[0].i + 1
-    : null
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
@@ -78,7 +57,9 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
   // ── Load sessions list ──────────────────────────────────────────────────────
   const loadSessions = useCallback(async () => {
     try {
-      const res = await fetch('/api/coaching-room', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await fetch('/api/coaching-room?type=coaching', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       if (res.ok) { const d = await res.json(); setSessions(d.sessions ?? []) }
     } finally { setSessionsLoaded(true) }
   }, [token])
@@ -103,7 +84,7 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
     }
   }, [messages, msgLoaded, view])
 
-  // ── Focus input ────────────────────────────────────────────────────────────
+  // ── Focus input ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (view === 'chat') setTimeout(() => inputRef.current?.focus(), 150)
   }, [view])
@@ -116,19 +97,13 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
     await loadMessages(session.id)
   }
 
-  // ── New conversation → go to dim picker first ────────────────────────────────
-  function startNewConversation() {
-    setSelectedDimId(focusDimId)  // pre-select focus dimension
-    setView('dimPicker')
-  }
-
-  // ── Confirm dimension and create session ─────────────────────────────────────
-  async function confirmAndStart() {
+  // ── Start new conversation ──────────────────────────────────────────────────
+  async function startNewConversation() {
     const prevSessionId = sessions[0]?.id
     const res = await fetch('/api/coaching-room', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body:    JSON.stringify({ action: 'new_session', prevSessionId }),
+      body:    JSON.stringify({ action: 'new_session', prevSessionId, sessionType: 'coaching' }),
     })
     if (res.ok) {
       const { session } = await res.json()
@@ -158,13 +133,12 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
       const res = await fetch('/api/coaching-room', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ message: text, sessionId: activeSession.id, focusDimensionId: selectedDimId }),
+        body:    JSON.stringify({ message: text, sessionId: activeSession.id }),
       })
       const data = await res.json()
       const reply = res.ok && data.reply ? data.reply : 'Something went wrong. Please try again.'
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: reply }])
 
-      // Update session title if this was first message
       if (messages.filter(m => m.role === 'user').length === 0) {
         const newTitle = text.length > 52 ? text.slice(0, 49) + '…' : text
         setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
@@ -266,7 +240,7 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                     Hey {firstName}, I'm your MQ Coach.
                   </p>
                   <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                    Bring me anything: a tricky conversation, a leadership challenge, something you're working through.
+                    Bring me a challenge, a decision, or anything on your mind. I'm here to help you think it through.
                   </p>
                 </div>
               )}
@@ -304,130 +278,14 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                         aria-label="Delete conversation"
                       >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round">
-                          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/>
+                          <path d="M14 11v6"/><path d="M9 6V4h6v2"/>
                         </svg>
                       </button>
                     </button>
                   ))}
                 </>
               )}
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* ── DIM PICKER VIEW ─────────────────────────────────────────────────── */}
-      {view === 'dimPicker' && (
-        <>
-          <div style={{ backgroundColor: '#0A2E2A' }}>
-            <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
-              <button onClick={() => setView('sessions')}
-                      className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-80"
-                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <div className="flex-1">
-                <p className="text-sm font-bold" style={{ color: 'white' }}>New conversation</p>
-                <p className="text-xs" style={{ color: '#B9F8DD' }}>Choose your focus dimension</p>
-              </div>
-              <button onClick={onClose}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
-                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
-            </div>
-          </div>
-
-          <div className="flex-1 overflow-y-auto">
-            <div className="max-w-2xl mx-auto px-6 py-6">
-              <p className="text-sm mb-1" style={{ color: '#0A2E2A', fontWeight: 600 }}>
-                What do you want to work on today?
-              </p>
-              {focusDimId && (
-                <p className="text-xs mb-5" style={{ color: '#05A88E' }}>
-                  We've pre-selected your focus dimension — your lowest score. Change it if you'd like.
-                </p>
-              )}
-              {!focusDimId && (
-                <p className="text-xs mb-5" style={{ color: '#05A88E' }}>
-                  Select a dimension to focus on, or leave unselected to explore freely.
-                </p>
-              )}
-
-              <div className="grid grid-cols-1 gap-2.5 mb-6">
-                {DIMENSIONS.map(dim => {
-                  const score    = dimScores?.[dim.id - 1] ?? null
-                  const prevScore = prevDimScores?.[dim.id - 1] ?? null
-                  const delta    = score !== null && prevScore !== null ? score - prevScore : null
-                  const isSelected = selectedDimId === dim.id
-                  const isFocus  = focusDimId === dim.id
-                  return (
-                    <button
-                      key={dim.id}
-                      onClick={() => setSelectedDimId(isSelected ? null : dim.id)}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all"
-                      style={{
-                        backgroundColor: isSelected ? dim.bg : 'white',
-                        border: `2px solid ${isSelected ? dim.color : '#E8F4F0'}`,
-                        boxShadow: isSelected ? `0 0 0 1px ${dim.color}40` : 'none',
-                      }}
-                    >
-                      <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
-                      <span className="flex-1 text-sm font-semibold" style={{ color: '#0A2E2A' }}>
-                        {dim.name}
-                      </span>
-                      {isFocus && !isSelected && (
-                        <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                              style={{ backgroundColor: dim.bg, color: dim.color }}>
-                          focus
-                        </span>
-                      )}
-                      {score !== null && (
-                        <div className="flex items-center gap-1.5 flex-shrink-0">
-                          {delta !== null && delta !== 0 && (
-                            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
-                                  style={{
-                                    backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
-                                    color: delta > 0 ? '#065F46' : '#991B1B',
-                                    fontSize: '10px',
-                                  }}>
-                              {delta > 0 ? '+' : ''}{delta}
-                            </span>
-                          )}
-                          <span className="text-sm font-bold" style={{ color: isSelected ? dim.color : '#9CA3AF' }}>
-                            {score}
-                          </span>
-                        </div>
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
-
-              {/* No dimension selected option */}
-              <button
-                onClick={() => setSelectedDimId(null)}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all mb-6"
-                style={{
-                  backgroundColor: selectedDimId === null ? '#F4FDF9' : 'white',
-                  border: `2px solid ${selectedDimId === null ? '#0AF3CD' : '#E8F4F0'}`,
-                }}
-              >
-                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: '#9CA3AF' }} />
-                <span className="flex-1 text-sm font-semibold" style={{ color: '#0A2E2A' }}>
-                  No specific focus — open conversation
-                </span>
-              </button>
-
-              <button
-                onClick={confirmAndStart}
-                className="w-full py-4 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-              >
-                {selectedDimId
-                  ? `Start session — ${DIMENSIONS[selectedDimId - 1].name} →`
-                  : 'Start conversation →'}
-              </button>
             </div>
           </div>
         </>
@@ -448,20 +306,9 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
               </button>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold truncate" style={{ color: 'white' }}>
-                  {activeSession.title === 'New conversation' ? 'New conversation' : activeSession.title}
+                  {activeSession.title}
                 </p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-xs" style={{ color: '#B9F8DD' }}>MQ Coach</p>
-                  {selectedDimId && (() => {
-                    const dim = DIMENSIONS[selectedDimId - 1]
-                    return (
-                      <span className="text-xs px-2 py-0.5 rounded-full font-semibold flex-shrink-0"
-                            style={{ backgroundColor: dim.color + '30', color: dim.color }}>
-                        {dim.name}
-                      </span>
-                    )
-                  })()}
-                </div>
+                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>MQ Coach</p>
               </div>
               <button onClick={onClose}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
@@ -494,14 +341,14 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                       What's on your mind, {firstName}?
                     </p>
                     <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                      Bring me a challenge, a decision, or choose one of the 7 MQ dimensions to work on.
+                      Bring me a challenge, a decision, or anything on your mind at work.
                     </p>
                   </div>
 
                   {/* Situational prompts */}
-                  <div className="mb-6">
+                  <div>
                     <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
-                      Work through something
+                      Or start with something specific
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {[
@@ -521,7 +368,7 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                                   fetch('/api/coaching-room', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                    body: JSON.stringify({ message: prompt, sessionId: activeSession!.id, focusDimensionId: selectedDimId }),
+                                    body: JSON.stringify({ message: prompt, sessionId: activeSession!.id }),
                                   }).then(r => r.json()).then(data => {
                                     const reply = data.reply ?? 'Something went wrong. Please try again.'
                                     setMessages([
@@ -551,68 +398,6 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                                   boxShadow: hoveredPrompt === prompt ? '0 2px 8px rgba(10,46,42,0.1)' : 'none',
                                 }}>
                           {prompt}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Dimension prompts */}
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
-                      Build your MQ
-                    </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {DIMENSIONS.map((dim, idx) => (
-                        <button
-                          key={dim.id}
-                          onClick={() => {
-                            const msg = `Help me build my ${dim.name.toLowerCase()}`
-                            setInput(msg)
-                            setTimeout(() => {
-                              setInput('')
-                              setLoading(true)
-                              setMessages([
-                                { role: 'user', content: msg, pending: false },
-                                { role: 'assistant', content: '', pending: true },
-                              ])
-                              fetch('/api/coaching-room', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                body: JSON.stringify({ message: msg, sessionId: activeSession!.id, focusDimensionId: selectedDimId }),
-                              }).then(r => r.json()).then(data => {
-                                const reply = data.reply ?? 'Something went wrong. Please try again.'
-                                setMessages([
-                                  { role: 'user', content: msg },
-                                  { role: 'assistant', content: reply },
-                                ])
-                                setActiveSession(prev => prev ? { ...prev, title: `Build: ${dim.name}` } : prev)
-                                setSessions(prev => prev.map(s => s.id === activeSession!.id ? { ...s, title: `Build: ${dim.name}` } : s))
-                              }).catch(() => {
-                                setMessages([
-                                  { role: 'user', content: msg },
-                                  { role: 'assistant', content: 'Something went wrong. Please try again.' },
-                                ])
-                              }).finally(() => {
-                                setLoading(false)
-                                setTimeout(() => inputRef.current?.focus(), 50)
-                              })
-                            }, 0)
-                          }}
-                          onMouseEnter={() => setHoveredDim(dim.id)}
-                          onMouseLeave={() => setHoveredDim(null)}
-                          className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-left transition-all duration-150${idx === DIMENSIONS.length - 1 && DIMENSIONS.length % 2 !== 0 ? ' col-span-2' : ''}`}
-                          style={{
-                            backgroundColor: dim.bg,
-                            border: `1px solid ${hoveredDim === dim.id ? dim.color : dim.color + '50'}`,
-                            boxShadow: hoveredDim === dim.id ? `0 2px 10px ${dim.color}40` : 'none',
-                          }}
-                        >
-                          <span className="w-2 h-2 rounded-full flex-shrink-0"
-                                style={{ backgroundColor: dim.color }} />
-                          <span className="text-xs font-semibold"
-                                style={{ color: '#0A2E2A' }}>
-                            {dim.name}
-                          </span>
                         </button>
                       ))}
                     </div>
