@@ -24,7 +24,7 @@ const SLIDES = [
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: '0 0 40px rgba(10,243,205,0.5)',
           }}>
-            <span style={{ fontSize: 26, fontWeight: 900, color: '#0A2E2A', letterSpacing: '-1px' }}>MQ</span>
+            <img src="/logo.png" alt="MQ" style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: 10 }} />
           </div>
           <div style={{ textAlign: 'center' }}>
             <p style={{ fontSize: 13, fontWeight: 800, color: 'white', margin: '0 0 4px', letterSpacing: '0.02em' }}>
