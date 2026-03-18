@@ -45,7 +45,7 @@ const SLIDES = [
   {
     id: 'model',
     tag: 'The MQ Model',
-    title: 'Three foundations of great leadership',
+    title: '3 foundations of great leadership',
     subtitle: 'Mindset · Relationships · Culture',
     body: 'Great management and leadership develops in three layers — beginning with how you manage your inner world, building through the relationships you cultivate with others, and scaling through the culture you help shape around you.',
     visual: (
