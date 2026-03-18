@@ -19,7 +19,13 @@ const SLIDES = [
           background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         }}>
-          <img src="/Favicon_White.png" alt="MQ" style={{ width: 72, height: 72, objectFit: 'contain' }} />
+          <div style={{
+            width: 80, height: 80, borderRadius: '50%', backgroundColor: '#0AF3CD',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 40px rgba(10,243,205,0.5)',
+          }}>
+            <img src="/Favicon_White.png" alt="MQ" style={{ width: 50, height: 50, objectFit: 'contain' }} />
+          </div>
           <div style={{ textAlign: 'center' }}>
             <p style={{ fontSize: 13, fontWeight: 800, color: 'white', margin: '0 0 4px', letterSpacing: '0.02em' }}>
               Mindset Quotient
