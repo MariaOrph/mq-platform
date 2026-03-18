@@ -1,24 +1,70 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
   DIMENSIONS, ALL_QUESTIONS, TOTAL_QUESTIONS, SCALE_OPTIONS,
   calculateAllScores, getScoreLabel, getDimensionInsight, getPersonalisedMessage,
 } from '@/lib/assessment/data'
 
-type Step = 'welcome' | 'info' | 'questions' | 'results'
+type Step = 'loading' | 'locked' | 'welcome' | 'info' | 'questions' | 'results'
 type ParticipantRole = 'manager' | 'leader'
+
+const LOCK_DAYS = 30
 
 interface Scores { dimensionScores: number[]; overall: number }
 
+interface PreviousAssessment {
+  overall_score: number
+  d1_score: number; d2_score: number; d3_score: number; d4_score: number
+  d5_score: number; d6_score: number; d7_score: number
+}
+
 export default function AssessmentPage() {
-  const [step, setStep]                     = useState<Step>('welcome')
+  const [step, setStep]                     = useState<Step>('loading')
   const [firstName, setFirstName]           = useState('')
   const [participantRole, setParticipantRole] = useState<ParticipantRole | ''>('')
   const [responses, setResponses]           = useState<number[]>(Array(TOTAL_QUESTIONS).fill(0))
   const [currentQ, setCurrentQ]             = useState(0)
   const [scores, setScores]                 = useState<Scores | null>(null)
+  const [daysRemaining, setDaysRemaining]   = useState(0)
+  const [isReassessment, setIsReassessment] = useState(false)
+  const [previousScores, setPreviousScores] = useState<PreviousAssessment | null>(null)
+
+  useEffect(() => {
+    async function checkExisting() {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) { setStep('welcome'); return }
+
+      const { data: existing } = await supabase
+        .from('assessments')
+        .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at')
+        .eq('participant_id', session.user.id)
+        .not('overall_score', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+
+      if (!existing || existing.length === 0) {
+        setStep('welcome'); return
+      }
+
+      const last = existing[0]
+      const daysSince = last.completed_at
+        ? Math.floor((Date.now() - new Date(last.completed_at).getTime()) / 86400000)
+        : 0  // treat null completed_at as just completed → lock immediately
+
+      if (daysSince < LOCK_DAYS) {
+        setDaysRemaining(LOCK_DAYS - daysSince)
+        setStep('locked')
+      } else {
+        setIsReassessment(true)
+        setPreviousScores(last)
+        setStep('welcome')
+      }
+    }
+    checkExisting()
+  }, [])
 
   const currentQuestion = ALL_QUESTIONS[currentQ]
   const currentDimension = currentQuestion.dimension
@@ -72,11 +118,48 @@ export default function AssessmentPage() {
         d6_score:         newScores.dimensionScores[5],
         d7_score:         newScores.dimensionScores[6],
         overall_score:    newScores.overall,
+        completed_at:     new Date().toISOString(),
       })
     } catch (err) {
       console.error('Assessment save failed:', err)
     }
   }
+
+  // ── LOADING ──────────────────────────────────────────────────
+  if (step === 'loading') return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#E8FDF7' }}>
+      <p className="text-sm" style={{ color: '#05A88E' }}>Loading…</p>
+    </div>
+  )
+
+  // ── LOCKED ───────────────────────────────────────────────────
+  if (step === 'locked') return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
+         style={{ backgroundColor: '#E8FDF7' }}>
+      <div className="w-full max-w-md text-center">
+        <div className="flex justify-center mb-6">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+               style={{ backgroundColor: '#0AF3CD' }}>
+            <span className="font-bold text-lg" style={{ color: '#0A2E2A' }}>MQ</span>
+          </div>
+        </div>
+        <div className="text-4xl mb-4">🔒</div>
+        <h1 className="text-2xl font-semibold mb-3" style={{ color: '#0A2E2A' }}>
+          Reassessment not yet available
+        </h1>
+        <p className="text-sm leading-relaxed mb-6" style={{ color: '#05A88E' }}>
+          Meaningful mindset change takes time. You can reassess your MQ in{' '}
+          <strong style={{ color: '#0A2E2A' }}>{daysRemaining} day{daysRemaining !== 1 ? 's' : ''}</strong>.
+          In the meantime, keep working with your Daily Spark and Coaching Room.
+        </p>
+        <a href="/dashboard"
+           className="inline-block px-6 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+           style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
+          ← Back to dashboard
+        </a>
+      </div>
+    </div>
+  )
 
   // ── WELCOME ─────────────────────────────────────────────────
   if (step === 'welcome') return (
@@ -91,18 +174,29 @@ export default function AssessmentPage() {
         </div>
 
         <h1 className="text-3xl font-semibold text-center mb-8" style={{ color: '#0A2E2A' }}>
-          MQ Assessment
+          {isReassessment ? 'MQ Reassessment' : 'MQ Assessment'}
         </h1>
 
-        <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wider mb-3"
-             style={{ color: '#05A88E' }}>What is MQ?</p>
-          <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
-            <strong>MQ (Mindset Quotient)</strong> is the ability to notice your thoughts,
-            beliefs and emotional triggers, and choose how you respond to them, rather than
-            being unconsciously driven by them.
-          </p>
-        </div>
+        {isReassessment ? (
+          <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3"
+               style={{ color: '#05A88E' }}>Your reassessment</p>
+            <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
+              You're ready to reassess. Answer the same 21 questions as honestly as you can —
+              your scores will be compared to your previous results so you can see how you've developed.
+            </p>
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3"
+               style={{ color: '#05A88E' }}>What is MQ?</p>
+            <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
+              <strong>MQ (Mindset Quotient)</strong> is the ability to notice your thoughts,
+              beliefs and emotional triggers, and choose how you respond to them, rather than
+              being unconsciously driven by them.
+            </p>
+          </div>
+        )}
 
         <div className="rounded-2xl p-5 mb-8" style={{ backgroundColor: '#B9F8DD' }}>
           <p className="text-sm leading-relaxed" style={{ color: '#0A2E2A' }}>
@@ -115,7 +209,7 @@ export default function AssessmentPage() {
         <button onClick={() => setStep('info')}
           className="w-full py-4 rounded-xl text-base font-semibold hover:opacity-90 transition-opacity"
           style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
-          Start your assessment →
+          {isReassessment ? 'Start reassessment →' : 'Start your assessment →'}
         </button>
       </div>
     </div>
@@ -268,6 +362,14 @@ export default function AssessmentPage() {
   if (step === 'results' && scores) {
     const label   = getScoreLabel(scores.overall)
     const message = getPersonalisedMessage(scores.overall, firstName)
+    const overallDelta = isReassessment && previousScores
+      ? scores.overall - previousScores.overall_score
+      : null
+    const prevDimScores = previousScores
+      ? [previousScores.d1_score, previousScores.d2_score, previousScores.d3_score,
+         previousScores.d4_score, previousScores.d5_score, previousScores.d6_score,
+         previousScores.d7_score]
+      : null
 
     return (
       <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#E8FDF7' }}>
@@ -275,7 +377,7 @@ export default function AssessmentPage() {
 
           {/* Score circle */}
           <div className="flex flex-col items-center mb-10">
-            <div className="flex items-center justify-center rounded-full mb-4"
+            <div className="relative flex items-center justify-center rounded-full mb-4"
                  style={{ width: 160, height: 160, backgroundColor: '#0AF3CD' }}>
               <div className="text-center">
                 <div className="text-5xl font-bold leading-none" style={{ color: '#0A2E2A' }}>
@@ -285,10 +387,27 @@ export default function AssessmentPage() {
                   out of 100
                 </div>
               </div>
+              {overallDelta !== null && overallDelta !== 0 && (
+                <div className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full text-xs font-bold"
+                     style={{
+                       backgroundColor: overallDelta > 0 ? '#D1FAE5' : '#FEE2E2',
+                       color: overallDelta > 0 ? '#065F46' : '#991B1B',
+                     }}>
+                  {overallDelta > 0 ? '+' : ''}{overallDelta}
+                </div>
+              )}
             </div>
             <div className="text-2xl font-semibold mb-3" style={{ color: '#0A2E2A' }}>
               {label}
             </div>
+            {isReassessment && overallDelta !== null && (
+              <div className="mb-2 text-sm font-semibold"
+                   style={{ color: overallDelta > 0 ? '#05A88E' : overallDelta < 0 ? '#EF4444' : '#9CA3AF' }}>
+                {overallDelta > 0 ? `↑ Up ${overallDelta} points from your previous assessment`
+                 : overallDelta < 0 ? `↓ Down ${Math.abs(overallDelta)} points from your previous assessment`
+                 : 'Same score as your previous assessment'}
+              </div>
+            )}
             <p className="text-sm text-center max-w-md leading-relaxed" style={{ color: '#05A88E' }}>
               {message}
             </p>
@@ -297,22 +416,41 @@ export default function AssessmentPage() {
           {/* Dimension breakdown */}
           <div className="bg-white rounded-2xl p-6 shadow-sm mb-6">
             <h2 className="text-lg font-semibold mb-6" style={{ color: '#0A2E2A' }}>
-              Your MQ Profile
+              {isReassessment ? 'Your MQ Profile — with changes' : 'Your MQ Profile'}
             </h2>
 
             <div className="space-y-7">
               {DIMENSIONS.map((dim, i) => {
                 const score   = scores.dimensionScores[i]
                 const insight = getDimensionInsight(dim, score)
+                const prevScore = prevDimScores?.[i] ?? null
+                const delta = prevScore !== null ? score - prevScore : null
                 return (
                   <div key={dim.id}>
                     <div className="flex justify-between items-baseline mb-2">
                       <span className="text-sm font-semibold" style={{ color: '#0A2E2A' }}>
                         {dim.name}
                       </span>
-                      <span className="text-sm font-bold" style={{ color: dim.color }}>
-                        {score}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {delta !== null && delta !== 0 && (
+                          <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                                style={{
+                                  backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
+                                  color: delta > 0 ? '#065F46' : '#991B1B',
+                                }}>
+                            {delta > 0 ? '+' : ''}{delta}
+                          </span>
+                        )}
+                        {delta === 0 && (
+                          <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                                style={{ backgroundColor: '#F3F4F6', color: '#6B7280' }}>
+                            =
+                          </span>
+                        )}
+                        <span className="text-sm font-bold" style={{ color: dim.color }}>
+                          {score}
+                        </span>
+                      </div>
                     </div>
                     <div className="w-full h-2 rounded-full mb-3" style={{ backgroundColor: '#E8FDF7' }}>
                       <div className="h-2 rounded-full"

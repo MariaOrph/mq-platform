@@ -78,6 +78,12 @@ function avgOverall(participants: CohortParticipant[]) {
 
 // ── Overview Tab ──────────────────────────────────────────────────────────────
 
+interface ProgressData {
+  reassessedCount: number
+  avgDeltas: (number | null)[]
+  avgOverallDelta: number | null
+}
+
 function OverviewTab({
   participants,
   cohortId,
@@ -95,6 +101,59 @@ function OverviewTab({
   const rate = participants.length > 0
     ? Math.round((completed.length / participants.length) * 100)
     : 0
+
+  // ── Progress tracking ─────────────────────────────────────────────────────
+  const [progress, setProgress] = useState<ProgressData | null>(null)
+
+  useEffect(() => {
+    const participantIds = participants
+      .map(p => p.participant_id)
+      .filter((id): id is string => id !== null)
+    if (participantIds.length === 0) return
+
+    const supabase = createClient()
+    supabase
+      .from('assessments')
+      .select('participant_id, overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at')
+      .in('participant_id', participantIds)
+      .not('overall_score', 'is', null)
+      .order('completed_at', { ascending: true })
+      .then(({ data }) => {
+        if (!data) return
+        // Group by participant
+        const byParticipant: Record<string, typeof data> = {}
+        for (const row of data) {
+          if (!row.participant_id) continue
+          if (!byParticipant[row.participant_id]) byParticipant[row.participant_id] = []
+          byParticipant[row.participant_id].push(row)
+        }
+        // Only participants with 2+ assessments
+        const reassessed = Object.values(byParticipant).filter(rows => rows.length >= 2)
+        if (reassessed.length === 0) {
+          setProgress({ reassessedCount: 0, avgDeltas: DIMENSIONS.map(() => null), avgOverallDelta: null })
+          return
+        }
+        const dimKeys = ['d1_score','d2_score','d3_score','d4_score','d5_score','d6_score','d7_score'] as const
+        const dimDeltas = dimKeys.map(key => {
+          const deltas = reassessed.map(rows => {
+            const first = rows[0][key] as number | null
+            const last  = rows[rows.length - 1][key] as number | null
+            return first !== null && last !== null ? last - first : null
+          }).filter((d): d is number => d !== null)
+          return deltas.length > 0 ? Math.round(deltas.reduce((a, b) => a + b, 0) / deltas.length) : null
+        })
+        const overallDeltas = reassessed.map(rows => {
+          const first = rows[0].overall_score as number | null
+          const last  = rows[rows.length - 1].overall_score as number | null
+          return first !== null && last !== null ? last - first : null
+        }).filter((d): d is number => d !== null)
+        const avgOverallDelta = overallDeltas.length > 0
+          ? Math.round(overallDeltas.reduce((a, b) => a + b, 0) / overallDeltas.length)
+          : null
+        setProgress({ reassessedCount: reassessed.length, avgDeltas: dimDeltas, avgOverallDelta })
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [participants])
 
   // ── AI insight state ──────────────────────────────────────────────────────
   const [insight, setInsight]           = useState<string | null>(null)
@@ -159,18 +218,59 @@ function OverviewTab({
         ))}
       </div>
 
+      {/* Progress cards (only if anyone has reassessed) */}
+      {progress && progress.reassessedCount > 0 && (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-xl p-5" style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
+            <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#05A88E' }}>Reassessed</p>
+            <p className="text-3xl font-bold mt-1" style={{ color: '#0A2E2A' }}>{progress.reassessedCount}</p>
+            <p className="text-xs mt-1 text-gray-400">of {completed.length} completions</p>
+          </div>
+          <div className="rounded-xl p-5" style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
+            <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#05A88E' }}>Avg score change</p>
+            <p className="text-3xl font-bold mt-1" style={{
+              color: progress.avgOverallDelta !== null && progress.avgOverallDelta > 0 ? '#00c9a7'
+                   : progress.avgOverallDelta !== null && progress.avgOverallDelta < 0 ? '#EF4444'
+                   : '#0A2E2A'
+            }}>
+              {progress.avgOverallDelta !== null
+                ? `${progress.avgOverallDelta > 0 ? '+' : ''}${progress.avgOverallDelta}`
+                : '—'}
+            </p>
+            <p className="text-xs mt-1 text-gray-400">overall MQ points</p>
+          </div>
+        </div>
+      )}
+
       {/* Dimension bars */}
       {completed.length > 0 && (
         <div className="rounded-xl p-6" style={{ backgroundColor: 'white', border: '1px solid #B9F8DD' }}>
-          <h3 className="text-sm font-semibold mb-5" style={{ color: '#0A2E2A' }}>Team averages by dimension</h3>
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-sm font-semibold" style={{ color: '#0A2E2A' }}>Team averages by dimension</h3>
+            {progress && progress.reassessedCount > 0 && (
+              <span className="text-xs text-gray-400">Change shown for {progress.reassessedCount} reassessed</span>
+            )}
+          </div>
           <div className="space-y-4">
             {DIMENSIONS.map((dim, i) => {
-              const val = dims[i]
+              const val   = dims[i]
+              const delta = progress?.avgDeltas?.[i] ?? null
               return (
                 <div key={dim.id}>
                   <div className="flex justify-between text-sm mb-1">
                     <span style={{ color: '#0A2E2A' }}>{dim.name}</span>
-                    <span className="font-bold" style={{ color: dim.color }}>{val ?? '—'}</span>
+                    <div className="flex items-center gap-2">
+                      {delta !== null && delta !== 0 && (
+                        <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                              style={{
+                                backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
+                                color: delta > 0 ? '#065F46' : '#991B1B',
+                              }}>
+                          {delta > 0 ? '+' : ''}{delta}
+                        </span>
+                      )}
+                      <span className="font-bold" style={{ color: dim.color }}>{val ?? '—'}</span>
+                    </div>
                   </div>
                   <div className="h-2 rounded-full" style={{ backgroundColor: '#E8FDF7' }}>
                     <div

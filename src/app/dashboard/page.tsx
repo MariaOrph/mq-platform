@@ -106,6 +106,8 @@ function getScoreBand(score: number): { label: string; description: string; colo
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
+const REASSESS_DAYS = 30
+
 interface Assessment {
   overall_score:    number | null
   d1_score:         number | null
@@ -157,6 +159,19 @@ function getDimScore(a: Assessment, dimId: number): number | null {
     4: 'd4_score', 5: 'd5_score', 6: 'd6_score', 7: 'd7_score',
   }
   return a[map[dimId]] as number | null
+}
+
+function getDelta(current: Assessment, prev: Assessment | null, dimId: number): number | null {
+  if (!prev) return null
+  const cur = getDimScore(current, dimId)
+  const old = getDimScore(prev, dimId)
+  if (cur === null || old === null) return null
+  return cur - old
+}
+
+function daysSince(dateStr: string | null): number {
+  if (!dateStr) return 0
+  return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
 }
 
 // ── Logo component ─────────────────────────────────────────────────────────────
@@ -228,15 +243,16 @@ function getDailyQuote() {
 export default function ParticipantDashboard() {
   const supabase = createClient()
 
-  const [loading,          setLoading]          = useState(true)
-  const [profile,          setProfile]          = useState<{ id: string; full_name: string | null; email: string } | null>(null)
-  const [assessment,       setAssessment]       = useState<Assessment | null>(null)
-  const [showCoachingRoom, setShowCoachingRoom] = useState(false)
-  const [showOnboarding,   setShowOnboarding]   = useState(false)
-  const [authToken,        setAuthToken]        = useState<string | null>(null)
-  const [dimModal,         setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
-  const [showMQModal,      setShowMQModal]      = useState(false)
-  const [valuesStatus,     setValuesStatus]     = useState<{ total: number; rated: number; avgRating: number } | null>(null)
+  const [loading,           setLoading]          = useState(true)
+  const [profile,           setProfile]          = useState<{ id: string; full_name: string | null; email: string } | null>(null)
+  const [assessment,        setAssessment]       = useState<Assessment | null>(null)
+  const [prevAssessment,    setPrevAssessment]   = useState<Assessment | null>(null)
+  const [showCoachingRoom,  setShowCoachingRoom] = useState(false)
+  const [showOnboarding,    setShowOnboarding]   = useState(false)
+  const [authToken,         setAuthToken]        = useState<string | null>(null)
+  const [dimModal,          setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
+  const [showMQModal,       setShowMQModal]      = useState(false)
+  const [valuesStatus,      setValuesStatus]     = useState<{ total: number; rated: number; avgRating: number } | null>(null)
 
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -261,9 +277,10 @@ export default function ParticipantDashboard() {
       .eq('participant_id', authSession.user.id)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
-      .limit(1)
+      .limit(2)
 
     if (assessments?.[0]) setAssessment(assessments[0])
+    if (assessments?.[1]) setPrevAssessment(assessments[1])
 
     // Fetch values check-in status
     try {
@@ -300,11 +317,17 @@ export default function ParticipantDashboard() {
     window.location.href = '/login'
   }
 
-  const firstName  = getFirstName(profile?.full_name ?? null, profile?.email)
-  const journeyDay = getJourneyDay(assessment?.completed_at ?? null)
-  const focusDimId = assessment ? getFocusDimension(assessment) : 1
-  const focusDim   = DIMS[focusDimId - 1]
-  const dailyQuote = getDailyQuote()
+  const firstName       = getFirstName(profile?.full_name ?? null, profile?.email)
+  const journeyDay      = getJourneyDay(assessment?.completed_at ?? null)
+  const focusDimId      = assessment ? getFocusDimension(assessment) : 1
+  const focusDim        = DIMS[focusDimId - 1]
+  const dailyQuote      = getDailyQuote()
+  const daysSinceAssess = daysSince(assessment?.completed_at ?? null)
+  const canReassess     = assessment !== null && daysSinceAssess >= REASSESS_DAYS
+  const daysToReassess  = assessment ? Math.max(0, REASSESS_DAYS - daysSinceAssess) : 0
+  const overallDelta    = assessment && prevAssessment
+    ? (assessment.overall_score ?? 0) - (prevAssessment.overall_score ?? 0)
+    : null
 
   // ── Loading ─────────────────────────────────────────────────────────────────
   if (loading) {
@@ -431,7 +454,18 @@ export default function ParticipantDashboard() {
               </div>
               <div className="text-left">
                 <p className="text-base font-black" style={{ color: 'white' }}>MQ Score</p>
-                <p className="text-sm mt-0.5 font-semibold" style={{ color: '#0AF3CD' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <p className="text-sm font-semibold" style={{ color: '#0AF3CD' }}>{getScoreBand(assessment.overall_score ?? 0).label}</p>
+                  {overallDelta !== null && overallDelta !== 0 && (
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+                          style={{
+                            backgroundColor: overallDelta > 0 ? 'rgba(209,250,229,0.2)' : 'rgba(254,226,226,0.2)',
+                            color: overallDelta > 0 ? '#6EE7B7' : '#FCA5A5',
+                          }}>
+                      {overallDelta > 0 ? '+' : ''}{overallDelta}
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs mt-1" style={{ color: 'rgba(185,248,221,0.5)', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px' }}>what does this mean?</p>
               </div>
             </div>
@@ -530,13 +564,29 @@ export default function ParticipantDashboard() {
                           )}
                         </button>
                       </div>
-                      <button
-                        onClick={() => score !== null && setDimModal({ dimId: dim.id, mode: 'score' })}
-                        className="text-xs font-bold flex items-center gap-0.5"
-                        style={{ color: dim.color, cursor: score !== null ? 'pointer' : 'default', textDecoration: score !== null ? 'underline' : 'none', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: dim.color }}
-                      >
-                        {score ?? '—'}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        {(() => {
+                          const delta = getDelta(assessment, prevAssessment, dim.id)
+                          if (delta === null || delta === 0) return null
+                          return (
+                            <span className="text-xs font-bold px-1 py-0.5 rounded-full"
+                                  style={{
+                                    backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
+                                    color: delta > 0 ? '#065F46' : '#991B1B',
+                                    fontSize: '10px',
+                                  }}>
+                              {delta > 0 ? '+' : ''}{delta}
+                            </span>
+                          )
+                        })()}
+                        <button
+                          onClick={() => score !== null && setDimModal({ dimId: dim.id, mode: 'score' })}
+                          className="text-xs font-bold flex items-center gap-0.5"
+                          style={{ color: dim.color, cursor: score !== null ? 'pointer' : 'default', textDecoration: score !== null ? 'underline' : 'none', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: dim.color }}
+                        >
+                          {score ?? '—'}
+                        </button>
+                      </div>
                     </div>
                     <div className="h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
                       <div className="h-1.5 rounded-full transition-all duration-700"
@@ -589,7 +639,7 @@ export default function ParticipantDashboard() {
           )
         })()}
 
-        {/* ── Report + Retake buttons ───────────────────────────────────────── */}
+        {/* ── Report + Reassess buttons ─────────────────────────────────────── */}
         {assessment && (
           <div className="flex gap-3">
             <a
@@ -603,16 +653,29 @@ export default function ParticipantDashboard() {
               </svg>
               Download my report
             </a>
-            <a
-              href="/assessment"
-              className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
-              style={{ backgroundColor: 'white', color: '#6B7280', border: '1px solid #E5E7EB' }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
-              </svg>
-              Retake Assessment
-            </a>
+            {canReassess ? (
+              <a
+                href="/assessment"
+                className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
+                </svg>
+                Reassess now
+              </a>
+            ) : (
+              <div
+                className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-medium"
+                style={{ backgroundColor: '#F9FAFB', color: '#9CA3AF', border: '1px solid #E5E7EB' }}
+                title={`Reassessment available in ${daysToReassess} days`}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Reassess in {daysToReassess}d
+              </div>
+            )}
           </div>
         )}
 
