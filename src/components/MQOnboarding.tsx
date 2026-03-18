@@ -133,7 +133,7 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
         {([
-          { icon: '📊', label: 'Start with the assessments',    desc: 'Measure your 7 MQ dimensions and how well you embody your company values.',  color: '#0AF3CD' },
+          { icon: '📊', label: 'Start with the assessments',    desc: 'Measure your 7 MQ dimensions and how well you embody your company values. Takes around 15 mins.',  color: '#0AF3CD' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your individual development areas.',           color: '#fdcb5e' },
           { icon: '💬', label: 'Anytime personalised coaching', desc: 'On-demand coaching for any day-to-day challenges.',                    color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                               color: '#a78bfa' },
