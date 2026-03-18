@@ -59,7 +59,7 @@ const SLIDES = [
           },
           {
             label: 'Relationships', sub: 'How you lead others',
-            desc: 'The presence and intention you bring to every interaction and conversation.',
+            desc: 'The trust, presence and intention you bring to every interaction and conversation.',
             color: '#0AF3CD', indent: 14,
           },
           {
