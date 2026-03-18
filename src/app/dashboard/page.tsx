@@ -350,7 +350,7 @@ export default function ParticipantDashboard() {
              style={{ backgroundColor: 'rgba(10,243,205,0.07)' }} />
         <div className="absolute bottom-0 left-1/4 w-32 h-16 rounded-full blur-2xl pointer-events-none"
              style={{ backgroundColor: 'rgba(5,168,142,0.1)' }} />
-        <div className="relative max-w-2xl mx-auto px-6 py-5 flex items-start justify-between">
+        <div className="relative max-w-6xl mx-auto px-6 py-5 flex items-start justify-between">
           <div className="flex items-center gap-3">
             <MQLogo size="md" />
             <div>
@@ -375,11 +375,11 @@ export default function ParticipantDashboard() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
+      <div className="max-w-6xl mx-auto px-6 py-6">
 
         {/* ── No assessment ────────────────────────────────────────────────── */}
         {!assessment && (
-          <div className="rounded-2xl p-6 text-center" style={{ ...cardStyle, border: '2px solid #0AF3CD' }}>
+          <div className="max-w-2xl mx-auto rounded-2xl p-6 text-center" style={{ ...cardStyle, border: '2px solid #0AF3CD' }}>
             <p className="text-base font-semibold mb-1" style={{ color: '#0A2E2A' }}>
               Start with your MQ assessment
             </p>
@@ -394,8 +394,14 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* ── MQ Score card ─────────────────────────────────────────────────── */}
+        {/* ── Two-column layout (desktop) / single column (mobile) ─────────── */}
         {assessment && (
+          <div className="lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start space-y-4 lg:space-y-0">
+
+          {/* ── LEFT COLUMN ──────────────────────────────────────────────── */}
+          <div className="space-y-4">
+
+        {/* ── MQ Score card ─────────────────────────────────────────────────── */}
           <button
             onClick={() => setShowMQModal(true)}
             className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
@@ -472,11 +478,9 @@ export default function ParticipantDashboard() {
               </div>
             </div>
           </button>
-        )}
 
         {/* ── The Coaching Room ─────────────────────────────────────────────── */}
-        {assessment && (
-          <div
+        <div
             className="rounded-2xl p-5 flex items-center justify-between"
             style={{ backgroundColor: '#E8FDF7', border: '2px solid #0AF3CD', boxShadow: '0 2px 12px rgba(10,243,205,0.12)' }}
           >
@@ -500,10 +504,8 @@ export default function ParticipantDashboard() {
               Open →
             </button>
           </div>
-        )}
 
         {/* ── MQ Builder ───────────────────────────────────────────────────── */}
-        {assessment && (
           <div
             className="rounded-2xl p-5 flex items-center justify-between"
             style={{ backgroundColor: '#F5F3FF', border: '2px solid #a78bfa', boxShadow: '0 2px 12px rgba(167,139,250,0.15)' }}
@@ -528,10 +530,8 @@ export default function ParticipantDashboard() {
               Open →
             </button>
           </div>
-        )}
 
         {/* ── Culture Lab ──────────────────────────────────────────────────── */}
-        {assessment && (
           <div
             className="rounded-2xl p-5 flex items-center justify-between"
             style={{ backgroundColor: '#FFFBEB', border: '2px solid #F59E0B', boxShadow: '0 2px 12px rgba(245,158,11,0.15)' }}
@@ -556,16 +556,19 @@ export default function ParticipantDashboard() {
               Open →
             </a>
           </div>
-        )}
+
+          </div>{/* end left column */}
+
+          {/* ── RIGHT COLUMN ─────────────────────────────────────────────── */}
+          <div className="space-y-4">
 
         {/* ── Daily Spark ──────────────────────────────────────────────────── */}
-        {assessment && authToken && (
+        {authToken && (
           <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
         )}
 
         {/* ── MQ profile bars ───────────────────────────────────────────────── */}
-        {assessment && (
-          <div className="rounded-2xl p-5" style={cardStyle}>
+        <div className="rounded-2xl p-5" style={cardStyle}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
               Your MQ profile
             </p>
@@ -625,10 +628,9 @@ export default function ParticipantDashboard() {
               })}
             </div>
           </div>
-        )}
 
         {/* ── Values in Action card ────────────────────────────────────────── */}
-        {assessment && valuesStatus && valuesStatus.total > 0 && (() => {
+        {valuesStatus && valuesStatus.total > 0 && (() => {
           const { total, rated, avgRating } = valuesStatus
           const isComplete  = rated === total
           const isStarted   = rated > 0
@@ -668,8 +670,7 @@ export default function ParticipantDashboard() {
         })()}
 
         {/* ── Report + Reassess buttons ─────────────────────────────────────── */}
-        {assessment && (
-          <div className="flex gap-3">
+        <div className="flex gap-3">
             <a
               href="/dashboard/report"
               target="_blank"
@@ -705,7 +706,6 @@ export default function ParticipantDashboard() {
               </div>
             )}
           </div>
-        )}
 
         {/* ── Resource Centre ───────────────────────────────────────────────── */}
         <a
@@ -728,7 +728,9 @@ export default function ParticipantDashboard() {
           <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#0AF3CD' }}>Browse →</span>
         </a>
 
-
+          </div>
+          </div>
+        )}
 
       </div>
 
