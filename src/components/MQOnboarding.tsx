@@ -138,7 +138,7 @@ const SLIDES = [
           { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'On-demand coaching for any day-to-day challenges.',                    color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                               color: '#a78bfa' },
           { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Build values, psychological safety and accountability in your team.',           color: '#F59E0B' },
-          { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Articles, tools and further reading to support your development.',              color: '#ff7b7a' },
+          { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Practical tools, frameworks and resources to build your leadership skills.',              color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 10,
