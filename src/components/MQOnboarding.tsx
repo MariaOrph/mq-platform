@@ -54,17 +54,17 @@ const SLIDES = [
           {
             label: 'Mindset',       sub: 'How you lead yourself',
             desc: 'The foundation of all great leadership — mastering how you lead yourself before you can lead others.',
-            color: '#fdcb5e', indent: 0,
+            color: '#0d4a3e', indent: 0,
           },
           {
             label: 'Relationships', sub: 'How you lead others',
             desc: 'How you connect with others and build trust.',
-            color: '#0AF3CD', indent: 14,
+            color: '#0a9e82', indent: 14,
           },
           {
             label: 'Culture',       sub: 'What you shape',
             desc: 'How you bring values to life and shape the environment around you.',
-            color: '#a78bfa', indent: 28,
+            color: '#0AF3CD', indent: 28,
           },
         ] as const).map((layer, i) => (
           <div key={i} style={{ marginLeft: layer.indent }}>
