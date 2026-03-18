@@ -40,7 +40,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   values: {
     id:      'values',
     name:    'Living the Company Values',
-    tagline: 'Bridge the gap between stated values and daily leadership behaviour',
+    tagline: 'Make your company values visible in how you actually lead',
     emoji:   '⭐',
     color:   '#f59e0b',
     bg:      '#FEF3C7',
@@ -308,16 +308,6 @@ export default function CultureLabPage() {
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-base mb-1" style={{ color: '#0A2E2A' }}>{topic.name}</p>
                       <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>{topic.tagline}</p>
-
-                      {/* Starter prompts preview */}
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {topic.prompts.slice(0, 2).map(p => (
-                          <span key={p} className="text-xs px-2.5 py-1 rounded-full"
-                                style={{ backgroundColor: topic.bg, color: topic.color, border: `1px solid ${topic.color}40` }}>
-                            {p}
-                          </span>
-                        ))}
-                      </div>
 
                       <button onClick={() => openTopic(topic)}
                               className="w-full py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
