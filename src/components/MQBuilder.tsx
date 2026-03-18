@@ -307,7 +307,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
-                     style={{ backgroundColor: '#0AF3CD' }}>🧱</div>
+                     style={{ backgroundColor: '#0AF3CD' }}>🧠</div>
                 <div>
                   <p className="text-sm font-bold" style={{ color: 'white' }}>MQ Builder</p>
                   <p className="text-xs" style={{ color: '#B9F8DD' }}>Develop your 7 dimensions</p>
@@ -414,7 +414,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                       >
                         <div className="flex items-start gap-3 flex-1 min-w-0">
                           <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
-                               style={{ backgroundColor: '#0A2E2A' }}>🧱</div>
+                               style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold truncate" style={{ color: '#0A2E2A' }}>
                               {session.title}
@@ -587,7 +587,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                 <div key={msg.id ?? i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
-                         style={{ backgroundColor: activeDim.color }}>🧱</div>
+                         style={{ backgroundColor: activeDim.color }}>🧠</div>
                   )}
                   <div className="max-w-sm rounded-2xl px-4 py-3 text-sm leading-relaxed"
                        style={msg.role === 'user'

@@ -190,7 +190,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
-                     style={{ backgroundColor: '#0AF3CD' }}>🧠</div>
+                     style={{ backgroundColor: '#0AF3CD' }}>💬</div>
                 <div>
                   <p className="text-sm font-bold" style={{ color: 'white' }}>The Coaching Room</p>
                   <p className="text-xs" style={{ color: '#B9F8DD' }}>
@@ -235,7 +235,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
               {sessionsLoaded && sessions.length === 0 && (
                 <div className="text-center py-16">
-                  <div className="text-4xl mb-4">🧠</div>
+                  <div className="text-4xl mb-4">💬</div>
                   <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
                     Hey {firstName}, I'm your MQ Coach.
                   </p>
@@ -259,7 +259,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     >
                       <div className="flex items-start gap-3 flex-1 min-w-0">
                         <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
-                             style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
+                             style={{ backgroundColor: '#0A2E2A' }}>💬</div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold truncate" style={{ color: '#0A2E2A' }}>
                             {session.title}
@@ -336,7 +336,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 <div className="py-8">
                   <div className="text-center mb-8">
                     <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
-                         style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
+                         style={{ backgroundColor: '#0A2E2A' }}>💬</div>
                     <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
                       What's on your mind, {firstName}?
                     </p>
@@ -409,7 +409,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 <div key={msg.id ?? i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
-                         style={{ backgroundColor: '#0A2E2A' }}>🧠</div>
+                         style={{ backgroundColor: '#0A2E2A' }}>💬</div>
                   )}
                   <div className="max-w-sm rounded-2xl px-4 py-3 text-sm leading-relaxed"
                        style={msg.role === 'user'

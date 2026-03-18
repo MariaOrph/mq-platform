@@ -477,26 +477,24 @@ export default function ParticipantDashboard() {
         {/* ── The Coaching Room ─────────────────────────────────────────────── */}
         {assessment && (
           <div
-            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
-            style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.15)' }}
+            className="rounded-2xl p-5 flex items-center justify-between"
+            style={{ backgroundColor: '#E8FDF7', border: '2px solid #0AF3CD', boxShadow: '0 2px 12px rgba(10,243,205,0.12)' }}
           >
-            <div className="absolute right-0 top-0 w-32 h-full rounded-full blur-3xl pointer-events-none"
-                 style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
-            <div className="flex items-center gap-3 relative z-10">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: 'rgba(10,243,205,0.12)' }}>
-                🧠
+                   style={{ backgroundColor: 'white' }}>
+                💬
               </div>
               <div>
-                <p className="text-sm font-bold" style={{ color: 'white' }}>The Coaching Room</p>
-                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
-                  Always personalised to you
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
+                <p className="text-xs mt-0.5" style={{ color: '#05A88E' }}>
+                  Bring me any challenge or decision
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowCoachingRoom(true)}
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
             >
               Open →
@@ -507,25 +505,25 @@ export default function ParticipantDashboard() {
         {/* ── MQ Builder ───────────────────────────────────────────────────── */}
         {assessment && (
           <div
-            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
-            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
+            className="rounded-2xl p-5 flex items-center justify-between"
+            style={{ backgroundColor: '#F5F3FF', border: '2px solid #a78bfa', boxShadow: '0 2px 12px rgba(167,139,250,0.15)' }}
           >
-            <div className="flex items-center gap-3 relative z-10">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: '#E8FDF7' }}>
-                🧱
+                   style={{ backgroundColor: 'white' }}>
+                🧠
               </div>
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
-                <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs mt-0.5" style={{ color: '#7c3aed' }}>
                   Develop your 7 dimensions
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowMQBuilder(true)}
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#0A2E2A', color: '#0AF3CD' }}
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#a78bfa', color: '#0A2E2A' }}
             >
               Open →
             </button>
@@ -535,25 +533,25 @@ export default function ParticipantDashboard() {
         {/* ── Culture Lab ──────────────────────────────────────────────────── */}
         {assessment && (
           <div
-            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
-            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
+            className="rounded-2xl p-5 flex items-center justify-between"
+            style={{ backgroundColor: '#FFFBEB', border: '2px solid #F59E0B', boxShadow: '0 2px 12px rgba(245,158,11,0.15)' }}
           >
-            <div className="flex items-center gap-3 relative z-10">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: '#FEF3C7' }}>
+                   style={{ backgroundColor: 'white' }}>
                 🧪
               </div>
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
-                <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs mt-0.5" style={{ color: '#d97706' }}>
                   Values · Psych safety · Accountability
                 </p>
               </div>
             </div>
             <a
               href="/dashboard/culture-lab"
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#0A2E2A', color: '#0AF3CD' }}
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#F59E0B', color: '#0A2E2A' }}
             >
               Open →
             </a>
