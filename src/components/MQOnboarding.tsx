@@ -30,11 +30,11 @@ const SLIDES = [
             <p style={{ fontSize: 13, fontWeight: 800, color: 'white', margin: '0 0 4px', letterSpacing: '0.02em' }}>
               Mindset Quotient
             </p>
-            <p style={{ fontSize: 11, color: 'rgba(10,243,205,0.7)', margin: '0 0 10px', lineHeight: 1.5 }}>
-              Your capacity to notice your thoughts, beliefs and emotional patterns — and consciously choose how you respond.
+            <p style={{ fontSize: 11, color: 'rgba(10,243,205,0.7)', margin: '0 0 10px', lineHeight: 1.6 }}>
+              Your capacity to observe, understand, regulate and reframe your inner world — rather than being unconsciously driven by it.
             </p>
-            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', margin: 0, lineHeight: 1.5, fontStyle: 'italic' }}>
-              The inner foundation that all effective leadership is built on.
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6, fontStyle: 'italic' }}>
+              MQ is the mindset intelligence behind every manager and leader who makes a lasting difference.
             </p>
           </div>
         </div>
