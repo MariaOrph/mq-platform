@@ -150,23 +150,20 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
         {([
-          { icon: '📊', label: 'Start with the assessments',     desc: 'Measure your 7 MQ dimensions and how well you embody your company values — takes about 15 minutes total.', color: '#0AF3CD' },
-          { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your focus dimension.',             color: '#fdcb5e' },
-          { icon: '💬', label: 'Anytime personalised coaching', desc: 'Bring any challenge or development goal to your AI coach.',        color: '#0AF3CD' },
-          { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                   color: '#a78bfa' },
-          { icon: '🧪', label: 'Explore the Culture Lab',      desc: 'Build values, psychological safety and accountability in your team.', color: '#F59E0B' },
-          { icon: '📚', label: 'Resource Centre',              desc: 'Articles, tools and further reading to support your development.',  color: '#ff7b7a' },
+          { icon: '📊', label: 'Start with the assessments',    color: '#0AF3CD' },
+          { icon: '⚡', label: 'Complete Daily Spark each day', color: '#fdcb5e' },
+          { icon: '💬', label: 'Anytime personalised coaching', color: '#0AF3CD' },
+          { icon: '🧠', label: 'Grow with MQ Builder',         color: '#a78bfa' },
+          { icon: '🧪', label: 'Explore the Culture Lab',      color: '#F59E0B' },
+          { icon: '📚', label: 'Resource Centre',              color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
-            display: 'flex', alignItems: 'flex-start', gap: 10,
+            display: 'flex', alignItems: 'center', gap: 10,
             padding: '9px 12px', borderRadius: 12,
             backgroundColor: `${item.color}10`, border: `1px solid ${item.color}28`,
           }}>
-            <span style={{ fontSize: 16, flexShrink: 0, lineHeight: '1.5' }}>{item.icon}</span>
-            <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: '0 0 2px' }}>{item.label}</p>
-              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.55)', margin: 0, lineHeight: 1.45 }}>{item.desc}</p>
-            </div>
+            <span style={{ fontSize: 16, flexShrink: 0 }}>{item.icon}</span>
+            <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: 0 }}>{item.label}</p>
           </div>
         ))}
       </div>
