@@ -150,12 +150,12 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
         {([
-          { icon: '📊', label: 'Take the MQ Assessment',       desc: 'Measure your 7 dimensions — takes about 10 minutes.',              color: '#0AF3CD' },
-          { icon: '🌟', label: 'Values in Action Assessment',  desc: 'See how well you embody and lead by example on your company values — takes about 5 minutes.', color: '#fdcb5e' },
+          { icon: '📊', label: 'Start with the assessments',     desc: 'Measure your 7 MQ dimensions and how well you embody your company values — takes about 15 minutes total.', color: '#0AF3CD' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your focus dimension.',             color: '#fdcb5e' },
-          { icon: '💬', label: 'Anytime personalised coaching',         desc: 'Bring any challenge or development goal to your AI coach.',                 color: '#0AF3CD' },
+          { icon: '💬', label: 'Anytime personalised coaching', desc: 'Bring any challenge or development goal to your AI coach.',        color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                   color: '#a78bfa' },
-          { icon: '🧪', label: 'Explore the Culture Lab',       desc: 'Build values, psychological safety and accountability in your team.', color: '#F59E0B' },
+          { icon: '🧪', label: 'Explore the Culture Lab',      desc: 'Build values, psychological safety and accountability in your team.', color: '#F59E0B' },
+          { icon: '📚', label: 'Resource Centre',              desc: 'Articles, tools and further reading to support your development.',  color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 10,
