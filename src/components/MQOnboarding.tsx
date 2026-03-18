@@ -20,9 +20,9 @@ const SLIDES = [
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         }}>
           <div style={{
-            width: 80, height: 80, borderRadius: '50%', backgroundColor: '#0AF3CD',
+            width: 80, height: 80, borderRadius: '50%', backgroundColor: 'transparent',
+            border: '2px solid rgba(10,243,205,0.6)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 40px rgba(10,243,205,0.5)',
           }}>
             <img src="/Favicon_White.png" alt="MQ" style={{ width: 50, height: 50, objectFit: 'contain' }} />
           </div>
