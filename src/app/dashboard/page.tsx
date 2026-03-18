@@ -479,7 +479,7 @@ export default function ParticipantDashboard() {
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
                 <p className="text-xs mt-0.5" style={{ color: '#05A88E' }}>
-                  Get coached on any challenge or decision
+                  Get coached on any challenge or situation
                 </p>
               </div>
             </div>
