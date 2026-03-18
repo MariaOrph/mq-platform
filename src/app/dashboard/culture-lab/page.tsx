@@ -42,8 +42,8 @@ const TOPICS: Record<Topic, TopicConfig> = {
     name:    'Living the Company Values',
     tagline: 'Make your company values visible in how you actually lead',
     emoji:   '⭐',
-    color:   '#f59e0b',
-    bg:      '#FEF3C7',
+    color:   '#F97316',
+    bg:      '#FFF3E8',
     intro:   "I help you explore where you're genuinely living your company's values — and where the gap is. Bring a specific situation, a value you find hard to embody, or a team member you're not sure is living the values.",
     prompts: [
       "Where am I falling short on one of our values?",
@@ -57,8 +57,8 @@ const TOPICS: Record<Topic, TopicConfig> = {
     name:    'Psychological Safety',
     tagline: 'Create the conditions for your team to speak up, take risks, and learn',
     emoji:   '🛡️',
-    color:   '#3b82f6',
-    bg:      '#DBEAFE',
+    color:   '#6366F1',
+    bg:      '#EEF2FF',
     intro:   "Psychological safety determines whether people on your team feel safe enough to speak up, admit mistakes, and challenge ideas. My role is to help you see how your behaviour shapes that environment — and what to change.",
     prompts: [
       "How do I know if my team feels psychologically safe?",
@@ -72,8 +72,8 @@ const TOPICS: Record<Topic, TopicConfig> = {
     name:    'Culture of Accountability',
     tagline: 'Hold people to high standards without creating fear or blame',
     emoji:   '🎯',
-    color:   '#10b981',
-    bg:      '#D1FAE5',
+    color:   '#06D6A0',
+    bg:      '#E0FBF5',
     intro:   "Accountability is about clear expectations, honest conversations, and consistent follow-through — not blame or micromanagement. Bring me a situation where accountability is breaking down and I'll help you work out exactly what to do.",
     prompts: [
       "Someone keeps missing deadlines — how do I handle it?",
