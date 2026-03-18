@@ -179,7 +179,7 @@ function daysSince(dateStr: string | null): number {
 
 function MQLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const [logoError, setLogoError] = useState(false)
-  const dims = size === 'sm' ? 'w-8 h-8' : size === 'lg' ? 'w-20 h-20' : 'w-12 h-12'
+  const dims = size === 'sm' ? 'w-8 h-8' : size === 'lg' ? 'w-20 h-20' : 'w-14 h-14'
   const text = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-2xl' : 'text-sm'
   return !logoError ? (
     <img src="/logo.png" alt="MQ" className={`${dims} object-contain rounded-xl`}
@@ -350,7 +350,7 @@ export default function ParticipantDashboard() {
              style={{ backgroundColor: 'rgba(10,243,205,0.07)' }} />
         <div className="absolute bottom-0 left-1/4 w-32 h-16 rounded-full blur-2xl pointer-events-none"
              style={{ backgroundColor: 'rgba(5,168,142,0.1)' }} />
-        <div className="relative max-w-6xl mx-auto px-6 py-5 flex items-start justify-between">
+        <div className="relative max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <MQLogo size="md" />
             <div>
