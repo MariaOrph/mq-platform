@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const participantId = user.id
-  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string }
+  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string; focusDimensionId?: number | null }
   try { body = await req.json() } catch {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
@@ -82,18 +82,38 @@ export async function POST(req: NextRequest) {
     .from('assessments')
     .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role')
     .eq('participant_id', participantId).not('overall_score', 'is', null)
-    .order('completed_at', { ascending: false }).limit(1)
+    .order('completed_at', { ascending: false }).limit(2)
 
-  const assessment = assessments?.[0] ?? null
-  const firstName  = profile?.full_name?.split(' ')[0] ?? 'there'
-  const role       = assessment?.participant_role ?? 'leader'
+  const assessment     = assessments?.[0] ?? null
+  const prevAssessment = assessments?.[1] ?? null
+  const firstName      = profile?.full_name?.split(' ')[0] ?? 'there'
+  const role           = assessment?.participant_role ?? 'leader'
 
+  // Determine session focus dimension
+  const sessionFocusDimId: number | null = body.focusDimensionId ?? null
   let focusDimName = 'general mindset'
-  if (assessment) {
+  if (sessionFocusDimId && DIMENSION_NAMES[sessionFocusDimId]) {
+    focusDimName = DIMENSION_NAMES[sessionFocusDimId]
+  } else if (assessment) {
     const scores = [assessment.d1_score, assessment.d2_score, assessment.d3_score,
                     assessment.d4_score, assessment.d5_score, assessment.d6_score,
                     assessment.d7_score]
     focusDimName = DIMENSION_NAMES[getFocusDimension(scores)]
+  }
+
+  // Build progress context if user has reassessed
+  let progressContext = ''
+  if (prevAssessment && assessment) {
+    const dimKeys = ['d1_score','d2_score','d3_score','d4_score','d5_score','d6_score','d7_score'] as const
+    const overallDelta = (assessment.overall_score ?? 0) - (prevAssessment.overall_score ?? 0)
+    const dimDeltas = dimKeys.map((key, i) => {
+      const cur  = assessment[key] as number | null
+      const prev = prevAssessment[key] as number | null
+      if (cur === null || prev === null) return null
+      const delta = cur - prev
+      return delta !== 0 ? `${DIMENSION_NAMES[i + 1]}: ${delta > 0 ? '+' : ''}${delta}` : null
+    }).filter(Boolean)
+    progressContext = `\n\nProgress since ${firstName}'s last assessment: Overall MQ ${overallDelta > 0 ? '+' : ''}${overallDelta} points.${dimDeltas.length > 0 ? ` Dimension changes: ${dimDeltas.join(', ')}.` : ' All dimensions stable.'} Reference this naturally where it's relevant — acknowledge growth or note where there's still work to do. Don't lead with it unless it comes up.`
   }
 
   let companyValues: string | null = null
@@ -155,11 +175,22 @@ export async function POST(req: NextRequest) {
       ? `\n\nOrganisation values: ${companyValues}. Reference where relevant.`
       : ''
 
+  const isFirstMessage = (await supabaseAdmin
+    .from('coaching_room_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('participant_id', participantId)
+    .eq('session_id', sessionId)
+  ).count === 0
+
+  const sessionFocusInstruction = sessionFocusDimId
+    ? `\n\nThis session is focused on ${DIMENSION_NAMES[sessionFocusDimId]}. ${isFirstMessage ? `This is the opening message. Begin with the coaching arc orientation for ${DIMENSION_NAMES[sessionFocusDimId]} as defined below — do not wait to be asked.` : `Keep the conversation anchored to ${DIMENSION_NAMES[sessionFocusDimId]} unless the participant takes it somewhere else.`}`
+    : ''
+
   const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ is the ability to notice your thoughts, beliefs and emotional triggers — and choose how you respond rather than being driven by them unconsciously.
 
 You are coaching ${firstName}, a ${role}.
 
-MQ Assessment: ${scoresSummary}${valuesContext}${memoryContext}
+MQ Assessment: ${scoresSummary}${sessionFocusInstruction}${progressContext}${valuesContext}${memoryContext}
 
 Your role is to be a genuine coaching presence. Listen deeply, ask powerful questions, offer reframes, help ${firstName} think through whatever is on their mind at work. Always connect insights to their leadership. Tone: warm, direct, possibility-focused. Never preachy, generic, or clinical.
 

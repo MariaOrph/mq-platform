@@ -808,6 +808,16 @@ export default function ParticipantDashboard() {
           token={authToken}
           firstName={firstName}
           onClose={() => setShowCoachingRoom(false)}
+          dimScores={assessment ? [
+            assessment.d1_score, assessment.d2_score, assessment.d3_score,
+            assessment.d4_score, assessment.d5_score, assessment.d6_score,
+            assessment.d7_score,
+          ] : undefined}
+          prevDimScores={prevAssessment ? [
+            prevAssessment.d1_score, prevAssessment.d2_score, prevAssessment.d3_score,
+            prevAssessment.d4_score, prevAssessment.d5_score, prevAssessment.d6_score,
+            prevAssessment.d7_score,
+          ] : undefined}
         />
       )}
 
