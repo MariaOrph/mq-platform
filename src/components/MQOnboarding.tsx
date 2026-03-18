@@ -135,7 +135,7 @@ const SLIDES = [
         {([
           { icon: '📊', label: 'Start with the assessments',    desc: 'Measure your 7 MQ dimensions and how well you embody your company values.',  color: '#0AF3CD' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your individual development areas.',           color: '#fdcb5e' },
-          { icon: '💬', label: 'Anytime personalised coaching', desc: 'Bring any challenge or development goal to your AI coach.',                    color: '#0AF3CD' },
+          { icon: '💬', label: 'Anytime personalised coaching', desc: 'On-demand coaching for any day-to-day challenges.',                    color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                               color: '#a78bfa' },
           { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Build values, psychological safety and accountability in your team.',           color: '#F59E0B' },
           { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Articles, tools and further reading to support your development.',              color: '#ff7b7a' },
