@@ -49,39 +49,25 @@ const SLIDES = [
     subtitle: 'Mindset · Relationships · Culture',
     body: 'Great management and leadership develops in three layers — beginning with how you manage your inner world, building through the relationships you cultivate with others, and scaling through the culture you help shape around you.',
     visual: (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {([
-          {
-            label: 'Mindset',
-            desc: 'Mastering how you lead yourself before you can lead others.',
-            width: '60%',
-          },
-          {
-            label: 'Relationships',
-            desc: 'How you connect with others and build trust.',
-            width: '80%',
-          },
-          {
-            label: 'Culture',
-            desc: 'How you bring values to life and shape the environment around you.',
-            width: '100%',
-          },
-        ] as const).map((layer, i) => (
-          <div key={i} style={{ width: layer.width, alignSelf: 'center' }}>
-            <div style={{
-              padding: '11px 14px', borderRadius: 14,
-              backgroundColor: 'rgba(10,243,205,0.08)', border: '1.5px solid #0A2E2A',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#0AF3CD' }}>{layer.label}</span>
-              </div>
-              <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.55 }}>
-                {layer.desc}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      <svg viewBox="0 0 300 192" style={{ width: '100%', height: 'auto' }}>
+        {/* Mindset — top tier */}
+        <polygon points="90,0 210,0 235,60 65,60"
+          fill="rgba(10,243,205,0.10)" stroke="#0A2E2A" strokeWidth="1.5"/>
+        <text x="150" y="25" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Mindset</text>
+        <text x="150" y="43" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">Mastering how you lead yourself</text>
+
+        {/* Relationships — middle tier */}
+        <polygon points="65,64 235,64 265,124 35,124"
+          fill="rgba(10,243,205,0.07)" stroke="#0A2E2A" strokeWidth="1.5"/>
+        <text x="150" y="89" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Relationships</text>
+        <text x="150" y="107" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">How you connect with others and build trust</text>
+
+        {/* Culture — bottom tier */}
+        <polygon points="35,128 265,128 300,192 0,192"
+          fill="rgba(10,243,205,0.04)" stroke="#0A2E2A" strokeWidth="1.5"/>
+        <text x="150" y="155" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Culture</text>
+        <text x="150" y="173" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">How you bring values to life and shape the environment</text>
+      </svg>
     ),
   },
 
