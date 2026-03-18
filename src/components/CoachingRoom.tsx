@@ -494,7 +494,7 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                       What's on your mind, {firstName}?
                     </p>
                     <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
-                      Bring me a challenge, a decision, or choose one of the 6 MQ dimensions to work on.
+                      Bring me a challenge, a decision, or choose one of the 7 MQ dimensions to work on.
                     </p>
                   </div>
 
@@ -556,70 +556,13 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                     </div>
                   </div>
 
-                  {/* Live your values */}
-                  <div className="mb-6">
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
-                      Live your values
-                    </p>
-                    {(() => {
-                      const msg = 'Help me lead by example on our company values'
-                      const isHovered = hoveredPrompt === msg
-                      return (
-                        <button
-                          onClick={() => {
-                            setInput('')
-                            setLoading(true)
-                            setMessages([
-                              { role: 'user', content: msg, pending: false },
-                              { role: 'assistant', content: '', pending: true },
-                            ])
-                            fetch('/api/coaching-room', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                              body: JSON.stringify({ message: msg, sessionId: activeSession!.id, focusDimensionId: selectedDimId }),
-                            }).then(r => r.json()).then(data => {
-                              const reply = data.reply ?? 'Something went wrong. Please try again.'
-                              setMessages([
-                                { role: 'user', content: msg },
-                                { role: 'assistant', content: reply },
-                              ])
-                              setActiveSession(prev => prev ? { ...prev, title: 'Lead by example on our values' } : prev)
-                              setSessions(prev => prev.map(s => s.id === activeSession!.id ? { ...s, title: 'Lead by example on our values' } : s))
-                            }).catch(() => {
-                              setMessages([
-                                { role: 'user', content: msg },
-                                { role: 'assistant', content: 'Something went wrong. Please try again.' },
-                              ])
-                            }).finally(() => {
-                              setLoading(false)
-                              setTimeout(() => inputRef.current?.focus(), 50)
-                            })
-                          }}
-                          onMouseEnter={() => setHoveredPrompt(msg)}
-                          onMouseLeave={() => setHoveredPrompt(null)}
-                          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-150"
-                          style={{
-                            backgroundColor: isHovered ? '#FEF3C7' : '#FFFBEB',
-                            border: `1px solid ${isHovered ? '#F59E0B' : '#F59E0B50'}`,
-                            boxShadow: isHovered ? '0 2px 10px rgba(245,158,11,0.2)' : 'none',
-                          }}
-                        >
-                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: '#F59E0B' }} />
-                          <span className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>
-                            Help me lead by example on our company values
-                          </span>
-                        </button>
-                      )
-                    })()}
-                  </div>
-
                   {/* Dimension prompts */}
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center" style={{ color: '#9CA3AF' }}>
                       Build your MQ
                     </p>
                     <div className="grid grid-cols-2 gap-2">
-                      {DIMENSIONS.map(dim => (
+                      {DIMENSIONS.map((dim, idx) => (
                         <button
                           key={dim.id}
                           onClick={() => {
@@ -657,7 +600,7 @@ export default function CoachingRoom({ token, firstName, onClose, dimScores, pre
                           }}
                           onMouseEnter={() => setHoveredDim(dim.id)}
                           onMouseLeave={() => setHoveredDim(null)}
-                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left transition-all duration-150"
+                          className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-left transition-all duration-150${idx === DIMENSIONS.length - 1 && DIMENSIONS.length % 2 !== 0 ? ' col-span-2' : ''}`}
                           style={{
                             backgroundColor: dim.bg,
                             border: `1px solid ${hoveredDim === dim.id ? dim.color : dim.color + '50'}`,
