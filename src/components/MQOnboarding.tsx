@@ -91,7 +91,7 @@ const SLIDES = [
   {
     id: 'dimensions',
     tag: 'The 7 Dimensions',
-    title: 'Your 7 MQ dimensions',
+    title: 'The 7 dimensions of MQ',
     subtitle: '',
     body: '',
     visual: (
