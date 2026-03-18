@@ -39,7 +39,7 @@ interface Message {
 const TOPICS: Record<Topic, TopicConfig> = {
   values: {
     id:      'values',
-    name:    'Living the Company Values',
+    name:    'Living Your Company Values',
     tagline: 'Make your company values visible in how you actually lead',
     emoji:   '⭐',
     color:   '#F97316',
