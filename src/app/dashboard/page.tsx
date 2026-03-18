@@ -562,7 +562,7 @@ export default function ParticipantDashboard() {
               </p>
             </div>
           </div>
-          <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#0AF3CD' }}>Browse →</span>
+          <span className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3" style={{ backgroundColor: '#ff7b7a', color: '#0A2E2A' }}>Browse →</span>
         </a>
 
           </div>{/* end left column */}
