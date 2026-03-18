@@ -52,29 +52,29 @@ const SLIDES = [
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {([
           {
-            label: 'Mindset',       sub: 'How you lead yourself',
+            label: 'Mindset',
             desc: 'The foundation of all great leadership — mastering how you lead yourself before you can lead others.',
-            color: '#0d4a3e', indent: 0,
+            width: '60%',
           },
           {
-            label: 'Relationships', sub: 'How you lead others',
+            label: 'Relationships',
             desc: 'How you connect with others and build trust.',
-            color: '#0a9e82', indent: 14,
+            width: '80%',
           },
           {
-            label: 'Culture',       sub: 'What you shape',
+            label: 'Culture',
             desc: 'How you bring values to life and shape the environment around you.',
-            color: '#0AF3CD', indent: 28,
+            width: '100%',
           },
         ] as const).map((layer, i) => (
-          <div key={i} style={{ marginLeft: layer.indent }}>
+          <div key={i} style={{ width: layer.width, alignSelf: 'center' }}>
             <div style={{
               padding: '11px 14px', borderRadius: 14,
-              backgroundColor: `${layer.color}18`, border: `1.5px solid ${layer.color}55`,
+              backgroundColor: 'rgba(13,74,62,0.08)', border: '1.5px solid rgba(13,74,62,0.3)',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: layer.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 13, fontWeight: 800, color: layer.color }}>{layer.label}</span>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#0d4a3e', flexShrink: 0 }} />
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#0d4a3e' }}>{layer.label}</span>
               </div>
               <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.55, paddingLeft: 15 }}>
                 {layer.desc}
