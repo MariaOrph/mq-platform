@@ -53,7 +53,7 @@ const SLIDES = [
         {([
           {
             label: 'Mindset',
-            desc: 'The foundation of all great leadership — mastering how you lead yourself before you can lead others.',
+            desc: 'Mastering how you lead yourself before you can lead others.',
             width: '60%',
           },
           {
@@ -70,13 +70,12 @@ const SLIDES = [
           <div key={i} style={{ width: layer.width, alignSelf: 'center' }}>
             <div style={{
               padding: '11px 14px', borderRadius: 14,
-              backgroundColor: 'rgba(13,74,62,0.08)', border: '1.5px solid rgba(13,74,62,0.3)',
+              backgroundColor: 'rgba(10,243,205,0.08)', border: '1.5px solid rgba(10,243,205,0.3)',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#0d4a3e', flexShrink: 0 }} />
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#0d4a3e' }}>{layer.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#0AF3CD' }}>{layer.label}</span>
               </div>
-              <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.55, paddingLeft: 15 }}>
+              <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0, lineHeight: 1.55 }}>
                 {layer.desc}
               </p>
             </div>
