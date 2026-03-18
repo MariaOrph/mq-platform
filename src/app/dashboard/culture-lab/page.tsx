@@ -54,7 +54,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   'psych-safety': {
     id:      'psych-safety',
-    name:    'Psychological Safety',
+    name:    'Creating Psychological Safety',
     tagline: 'Create the conditions for your team to speak up, take risks, and learn',
     emoji:   '🛡️',
     color:   '#6366F1',
@@ -69,7 +69,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   accountability: {
     id:      'accountability',
-    name:    'Culture of Accountability',
+    name:    'Building a Culture of Accountability',
     tagline: 'Hold people to high standards without creating fear or blame',
     emoji:   '🎯',
     color:   '#06D6A0',

@@ -312,7 +312,7 @@ export default function ParticipantDashboard() {
   }, [supabase])
 
   useEffect(() => { loadData() }, [loadData])
-  useEffect(() => { setShowOnboarding(shouldShowOnboarding()) }, [])
+  useEffect(() => { setShowOnboarding(true) }, [])
 
   async function signOut() {
     await supabase.auth.signOut()
