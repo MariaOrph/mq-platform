@@ -214,7 +214,8 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
           </span>
           <button onClick={finish} style={{
             fontSize: 11, color: '#0AF3CD',
-            background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
+            background: 'none', border: '1px solid rgba(10,243,205,0.4)', cursor: 'pointer', fontFamily: 'inherit',
+            borderRadius: 20, padding: '4px 10px',
           }}>
             Skip intro
           </button>
