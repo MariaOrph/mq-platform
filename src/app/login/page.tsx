@@ -104,7 +104,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-8 lg:hidden">
             {!logoError ? (
               <img
-                src="/logo.png"
+                src="/MQ Favicon.png"
                 alt="MQ"
                 className="h-12 w-auto"
                 onError={() => setLogoError(true)}
