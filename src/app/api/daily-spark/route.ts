@@ -1,11 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server'
+import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
-import { CARD_LIBRARY, getDimOrder, getDimForCard, getCardVariant } from './card-library'
+import {
+  CARD_LIBRARY, getDimOrder, getDimForCard, getCardVariant,
+  isValuesCard, getValuesSlotIndex, TOTAL_CARDS_BASE, TOTAL_CARDS_WITH_VALUES,
+} from './card-library'
 
+const anthropic     = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY ?? '' })
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
+
+type CompanyValue = { id: string; value_name: string; value_order: number; behaviours: string[] }
+
+// ── AI generation for values cards ────────────────────────────────────────────
+
+async function generateValuesCard(
+  valueName: string,
+  behaviours: string[],
+): Promise<{ title: string; teaser: string; insight: string; exercise: string }> {
+  const behavioursText = behaviours.map((b, i) => `${i + 1}. ${b}`).join('\n')
+  try {
+    const message = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 600,
+      messages: [{
+        role: 'user',
+        content: `You are writing a Daily Spark card for a leadership development platform. This card explores a company value called "${valueName}".
+
+The specific behaviours associated with this value are:
+${behavioursText}
+
+Write a Daily Spark card with these four fields:
+- title: A short, punchy title (5–8 words). Should feel like a challenge or invitation.
+- teaser: One sentence (max 15 words) that hooks the leader into reading more.
+- insight: 2–3 sentences on why this value matters in leadership. Grounded and specific — avoid generic platitudes.
+- exercise: A practical reflection or micro-challenge tied directly to this value and its behaviours. 3–6 sentences. Specific enough to act on today.
+
+Return ONLY a valid JSON object with keys: title, teaser, insight, exercise. No markdown, no explanation.`,
+      }],
+    })
+    const text = message.content[0].type === 'text' ? message.content[0].text.trim() : '{}'
+    return JSON.parse(text)
+  } catch {
+    return {
+      title:    `Living ${valueName}`,
+      teaser:   `What does ${valueName} really look like in action today?`,
+      insight:  `${valueName} is more than a wall poster — it shows up in every decision, conversation, and moment of pressure. Leaders who consciously embody their company's values set the standard for what is normal on their teams.`,
+      exercise: `Think of one moment in the past week where ${valueName} was either clearly demonstrated or clearly missing in your own behaviour. What happened, and what would it look like to fully embody this value in your next interaction with your team?`,
+    }
+  }
+}
 
 // ── GET ───────────────────────────────────────────────────────────────────────
 
@@ -19,6 +65,7 @@ export async function GET(req: NextRequest) {
   const participantId = user.id
   const today = new Date().toISOString().split('T')[0]
 
+  // Assessment scores
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
     .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, overall_score')
@@ -36,15 +83,32 @@ export async function GET(req: NextRequest) {
   ]
   const dimOrder = getDimOrder(scores)
 
+  // Company values (if any)
+  let companyValues: CompanyValue[] = []
+  const { data: profile } = await supabaseAdmin
+    .from('profiles').select('company_id').eq('id', participantId).single()
+
+  if (profile?.company_id) {
+    const { data: values } = await supabaseAdmin
+      .from('company_value_behaviours')
+      .select('id, value_name, value_order, behaviours')
+      .eq('company_id', profile.company_id)
+      .order('value_order')
+    companyValues = (values ?? []).map(v => ({ ...v, behaviours: v.behaviours as string[] }))
+  }
+
+  const totalCards = companyValues.length > 0 ? TOTAL_CARDS_WITH_VALUES : TOTAL_CARDS_BASE
+
+  // Existing sparks
   const { data: sparks } = await supabaseAdmin
     .from('daily_sparks')
     .select('*')
     .eq('participant_id', participantId)
     .order('card_number', { ascending: true })
 
-  const allSparks = sparks ?? []
+  const allSparks      = sparks ?? []
   const completedSparks = allSparks.filter(s => s.status === 'complete')
-  const totalCompleted = completedSparks.length
+  const totalCompleted  = completedSparks.length
 
   let currentCard = allSparks.find(
     s => s.status === 'active' && s.assigned_date <= today
@@ -53,38 +117,64 @@ export async function GET(req: NextRequest) {
   if (!currentCard) {
     const nextCardNumber = allSparks.length + 1
 
-    if (nextCardNumber <= 24) {
-      const lastCompleted = completedSparks[completedSparks.length - 1]
-      const shouldCreate = !lastCompleted || lastCompleted.completed_date < today
+    if (nextCardNumber <= totalCards) {
+      const lastCompleted  = completedSparks[completedSparks.length - 1]
+      const shouldCreate   = !lastCompleted || lastCompleted.completed_date < today
 
       if (shouldCreate) {
-        const dimId      = getDimForCard(nextCardNumber, dimOrder)
-        const cardVariant = getCardVariant(nextCardNumber)
-        const content    = CARD_LIBRARY[dimId]?.[cardVariant]
+        if (isValuesCard(nextCardNumber) && companyValues.length > 0) {
+          // ── Values card — AI-generated ─────────────────────────────────
+          const slotIndex = getValuesSlotIndex(nextCardNumber) // 0–5
+          const value     = companyValues[slotIndex % companyValues.length]
 
-        if (content) {
+          const content = await generateValuesCard(value.value_name, value.behaviours)
           const { data: newCard } = await supabaseAdmin
             .from('daily_sparks')
             .insert({
               participant_id: participantId,
               card_number:    nextCardNumber,
-              dimension_id:   dimId,
+              dimension_id:   null,              // null signals values card
               assigned_date:  today,
               status:         'active',
               title:          content.title,
               teaser:         content.teaser,
               insight:        content.insight,
               exercise:       content.exercise,
-              reflection:     null,
+              reflection:     value.value_name,  // store value name for display
             })
             .select()
             .single()
-
           currentCard = newCard
+
+        } else {
+          // ── MQ card ────────────────────────────────────────────────────
+          const dimId       = getDimForCard(nextCardNumber, dimOrder)
+          const cardVariant = getCardVariant(nextCardNumber)
+          const content     = CARD_LIBRARY[dimId]?.[cardVariant]
+
+          if (content) {
+            const { data: newCard } = await supabaseAdmin
+              .from('daily_sparks')
+              .insert({
+                participant_id: participantId,
+                card_number:    nextCardNumber,
+                dimension_id:   dimId,
+                assigned_date:  today,
+                status:         'active',
+                title:          content.title,
+                teaser:         content.teaser,
+                insight:        content.insight,
+                exercise:       content.exercise,
+                reflection:     null,
+              })
+              .select()
+              .single()
+            currentCard = newCard
+          }
         }
       }
     }
   }
 
-  return NextResponse.json({ currentCard, completedSparks, totalCompleted, dimOrder })
+  return NextResponse.json({ currentCard, completedSparks, totalCompleted, dimOrder, totalCards })
 }

@@ -32,18 +32,21 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && data?.user) {
-      // Brand-new invited user — send them to set a password before continuing
-      if (type === 'invite') {
-        return NextResponse.redirect(new URL('/auth/setup', origin))
-      }
-
-      // Returning user — send them to the right dashboard based on their role
+      // Check profile to determine whether this is a first-time user.
+      // A first-timer has no full_name set yet — send them to complete setup
+      // regardless of whether the link type is 'invite' or 'magiclink'.
       const { data: profile } = await supabase
         .from('profiles')
-        .select('role')
+        .select('role, full_name')
         .eq('id', data.user.id)
         .single()
 
+      if (!profile?.full_name) {
+        // First time through — name + password not yet set
+        return NextResponse.redirect(new URL('/auth/setup', origin))
+      }
+
+      // Returning user — route to the right dashboard based on their role
       const roleMap: Record<string, string> = {
         mq_admin:     '/admin',
         client_admin: '/client',

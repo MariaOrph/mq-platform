@@ -326,10 +326,24 @@ export default function AssessmentPage() {
             </div>
           </div>
 
+          {/* Next step — Values in Action */}
+          <div className="rounded-2xl p-5 mb-4" style={{ backgroundColor: '#0A2E2A' }}>
+            <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#0AF3CD' }}>Up next</p>
+            <p className="text-base font-bold mb-1" style={{ color: 'white' }}>Values in Action</p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(185,248,221,0.7)' }}>
+              Complete your Values in Action survey to identify the values that drive your leadership — and how consistently you act on them.
+            </p>
+            <a href="/dashboard/values"
+               className="block w-full text-center py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+               style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
+              Start Values in Action →
+            </a>
+          </div>
+
           <a href="/dashboard"
-             className="block w-full text-center py-4 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity"
-             style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
-            Back to dashboard
+             className="block w-full text-center py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity"
+             style={{ backgroundColor: 'white', color: '#0A2E2A', border: '1px solid #B9F8DD' }}>
+            Go to my dashboard
           </a>
         </div>
       </div>

@@ -166,10 +166,34 @@ export function getDimOrder(scores: (number | null)[]): number[] {
     .map(d => d.id)
 }
 
+// ── 30-card sequence helpers ────────────────────────────────────────────────
+// Positions 5, 10, 15, 20, 25, 30 are company-values cards.
+// The 24 MQ cards occupy all other positions.
+
+export const VALUES_CARD_POSITIONS = new Set([5, 10, 15, 20, 25, 30])
+export const TOTAL_CARDS_BASE = 24       // MQ cards only (no values configured)
+export const TOTAL_CARDS_WITH_VALUES = 30 // MQ + 6 values cards
+
+export function isValuesCard(cardNumber: number): boolean {
+  return VALUES_CARD_POSITIONS.has(cardNumber)
+}
+
+// Which values slot (0-based) does this card represent? (only valid for values cards)
+export function getValuesSlotIndex(cardNumber: number): number {
+  return cardNumber / 5 - 1
+}
+
+// MQ-only position (1-24) for a non-values card number in the 30-card arc
+function getMQIndex(cardNumber: number): number {
+  return cardNumber - Math.floor(cardNumber / 5)
+}
+
 export function getDimForCard(cardNumber: number, dimOrder: number[]): number {
-  return dimOrder[Math.floor((cardNumber - 1) / 4)]
+  const mqIndex = getMQIndex(cardNumber)
+  return dimOrder[Math.floor((mqIndex - 1) / 4)]
 }
 
 export function getCardVariant(cardNumber: number): number {
-  return ((cardNumber - 1) % 4) + 1
+  const mqIndex = getMQIndex(cardNumber)
+  return ((mqIndex - 1) % 4) + 1
 }

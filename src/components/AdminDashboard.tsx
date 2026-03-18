@@ -735,7 +735,7 @@ function AllCohortsTab({
       })
       const data = await res.json()
       if (res.ok) {
-        setInviteMsg(`✓ Sent ${data.invited} invitation(s)${data.skipped > 0 ? `, ${data.skipped} already invited` : ''}`)
+        setInviteMsg(`✓ Sent ${data.invited} invitation(s)${data.errors?.length > 0 ? ` (${data.errors.length} error(s))` : ''}`)
         setInviteEmails('')
         onRefresh()
       } else {

@@ -44,24 +44,11 @@ export async function POST(req: NextRequest) {
   const fromAddr  = process.env.RESEND_FROM ?? 'MQ <hello@mindsetquo.com>'
 
   let invited = 0
-  let skipped = 0
   const errors: string[] = []
 
   for (const email of emails) {
-    // ── Check if already invited ─────────────────────────────────────────────
-    const { data: existing } = await supabase
-      .from('cohort_participants')
-      .select('id, invited_at')
-      .eq('cohort_id', cohortId)
-      .eq('email', email)
-      .maybeSingle()
-
-    if (existing?.invited_at) {
-      skipped++
-      continue
-    }
-
     // ── Generate invite link (creates user, returns URL, no email sent) ───────
+    // Note: we do NOT skip already-invited emails — re-submitting is intentional resend.
     let inviteUrl = `${appUrl}/auth/invite`
 
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
@@ -77,11 +64,14 @@ export async function POST(req: NextRequest) {
     })
 
     if (linkError) {
-      // User already exists — generate a magic link for sign-in instead
+      // User already exists — generate a magic link for sign-in instead.
+      // Must point to a CLIENT-SIDE page (/auth/invite) because Supabase magic
+      // links use the hash/implicit flow: the tokens land in #access_token=...
+      // which is invisible to server-side route handlers like /auth/callback.
       const { data: magicData, error: magicError } = await supabase.auth.admin.generateLink({
         type:  'magiclink',
         email,
-        options: { redirectTo: `${appUrl}/dashboard` },
+        options: { redirectTo: `${appUrl}/auth/invite` },
       })
       if (magicError) {
         errors.push(`${email}: ${magicError.message}`)
@@ -131,5 +121,5 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ invited, skipped, errors })
+  return NextResponse.json({ invited, errors })
 }

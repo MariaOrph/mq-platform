@@ -45,57 +45,10 @@ const SLIDES = [
     ),
   },
   {
-    id: 'model',
-    tag: 'The MQ Model',
-    title: 'Three layers of leadership',
-    subtitle: 'Mindset → Relationships → Culture',
-    body: 'Great leadership begins inside. It starts with how a leader manages their own mind (Mindset), deepens through the quality of their relationships (Relationships), and ultimately shapes the culture of the teams and organisations they lead (Culture).',
-    visual: (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
-        {[
-          { label: 'Culture', sub: 'What you shape', color: '#a78bfa', width: '100%' },
-          { label: 'Relationships', sub: 'How you connect', color: '#0AF3CD', width: '80%' },
-          { label: 'Mindset', sub: 'Who you are', color: '#fdcb5e', width: '55%' },
-        ].map((layer, i) => (
-          <div key={i} style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ width: layer.width, padding: '10px 16px', borderRadius: 12, backgroundColor: `${layer.color}20`, border: `1.5px solid ${layer.color}40`, textAlign: 'center' }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: layer.color, margin: 0 }}>{layer.label}</p>
-              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.5)', margin: 0 }}>{layer.sub}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 'dimensions',
-    tag: 'The 6 Dimensions',
-    title: 'Six dimensions of MQ',
-    subtitle: 'Together they map the full landscape of your leadership mindset.',
-    body: '',
-    visual: (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, width: '100%' }}>
-        {[
-          { name: 'Self-awareness',        color: '#fdcb5e', icon: '👁' },
-          { name: 'Cognitive flexibility', color: '#ff9f43', icon: '🔄' },
-          { name: 'Emotional regulation',  color: '#ff7b7a', icon: '⚖️' },
-          { name: 'Values clarity',        color: '#00c9a7', icon: '🧭' },
-          { name: 'Relational mindset',    color: '#2d4a8a', icon: '🤝' },
-          { name: 'Adaptive resilience',   color: '#a78bfa', icon: '🌱' },
-        ].map((d, i) => (
-          <div key={i} style={{ padding: '10px 12px', borderRadius: 12, backgroundColor: `${d.color}15`, border: `1px solid ${d.color}30` }}>
-            <div style={{ fontSize: 16, marginBottom: 4 }}>{d.icon}</div>
-            <p style={{ fontSize: 11, fontWeight: 600, color: d.color, margin: 0, lineHeight: 1.3 }}>{d.name}</p>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
     id: 'mindset-dims',
     tag: 'Mindset',
-    title: 'The Mindset dimensions',
-    subtitle: 'How you manage your inner world.',
+    title: 'Managing your inner world',
+    subtitle: 'The 3 Mindset dimensions.',
     body: '',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
@@ -117,9 +70,9 @@ const SLIDES = [
   },
   {
     id: 'rel-culture-dims',
-    tag: 'Relationships & Culture',
-    title: 'How you connect and shape culture',
-    subtitle: 'Leadership happens through people.',
+    tag: 'Connecting with Others',
+    title: 'Connecting with others and shaping culture',
+    subtitle: 'The 3 Connecting with Others dimensions.',
     body: '',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
@@ -140,24 +93,50 @@ const SLIDES = [
     ),
   },
   {
+    id: 'model',
+    tag: 'The MQ Model',
+    title: 'Three layers of leadership',
+    subtitle: 'Mindset → Connecting with Others → Culture',
+    body: 'Great leadership begins inside. It starts with how a leader manages their own mind (Mindset), deepens through the quality of their relationships (Connecting with Others), and ultimately shapes the culture of the teams and organisations they lead (Culture).',
+    visual: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
+        {[
+          { label: 'Culture', sub: 'What you shape', color: '#a78bfa', width: '100%' },
+          { label: 'Connecting with Others', sub: 'How you lead through people', color: '#0AF3CD', width: '80%' },
+          { label: 'Mindset', sub: 'Who you are', color: '#fdcb5e', width: '55%' },
+        ].map((layer, i) => (
+          <div key={i} style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ width: layer.width, padding: '10px 16px', borderRadius: 12, backgroundColor: `${layer.color}20`, border: `1.5px solid ${layer.color}40`, textAlign: 'center' }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: layer.color, margin: 0 }}>{layer.label}</p>
+              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.5)', margin: 0 }}>{layer.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
     id: 'journey',
-    tag: "What's next",
-    title: "Your MQ journey",
-    subtitle: 'Four things that work together.',
+    tag: "Your Journey",
+    title: "How it all works",
+    subtitle: 'Five steps to building your MQ.',
     body: '',
     visual: (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
         {[
-          { step: '01', label: 'MQ Assessment', desc: '~10 minutes. Measures your 6 dimensions.', color: '#0AF3CD' },
-          { step: '02', label: 'Your Results', desc: 'A personal profile with scores and explanations.', color: '#fdcb5e' },
-          { step: '03', label: 'Daily Spark', desc: 'A short practice each day, tailored to your focus area.', color: '#ff9f43' },
-          { step: '04', label: 'Coaching Room', desc: 'Your personal AI coach, always in context.', color: '#a78bfa' },
+          { step: 1, label: 'Complete the MQ Assessment',       desc: 'Measures your 6 dimensions — takes around 10 minutes.',           color: '#0AF3CD' },
+          { step: 2, label: 'Complete Values in Action',        desc: 'Identify the values that drive your leadership.',                  color: '#fdcb5e' },
+          { step: 3, label: 'Build your MQ with Daily Spark',   desc: 'One short practice each day, tailored to your focus dimension.',   color: '#ff9f43' },
+          { step: 4, label: 'Get support in the Coaching Room', desc: 'Your personal AI coach — bring any challenge you\'re sitting with.', color: '#a78bfa' },
+          { step: 5, label: 'Explore the Resource Library',     desc: '25 practical guides covering management and leadership skills.',   color: '#00c9a7' },
         ].map((s, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 14px', borderRadius: 14, backgroundColor: `${s.color}12`, border: `1px solid ${s.color}25` }}>
-            <span style={{ fontSize: 10, fontWeight: 800, color: s.color, flexShrink: 0, marginTop: 2 }}>{s.step}</span>
+          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '9px 12px', borderRadius: 12, backgroundColor: `${s.color}10`, border: `1px solid ${s.color}25` }}>
+            <div style={{ width: 22, height: 22, borderRadius: '50%', backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+              <span style={{ fontSize: 10, fontWeight: 800, color: '#0A2E2A' }}>{s.step}</span>
+            </div>
             <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: s.color, margin: '0 0 2px' }}>{s.label}</p>
-              <p style={{ fontSize: 11, color: 'rgba(10,46,42,0.6)', margin: 0 }}>{s.desc}</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: '0 0 1px' }}>{s.label}</p>
+              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.55)', margin: 0, lineHeight: 1.4 }}>{s.desc}</p>
             </div>
           </div>
         ))}

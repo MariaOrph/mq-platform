@@ -429,6 +429,64 @@ export default function ParticipantDashboard() {
           </button>
         )}
 
+        {/* ── The Coaching Room ─────────────────────────────────────────────── */}
+        {assessment && (
+          <div
+            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
+            style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.15)' }}
+          >
+            <div className="absolute right-0 top-0 w-32 h-full rounded-full blur-3xl pointer-events-none"
+                 style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
+            <div className="flex items-center gap-3 relative z-10">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                   style={{ backgroundColor: 'rgba(10,243,205,0.12)' }}>
+                🧠
+              </div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: 'white' }}>The Coaching Room</p>
+                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
+                  Always personalised to you
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowCoachingRoom(true)}
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+            >
+              Open →
+            </button>
+          </div>
+        )}
+
+        {/* ── Culture Lab ──────────────────────────────────────────────────── */}
+        {assessment && (
+          <div
+            className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
+            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
+          >
+            <div className="flex items-center gap-3 relative z-10">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                   style={{ backgroundColor: '#FEF3C7' }}>
+                🧪
+              </div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
+                <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                  Values · Psych safety · Accountability
+                </p>
+              </div>
+            </div>
+            <a
+              href="/dashboard/culture-lab"
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#0A2E2A', color: '#0AF3CD' }}
+            >
+              Open →
+            </a>
+          </div>
+        )}
+
         {/* ── Daily Spark ──────────────────────────────────────────────────── */}
         {assessment && authToken && (
           <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
@@ -482,33 +540,6 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* ── Report + Retake buttons ───────────────────────────────────────── */}
-        {assessment && (
-          <div className="flex gap-3">
-            <a
-              href="/dashboard/report"
-              target="_blank"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download my report
-            </a>
-            <a
-              href="/assessment"
-              className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
-              style={{ backgroundColor: 'white', color: '#6B7280', border: '1px solid #E5E7EB' }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
-              </svg>
-              Retake
-            </a>
-          </div>
-        )}
-
         {/* ── Values in Action card ────────────────────────────────────────── */}
         {assessment && valuesStatus && valuesStatus.total > 0 && (() => {
           const { total, rated, avgRating } = valuesStatus
@@ -549,33 +580,54 @@ export default function ParticipantDashboard() {
           )
         })()}
 
-        {/* ── The Coaching Room ─────────────────────────────────────────────── */}
-        <div
-          className="rounded-2xl p-5 flex items-center justify-between relative overflow-hidden"
-          style={{ backgroundColor: '#0A2E2A', boxShadow: '0 4px 20px rgba(10,46,42,0.15)' }}
+        {/* ── Report + Retake buttons ───────────────────────────────────────── */}
+        {assessment && (
+          <div className="flex gap-3">
+            <a
+              href="/dashboard/report"
+              target="_blank"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: 'white', color: '#0A2E2A', border: '1px solid #B9F8DD' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download my report
+            </a>
+            <a
+              href="/assessment"
+              className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: 'white', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
+              </svg>
+              Retake Assessment
+            </a>
+          </div>
+        )}
+
+        {/* ── Resource Centre ───────────────────────────────────────────────── */}
+        <a
+          href="/dashboard/resources"
+          className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
+          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.06)' }}
         >
-          <div className="absolute right-0 top-0 w-32 h-full rounded-full blur-3xl pointer-events-none"
-               style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
-          <div className="flex items-center gap-3 relative z-10">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                 style={{ backgroundColor: 'rgba(10,243,205,0.12)' }}>
-              🧠
+                 style={{ backgroundColor: '#F0FDF4' }}>
+              📚
             </div>
             <div>
-              <p className="text-sm font-bold" style={{ color: 'white' }}>The Coaching Room</p>
-              <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>
-                Always personalised to you
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
+              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                25 skill guides — management and leadership
               </p>
             </div>
           </div>
-          <button
-            onClick={() => setShowCoachingRoom(true)}
-            className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 relative z-10 hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-          >
-            Open →
-          </button>
-        </div>
+          <span className="text-sm font-semibold flex-shrink-0 ml-3" style={{ color: '#0AF3CD' }}>Browse →</span>
+        </a>
+
 
 
       </div>
