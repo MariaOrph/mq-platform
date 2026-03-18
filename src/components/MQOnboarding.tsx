@@ -125,8 +125,8 @@ const SLIDES = [
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
         {[
-          { step: 1, label: 'Complete the MQ Assessment',       desc: 'Measures your 6 dimensions — takes around 10 minutes.',           color: '#0AF3CD' },
-          { step: 2, label: 'Complete Values in Action',        desc: 'Identify the values that drive your leadership.',                  color: '#fdcb5e' },
+          { step: 1, label: 'Complete the MQ Assessment',       desc: 'Measures your 7 dimensions — takes around 10 minutes.',                           color: '#0AF3CD' },
+          { step: 2, label: 'Complete Values in Action',        desc: 'Rate how consistently you lead by example through your company\'s values.', color: '#fdcb5e' },
           { step: 3, label: 'Build your MQ with Daily Spark',   desc: 'One short practice each day, tailored to your focus dimension.',   color: '#ff9f43' },
           { step: 4, label: 'Get support in the Coaching Room', desc: 'Your personal AI coach — bring any challenge you\'re sitting with.', color: '#a78bfa' },
           { step: 5, label: 'Explore the Resource Library',     desc: '25 practical guides covering management and leadership skills.',   color: '#00c9a7' },
