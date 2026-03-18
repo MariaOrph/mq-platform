@@ -53,7 +53,7 @@ const SLIDES = [
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {([
           {
-            label: 'Mindset',       sub: 'Who you are inside',
+            label: 'Mindset',       sub: 'How you lead yourself',
             desc: 'The foundation of all great leadership — mastering how you lead yourself before you can truly lead others.',
             color: '#fdcb5e', indent: 0,
           },
