@@ -178,6 +178,17 @@ const DEEP_DIVE_DATA: Record<number, DeepDiveSlide[]> = {
         'The shadow cannot be eliminated — only made conscious. Leaders who do this work don\'t become shadow-free; they develop the capacity to notice their shadow patterns arising and catch them before they cause damage. That awareness is the work.',
       ],
     },
+    {
+      researcher: 'Pauline Clance & Suzanne Imes',
+      work:       'The Imposter Phenomenon (1978)',
+      tagline:    'High achievers are often the least convinced they deserve to be there.',
+      points: [
+        'Clance and Imes coined "imposter phenomenon" to describe the persistent internal experience of feeling like a fraud despite clear external evidence of competence — and the chronic fear that at some point, people will find you out.',
+        'It is most prevalent among high achievers, not underperformers. The more genuinely capable you are, the more aware you become of how much you don\'t know — which the imposter mind reads as evidence of inadequacy rather than the natural condition of expertise.',
+        'Imposter syndrome is an ego-protection pattern in disguise. It typically drives overwork, perfectionism, difficulty delegating, and reluctance to ask for help — behaviours that look like diligence from the outside but are rooted in fear of exposure from the inside.',
+        'The research-backed shift is not building confidence through positive self-talk — it\'s internalisation: developing an accurate, evidence-based internal account of your own competence. This requires deliberately sitting with what you have actually done, built, and navigated, rather than immediately discounting it.',
+      ],
+    },
   ],
   3: [
     {
@@ -246,6 +257,17 @@ const DEEP_DIVE_DATA: Record<number, DeepDiveSlide[]> = {
         'The PFC is also the system most degraded by stress, sleep deprivation, and ego threat — which is why we default to rigid, familiar thinking precisely when we most need fresh perspectives.',
         'Cognitive flexibility correlates strongly with working memory capacity: the more "space" available in working memory, the more information a leader can hold simultaneously when making decisions.',
         'Regular practices that protect PFC function — adequate sleep, physical exercise, deliberate recovery, and mindfulness — are not "wellness" activities. They are cognitive performance strategies.',
+      ],
+    },
+    {
+      researcher: 'Aaron Beck & Albert Ellis',
+      work:       'Cognitive Therapy (1960s) / Rational Emotive Behaviour Therapy (1955)',
+      tagline:    'The most rigid thing in a leader\'s mind is often something they\'ve never questioned.',
+      points: [
+        'Aaron Beck identified "core beliefs" — deep, global, absolute assumptions about self, others, and the world that form early in life and operate as invisible filters on everything we perceive. In leaders, these commonly include: "I must be competent at everything," "Showing uncertainty is weakness," "If I need help, I\'m not leadership material."',
+        'Albert Ellis independently identified what he called "irrational beliefs" — rigid, inflexible rules disguised as reasonable preferences. His ABC model demonstrated that it\'s not events that drive our emotional and behavioural responses, but the beliefs we hold about those events. Two leaders can face the same setback with entirely different outcomes based purely on their underlying belief structure.',
+        'Limiting beliefs don\'t feel like beliefs — they feel like facts. This is what makes them so difficult to shift: they operate below the level of conscious examination, shaping what we notice, what we ignore, and what conclusions we allow ourselves to reach. Cognitive flexibility is precisely the capacity to surface these invisible assumptions and treat them as testable rather than settled.',
+        'The research-backed intervention is not positive thinking — it\'s belief testing. Taking a limiting belief ("I\'m not strategic enough", "I\'m not a natural people person") and treating it as a hypothesis rather than a truth. What is the actual evidence for it? What evidence contradicts it? What would a genuinely curious, open-minded observer conclude? That inquiry is the move.',
       ],
     },
   ],
