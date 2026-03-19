@@ -18,6 +18,16 @@ const DIMENSION_NAMES: Record<number, string> = {
   7: 'Adaptive resilience',
 }
 
+const DIMENSION_SCIENCE: Record<number, string> = {
+  1: 'Tasha Eurich\'s research found that while 95% of people believe they are self-aware, only 10–15% actually are. Goleman identifies self-awareness as the foundational pillar on which all other leadership capacities rest — you cannot regulate what you cannot see. Daniel Siegel calls the capacity to observe your own mental activity "mindsight" — and it requires deliberate cultivation, not just good intentions.',
+  2: 'Kegan and Lahey\'s research on "Immunity to Change" found that most leadership development failures are caused by hidden commitments to protecting self-image, not lack of skill. Neuroscience confirms that social threat — being challenged, criticised, or wrong in front of others — activates the same fight-or-flight response as physical danger. Brené Brown\'s research shows that leaders who can\'t tolerate being wrong consistently create cultures of self-protection around them.',
+  3: 'Amy Arnsten\'s research shows that even moderate stress takes the prefrontal cortex offline, reducing capacity for clear thinking and sound judgment. Joseph LeDoux documented how the amygdala can hijack the whole system in milliseconds. Viktor Frankl captured the core insight: between stimulus and response there is a space — and emotional regulation is the practice of deliberately widening that space.',
+  4: 'Carol Dweck\'s growth mindset research shows that believing capabilities are developable is one of the strongest predictors of learning and effectiveness. Kahneman\'s work on System 1 and System 2 thinking reveals how much of our decision-making is governed by fast, automatic, pattern-based thinking. Cognitive flexibility depends directly on prefrontal cortex function — the same system that goes offline under stress — which is why we default to rigid thinking precisely when we most need fresh perspectives.',
+  5: 'Viktor Frankl established that meaning and purpose are primary human motivators — and that clarity of purpose is what sustains people through adversity. Self-determination theory (Deci and Ryan) identifies values alignment as a core driver of intrinsic motivation. Brené Brown\'s research shows that values-driven leaders — those who act from what they stand for rather than fear of judgment — consistently build higher-trust, higher-performance cultures.',
+  6: 'Amy Edmondson\'s Harvard research identified psychological safety as the single biggest determinant of team effectiveness. Daniel Siegel\'s interpersonal neurobiology shows that genuine attunement has measurable neurological effects — literally reducing the threat response in those being led. Mirror neuron research confirms that a leader\'s internal emotional state is contagious, spreading through a team below the level of conscious awareness.',
+  7: 'Richard Davidson\'s neuroscience research confirms that the brain\'s capacity for regulation and recovery is genuinely plastic — it can be strengthened through deliberate practice. Martin Seligman\'s learned optimism research shows that how people explain adversity to themselves is highly predictive of long-term resilience. Ann Masten reframes resilience as "ordinary magic" — not a rare quality, but a set of everyday capacities that can be deliberately built.',
+}
+
 function getFocusDimension(scores: (number | null)[]): number {
   return scores.map((s, i) => ({ s: s ?? 999, i })).sort((a, b) => a.s - b.s)[0].i + 1
 }
@@ -190,8 +200,9 @@ export async function POST(req: NextRequest) {
     .eq('session_id', sessionId)
   ).count === 0
 
+  const scienceForDim = sessionFocusDimId ? DIMENSION_SCIENCE[sessionFocusDimId] : null
   const sessionFocusInstruction = sessionFocusDimId
-    ? `\n\nThis session is focused on ${DIMENSION_NAMES[sessionFocusDimId]}. ${isFirstMessage ? `This is the opening message. Begin with the coaching arc orientation for ${DIMENSION_NAMES[sessionFocusDimId]} as defined below — do not wait to be asked.` : `Keep the conversation anchored to ${DIMENSION_NAMES[sessionFocusDimId]} unless the participant takes it somewhere else.`}`
+    ? `\n\nThis session is focused on ${DIMENSION_NAMES[sessionFocusDimId]}. ${isFirstMessage ? `This is the opening message. Begin with the coaching arc orientation for ${DIMENSION_NAMES[sessionFocusDimId]} as defined below — do not wait to be asked.` : `Keep the conversation anchored to ${DIMENSION_NAMES[sessionFocusDimId]} unless the participant takes it somewhere else.`}${scienceForDim ? `\n\nThe evidence base for this dimension:\n${scienceForDim}\n\nUse this to ground your coaching. Once per conversation — naturally, when you are moving from reflection into strategies — weave in a brief reference to what the research shows. Do not quote researchers in a textbook way. Instead integrate it: "The research on this is pretty clear — [paraphrase the insight in plain language]. What that means practically for you is..." Keep it to one or two sentences. Never lecture. The science should illuminate the coaching, not replace it.` : ''}`
     : ''
 
   const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ is the ability to notice your thoughts, beliefs and emotional triggers — and choose how you respond rather than being driven by them unconsciously.

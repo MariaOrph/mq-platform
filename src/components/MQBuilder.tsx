@@ -36,6 +36,7 @@ const DIMENSIONS = [
     what: 'Self-awareness is the capacity to notice your own thoughts, feelings, assumptions and behavioural patterns as they arise — without being swept along by them. It\'s the internal observer that watches how you\'re showing up.',
     high: 'You have a strong internal observer. You catch your own triggers before they escalate and tend to seek honest feedback rather than avoid it.',
     low: 'You may find yourself reacting before choosing your response, or discovering your impact on others after the fact rather than in the moment.',
+    science: 'Tasha Eurich\'s research found that while 95% of people believe they are self-aware, only 10–15% actually are. Goleman\'s emotional intelligence work identifies self-awareness as the foundational pillar on which all other leadership capacities rest — you cannot regulate what you cannot see. Neuroscientifically, genuine self-awareness requires active integration between the prefrontal cortex and the brain\'s Default Mode Network. Daniel Siegel calls this capacity "mindsight" — the brain\'s ability to observe its own activity as it happens.',
   },
   {
     id: 2, name: 'Ego & identity', color: '#EC4899', bg: '#FCE7F3',
@@ -43,6 +44,7 @@ const DIMENSIONS = [
     what: 'Ego & identity describes the degree to which your leadership is driven by genuine values versus the unconscious need to protect your image, status, or sense of self. It\'s the difference between leading from strength and leading from fear of looking bad.',
     high: 'You can receive feedback without becoming defensive, admit mistakes without it threatening your identity, and share credit without feeling diminished.',
     low: 'You may notice a pull towards protecting your image — perhaps avoiding feedback, over-explaining mistakes, or becoming defensive when challenged.',
+    science: 'Kegan and Lahey\'s research on "Immunity to Change" found that most leadership development failures are caused by hidden commitments to protecting self-image, not lack of skill. Neuroscience confirms that social threat activates the same fight-or-flight response as physical danger — shutting down the very capacities leaders need most. Brené Brown\'s research connects this to vulnerability: leaders who can\'t tolerate being wrong consistently create cultures of self-protection around them.',
   },
   {
     id: 3, name: 'Emotional regulation', color: '#ff7b7a', bg: '#FFE8E8',
@@ -50,6 +52,7 @@ const DIMENSIONS = [
     what: 'Emotional regulation is the ability to manage your emotional responses — especially under pressure — so they serve your goals rather than derail them. This isn\'t about suppressing emotion; it\'s about processing it so you can respond wisely.',
     high: 'You stay grounded under pressure. Others likely experience you as steady and safe to bring problems to.',
     low: 'Emotional intensity may sometimes hijack your thinking or limit your presence in high-stakes moments.',
+    science: 'Amy Arnsten\'s research shows that even moderate stress takes the prefrontal cortex offline, reducing your capacity for clear thinking and sound judgment. Joseph LeDoux documented how the amygdala can hijack the whole system in milliseconds. Viktor Frankl captured the core insight: between stimulus and response there is a space — and that space is what emotional regulation lets you access.',
   },
   {
     id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0',
@@ -57,6 +60,7 @@ const DIMENSIONS = [
     what: 'Cognitive flexibility is the ability to hold several perspectives simultaneously, update your thinking when new information arrives, and move between different mental models. It\'s the opposite of rigid, either/or thinking.',
     high: 'You readily update your mental models, entertain contradictory ideas, and are seen by others as open-minded and intellectually curious.',
     low: 'You may default to familiar frameworks even when the situation calls for fresh thinking, or find it uncomfortable when others challenge your interpretation.',
+    science: 'Carol Dweck\'s growth mindset research shows that believing capabilities are developable is one of the strongest predictors of learning and leadership effectiveness. Kahneman\'s work on System 1 and System 2 thinking reveals how much decision-making is governed by fast, automatic, pattern-based thinking. Neuroscience adds a critical insight: cognitive flexibility depends directly on prefrontal cortex function — the same system that goes offline under stress — which is why we default to rigid thinking precisely when we most need fresh perspectives.',
   },
   {
     id: 5, name: 'Values & purpose', color: '#00c9a7', bg: '#D4F5EF',
@@ -64,6 +68,7 @@ const DIMENSIONS = [
     what: 'Values & purpose is about knowing what you genuinely believe in and having a clear sense of direction that motivates your leadership beyond personal gain. It\'s the alignment between your stated principles, your lived behaviour, and your sense of meaningful contribution.',
     high: 'Your decisions are anchored by a clear internal compass. Others experience you as consistent and trustworthy — they know what you stand for because your behaviour demonstrates it.',
     low: 'You may hold values you believe in but haven\'t fully translated into consistent, visible behaviour. The gap between intention and action may be wider than you\'d like.',
+    science: 'Viktor Frankl established that meaning and purpose are primary human motivators — and that clarity of purpose is what sustains people through adversity. Self-determination theory (Deci and Ryan) identifies values alignment as a core driver of intrinsic motivation. Brené Brown\'s research shows that values-driven leaders — who act from what they stand for rather than fear of judgment — consistently build higher-trust, higher-performance cultures.',
   },
   {
     id: 6, name: 'Relational mindset', color: '#2d4a8a', bg: '#E0E6F5',
@@ -71,6 +76,7 @@ const DIMENSIONS = [
     what: 'Relational mindset describes the intention and quality of attention you bring to your relationships — whether you genuinely seek to understand others, or primarily see people through the lens of what they can do for you.',
     high: 'You approach relationships with genuine curiosity and care. People feel seen and heard by you, which builds loyalty and creates conditions where others do their best work.',
     low: 'Under pressure, you may shift into transactional mode, treating relationships as means to an end, or giving people less real attention than they need to feel genuinely valued.',
+    science: 'Amy Edmondson\'s Harvard research identified psychological safety as the single biggest determinant of team effectiveness. Daniel Siegel\'s interpersonal neurobiology shows that genuine attunement has measurable neurological effects — reducing the threat response in those being led. Mirror neuron research confirms that a leader\'s internal emotional state is literally contagious, spreading through a team below the level of conscious awareness.',
   },
   {
     id: 7, name: 'Adaptive resilience', color: '#a78bfa', bg: '#EDE9FE',
@@ -78,6 +84,7 @@ const DIMENSIONS = [
     what: 'Adaptive resilience is the ability to sustain performance under sustained pressure, recover from setbacks, and find meaning in adversity rather than being destabilised by it. It\'s not toughness — it\'s flexibility under load.',
     high: 'You have strong internal resources for navigating difficulty. Setbacks tend to become learning rather than defeat, and you likely recover your equilibrium faster than most.',
     low: 'Sustained pressure may be depleting your capacity in ways that affect your thinking, relationships, and decision-making. Rest and recovery may not be getting the attention they need.',
+    science: 'Richard Davidson\'s neuroscience research confirms that the brain\'s capacity for regulation and recovery is genuinely plastic — it can be strengthened through deliberate practice. Martin Seligman\'s learned optimism research shows that how people explain adversity to themselves is highly predictive of long-term resilience. Ann Masten reframes resilience as "ordinary magic" — not a rare quality, but a set of everyday capacities that can be deliberately built.',
   },
 ]
 
@@ -570,6 +577,22 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           {/* Messages */}
           <div className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
+
+              {/* Evidence card — teaching insert, always shown at top of chat */}
+              <div className="rounded-2xl p-4" style={{
+                backgroundColor: activeDim.bg,
+                border: `1px solid ${activeDim.color}40`,
+              }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span style={{ fontSize: 13 }}>🔬</span>
+                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: activeDim.color }}>
+                    The evidence
+                  </p>
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {activeDim.science}
+                </p>
+              </div>
 
               {/* Loading state for auto-start */}
               {!msgLoaded && messages.length === 0 && (
