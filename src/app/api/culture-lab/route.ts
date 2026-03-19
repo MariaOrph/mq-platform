@@ -231,7 +231,7 @@ export async function POST(req: NextRequest) {
   if (body.action === 'new_session') {
     const { data: session } = await supabaseAdmin
       .from('coaching_chats')
-      .insert({ participant_id: participantId, title: prefix })
+      .insert({ participant_id: participantId, title: prefix, session_type: 'culture_lab' })
       .select().single()
     return NextResponse.json({ session })
   }

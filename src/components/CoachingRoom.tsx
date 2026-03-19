@@ -5,12 +5,35 @@ import Notes from '@/components/Notes'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
+type SessionType = 'coaching' | 'mq_builder' | 'culture_lab' | null
+
 interface Session {
   id:            string
   title:         string
   created_at:    string
   updated_at:    string
   message_count: number
+  session_type:  SessionType
+}
+
+type FilterType = 'all' | 'coaching' | 'mq_builder' | 'culture_lab'
+
+const SESSION_META: Record<string, { label: string; icon: string; color: string; bg: string }> = {
+  coaching:     { label: 'Coaching Room', icon: '💬', color: '#0AF3CD', bg: '#E8FDF7' },
+  mq_builder:   { label: 'MQ Builder',   icon: '🧠', color: '#a78bfa', bg: '#F5F3FF' },
+  culture_lab:  { label: 'Culture Lab',  icon: '🧪', color: '#F59E0B', bg: '#FFFBEB' },
+}
+
+function getSessionMeta(session: Session) {
+  // detect legacy culture lab sessions by "CL:" prefix if session_type not set
+  const type = session.session_type ?? (session.title.startsWith('CL:') ? 'culture_lab' : 'coaching')
+  return { type, ...(SESSION_META[type] ?? SESSION_META.coaching) }
+}
+
+function cleanTitle(session: Session): string {
+  // strip legacy "CL:values" → "values" prefix
+  if (session.title.startsWith('CL:')) return session.title.slice(3)
+  return session.title
 }
 
 interface Message {
@@ -52,6 +75,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
   const [hoveredPrompt,  setHoveredPrompt]  = useState<string | null>(null)
   const [showNotes,      setShowNotes]      = useState(false)
+  const [filter,         setFilter]         = useState<FilterType>('all')
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
@@ -59,7 +83,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   // ── Load sessions list ──────────────────────────────────────────────────────
   const loadSessions = useCallback(async () => {
     try {
-      const res = await fetch('/api/coaching-room?type=coaching', {
+      const res = await fetch('/api/coaching-room', {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) { const d = await res.json(); setSessions(d.sessions ?? []) }
@@ -220,6 +244,31 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
             </button>
           </div>
 
+          {/* Filter tabs */}
+          {sessionsLoaded && sessions.length > 0 && (
+            <div className="max-w-2xl mx-auto w-full px-6 pb-3">
+              <div className="flex gap-1.5 flex-wrap">
+                {([
+                  { key: 'all',          label: 'All' },
+                  { key: 'coaching',     label: '💬 Coaching' },
+                  { key: 'mq_builder',  label: '🧠 MQ Builder' },
+                  { key: 'culture_lab', label: '🧪 Culture Lab' },
+                ] as { key: FilterType; label: string }[]).map(f => (
+                  <button
+                    key={f.key}
+                    onClick={() => setFilter(f.key)}
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+                    style={filter === f.key
+                      ? { backgroundColor: '#0AF3CD', color: '#0A2E2A' }
+                      : { backgroundColor: 'rgba(10,46,42,0.08)', color: '#374151' }}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Sessions list */}
           <div className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto px-6 pb-6 space-y-2">
@@ -247,47 +296,61 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 </div>
               )}
 
-              {sessionsLoaded && sessions.length > 0 && (
-                <>
-                  <p className="text-xs font-semibold uppercase tracking-wider pb-1" style={{ color: '#9CA3AF' }}>
-                    Past conversations
-                  </p>
-                  {sessions.map(session => (
-                    <button
-                      key={session.id}
-                      onClick={() => openSession(session)}
-                      className="w-full text-left rounded-2xl p-4 flex items-start justify-between gap-3 hover:opacity-80 transition-opacity"
-                      style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 8px rgba(10,46,42,0.06)' }}
-                    >
-                      <div className="flex items-start gap-3 flex-1 min-w-0">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
-                             style={{ backgroundColor: '#0A2E2A' }}>💬</div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold truncate" style={{ color: '#0A2E2A' }}>
-                            {session.title}
-                          </p>
-                          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
-                            {formatDate(session.updated_at)}
-                            {session.message_count > 0 && ` · ${session.message_count} messages`}
-                          </p>
-                        </div>
+              {sessionsLoaded && sessions.length > 0 && (() => {
+                const filtered = filter === 'all'
+                  ? sessions
+                  : sessions.filter(s => {
+                      const meta = getSessionMeta(s)
+                      return meta.type === filter
+                    })
+                return (
+                  <>
+                    {filtered.length === 0 && (
+                      <div className="text-center py-12">
+                        <p className="text-sm" style={{ color: '#9CA3AF' }}>No conversations in this category yet.</p>
                       </div>
-                      <button
-                        onClick={(e) => deleteSession(session.id, e)}
-                        disabled={deletingId === session.id}
-                        className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center hover:opacity-100 opacity-40 transition-opacity mt-0.5"
-                        style={{ backgroundColor: '#FEE2E2' }}
-                        aria-label="Delete conversation"
-                      >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round">
-                          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/>
-                          <path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-                        </svg>
-                      </button>
-                    </button>
-                  ))}
-                </>
-              )}
+                    )}
+                    {filtered.map(session => {
+                      const meta = getSessionMeta(session)
+                      return (
+                        <button
+                          key={session.id}
+                          onClick={() => openSession(session)}
+                          className="w-full text-left rounded-2xl p-4 flex items-start justify-between gap-3 hover:opacity-80 transition-opacity"
+                          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 8px rgba(10,46,42,0.06)' }}
+                        >
+                          <div className="flex items-start gap-3 flex-1 min-w-0">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-sm"
+                                 style={{ backgroundColor: meta.bg }}>{meta.icon}</div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold truncate" style={{ color: '#0A2E2A' }}>
+                                {cleanTitle(session)}
+                              </p>
+                              <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                                <span style={{ color: meta.color, fontWeight: 600 }}>{meta.label}</span>
+                                {' · '}{formatDate(session.updated_at)}
+                                {session.message_count > 0 && ` · ${session.message_count} msgs`}
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={(e) => deleteSession(session.id, e)}
+                            disabled={deletingId === session.id}
+                            className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center hover:opacity-100 opacity-40 transition-opacity mt-0.5"
+                            style={{ backgroundColor: '#FEE2E2' }}
+                            aria-label="Delete conversation"
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round">
+                              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/>
+                              <path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                            </svg>
+                          </button>
+                        </button>
+                      )
+                    })}
+                  </>
+                )
+              })()}
             </div>
           </div>
         </>

@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
 
   let query = supabaseAdmin
     .from('coaching_chats')
-    .select('id, title, created_at, updated_at, message_count')
+    .select('id, title, created_at, updated_at, message_count, session_type')
     .eq('participant_id', user.id)
     .order('updated_at', { ascending: false })
 
