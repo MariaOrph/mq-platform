@@ -35,6 +35,7 @@ function buildSystemPrompt(
   mqContext: string,
   valuesContext: string,
   participantContext: string,
+  feedbackContext: string = '',
 ): string {
   const sharedStyleRules = `
 STYLE RULES — follow these strictly:
@@ -71,7 +72,7 @@ IF THEY DECLINE THE PRACTICE: That's fine — continue the coaching conversation
 
 You are coaching ${participantContext}.
 
-${mqContext}${valuesContext}
+${mqContext}${feedbackContext}${valuesContext}
 
 Your role is to help ${firstName} explore how they are genuinely living the company values, where the gaps are, and what concrete behaviour change looks like. Be direct and specific. Do not let them stay at the level of good intentions: push for the specific moments, conversations, and decisions where values get tested.
 
@@ -106,7 +107,7 @@ ${sharedStyleRules}`
 
 You are coaching ${participantContext}.
 
-${mqContext}
+${mqContext}${feedbackContext}
 
 Psychological safety is created and destroyed by leader behaviour. Your role is to help ${firstName} understand how their specific actions, reactions, and patterns shape whether people feel safe on their team — and what to change.
 
@@ -138,7 +139,7 @@ ${sharedStyleRules}`
 
 You are coaching ${participantContext}.
 
-${mqContext}
+${mqContext}${feedbackContext}
 
 Inclusion is shaped by leader behaviour, often in ways leaders do not notice. Your role is to help ${firstName} see their own patterns clearly — who they turn to, whose contributions they pick up, who gets credit, who gets development opportunities, and whether certain people are quietly on the margins despite appearing present.
 
@@ -175,7 +176,7 @@ ${sharedStyleRules}`
 
 You are coaching ${participantContext}.
 
-${mqContext}
+${mqContext}${feedbackContext}
 
 Your role is to help ${firstName} identify exactly where accountability is breaking down and what specific leadership behaviour is either contributing to or solving it.
 
@@ -343,7 +344,47 @@ export async function POST(req: NextRequest) {
     }
   } catch { /* no values data */ }
 
-  const systemPrompt = buildSystemPrompt(topic as Topic, firstName, role, mqContext, valuesContext, participantContext)
+  // Fetch 360 peer feedback results (only if 3+ responses)
+  let feedbackContext = ''
+  try {
+    const { data: fbResponses } = await supabaseAdmin
+      .from('feedback_responses')
+      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score')
+      .eq('participant_id', participantId)
+
+    if (fbResponses && fbResponses.length >= 3) {
+      const dimKeys  = ['d1_score','d2_score','d3_score','d4_score','d5_score','d6_score','d7_score'] as const
+      const dimNames: Record<number, string> = {
+        1: 'Self-awareness', 2: 'Ego & identity', 3: 'Emotional regulation',
+        4: 'Cognitive flexibility', 5: 'Values & purpose', 6: 'Relational mindset', 7: 'Adaptive resilience',
+      }
+      const selfScores = assessment
+        ? [assessment.d1_score, assessment.d2_score, assessment.d3_score, assessment.d4_score,
+           assessment.d5_score, assessment.d6_score, assessment.d7_score]
+        : null
+
+      const dimLines = dimKeys.map((key, i) => {
+        const scores    = fbResponses.map(r => r[key] as number | null).filter((s): s is number => s !== null)
+        const peerScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null
+        const selfScore = selfScores?.[i] ?? null
+        if (peerScore === null) return null
+        if (selfScore !== null) {
+          const gap     = peerScore - selfScore
+          const gapNote = Math.abs(gap) >= 15
+            ? gap > 0
+              ? `peers rate you ${gap} higher — possible underconfidence`
+              : `peers rate you ${Math.abs(gap)} lower — potential blind spot`
+            : 'self and peer scores aligned'
+          return `  - ${dimNames[i + 1]}: self ${selfScore} / peers ${peerScore} (${gapNote})`
+        }
+        return `  - ${dimNames[i + 1]}: peers ${peerScore}`
+      }).filter(Boolean)
+
+      feedbackContext = `\n\n${firstName}'s 360 peer feedback (${fbResponses.length} peer${fbResponses.length !== 1 ? 's' : ''} responded):\n${dimLines.join('\n')}\n\nUse this to deepen coaching. Where peers rate significantly higher than self (gap 15+), explore underconfidence or imposter tendencies. Where peers rate significantly lower than self (gap 15+), surface this gently as a potential blind spot. Do not recite numbers unprompted — use them as an invisible guide.`
+    }
+  } catch { /* no feedback data */ }
+
+  const systemPrompt = buildSystemPrompt(topic as Topic, firstName, role, mqContext, valuesContext, participantContext, feedbackContext)
 
   // Fetch message history (last 20)
   const { data: history } = await supabaseAdmin

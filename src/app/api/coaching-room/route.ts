@@ -144,6 +144,44 @@ export async function POST(req: NextRequest) {
     progressContext = `\n\nProgress since ${firstName}'s last assessment: Overall MQ ${overallDelta > 0 ? '+' : ''}${overallDelta} points.${dimDeltas.length > 0 ? ` Dimension changes: ${dimDeltas.join(', ')}.` : ' All dimensions stable.'} Reference this naturally where it's relevant — acknowledge growth or note where there's still work to do. Don't lead with it unless it comes up.`
   }
 
+  // Fetch 360 peer feedback results (only if 3+ responses)
+  let feedbackContext = ''
+  try {
+    const { data: fbResponses } = await supabaseAdmin
+      .from('feedback_responses')
+      .select('d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score')
+      .eq('participant_id', participantId)
+
+    if (fbResponses && fbResponses.length >= 3) {
+      const dimKeys = ['d1_score','d2_score','d3_score','d4_score','d5_score','d6_score','d7_score'] as const
+      const selfScores = assessment
+        ? [assessment.d1_score, assessment.d2_score, assessment.d3_score, assessment.d4_score,
+           assessment.d5_score, assessment.d6_score, assessment.d7_score]
+        : null
+
+      const dimLines = Object.entries(DIMENSION_NAMES).map(([dimNum, dimName]) => {
+        const i         = parseInt(dimNum) - 1
+        const key       = dimKeys[i]
+        const scores    = fbResponses.map(r => r[key] as number | null).filter((s): s is number => s !== null)
+        const peerScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null
+        const selfScore = selfScores?.[i] ?? null
+        if (peerScore === null) return null
+        if (selfScore !== null) {
+          const gap     = peerScore - selfScore
+          const gapNote = Math.abs(gap) >= 15
+            ? gap > 0
+              ? `peers rate you ${gap} higher — possible underconfidence`
+              : `peers rate you ${Math.abs(gap)} lower — potential blind spot`
+            : 'self and peer scores aligned'
+          return `  - ${dimName}: self ${selfScore} / peers ${peerScore} (${gapNote})`
+        }
+        return `  - ${dimName}: peers ${peerScore}`
+      }).filter(Boolean)
+
+      feedbackContext = `\n\n${firstName}'s 360 peer feedback (${fbResponses.length} peer${fbResponses.length !== 1 ? 's' : ''} responded):\n${dimLines.join('\n')}\n\nUse this to deepen coaching. Where peers rate significantly higher than self (gap 15+), explore underconfidence or imposter tendencies. Where peers rate significantly lower than self (gap 15+), surface this gently as a potential blind spot — not as criticism, but as an opportunity to examine impact vs intention. Where scores align, acknowledge the self-awareness. Do not recite numbers unprompted — use them as an invisible guide to sharpen your questions and spot themes.`
+    }
+  } catch { /* no feedback data */ }
+
   let companyValues: string | null = null
   try {
     const { data: cr } = await supabaseAdmin.from('cohort_participants')
@@ -219,7 +257,7 @@ export async function POST(req: NextRequest) {
 
 You are coaching ${participantContext}.
 
-MQ Assessment: ${scoresSummary}${sessionFocusInstruction}${progressContext}${valuesContext}${memoryContext}
+MQ Assessment: ${scoresSummary}${sessionFocusInstruction}${progressContext}${feedbackContext}${valuesContext}${memoryContext}
 
 Your role is to be a genuine coaching presence. Listen deeply, ask powerful questions, offer reframes, help ${firstName} think through whatever is on their mind at work. Always connect insights to their leadership. Tone: warm, direct, possibility-focused. Never preachy, generic, or clinical.
 
