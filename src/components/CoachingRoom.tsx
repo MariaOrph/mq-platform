@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import Notes from '@/components/Notes'
+import Notes     from '@/components/Notes'
+import MicButton from '@/components/MicButton'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -510,6 +511,11 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
               >
                 📓 Notes
               </button>
+              <MicButton
+                onTranscript={t => setInput(prev => prev ? prev + ' ' + t : t)}
+                activeColor="#0AF3CD"
+                activeBg="#E8FDF7"
+              />
               <textarea
                 ref={inputRef}
                 value={input}

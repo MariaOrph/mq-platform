@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import MicButton from '@/components/MicButton'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -511,6 +512,11 @@ export default function CultureLabPage() {
       {/* Input */}
       <div style={{ backgroundColor: 'white', borderTop: '1px solid #B9F8DD' }}>
         <div className="max-w-2xl mx-auto px-4 py-3 flex gap-3 items-end">
+          <MicButton
+            onTranscript={t => setInput(prev => prev ? prev + ' ' + t : t)}
+            activeColor={topic.color}
+            activeBg="#FFFFF8"
+          />
           <textarea
             ref={inputRef}
             value={input}

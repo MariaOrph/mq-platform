@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import MicButton from '@/components/MicButton'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -940,6 +941,11 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           {/* Input */}
           <div style={{ backgroundColor: 'white', borderTop: `1px solid ${activeDim.color}40` }}>
             <div className="max-w-2xl mx-auto px-4 py-3 flex gap-3 items-end">
+              <MicButton
+                onTranscript={t => setInput(prev => prev ? prev + ' ' + t : t)}
+                activeColor={activeDim?.color ?? '#a78bfa'}
+                activeBg={activeDim?.bg ?? '#F5F3FF'}
+              />
               <textarea
                 ref={inputRef}
                 value={input}
