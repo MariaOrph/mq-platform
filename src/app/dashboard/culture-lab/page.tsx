@@ -7,7 +7,7 @@ import MicButton from '@/components/MicButton'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type Topic = 'values' | 'psych-safety' | 'accountability'
+type Topic = 'values' | 'psych-safety' | 'accountability' | 'inclusion'
 
 interface TopicConfig {
   id:       Topic
@@ -81,6 +81,21 @@ const TOPICS: Record<Topic, TopicConfig> = {
       "My team doesn't take ownership of their work",
       "How do I follow through without coming across as a micromanager?",
       "I need to have a difficult performance conversation",
+    ],
+  },
+  inclusion: {
+    id:      'inclusion',
+    name:    'Building an Inclusive Team',
+    tagline: 'Make sure every voice is heard, valued, and given a genuine chance to contribute',
+    emoji:   '🤝',
+    color:   '#F59E0B',
+    bg:      '#FFFBEB',
+    intro:   "Inclusion is about whether everyone on your team genuinely belongs, gets heard, and has an equal chance to contribute. I help you see the patterns in how voices, credit, and opportunities are distributed on your team — and what you can do differently as a leader.",
+    prompts: [
+      "Some voices dominate every meeting — how do I change that?",
+      "I want to make sure everyone on my team truly feels they belong",
+      "How do I make sure I'm seeking out different perspectives before I decide?",
+      "I think someone on my team feels like an outsider — what do I do?",
     ],
   },
 }
