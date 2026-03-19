@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const participantId = user.id
-  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string; focusDimensionId?: number | null; sessionType?: string; hideTrigger?: boolean }
+  let body: { action?: string; message?: string; sessionId?: string; prevSessionId?: string; focusDimensionId?: number | null; sessionType?: string; hideTrigger?: boolean; title?: string }
   try { body = await req.json() } catch {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
@@ -82,9 +82,10 @@ export async function POST(req: NextRequest) {
       void updateCoachingMemory(participantId, body.prevSessionId)
     }
     const sessionType = body.sessionType ?? 'coaching'
+    const sessionTitle = body.title ?? 'New conversation'
     const { data: session } = await supabaseAdmin
       .from('coaching_chats')
-      .insert({ participant_id: participantId, title: 'New conversation', session_type: sessionType })
+      .insert({ participant_id: participantId, title: sessionTitle, session_type: sessionType })
       .select().single()
     return NextResponse.json({ session })
   }

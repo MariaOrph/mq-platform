@@ -520,10 +520,11 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
   // ── Start session from overview ──────────────────────────────────────────────
   async function startSession() {
     const prevSessionId = sessions[0]?.id
+    const dimName = selectedDimId ? DIMENSIONS[selectedDimId - 1]?.name : undefined
     const res = await fetch('/api/coaching-room', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body:    JSON.stringify({ action: 'new_session', prevSessionId, sessionType: 'mq_builder' }),
+      body:    JSON.stringify({ action: 'new_session', prevSessionId, sessionType: 'mq_builder', title: dimName }),
     })
     if (res.ok) {
       const { session } = await res.json()
