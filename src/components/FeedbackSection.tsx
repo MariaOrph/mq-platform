@@ -213,14 +213,14 @@ export default function FeedbackSection({ token, selfScores }: Props) {
               )}
             </div>
 
-            {/* Existing requests */}
-            {(data?.requests ?? []).length > 0 && (
+            {/* Pending requests only — completed ones are hidden to preserve anonymity */}
+            {(data?.requests ?? []).filter(r => r.status === 'pending').length > 0 && (
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>
-                  Requests sent
+                  Awaiting response
                 </p>
                 <div className="space-y-2">
-                  {(data?.requests ?? []).map(r => (
+                  {(data?.requests ?? []).filter(r => r.status === 'pending').map(r => (
                     <div key={r.id}
                          className="flex items-center justify-between rounded-xl px-3 py-2.5"
                          style={{ backgroundColor: '#F9FAFB', border: '1px solid #F3F4F6' }}>
@@ -235,24 +235,13 @@ export default function FeedbackSection({ token, selfScores }: Props) {
                           <p className="text-xs" style={{ color: '#9CA3AF' }}>{r.relationship}</p>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 ml-2 flex-shrink-0">
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                              style={{
-                                backgroundColor: r.status === 'completed' ? '#D1FAE5' : '#FEF3C7',
-                                color:           r.status === 'completed' ? '#065F46' : '#92400E',
-                              }}>
-                          {r.status === 'completed' ? '✓ Done' : 'Pending'}
-                        </span>
-                        {r.status === 'pending' && (
-                          <button
-                            onClick={() => handleDelete(r.id)}
-                            className="text-xs hover:opacity-60 transition-opacity"
-                            style={{ color: '#D1D5DB' }}
-                          >
-                            ✕
-                          </button>
-                        )}
-                      </div>
+                      <button
+                        onClick={() => handleDelete(r.id)}
+                        className="text-xs hover:opacity-60 transition-opacity ml-2 flex-shrink-0"
+                        style={{ color: '#D1D5DB' }}
+                      >
+                        ✕
+                      </button>
                     </div>
                   ))}
                 </div>
