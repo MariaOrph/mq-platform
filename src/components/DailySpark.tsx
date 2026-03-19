@@ -84,6 +84,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const [selectedSpark,   setSelectedSpark]   = useState<SparkCard | null>(null)
   const [notes,           setNotes]           = useState('')
   const [notesSaved,      setNotesSaved]      = useState(false)
+  const [expanded,        setExpanded]        = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const saveNotes = useCallback(async (cardId: string, text: string) => {
@@ -236,21 +237,42 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               {currentCard.title}
             </p>
 
-            {/* Practice */}
-            <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-              {currentCard.exercise}
-            </p>
-
-            {/* Insight — subtle, inline */}
-            {currentCard.insight && (
-              <p className="text-xs leading-relaxed"
-                 style={{ color: '#9CA3AF', borderLeft: `3px solid ${dim.color}55`, paddingLeft: 12 }}>
-                {currentCard.insight}
-              </p>
+            {/* Collapsed: teaser + expand button */}
+            {!expanded && (
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm leading-relaxed flex-1" style={{ color: '#6B7280' }}>
+                  {currentCard.teaser}
+                </p>
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-xl"
+                  style={{ backgroundColor: dim.bg, color: dim.color }}
+                >
+                  Open →
+                </button>
+              </div>
             )}
 
-            {/* Notes */}
-            <div>
+            {/* Expanded: full practice + insight */}
+            {expanded && (
+              <>
+                {/* Practice */}
+                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                  {currentCard.exercise}
+                </p>
+
+                {/* Insight — subtle, inline */}
+                {currentCard.insight && (
+                  <p className="text-xs leading-relaxed"
+                     style={{ color: '#9CA3AF', borderLeft: `3px solid ${dim.color}55`, paddingLeft: 12 }}>
+                    {currentCard.insight}
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* Notes + Complete — only when expanded */}
+            {expanded && <div>
               <div className="flex items-center justify-between mb-1.5">
                 <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
                   Your reflection
@@ -280,14 +302,16 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
             </div>
 
             {/* Complete */}
-            <button
-              onClick={handleComplete}
-              disabled={completing}
-              className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.75)' }}
-            >
-              {completing ? 'Saving…' : '✓ Done for today'}
-            </button>
+            {expanded && (
+              <button
+                onClick={handleComplete}
+                disabled={completing}
+                className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.75)' }}
+              >
+                {completing ? 'Saving…' : '✓ Done for today'}
+              </button>
+            )}
           </div>
 
         ) : (
