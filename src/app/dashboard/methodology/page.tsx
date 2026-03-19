@@ -13,7 +13,7 @@ export default function MethodologyPage() {
             The Research Behind MQ
           </h1>
           <p className="text-sm mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>
-            How the MQ framework and Culture Lab are grounded in leadership science
+            How the MQ framework and Culture Lab are grounded in psychology and leadership research
           </p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export default function MethodologyPage() {
 
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
             Effective leadership operates on two levels — and the research across decades of psychology,
-            organisational behaviour, and leadership science consistently supports this distinction.
+            organisational behaviour, and leadership consistently supports this distinction.
           </p>
 
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
@@ -122,13 +122,13 @@ export default function MethodologyPage() {
                 emoji: '🔄', name: 'Cognitive Flexibility',
                 color: '#ff9f43', bg: '#FFF0E0',
                 desc: 'The ability to hold complexity, revise assumptions, and remain genuinely open to new evidence — including evidence that challenges existing views.',
-                anchor: 'Carol Dweck\'s growth mindset research (Stanford) is the most accessible anchor. Roger Martin\'s integrative thinking and Kegan\'s immunity to change theory cover the deeper developmental layer. McKinsey research consistently identifies cognitive agility as a top differentiator at senior leadership levels.',
+                anchor: 'Carol Dweck\'s growth mindset research (Stanford) is the most widely known reference point. Roger Martin\'s integrative thinking and Kegan\'s immunity to change theory cover the deeper developmental layer. McKinsey research consistently identifies cognitive agility as a top differentiator at senior leadership levels.',
               },
               {
                 emoji: '⭐', name: 'Values & Purpose',
                 color: '#00c9a7', bg: '#D4F5EF',
                 desc: 'The depth and stability of the leader\'s sense of what they stand for — and how consistently that shows up in decisions and behaviour.',
-                anchor: 'Shalom Schwartz\'s universal values theory (replicated across 80+ countries) provides the foundational academic anchor. The authentic leadership research of Bill George and Bruce Avolio, and Nick Craig/Scott Snook\'s work on purpose, provide leadership-specific grounding. Deci & Ryan\'s self-determination theory supports the performance benefits of intrinsic purpose.',
+                anchor: 'Shalom Schwartz\'s universal values theory (replicated across 80+ countries) provides the foundational academic grounding. The authentic leadership research of Bill George and Bruce Avolio, and Nick Craig/Scott Snook\'s work on purpose, provide leadership-specific grounding. Deci & Ryan\'s self-determination theory supports the performance benefits of intrinsic purpose.',
               },
               {
                 emoji: '🤝', name: 'Relational Mindset',
@@ -153,7 +153,7 @@ export default function MethodologyPage() {
                 <div className="px-4 py-3 space-y-2" style={{ backgroundColor: 'white' }}>
                   <p className="text-sm italic leading-relaxed" style={{ color: '#6B7280' }}>{dim.desc}</p>
                   <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                    <span className="font-semibold" style={{ color: '#1B5E56' }}>Research anchor: </span>
+                    <span className="font-semibold" style={{ color: '#1B5E56' }}>Research basis: </span>
                     {dim.anchor}
                   </p>
                 </div>
@@ -212,7 +212,7 @@ export default function MethodologyPage() {
                 <div className="px-4 py-3 space-y-2" style={{ backgroundColor: 'white' }}>
                   <p className="text-sm italic leading-relaxed" style={{ color: '#6B7280' }}>{topic.desc}</p>
                   <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                    <span className="font-semibold" style={{ color: '#1B5E56' }}>Research anchor: </span>
+                    <span className="font-semibold" style={{ color: '#1B5E56' }}>Research basis: </span>
                     {topic.anchor}
                   </p>
                 </div>
