@@ -860,26 +860,6 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           <div className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
 
-              {/* Deep dive button — compact version for chat view */}
-              {DEEP_DIVE_DATA[activeDim.id] && (
-                <button
-                  onClick={() => { setDeepDiveSlide(0); setShowDeepDive(true) }}
-                  className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-left hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: activeDim.bg, border: `1px solid ${activeDim.color}50` }}
-                >
-                  <span style={{ fontSize: 16 }}>🔬</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold" style={{ color: activeDim.color }}>
-                      Take a deeper dive — the science behind this dimension
-                    </p>
-                  </div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                       stroke={activeDim.color} strokeWidth="2.5" strokeLinecap="round">
-                    <polyline points="9 18 15 12 9 6"/>
-                  </svg>
-                </button>
-              )}
-
               {/* Loading state for auto-start */}
               {!msgLoaded && messages.length === 0 && (
                 <div className="flex justify-center py-8">
