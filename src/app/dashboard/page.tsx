@@ -1148,6 +1148,14 @@ export default function ParticipantDashboard() {
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <div className="text-center py-6 mt-4">
         <a
+          href="/dashboard/methodology"
+          className="text-xs hover:underline transition-opacity hover:opacity-70"
+          style={{ color: '#9CA3AF' }}
+        >
+          The Research Behind MQ
+        </a>
+        <span className="mx-2 text-xs" style={{ color: '#D1D5DB' }}>·</span>
+        <a
           href="/privacy"
           className="text-xs hover:underline transition-opacity hover:opacity-70"
           style={{ color: '#9CA3AF' }}
