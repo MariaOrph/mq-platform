@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
@@ -10,6 +10,22 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [logoError, setLogoError]       = useState(false)
+  const [showForgot, setShowForgot]     = useState(false)
+  const [forgotEmail, setForgotEmail]   = useState('')
+  const [forgotSent, setForgotSent]     = useState(false)
+  const [forgotLoading, setForgotLoading] = useState(false)
+
+  // Detect OTP expired / error in hash fragment (e.g. from Supabase password reset emails)
+  useEffect(() => {
+    const hash = window.location.hash.substring(1)
+    const params = new URLSearchParams(hash)
+    const errorCode = params.get('error_code')
+    if (errorCode === 'otp_expired') {
+      setError('That link has expired. Please use the "Forgot password?" link below to request a new one.')
+    } else if (params.get('error')) {
+      setError('That link is invalid or has already been used. Please try signing in or use "Forgot password?" below.')
+    }
+  }, [])
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -30,6 +46,19 @@ export default function LoginPage() {
     }
 
     window.location.href = '/auth/me'
+  }
+
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault()
+    setForgotLoading(true)
+    const supabase = createClient()
+    const appUrl = window.location.origin
+    await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+      redirectTo: `${appUrl}/auth/callback?type=recovery`,
+    })
+    // Always show success — don't reveal whether the email exists
+    setForgotSent(true)
+    setForgotLoading(false)
   }
 
   return (
@@ -211,12 +240,98 @@ export default function LoginPage() {
 
           </form>
 
-          <p className="mt-8 text-center text-xs" style={{ color: '#05A88E' }}>
+          <p className="mt-6 text-center text-xs">
+            <button
+              type="button"
+              onClick={() => { setShowForgot(true); setError(null) }}
+              className="hover:underline"
+              style={{ color: '#05A88E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }}
+            >
+              Forgot your password?
+            </button>
+          </p>
+
+          <p className="mt-3 text-center text-xs" style={{ color: '#05A88E' }}>
             No account? You&apos;ll receive an invitation by email.
           </p>
 
         </div>
       </div>
+
+      {/* ── Forgot password modal ── */}
+      {showForgot && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{ backgroundColor: 'rgba(10,46,42,0.6)', backdropFilter: 'blur(4px)' }}
+          onClick={() => { setShowForgot(false); setForgotSent(false); setForgotEmail('') }}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl p-8 bg-white"
+            style={{ boxShadow: '0 24px 60px rgba(10,46,42,0.25)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {forgotSent ? (
+              <>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                     style={{ backgroundColor: '#D1FAE5' }}>
+                  <span style={{ fontSize: 22 }}>✓</span>
+                </div>
+                <h2 className="text-lg font-semibold text-center mb-2" style={{ color: '#0A2E2A' }}>
+                  Check your inbox
+                </h2>
+                <p className="text-sm text-center mb-6" style={{ color: '#6B7280' }}>
+                  If an account exists for {forgotEmail}, you&apos;ll receive a password reset link shortly. Check your spam folder if it doesn&apos;t arrive within a few minutes.
+                </p>
+                <button
+                  onClick={() => { setShowForgot(false); setForgotSent(false); setForgotEmail('') }}
+                  className="w-full py-3 rounded-xl text-sm font-semibold"
+                  style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+                >
+                  Back to sign in
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold mb-1" style={{ color: '#0A2E2A' }}>
+                  Reset your password
+                </h2>
+                <p className="text-sm mb-6" style={{ color: '#6B7280' }}>
+                  Enter your email and we&apos;ll send you a reset link.
+                </p>
+                <form onSubmit={handleForgotPassword} className="space-y-4">
+                  <input
+                    type="email"
+                    required
+                    value={forgotEmail}
+                    onChange={e => setForgotEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
+                    style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+                    onFocus={e => (e.target.style.borderColor = '#0AF3CD')}
+                    onBlur={e => (e.target.style.borderColor = '#B9F8DD')}
+                  />
+                  <button
+                    type="submit"
+                    disabled={forgotLoading || !forgotEmail.trim()}
+                    className="w-full py-3 rounded-xl text-sm font-semibold disabled:opacity-50"
+                    style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+                  >
+                    {forgotLoading ? 'Sending…' : 'Send reset link →'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowForgot(false); setForgotEmail('') }}
+                    className="w-full py-2 text-sm"
+                    style={{ color: '#9CA3AF', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    Cancel
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   )

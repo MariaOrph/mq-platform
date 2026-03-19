@@ -10,7 +10,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const type = searchParams.get('type') // 'invite' when coming from an invitation email
+  const type = searchParams.get('type') // 'invite', 'recovery', etc.
 
   if (code) {
     const cookieStore = await cookies()
@@ -32,6 +32,11 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && data?.user) {
+      // Password recovery — send straight to the reset password page
+      if (type === 'recovery') {
+        return NextResponse.redirect(new URL('/auth/reset-password', origin))
+      }
+
       // Check profile to determine whether this is a first-time user.
       // A first-timer has no full_name set yet — send them to complete setup
       // regardless of whether the link type is 'invite' or 'magiclink'.
