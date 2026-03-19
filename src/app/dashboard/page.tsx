@@ -365,7 +365,7 @@ export default function ParticipantDashboard() {
               <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
                 {getGreeting()}, {firstName}.
               </h1>
-              <p className="text-xs mt-1 italic leading-snug" style={{ color: 'rgba(185,248,221,0.75)', maxWidth: 260 }}>
+              <p className="text-xs mt-1 italic leading-snug" style={{ color: 'rgba(185,248,221,0.75)', maxWidth: 520 }}>
                 "{dailyQuote.text}"
                 <span className="not-italic font-semibold ml-1" style={{ color: 'rgba(185,248,221,0.5)' }}>
                   — {dailyQuote.author}
