@@ -1016,6 +1016,19 @@ export default function ParticipantDashboard() {
                         <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{detail.low}</p>
                       </div>
                     </div>
+
+                    {/* Strengthen CTA */}
+                    <button
+                      onClick={() => {
+                        setDimModal(null)
+                        setMQBuilderDimId(dimModal.dimId)
+                        setShowMQBuilder(true)
+                      }}
+                      className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: dim.color, color: '#0A2E2A' }}
+                    >
+                      Strengthen {dim.name} in MQ Builder →
+                    </button>
                   </>
                 )}
 
