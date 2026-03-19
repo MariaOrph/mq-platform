@@ -200,24 +200,14 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowNotes(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
-                  style={{ backgroundColor: 'rgba(253,203,94,0.15)', color: '#fdcb5e', border: '1px solid rgba(253,203,94,0.3)' }}
-                  title="Open my notes"
-                >
-                  📓 Notes
-                </button>
-                <button onClick={onClose}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
-                        style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
-              </div>
+              <button onClick={onClose}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
             </div>
           </div>
 
           {/* New conversation button */}
-          <div className="max-w-2xl mx-auto w-full px-6 pt-5 pb-3">
+          <div className="max-w-2xl mx-auto w-full px-6 pt-5 pb-3 space-y-2">
             <button
               onClick={startNewConversation}
               className="w-full py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
@@ -227,6 +217,13 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
               New conversation
+            </button>
+            <button
+              onClick={() => setShowNotes(true)}
+              className="w-full py-2.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#FFFBEB', color: '#b45309', border: '1px solid #fdcb5e' }}
+            >
+              📓 My Notes
             </button>
           </div>
 
@@ -322,19 +319,9 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 </p>
                 <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>MQ Coach</p>
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <button
-                  onClick={() => setShowNotes(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
-                  style={{ backgroundColor: 'rgba(253,203,94,0.15)', color: '#fdcb5e', border: '1px solid rgba(253,203,94,0.3)' }}
-                  title="Open my notes"
-                >
-                  📓 Notes
-                </button>
-                <button onClick={onClose}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
-                        style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
-              </div>
+              <button onClick={onClose}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
+                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
             </div>
           </div>
 
@@ -460,6 +447,14 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
           {/* Input */}
           <div style={{ backgroundColor: 'white', borderTop: '1px solid #B9F8DD' }}>
             <div className="max-w-2xl mx-auto px-4 py-3 flex gap-3 items-end">
+              <button
+                onClick={() => setShowNotes(true)}
+                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity"
+                style={{ backgroundColor: '#FFFBEB', border: '1px solid #fdcb5e', color: '#0A2E2A', fontSize: '18px' }}
+                title="My notes"
+              >
+                📓
+              </button>
               <textarea
                 ref={inputRef}
                 value={input}
