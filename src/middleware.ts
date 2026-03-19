@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 // Pages that don't require login
-const PUBLIC_PATHS = ['/login', '/auth/callback', '/unauthorised']
+const PUBLIC_PATHS = ['/login', '/auth/callback', '/unauthorised', '/feedback', '/privacy', '/unsubscribe']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

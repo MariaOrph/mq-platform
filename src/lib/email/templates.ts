@@ -284,7 +284,7 @@ export function feedbackInviteHtml({
     </table>
 
     <p style="margin:0 0 4px;font-size:13px;color:#9ca3af;line-height:1.6;">
-      This link is unique to you. If you've already submitted, you don't need to do anything else.
+      No account or login needed — just click the button above. This link is unique to you.
     </p>
   `)
 }
