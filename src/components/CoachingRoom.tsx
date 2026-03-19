@@ -232,7 +232,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
           </div>
 
           {/* New conversation button */}
-          <div className="max-w-2xl mx-auto w-full px-6 pt-5 pb-3">
+          <div className="max-w-2xl mx-auto w-full px-6 pt-5 pb-6">
             <button
               onClick={startNewConversation}
               className="w-full py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
@@ -244,31 +244,6 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
               New conversation
             </button>
           </div>
-
-          {/* Filter tabs */}
-          {sessionsLoaded && sessions.length > 0 && (
-            <div className="max-w-2xl mx-auto w-full px-6 pb-3">
-              <div className="flex gap-1.5 flex-wrap">
-                {([
-                  { key: 'all',          label: 'All' },
-                  { key: 'coaching',     label: '💬 Coaching' },
-                  { key: 'mq_builder',  label: '🧠 MQ Builder' },
-                  { key: 'culture_lab', label: '🧪 Culture Lab' },
-                ] as { key: FilterType; label: string }[]).map(f => (
-                  <button
-                    key={f.key}
-                    onClick={() => setFilter(f.key)}
-                    className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                    style={filter === f.key
-                      ? { backgroundColor: '#0AF3CD', color: '#0A2E2A' }
-                      : { backgroundColor: 'rgba(10,46,42,0.08)', color: '#374151' }}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Sessions list */}
           <div className="flex-1 overflow-y-auto">
@@ -306,10 +281,29 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     })
                 return (
                   <>
-                    <p className="text-xs font-semibold uppercase tracking-wider px-1 pb-1"
+                    <p className="text-xs font-semibold uppercase tracking-wider px-1 pb-3"
                        style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>
                       Previous conversations
                     </p>
+                    <div className="flex gap-1.5 flex-wrap pb-3">
+                      {([
+                        { key: 'all',          label: 'All' },
+                        { key: 'coaching',     label: '💬 Coaching' },
+                        { key: 'mq_builder',  label: '🧠 MQ Builder' },
+                        { key: 'culture_lab', label: '🧪 Culture Lab' },
+                      ] as { key: FilterType; label: string }[]).map(f => (
+                        <button
+                          key={f.key}
+                          onClick={() => setFilter(f.key)}
+                          className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+                          style={filter === f.key
+                            ? { backgroundColor: '#0AF3CD', color: '#0A2E2A' }
+                            : { backgroundColor: 'rgba(10,46,42,0.08)', color: '#374151' }}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
                     {filtered.length === 0 && (
                       <div className="text-center py-12">
                         <p className="text-sm" style={{ color: '#9CA3AF' }}>No conversations in this category yet.</p>
