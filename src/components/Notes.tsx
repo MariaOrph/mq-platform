@@ -244,7 +244,7 @@ function NotesInner({
               <div>
                 <p className="text-sm font-bold" style={{ color: 'white' }}>My Notes</p>
                 <p className="text-xs" style={{ color: '#B9F8DD' }}>
-                  {notes.length === 0 ? 'Your private leadership journal' : `${notes.length} note${notes.length === 1 ? '' : 's'}`}
+                  {notes.length === 0 ? 'Your private journal' : `${notes.length} note${notes.length === 1 ? '' : 's'}`}
                 </p>
               </div>
             </div>

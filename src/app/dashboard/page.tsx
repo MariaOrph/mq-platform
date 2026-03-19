@@ -824,7 +824,7 @@ export default function ParticipantDashboard() {
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
                 <p className="text-xs mt-0.5" style={{ color: '#b45309' }}>
-                  Your private leadership journal
+                  Your private journal
                 </p>
               </div>
             </div>
