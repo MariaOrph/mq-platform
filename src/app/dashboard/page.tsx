@@ -1204,9 +1204,6 @@ export default function ParticipantDashboard() {
                 className="text-sm hover:opacity-60 transition-opacity"
                 style={{ color: '#9CA3AF' }}>✕</button>
             </div>
-            <p className="text-xs mb-5 leading-relaxed" style={{ color: '#05A88E' }}>
-              This helps the AI coach use more relevant examples and better understand your context.
-            </p>
 
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
