@@ -152,9 +152,54 @@ const SLIDES = [
             </div>
           </div>
         ))}
+      </div>
+    ),
+  },
+
+  {
+    id: 'privacy',
+    tag: 'Your Privacy',
+    title: 'Your data is yours',
+    subtitle: '',
+    body: '',
+    visual: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+        {([
+          {
+            icon: '🔒',
+            label: 'Your coaching conversations are private',
+            desc: 'Nobody else can read them — not your employer, not your HR team, not us. What you share with your coach stays between you and your coach.',
+            color: '#0AF3CD',
+          },
+          {
+            icon: '📊',
+            label: 'Your individual scores are confidential',
+            desc: 'Your MQ assessment results belong to you. They are never shared with your organisation without your explicit consent.',
+            color: '#a78bfa',
+          },
+          {
+            icon: '👥',
+            label: 'Organisations see aggregated data only',
+            desc: 'Your employer receives cohort-level reporting — averages and patterns across the group — never anything that identifies you individually.',
+            color: '#fdcb5e',
+          },
+        ] as const).map((item, i) => (
+          <div key={i} style={{
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+            padding: '10px 12px', borderRadius: 12,
+            backgroundColor: `${item.color}10`, border: `1px solid ${item.color}28`,
+          }}>
+            <span style={{ fontSize: 18, flexShrink: 0, lineHeight: '1.4' }}>{item.icon}</span>
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: '0 0 3px' }}>{item.label}</p>
+              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.55)', margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+            </div>
+          </div>
+        ))}
         <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.4)', textAlign: 'center', margin: '4px 0 0', lineHeight: 1.5 }}>
-          🔒 Your coaching conversations and individual scores are private and confidential — your organisation only sees aggregated cohort data.{' '}
-          <a href="/privacy" style={{ color: '#05A88E', textDecoration: 'underline' }}>Privacy policy</a>
+          Read our full{' '}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#05A88E', textDecoration: 'underline' }}>Privacy Policy</a>
+          {' '}to learn more about how we handle your data.
         </p>
       </div>
     ),
