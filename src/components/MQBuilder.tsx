@@ -167,6 +167,17 @@ const DEEP_DIVE_DATA: Record<number, DeepDiveSlide[]> = {
         'Shame resilience (the ability to recognize shame and move through it without it controlling behaviour) is the key inner skill that separates armoured from daring leaders.',
       ],
     },
+    {
+      researcher: 'Carl Jung & Robert Hogan',
+      work:       'The Shadow (1930s) / Hogan Development Survey',
+      tagline:    'Your greatest leadership liabilities are often your greatest strengths — overused.',
+      points: [
+        'Jung identified the "shadow" as the unconscious part of the self that the ego refuses to acknowledge — traits we repress because they feel threatening to our self-image. In leaders, the shadow often contains insecurity, fear of failure, aggression, or the desperate need to be liked. We don\'t get rid of these; we just stop seeing them.',
+        'Shadow behaviours emerge most visibly under pressure — when the managed, conscious self gives way to unexamined patterns. This is why leaders who appear exemplary in stable conditions can derail badly in crisis: the shadow runs the show when the ego is stretched.',
+        'Robert Hogan\'s research operationalised this for leadership through the Hogan Development Survey — identifying 11 measurable derailer patterns (such as Bold, Excitable, Sceptical, Cautious, Mischievous). Each one is a genuine strength at normal expression that becomes a liability when overused under stress. Boldness becomes arrogance. Caution becomes paralysis. Scepticism becomes cynicism.',
+        'The shadow cannot be eliminated — only made conscious. Leaders who do this work don\'t become shadow-free; they develop the capacity to notice their shadow patterns arising and catch them before they cause damage. That awareness is the work.',
+      ],
+    },
   ],
   3: [
     {
@@ -812,7 +823,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
               <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7' }}>
                 <p className="text-xs font-bold mb-1.5" style={{ color: '#05A88E' }}>What to expect in this session</p>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  Your coach will open with a short explanation of what {activeDim.name.toLowerCase()} means, then ask you a specific question to explore where you are with it right now. From there you'll work through practical strategies tailored to what you share.
+                  Your coach will open straight away with a question about where you are with {activeDim.name.toLowerCase()} right now. From there you'll work through what's actually going on for you, with practical strategies tailored to what you share.
                 </p>
               </div>
 
