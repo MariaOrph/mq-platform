@@ -306,6 +306,10 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     })
                 return (
                   <>
+                    <p className="text-xs font-semibold uppercase tracking-wider px-1 pb-1"
+                       style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>
+                      Previous conversations
+                    </p>
                     {filtered.length === 0 && (
                       <div className="text-center py-12">
                         <p className="text-sm" style={{ color: '#9CA3AF' }}>No conversations in this category yet.</p>
