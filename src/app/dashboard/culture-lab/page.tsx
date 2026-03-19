@@ -85,7 +85,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   inclusion: {
     id:      'inclusion',
-    name:    'Building an Inclusive Team',
+    name:    'Fostering an Inclusive Team',
     tagline: 'Make sure every voice is heard, valued, and given a genuine chance to contribute',
     emoji:   '🤝',
     color:   '#F59E0B',

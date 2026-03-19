@@ -171,7 +171,7 @@ export default function FeedbackSection({ token, selfScores }: Props) {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>
-                    Their name <span style={{ color: '#9CA3AF' }}>(optional)</span>
+                    Their name
                   </label>
                   <input
                     type="text"
@@ -184,7 +184,7 @@ export default function FeedbackSection({ token, selfScores }: Props) {
                 </div>
                 <div>
                   <label className="block text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>
-                    Relationship <span style={{ color: '#9CA3AF' }}>(optional)</span>
+                    Relationship
                   </label>
                   <select
                     value={relInput}
@@ -202,7 +202,7 @@ export default function FeedbackSection({ token, selfScores }: Props) {
               </div>
               <button
                 onClick={handleSend}
-                disabled={sending || !emailInput.trim()}
+                disabled={sending || !emailInput.trim() || !nameInput.trim() || !relInput}
                 className="w-full py-2.5 rounded-xl text-sm font-bold disabled:opacity-40 hover:opacity-90 transition-opacity"
                 style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
               >
