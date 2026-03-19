@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import CoachingRoom from '@/components/CoachingRoom'
 import MQBuilder from '@/components/MQBuilder'
 import DailySpark from '@/components/DailySpark'
-import MQOnboarding, { shouldShowOnboarding } from '@/components/MQOnboarding'
+import MQOnboarding, { shouldShowOnboarding, resetOnboarding } from '@/components/MQOnboarding'
 
 // ── Dimension config ───────────────────────────────────────────────────────────
 
@@ -328,7 +328,7 @@ export default function ParticipantDashboard() {
   }, [supabase])
 
   useEffect(() => { loadData() }, [loadData])
-  useEffect(() => { setShowOnboarding(true) }, [])
+  useEffect(() => { setShowOnboarding(shouldShowOnboarding()) }, [])
 
   async function signOut() {
     await supabase.auth.signOut()
@@ -381,13 +381,22 @@ export default function ParticipantDashboard() {
               </p>
             </div>
           </div>
-          <button
-            onClick={signOut}
-            className="text-xs px-3 py-1.5 rounded-lg flex-shrink-0 hover:opacity-80 transition-opacity"
-            style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
-          >
-            Sign out
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={() => { resetOnboarding(); setShowOnboarding(true) }}
+              className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+              style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+            >
+              How it works
+            </button>
+            <button
+              onClick={signOut}
+              className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+              style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </div>
 
