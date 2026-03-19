@@ -85,6 +85,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const [notes,           setNotes]           = useState('')
   const [notesSaved,      setNotesSaved]      = useState(false)
   const [expanded,        setExpanded]        = useState(false)
+  const [timeMode,        setTimeMode]        = useState<'5min' | '20min' | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const saveNotes = useCallback(async (cardId: string, text: string) => {
@@ -237,27 +238,63 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               {currentCard.title}
             </p>
 
-            {/* Collapsed: teaser + expand button */}
+            {/* Collapsed: teaser + time selector */}
             {!expanded && (
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm leading-relaxed flex-1" style={{ color: '#6B7280' }}>
+              <div>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>
                   {currentCard.teaser}
                 </p>
-                <button
-                  onClick={() => setExpanded(true)}
-                  className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-xl"
-                  style={{ backgroundColor: dim.bg, color: dim.color }}
-                >
-                  Open →
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium mr-1" style={{ color: '#9CA3AF' }}>I have</span>
+                  <button
+                    onClick={() => { setTimeMode('5min'); setExpanded(true) }}
+                    className="flex-1 text-xs font-bold px-3 py-2 rounded-xl transition-all"
+                    style={{ backgroundColor: dim.bg, color: dim.color, border: `1.5px solid ${dim.color}40` }}
+                  >
+                    ⚡ 5 min
+                  </button>
+                  <button
+                    onClick={() => { setTimeMode('20min'); setExpanded(true) }}
+                    className="flex-1 text-xs font-bold px-3 py-2 rounded-xl transition-all"
+                    style={{ backgroundColor: dim.bg, color: dim.color, border: `1.5px solid ${dim.color}40` }}
+                  >
+                    🎯 20 min
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Expanded: full practice + insight */}
-            {expanded && (
+            {/* Expanded: 5 min mode */}
+            {expanded && timeMode === '5min' && (
               <>
-                {/* Practice */}
-                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                {/* Research insight as the quick read */}
+                {currentCard.insight && (
+                  <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
+                      Why this matters
+                    </p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                      {currentCard.insight}
+                    </p>
+                  </div>
+                )}
+                {/* Focused micro-prompt */}
+                <div className="rounded-xl p-4" style={{ border: `1.5px solid ${dim.color}40`, backgroundColor: 'white' }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
+                    Your micro-practice
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
+                    Take 2 minutes right now. Think of one moment from the last 48 hours where this dimension showed up in your leadership — positively or negatively. Name it specifically. That awareness is the practice.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* Expanded: 20 min mode */}
+            {expanded && timeMode === '20min' && (
+              <>
+                {/* Full practice */}
+                <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#374151' }}>
                   {currentCard.exercise}
                 </p>
 
@@ -271,46 +308,57 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               </>
             )}
 
-            {/* Notes + Complete — only when expanded */}
-            {expanded && <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
-                  Your reflection
-                </p>
-                {notesSaved && (
-                  <p className="text-xs font-semibold" style={{ color: '#10B981' }}>Saved ✓</p>
-                )}
+            {/* Notes — 20 min only */}
+            {expanded && timeMode === '20min' && (
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
+                    Your reflection
+                  </p>
+                  {notesSaved && (
+                    <p className="text-xs font-semibold" style={{ color: '#10B981' }}>Saved ✓</p>
+                  )}
+                </div>
+                <textarea
+                  value={notes}
+                  onChange={e => handleNotesChange(currentCard.id, e.target.value)}
+                  placeholder="Write your thoughts, what you noticed, or what you'll do differently…"
+                  rows={3}
+                  className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none"
+                  style={{
+                    border: `1.5px solid ${dim.color}50`,
+                    backgroundColor: dim.bg,
+                    color: '#374151',
+                    lineHeight: 1.6,
+                  }}
+                  onInput={e => {
+                    const el = e.currentTarget
+                    el.style.height = 'auto'
+                    el.style.height = `${el.scrollHeight}px`
+                  }}
+                />
               </div>
-              <textarea
-                value={notes}
-                onChange={e => handleNotesChange(currentCard.id, e.target.value)}
-                placeholder="Write your thoughts, what you noticed, or what you'll do differently…"
-                rows={3}
-                className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none"
-                style={{
-                  border: `1.5px solid ${dim.color}50`,
-                  backgroundColor: dim.bg,
-                  color: '#374151',
-                  lineHeight: 1.6,
-                }}
-                onInput={e => {
-                  const el = e.currentTarget
-                  el.style.height = 'auto'
-                  el.style.height = `${el.scrollHeight}px`
-                }}
-              />
-            </div>}
+            )}
 
-            {/* Complete */}
+            {/* Complete — shown in both modes */}
             {expanded && (
-              <button
-                onClick={handleComplete}
-                disabled={completing}
-                className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.75)' }}
-              >
-                {completing ? 'Saving…' : '✓ Done for today'}
-              </button>
+              <div className="space-y-2">
+                <button
+                  onClick={handleComplete}
+                  disabled={completing}
+                  className="w-full py-3 rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: dim.color, color: 'rgba(0,0,0,0.75)' }}
+                >
+                  {completing ? 'Saving…' : '✓ Done for today'}
+                </button>
+                <button
+                  onClick={() => { setExpanded(false); setTimeMode(null) }}
+                  className="w-full py-2 rounded-xl text-xs font-medium hover:opacity-70 transition-opacity"
+                  style={{ color: '#9CA3AF' }}
+                >
+                  ← Switch mode
+                </button>
+              </div>
             )}
           </div>
 
