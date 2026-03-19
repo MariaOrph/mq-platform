@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       options: {
         data: {
           role:       role ?? 'participant',
-          company_id: companyId ?? null,
+          company_id: companyId || null,   // treat empty string as null (avoids ::uuid cast error in trigger)
         },
         redirectTo: `${appUrl}/auth/invite`,
       },
