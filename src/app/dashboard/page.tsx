@@ -7,6 +7,7 @@ import MQBuilder from '@/components/MQBuilder'
 import DailySpark from '@/components/DailySpark'
 import MQOnboarding, { shouldShowOnboarding, resetOnboarding } from '@/components/MQOnboarding'
 import Notes from '@/components/Notes'
+import FeedbackSection from '@/components/FeedbackSection'
 
 // ── Dimension config ───────────────────────────────────────────────────────────
 
@@ -584,6 +585,18 @@ export default function ParticipantDashboard() {
               Open →
             </button>
           </div>
+
+        {/* ── 360 Feedback ─────────────────────────────────────────────────── */}
+        {authToken && assessment && (
+          <FeedbackSection
+            token={authToken}
+            selfScores={[
+              assessment.d1_score, assessment.d2_score, assessment.d3_score,
+              assessment.d4_score, assessment.d5_score, assessment.d6_score,
+              assessment.d7_score,
+            ]}
+          />
+        )}
 
         {/* ── Culture Lab ──────────────────────────────────────────────────── */}
           <div

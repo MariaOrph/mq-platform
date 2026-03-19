@@ -241,3 +241,75 @@ MQ
 mindsetquo.com
 Unsubscribe from daily reminders: ${unsubscribeUrl}`
 }
+
+// ── 360 feedback invite email ──────────────────────────────────────────────────
+
+export function feedbackInviteHtml({
+  participantFirstName,
+  respondentName,
+  surveyUrl,
+}: {
+  participantFirstName: string
+  respondentName:       string | null
+  surveyUrl:            string
+}): string {
+  const greeting = respondentName ? `Hi ${respondentName},` : 'Hi there,'
+  return layout(`
+    <h1 style="margin:0 0 20px;font-size:22px;font-weight:800;color:#0A2E2A;line-height:1.3;">
+      ${participantFirstName} has asked for your feedback
+    </h1>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
+      <strong style="color:#0A2E2A;">${participantFirstName}</strong> is working on their leadership development
+      through MQ and has asked for your honest perspective on how they show up as a leader.
+    </p>
+
+    <p style="margin:0 0 28px;font-size:15px;color:#444444;line-height:1.7;">
+      The survey takes around <strong style="color:#0A2E2A;">5 minutes</strong>. Your responses are
+      completely anonymous — ${participantFirstName} will only ever see aggregated results, never
+      individual responses.
+    </p>
+
+    <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
+      <tr>
+        <td style="border-radius:10px;background-color:#05A88E;">
+          <a href="${surveyUrl}"
+             style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px;letter-spacing:0.2px;">
+            Give feedback →
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0 0 4px;font-size:13px;color:#9ca3af;line-height:1.6;">
+      This link is unique to you. If you've already submitted, you don't need to do anything else.
+    </p>
+  `)
+}
+
+export function feedbackInviteText({
+  participantFirstName,
+  respondentName,
+  surveyUrl,
+}: {
+  participantFirstName: string
+  respondentName:       string | null
+  surveyUrl:            string
+}): string {
+  const greeting = respondentName ? `Hi ${respondentName},` : 'Hi there,'
+  return `${greeting}
+
+${participantFirstName} has asked for your feedback.
+
+${participantFirstName} is working on their leadership development through MQ and has asked for your honest perspective on how they show up as a leader.
+
+The survey takes around 5 minutes. Your responses are completely anonymous — ${participantFirstName} will only ever see aggregated results, never individual responses.
+
+Give feedback: ${surveyUrl}
+
+This link is unique to you. If you've already submitted, you don't need to do anything else.
+
+mindsetquo.com`
+}
