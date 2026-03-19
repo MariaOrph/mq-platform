@@ -299,7 +299,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
                   el.style.height = `${el.scrollHeight}px`
                 }}
               />
-            </div>
+            </div>}
 
             {/* Complete */}
             {expanded && (

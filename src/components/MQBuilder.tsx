@@ -88,6 +88,263 @@ const DIMENSIONS = [
   },
 ]
 
+// ── Deep-dive research data ────────────────────────────────────────────────────
+
+interface DeepDiveSlide {
+  researcher: string
+  work:       string
+  tagline:    string
+  points:     string[]
+}
+
+const DEEP_DIVE_DATA: Record<number, DeepDiveSlide[]> = {
+  1: [
+    {
+      researcher: 'Tasha Eurich',
+      work:       'Insight (2017)',
+      tagline:    'The self-awareness gap is bigger than anyone realises.',
+      points: [
+        '95% of people believe they are self-aware — only 10–15% actually meet the criteria.',
+        'There are two distinct types: internal self-awareness (knowing your own values, thoughts, emotions) and external self-awareness (knowing how others see you). Leaders rarely excel at both.',
+        'High introspection doesn\'t equal high self-awareness. Asking "why" you feel a certain way often increases rumination without insight. Asking "what" — what can I do differently? — produces more useful results.',
+        'Power erodes self-awareness over time: the more senior a leader, the fewer honest signals they receive. Building deliberate feedback loops is essential.',
+      ],
+    },
+    {
+      researcher: 'Daniel Goleman',
+      work:       'Emotional Intelligence (1995)',
+      tagline:    'Self-awareness is the master switch of effective leadership.',
+      points: [
+        'Self-awareness is the foundational pillar of emotional intelligence — without it, the other competencies (regulation, empathy, social skill) cannot function well.',
+        'Goleman\'s analysis of nearly 200 large, global companies found that emotional intelligence, anchored by self-awareness, was twice as important as technical or cognitive skills for senior leadership performance.',
+        'Leaders with low self-awareness have blind spots that ripple through their teams — creating cultures that mirror their unexamined patterns.',
+        'The good news: self-awareness is trainable. Leaders who invest in it show measurable improvements in decision quality, team trust, and resilience under pressure.',
+      ],
+    },
+    {
+      researcher: 'Daniel Siegel',
+      work:       'Mindsight: The New Science of Personal Transformation (2010)',
+      tagline:    'The brain can observe itself — and that changes everything.',
+      points: [
+        'Siegel coined "mindsight" to describe the brain\'s capacity to perceive its own activity as it unfolds — a kind of internal sight that goes beyond ordinary introspection.',
+        'This capacity depends on integration between the prefrontal cortex and deeper limbic regions. When these systems communicate well, you can notice an emotion arising without being swept away by it.',
+        'Mindsight is trainable through reflective practices that create new neural pathways — literally reshaping how the brain processes experience.',
+        'For leaders, developing mindsight means the gap between stimulus and response widens. You start to catch patterns before they become problems.',
+      ],
+    },
+  ],
+  2: [
+    {
+      researcher: 'Robert Kegan & Lisa Lahey',
+      work:       'Immunity to Change (2009)',
+      tagline:    'Most leadership development fails because the real obstacle is hidden.',
+      points: [
+        'Kegan and Lahey found that people reliably sabotage their own stated change goals — not from lack of will or skill, but because they hold unconscious "competing commitments" that conflict with change.',
+        'The most common hidden commitment is: I must protect my image, status, and sense of competence at all costs. This is often the invisible force stopping leaders from seeking feedback, admitting mistakes, or delegating.',
+        'Their "Immunity to Change" map reveals the "big assumption" beneath these hidden commitments — usually something like: "If I appear uncertain, people will lose confidence in me."',
+        'The process isn\'t about willpower — it\'s about making the hidden visible, then running small experiments to test whether the big assumption is actually true.',
+      ],
+    },
+    {
+      researcher: 'David Rock',
+      work:       'Your Brain at Work (2009) / SCARF Model',
+      tagline:    'Social threats hit the brain exactly like physical danger.',
+      points: [
+        'Rock\'s SCARF model identifies five social domains that trigger threat or reward responses: Status, Certainty, Autonomy, Relatedness, and Fairness.',
+        'A threat to status — being corrected, overlooked, or publicly wrong — activates the same neural fight-or-flight cascade as a physical threat, shutting down the PFC.',
+        'This means leaders become least capable of clear thinking precisely when their ego is most challenged. Defensiveness is a neurological reflex, not a character flaw.',
+        'Understanding SCARF allows leaders to redesign conversations, feedback processes, and team interactions to minimise unnecessary threat activation.',
+      ],
+    },
+    {
+      researcher: 'Brené Brown',
+      work:       'Dare to Lead (2018)',
+      tagline:    'The armoured leader protects ego at the cost of everything that matters.',
+      points: [
+        'Brown\'s decade of research found a direct link between ego-protection ("armoured leadership") and cultures of self-protection — where people hide mistakes, avoid risk, and disengage.',
+        '"Daring leadership" requires the willingness to be wrong, uncertain, and imperfect — not as weakness, but as the foundation of genuine trust and connection.',
+        'Leaders who can\'t tolerate being perceived as incompetent consistently create the very cultures of incompetence they fear — because their teams stop bringing them real problems.',
+        'Shame resilience (the ability to recognize shame and move through it without it controlling behaviour) is the key inner skill that separates armoured from daring leaders.',
+      ],
+    },
+  ],
+  3: [
+    {
+      researcher: 'Amy Arnsten',
+      work:       'Stress Signalling Pathways Research, Yale (2009)',
+      tagline:    'Even mild stress takes the thinking brain offline.',
+      points: [
+        'Arnsten\'s lab showed that even mild, uncontrollable stress causes a rapid and dramatic loss of prefrontal cognitive function — the part of the brain responsible for sound judgement, clear thinking, and impulse control.',
+        'Under stress, high levels of norepinephrine and dopamine "switch" the brain from reflective to reflexive mode — the amygdala takes over while the PFC stands down.',
+        'This neural shift is evolutionary: it prioritises fast survival responses over nuanced analysis. Useful in physical emergencies; deeply counterproductive in leadership conversations.',
+        'The key word is "uncontrollable" — stress you feel you can manage has a much milder effect. Regulation practices that restore a sense of agency physically protect PFC function.',
+      ],
+    },
+    {
+      researcher: 'Joseph LeDoux',
+      work:       'The Emotional Brain (1996)',
+      tagline:    'The amygdala fires before you are conscious of what triggered it.',
+      points: [
+        'LeDoux mapped the brain\'s "low road" — a fast neural pathway from thalamus directly to the amygdala that bypasses conscious processing and can trigger a full stress response before you know why.',
+        'This means emotional reactions can be fully underway before your conscious mind has assessed the situation — which is why "just stay calm" is neurologically impractical without training.',
+        'The amygdala doesn\'t distinguish between real threats and social or symbolic ones — being publicly criticised activates the same cascade as physical danger.',
+        'LeDoux\'s work explains why emotional regulation must be practised when calm: you\'re building neural pathways (PFC-amygdala connections) that can interrupt the "low road" response before it escalates.',
+      ],
+    },
+    {
+      researcher: 'Viktor Frankl',
+      work:       "Man's Search for Meaning (1946)",
+      tagline:    'Between stimulus and response is a space — and that space is everything.',
+      points: [
+        'Frankl\'s observations from Auschwitz led to a profound insight: those who survived psychologically intact were not those who felt no distress, but those who maintained the inner freedom to choose their response.',
+        '"Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom."',
+        'Emotional regulation, in Frankl\'s framework, isn\'t suppression — it\'s the cultivation of that space through meaning, values, and conscious attention.',
+        'Leaders who have a clear sense of purpose have a wider space between stimulus and response. Purpose is not just motivational — it is neurologically protective under adversity.',
+      ],
+    },
+  ],
+  4: [
+    {
+      researcher: 'Carol Dweck',
+      work:       'Mindset: The New Psychology of Success (2006)',
+      tagline:    'What you believe about your abilities determines more than your abilities do.',
+      points: [
+        'Dweck\'s decades of research established two fundamental mindsets: fixed (abilities are innate and static) and growth (abilities can be developed through effort and learning).',
+        'People with a fixed mindset avoid challenges that might reveal inadequacy, ignore feedback that doesn\'t confirm their self-concept, and experience the success of others as a threat.',
+        'Leaders with a growth mindset are significantly more likely to seek honest feedback, take calculated risks, and build psychologically safe team cultures — because failure becomes information, not identity.',
+        'Crucially, mindset is not fixed. Targeted interventions — even brief — can shift people from fixed to growth orientation, and the performance gains are measurable.',
+      ],
+    },
+    {
+      researcher: 'Daniel Kahneman',
+      work:       'Thinking, Fast and Slow (2011)',
+      tagline:    'We think we\'re reasoning. Often, we\'re just rationalising.',
+      points: [
+        'Kahneman identifies two modes of thinking: System 1 (fast, automatic, intuitive, pattern-based — runs 95% of the time) and System 2 (slow, deliberate, effortful, analytical).',
+        'Most leadership decisions are made by System 1 — which means they\'re heavily influenced by cognitive biases: confirmation bias, anchoring, the availability heuristic, and status quo bias.',
+        'Under pressure or time constraints, System 2 gives up even faster — leaving System 1 (and its biases) entirely in charge. This is when leaders are most cognitively rigid.',
+        'Cognitive flexibility is the skill of recognising when System 1 is operating and deliberately engaging System 2 to check its conclusions — particularly in high-stakes, novel situations.',
+      ],
+    },
+    {
+      researcher: 'Neuroscience of Cognitive Flexibility',
+      work:       'Prefrontal Cortex Research (ongoing)',
+      tagline:    'Flexibility lives in the part of the brain most vulnerable to stress.',
+      points: [
+        'Cognitive flexibility — the ability to shift between mental frameworks, update beliefs, and hold multiple perspectives — is primarily governed by the prefrontal cortex (PFC).',
+        'The PFC is also the system most degraded by stress, sleep deprivation, and ego threat — which is why we default to rigid, familiar thinking precisely when we most need fresh perspectives.',
+        'Cognitive flexibility correlates strongly with working memory capacity: the more "space" available in working memory, the more information a leader can hold simultaneously when making decisions.',
+        'Regular practices that protect PFC function — adequate sleep, physical exercise, deliberate recovery, and mindfulness — are not "wellness" activities. They are cognitive performance strategies.',
+      ],
+    },
+  ],
+  5: [
+    {
+      researcher: 'Viktor Frankl',
+      work:       "Man's Search for Meaning (1946) / Logotherapy",
+      tagline:    'The primary human drive is not pleasure or power — it is meaning.',
+      points: [
+        'Frankl\'s logotherapy established that the will to meaning is the primary human motivator — not Freud\'s will to pleasure or Adler\'s will to power.',
+        'In Auschwitz, Frankl observed that those with a clear reason to survive — a person to return to, a work to complete — maintained psychological functioning and survived at higher rates than those without.',
+        '"He who has a why to live for can bear almost any how." For leaders, this translates: clarity of purpose is what sustains performance through sustained adversity.',
+        'Frankl distinguished between a life that asks "what can I get from this?" and one that asks "what does this situation ask of me?" — the latter is values-driven leadership in its purest form.',
+      ],
+    },
+    {
+      researcher: 'Edward Deci & Richard Ryan',
+      work:       'Self-Determination Theory (1985–present)',
+      tagline:    'Values alignment is the engine of intrinsic motivation.',
+      points: [
+        'SDT identifies three innate psychological needs whose satisfaction predicts intrinsic motivation: autonomy (ownership over actions), competence (mastery and growth), and relatedness (genuine connection with others).',
+        'The theory maps a spectrum from external regulation (doing things for rewards/fear) through introjection (doing it to avoid guilt) to identified regulation (doing it because it aligns with personal values). Only identified regulation sustains high-quality, persistent effort.',
+        'Leaders who help people connect their daily work to genuine values — not just company values — activate the highest quality motivation. Extrinsic rewards, overused, actually undermine intrinsic motivation over time.',
+        'The key leadership implication: why people are doing something matters as much as whether they are doing it. Performance driven by fear or reward is fragile. Performance driven by values is durable.',
+      ],
+    },
+    {
+      researcher: 'Brené Brown',
+      work:       'Dare to Lead (2018)',
+      tagline:    'Values that aren\'t behavioural are just beliefs.',
+      points: [
+        'Brown\'s research found that most leaders have not clearly identified their two core operating values — the principles that actually drive their behaviour under pressure, as distinct from their aspirational values.',
+        'Values that are not translated into specific, observable behaviours are invisible to the people being led. Culture is not built by values posters — it is built by what leaders model and what they tolerate.',
+        'Values-driven leaders make decisions faster and recover from setbacks more quickly — because their internal compass removes the need to relitigate first principles every time.',
+        'The hardest test of values is not when it\'s comfortable to live by them — it\'s when choosing courage over comfort means accepting real cost. That\'s when values either lead or reveal themselves as aspiration.',
+      ],
+    },
+  ],
+  6: [
+    {
+      researcher: 'Amy Edmondson',
+      work:       'Psychological Safety and Learning Behavior in Work Teams (1999) / The Fearless Organization (2018)',
+      tagline:    'Teams that feel safe to fail are the ones that succeed.',
+      points: [
+        'Edmondson first defined psychological safety as "a shared belief held by members of a team that the team is safe for interpersonal risk-taking." Originally coined in 1965 by Schein and Bennis, Edmondson operationalised it for organisational research.',
+        'Her counterintuitive hospital finding: high-performing medical teams reported more errors than low-performing ones — not because they made more mistakes, but because psychological safety made it safe to report them. The same pattern holds across all industries.',
+        'Google\'s Project Aristotle studied 180 teams over two years and found psychological safety was the single most important factor in team effectiveness — outweighing talent, structure, and management quality.',
+        'Leaders create or destroy psychological safety through their own micro-behaviours: how they respond to questions, whether they admit uncertainty, how they react to bad news. The relational climate is set from the top, in real time.',
+      ],
+    },
+    {
+      researcher: 'Daniel Siegel',
+      work:       'Interpersonal Neurobiology / The Developing Mind (1999)',
+      tagline:    'Your inner state is contagious — your team\'s nervous system is tuned to yours.',
+      points: [
+        'Siegel\'s interpersonal neurobiology demonstrates that human nervous systems co-regulate — when a leader is genuinely calm and present, those around them experience measurable physiological calming.',
+        'This "attunement" — being genuinely attuned to another\'s state — reduces the threat response in the person being led, creating the conditions for better thinking, risk-taking, and honest communication.',
+        'Presence is not just a soft quality — it is a neurological signal. When leaders are distracted, checked-out, or internally activated, their teams\' nervous systems respond to this signal, often without conscious awareness.',
+        'The quality of attention a leader brings to a conversation is literally shaping the neurological experience of the person they\'re with. Genuine curiosity and interest have measurable effects on the other person\'s brain.',
+      ],
+    },
+    {
+      researcher: 'Mirror Neuron Research',
+      work:       'Rizzolatti et al., Parma (1990s) / Social Neuroscience',
+      tagline:    'We are neurologically wired to catch each other\'s emotional states.',
+      points: [
+        'Mirror neurons, discovered accidentally in Rizzolatti\'s Parma lab, fire both when we perform an action and when we observe another performing it — providing the neural basis for empathy and emotional contagion.',
+        'A leader\'s emotional state is not just communicated through words and body language — it is neurologically "caught" by team members below the level of conscious awareness.',
+        'Emotional contagion flows most powerfully downward in hierarchies — meaning the leader\'s state has disproportionate impact on team mood, engagement, and cognitive capacity.',
+        'This makes a leader\'s inner life — not just their outward behaviour — a strategic variable. You cannot perform calm and expect your team to experience calm. The regulation has to be genuine.',
+      ],
+    },
+  ],
+  7: [
+    {
+      researcher: 'Richard Davidson',
+      work:       'The Emotional Life of Your Brain (2012) / Center for Healthy Minds Research',
+      tagline:    'Resilience is not a trait — it is a trainable brain circuit.',
+      points: [
+        'Davidson\'s neuroscience research at Wisconsin established that the brain\'s capacity for resilience — specifically the speed and completeness of recovery from adversity — varies enormously between individuals and is directly tied to specific neural circuits.',
+        'Crucially, these circuits are plastic: they respond to deliberate practice. Just 30 minutes per day for two weeks of mindfulness training produces measurable changes in the brain circuits governing emotional recovery.',
+        'Davidson defines resilience specifically as recovery speed — how quickly the brain returns to baseline after a stressor. High resilience does not mean not being affected; it means recovering faster.',
+        'Well-being is a skill. Davidson\'s framework positions resilience alongside four other trainable dimensions: outlook, attention, generosity, and purpose — all of which can be deliberately strengthened.',
+      ],
+    },
+    {
+      researcher: 'Martin Seligman',
+      work:       'Learned Optimism (1991) / Flourish (2011)',
+      tagline:    'How you explain setbacks to yourself predicts your future performance.',
+      points: [
+        'Seligman identified "explanatory style" — the habitual way we explain why bad things happen — as a powerful predictor of resilience, health, and performance under adversity.',
+        'A pessimistic explanatory style treats setbacks as permanent ("this will always be true"), pervasive ("this affects everything"), and personal ("it\'s because of who I am"). This depletes motivation and predicts helplessness.',
+        'An optimistic style treats setbacks as temporary, specific, and situational — preserving energy, motivation, and the belief that effort makes a difference. Insurance agents with optimistic styles sold 37% more and quit half as often.',
+        'Crucially, Seligman showed that explanatory style can be learned and changed through targeted cognitive practices — it is not a fixed personality trait. He called this "learned optimism."',
+      ],
+    },
+    {
+      researcher: 'Ann Masten',
+      work:       'Ordinary Magic: Resilience in Development (2014)',
+      tagline:    'Resilience is not rare — it is built from everyday human capacities.',
+      points: [
+        'Masten coined the term "ordinary magic" to describe resilience — arguing powerfully against the idea that it is a special quality found only in exceptional people.',
+        'Her research shows that resilience emerges from ordinary human resources: close relationships, a sense of meaning, the ability to regulate emotions, and connection to community.',
+        'The most powerful single predictor of resilience under adversity is the quality of at least one close, supportive relationship. For leaders, this has direct implications for how they show up for the people they lead.',
+        'Post-traumatic growth — not just recovery but genuine development through adversity — is common when people have adequate support, meaning, and the capacity to process experience. Leaders who normalise resilience make it possible for their teams.',
+      ],
+    },
+  ],
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function getScoreBandLabel(score: number): string {
@@ -123,6 +380,8 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
   const [hoveredDim,     setHoveredDim]     = useState<number | null>(null)
   const [autoStarted,    setAutoStarted]    = useState(false)
+  const [showDeepDive,   setShowDeepDive]   = useState(false)
+  const [deepDiveSlide,  setDeepDiveSlide]  = useState(0)
 
   // Lowest-scoring dimension = focus
   const focusDimId: number | null = dimScores
@@ -526,6 +785,29 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                 )
               })()}
 
+              {/* Deep dive button */}
+              {DEEP_DIVE_DATA[activeDim.id] && (
+                <button
+                  onClick={() => { setDeepDiveSlide(0); setShowDeepDive(true) }}
+                  className="w-full flex items-center gap-3 rounded-2xl p-4 mb-5 text-left hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: activeDim.bg, border: `1px solid ${activeDim.color}50` }}
+                >
+                  <span style={{ fontSize: 20 }}>🔬</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold" style={{ color: activeDim.color }}>
+                      Take a deeper dive
+                    </p>
+                    <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
+                      The science &amp; psychology behind this dimension
+                    </p>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke={activeDim.color} strokeWidth="2.5" strokeLinecap="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+              )}
+
               {/* What to expect */}
               <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7' }}>
                 <p className="text-xs font-bold mb-1.5" style={{ color: '#05A88E' }}>What to expect in this session</p>
@@ -578,21 +860,25 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           <div className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
 
-              {/* Evidence card — teaching insert, always shown at top of chat */}
-              <div className="rounded-2xl p-4" style={{
-                backgroundColor: activeDim.bg,
-                border: `1px solid ${activeDim.color}40`,
-              }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <span style={{ fontSize: 13 }}>🔬</span>
-                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: activeDim.color }}>
-                    The evidence
-                  </p>
-                </div>
-                <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  {activeDim.science}
-                </p>
-              </div>
+              {/* Deep dive button — compact version for chat view */}
+              {DEEP_DIVE_DATA[activeDim.id] && (
+                <button
+                  onClick={() => { setDeepDiveSlide(0); setShowDeepDive(true) }}
+                  className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-left hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: activeDim.bg, border: `1px solid ${activeDim.color}50` }}
+                >
+                  <span style={{ fontSize: 16 }}>🔬</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold" style={{ color: activeDim.color }}>
+                      Take a deeper dive — the science behind this dimension
+                    </p>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke={activeDim.color} strokeWidth="2.5" strokeLinecap="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+              )}
 
               {/* Loading state for auto-start */}
               {!msgLoaded && messages.length === 0 && (
@@ -669,6 +955,122 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           </div>
         </>
       )}
+
+      {/* ── DEEP DIVE MODAL ─────────────────────────────────────────────────── */}
+      {showDeepDive && activeDim && DEEP_DIVE_DATA[activeDim.id] && (() => {
+        const slides = DEEP_DIVE_DATA[activeDim.id]
+        const slide  = slides[deepDiveSlide]
+        return (
+          <div
+            className="fixed inset-0 z-[60] flex flex-col"
+            style={{ backgroundColor: 'rgba(10,46,42,0.75)' }}
+            onClick={() => setShowDeepDive(false)}
+          >
+            <div
+              className="absolute inset-x-0 bottom-0 flex flex-col rounded-t-3xl overflow-hidden"
+              style={{ maxHeight: '85vh', backgroundColor: 'white' }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal header */}
+              <div className="flex items-center justify-between px-5 pt-5 pb-3 flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <span style={{ fontSize: 18 }}>🔬</span>
+                  <div>
+                    <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>The science behind</p>
+                    <p className="text-xs font-semibold" style={{ color: activeDim.color }}>{activeDim.name}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowDeepDive(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+                  style={{ backgroundColor: '#F3F4F6', color: '#6B7280' }}
+                >
+                  {'×'}
+                </button>
+              </div>
+
+              {/* Slide dots */}
+              <div className="flex items-center justify-center gap-2 pb-3 flex-shrink-0">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setDeepDiveSlide(i)}
+                    className="rounded-full transition-all"
+                    style={{
+                      width:           i === deepDiveSlide ? 20 : 7,
+                      height:          7,
+                      backgroundColor: i === deepDiveSlide ? activeDim.color : '#D1D5DB',
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Slide content */}
+              <div className="flex-1 overflow-y-auto px-5 pb-6">
+                {/* Researcher header */}
+                <div className="rounded-2xl p-4 mb-4" style={{ backgroundColor: activeDim.bg }}>
+                  <p className="text-base font-black leading-tight" style={{ color: '#0A2E2A' }}>
+                    {slide.researcher}
+                  </p>
+                  <p className="text-xs mt-0.5 mb-2" style={{ color: activeDim.color }}>{slide.work}</p>
+                  <p className="text-sm font-semibold italic leading-snug" style={{ color: '#374151' }}>
+                    "{slide.tagline}"
+                  </p>
+                </div>
+
+                {/* Key points */}
+                <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>
+                  Key takeaways
+                </p>
+                <div className="space-y-3">
+                  {slide.points.map((point, i) => (
+                    <div key={i} className="flex gap-3">
+                      <div
+                        className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold"
+                        style={{ backgroundColor: activeDim.color + '20', color: activeDim.color }}
+                      >
+                        {i + 1}
+                      </div>
+                      <p className="text-sm leading-relaxed flex-1" style={{ color: '#374151' }}>
+                        {point}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Prev / Next nav */}
+              <div className="flex gap-3 px-5 pb-6 pt-3 flex-shrink-0" style={{ borderTop: '1px solid #F3F4F6' }}>
+                <button
+                  onClick={() => setDeepDiveSlide(i => Math.max(0, i - 1))}
+                  disabled={deepDiveSlide === 0}
+                  className="flex-1 py-3 rounded-xl text-sm font-semibold disabled:opacity-30 transition-opacity"
+                  style={{ backgroundColor: '#F3F4F6', color: '#374151' }}
+                >
+                  ← Previous
+                </button>
+                {deepDiveSlide < slides.length - 1 ? (
+                  <button
+                    onClick={() => setDeepDiveSlide(i => i + 1)}
+                    className="flex-1 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: activeDim.color, color: '#0A2E2A' }}
+                  >
+                    Next →
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowDeepDive(false)}
+                    className="flex-1 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: activeDim.color, color: '#0A2E2A' }}
+                  >
+                    Done ✓
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
     </div>
   )
