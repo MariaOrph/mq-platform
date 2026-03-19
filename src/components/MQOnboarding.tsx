@@ -34,8 +34,11 @@ const SLIDES = [
               Your capacity to observe, understand, regulate and reframe your inner world — rather than being unconsciously driven by it.
             </p>
             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6, fontStyle: 'italic' }}>
-              MQ is the mindset intelligence behind every manager and leader who makes a lasting difference.
+              MQ is the inner operating system behind every manager and leader who makes a lasting difference.
             </p>
+            <a href="/dashboard/methodology" style={{ fontSize: 10, color: 'rgba(10,243,205,0.6)', marginTop: 10, display: 'inline-block', textDecoration: 'none' }}>
+              Grounded in psychology and leadership research →
+            </a>
           </div>
         </div>
       </div>
@@ -137,7 +140,7 @@ const SLIDES = [
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your individual development areas.',           color: '#fdcb5e' },
           { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any day-to-day challenge or management situation to your AI coach.',                    color: '#0AF3CD' },
           { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                               color: '#a78bfa' },
-          { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Build values, psychological safety and accountability in your team.',           color: '#F59E0B' },
+          { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
           { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Practical tools, frameworks and resources to build your leadership skills.',              color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
