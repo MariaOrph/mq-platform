@@ -6,6 +6,7 @@ import CoachingRoom from '@/components/CoachingRoom'
 import MQBuilder from '@/components/MQBuilder'
 import DailySpark from '@/components/DailySpark'
 import MQOnboarding, { shouldShowOnboarding, resetOnboarding } from '@/components/MQOnboarding'
+import Notes from '@/components/Notes'
 
 // ── Dimension config ───────────────────────────────────────────────────────────
 
@@ -258,6 +259,7 @@ export default function ParticipantDashboard() {
   const [prevAssessment,    setPrevAssessment]   = useState<Assessment | null>(null)
   const [showCoachingRoom,  setShowCoachingRoom] = useState(false)
   const [showMQBuilder,     setShowMQBuilder]    = useState(false)
+  const [showNotes,         setShowNotes]        = useState(false)
   const [mqBuilderDimId,    setMQBuilderDimId]   = useState<number | undefined>(undefined)
   const [showOnboarding,    setShowOnboarding]   = useState(false)
   const [authToken,         setAuthToken]        = useState<string | null>(null)
@@ -505,6 +507,32 @@ export default function ParticipantDashboard() {
               onClick={() => setShowCoachingRoom(true)}
               className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+            >
+              Open →
+            </button>
+          </div>
+
+        {/* ── My Notes ─────────────────────────────────────────────────────── */}
+          <div
+            className="rounded-2xl p-5 flex items-center justify-between"
+            style={{ backgroundColor: '#FFFBEB', border: '2px solid #fdcb5e', boxShadow: '0 2px 12px rgba(253,203,94,0.15)' }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
+                   style={{ backgroundColor: 'white' }}>
+                📓
+              </div>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
+                <p className="text-xs mt-0.5" style={{ color: '#b45309' }}>
+                  Your private leadership journal
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowNotes(true)}
+              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#fdcb5e', color: '#0A2E2A' }}
             >
               Open →
             </button>
@@ -1102,6 +1130,15 @@ export default function ParticipantDashboard() {
           </div>
         )
       })()}
+
+      {/* ── Notes overlay ────────────────────────────────────────────────── */}
+      {showNotes && authToken && (
+        <Notes
+          token={authToken}
+          onClose={() => setShowNotes(false)}
+          mode="fullscreen"
+        />
+      )}
 
       {/* ── Onboarding carousel ──────────────────────────────────────────── */}
       {showOnboarding && (

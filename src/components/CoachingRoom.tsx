@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import Notes from '@/components/Notes'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -50,6 +51,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   const [msgLoaded,      setMsgLoaded]      = useState(false)
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
   const [hoveredPrompt,  setHoveredPrompt]  = useState<string | null>(null)
+  const [showNotes,      setShowNotes]      = useState(false)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
@@ -198,9 +200,19 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                   </p>
                 </div>
               </div>
-              <button onClick={onClose}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
-                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowNotes(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
+                  style={{ backgroundColor: 'rgba(253,203,94,0.15)', color: '#fdcb5e', border: '1px solid rgba(253,203,94,0.3)' }}
+                  title="Open my notes"
+                >
+                  📓 Notes
+                </button>
+                <button onClick={onClose}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+                        style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
+              </div>
             </div>
           </div>
 
@@ -310,9 +322,19 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 </p>
                 <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>MQ Coach</p>
               </div>
-              <button onClick={onClose}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
-                      style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => setShowNotes(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
+                  style={{ backgroundColor: 'rgba(253,203,94,0.15)', color: '#fdcb5e', border: '1px solid rgba(253,203,94,0.3)' }}
+                  title="Open my notes"
+                >
+                  📓 Notes
+                </button>
+                <button onClick={onClose}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+                        style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>×</button>
+              </div>
             </div>
           </div>
 
@@ -467,6 +489,15 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
             </p>
           </div>
         </>
+      )}
+
+      {/* ── Notes panel (opens over coaching room) ───────────────────────────── */}
+      {showNotes && (
+        <Notes
+          token={token}
+          onClose={() => setShowNotes(false)}
+          mode="panel"
+        />
       )}
     </div>
   )

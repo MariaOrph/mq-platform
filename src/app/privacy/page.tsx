@@ -64,10 +64,11 @@ export default function PrivacyPage() {
 
           {/* Confidentiality of coaching conversations */}
           <section>
-            <h2 className="text-base font-semibold mb-3" style={{ color: '#0A2E2A' }}>3. Confidentiality of your coaching conversations</h2>
+            <h2 className="text-base font-semibold mb-3" style={{ color: '#0A2E2A' }}>3. Confidentiality of your coaching conversations and personal notes</h2>
             <div className="space-y-3 text-sm" style={{ color: '#374151' }}>
               <p>Your coaching conversations are private. They are not accessible to your employer, your HR or People team, or any other person within your organisation. This is fundamental to how coaching works — you will only be open and honest if you know the conversation is yours.</p>
-              <p>Mindset Quotient staff do not read individual coaching conversations except where strictly necessary for technical operations (for example, investigating a reported error). Access in these circumstances is logged and restricted to authorised personnel.</p>
+              <p>Your personal notes — anything you write in the My Notes section of the platform — are stored securely in our database and are private to you. They are never visible to your organisation, your HR or People team, or any other participant. Only you can read, edit, or delete your notes.</p>
+              <p>Mindset Quotient staff do not read individual coaching conversations or personal notes except where strictly necessary for technical operations (for example, investigating a reported error). Access in these circumstances is logged and restricted to authorised personnel.</p>
               <p>Your individual MQ assessment scores are also private and are not shared with your employer without your explicit consent.</p>
             </div>
           </section>
@@ -104,7 +105,7 @@ export default function PrivacyPage() {
             <h2 className="text-base font-semibold mb-3" style={{ color: '#0A2E2A' }}>6. How long we keep your data</h2>
             <div className="space-y-3 text-sm" style={{ color: '#374151' }}>
               <p>We retain your data for as long as your account is active and for a reasonable period afterwards to comply with legal obligations. Specifically:</p>
-              <p style={{ paddingLeft: '1rem' }}>· Account and profile data: retained while your account is active, then deleted within 12 months of account closure unless we are required to retain it longer by law.<br />· Assessment scores and coaching conversations: retained for the duration of your programme and for up to 12 months after its conclusion.<br />· Anonymised and aggregated usage data: may be retained indefinitely for product improvement purposes.</p>
+              <p style={{ paddingLeft: '1rem' }}>· Account and profile data: retained while your account is active, then deleted within 12 months of account closure unless we are required to retain it longer by law.<br />· Assessment scores, coaching conversations, and personal notes: retained for the duration of your programme and for up to 12 months after its conclusion.<br />· Anonymised and aggregated usage data: may be retained indefinitely for product improvement purposes.</p>
               <p>You can request deletion of your data at any time by contacting us (see section 8).</p>
             </div>
           </section>
