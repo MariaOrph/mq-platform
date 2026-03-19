@@ -24,6 +24,8 @@ export default function AssessmentPage() {
   const [step, setStep]                     = useState<Step>('loading')
   const [firstName, setFirstName]           = useState('')
   const [participantRole, setParticipantRole] = useState<ParticipantRole | ''>('')
+  const [jobTitle, setJobTitle]             = useState('')
+  const [companyType, setCompanyType]       = useState('')
   const [responses, setResponses]           = useState<number[]>(Array(TOTAL_QUESTIONS).fill(0))
   const [currentQ, setCurrentQ]             = useState(0)
   const [scores, setScores]                 = useState<Scores | null>(null)
@@ -109,6 +111,8 @@ export default function AssessmentPage() {
         company_id:       profile?.company_id ?? null,
         first_name:       firstName,
         participant_role: participantRole,
+        job_title:        jobTitle.trim()   || null,
+        company_type:     companyType       || null,
         responses,
         d1_score:         newScores.dimensionScores[0],
         d2_score:         newScores.dimensionScores[1],
@@ -241,7 +245,7 @@ export default function AssessmentPage() {
           />
         </div>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <label className="block text-sm font-medium mb-3" style={{ color: '#0A2E2A' }}>
             I am a…
           </label>
@@ -259,6 +263,44 @@ export default function AssessmentPage() {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
+            Job title <span className="font-normal" style={{ color: '#05A88E' }}>(optional)</span>
+          </label>
+          <input
+            type="text"
+            value={jobTitle}
+            onChange={e => setJobTitle(e.target.value)}
+            placeholder="e.g. Head of Product, Partner, SVP Engineering"
+            className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
+            style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+          />
+        </div>
+
+        <div className="mb-8">
+          <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
+            Organisation type <span className="font-normal" style={{ color: '#05A88E' }}>(optional)</span>
+          </label>
+          <select
+            value={companyType}
+            onChange={e => setCompanyType(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none appearance-none"
+            style={{ borderColor: '#B9F8DD', color: companyType ? '#0A2E2A' : '#9CA3AF' }}
+          >
+            <option value="">Select your organisation type</option>
+            <option value="Corporate / Large enterprise">Corporate / Large enterprise</option>
+            <option value="Scale-up (Series B+)">Scale-up (Series B+)</option>
+            <option value="Early-stage startup">Early-stage startup</option>
+            <option value="Professional services (consulting, legal, accounting)">Professional services (consulting, legal, accounting)</option>
+            <option value="Financial services (banking, investment, PE/VC)">Financial services (banking, investment, PE/VC)</option>
+            <option value="Public sector / Government">Public sector / Government</option>
+            <option value="Non-profit / Social enterprise">Non-profit / Social enterprise</option>
+            <option value="Healthcare / Life sciences">Healthcare / Life sciences</option>
+            <option value="Education">Education</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <button

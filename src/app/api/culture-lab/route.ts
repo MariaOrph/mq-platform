@@ -34,6 +34,7 @@ function buildSystemPrompt(
   role: string,
   mqContext: string,
   valuesContext: string,
+  participantContext: string,
 ): string {
   const sharedStyleRules = `
 STYLE RULES — follow these strictly:
@@ -68,7 +69,7 @@ IF THEY DECLINE THE PRACTICE: That's fine — continue the coaching conversation
   if (topic === 'values') {
     return `You are the Culture Lab coach, specialising in helping leaders bridge the gap between their organisation's stated values and how those values actually show up in daily leadership behaviour.
 
-You are coaching ${firstName}, a ${role}.
+You are coaching ${participantContext}.
 
 ${mqContext}${valuesContext}
 
@@ -103,7 +104,7 @@ ${sharedStyleRules}`
   if (topic === 'psych-safety') {
     return `You are the Culture Lab coach, specialising in psychological safety — the belief that people can speak up, ask questions, admit mistakes, and challenge ideas without fear of punishment or humiliation. Your work is grounded in Amy Edmondson's research and practical experience coaching leaders on team dynamics.
 
-You are coaching ${firstName}, a ${role}.
+You are coaching ${participantContext}.
 
 ${mqContext}
 
@@ -135,7 +136,7 @@ ${sharedStyleRules}`
   if (topic === 'inclusion') {
     return `You are the Culture Lab coach, specialising in helping leaders build genuinely inclusive teams. Your work focuses on three interconnected areas: belonging (whether people feel they are truly part of the team), equity of voice (whether everyone has a real chance to contribute, be heard, and be recognised), and diversity of thought (whether the leader actively seeks out different perspectives before deciding).
 
-You are coaching ${firstName}, a ${role}.
+You are coaching ${participantContext}.
 
 ${mqContext}
 
@@ -172,7 +173,7 @@ ${sharedStyleRules}`
   // accountability
   return `You are the Culture Lab coach, specialising in helping leaders build a culture of accountability on their teams. Accountability, done well, is clear expectations, honest conversations, and consistent follow-through — not blame, fear, or micromanagement.
 
-You are coaching ${firstName}, a ${role}.
+You are coaching ${participantContext}.
 
 ${mqContext}
 
@@ -287,12 +288,21 @@ export async function POST(req: NextRequest) {
   // Fetch assessment scores
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
-    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role')
+    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role, job_title, company_type')
     .eq('participant_id', participantId).not('overall_score', 'is', null)
     .order('completed_at', { ascending: false }).limit(1)
 
-  const assessment = assessments?.[0] ?? null
-  const role       = assessment?.participant_role ?? 'leader'
+  const assessment  = assessments?.[0] ?? null
+  const role        = assessment?.participant_role ?? 'leader'
+  const jobTitle    = (assessment as { job_title?: string | null } | null)?.job_title ?? null
+  const companyType = (assessment as { company_type?: string | null } | null)?.company_type ?? null
+
+  // Build participant context line
+  const participantContext = [
+    `${firstName}, a ${role}`,
+    jobTitle ? jobTitle : null,
+    companyType ? `at ${companyType}` : null,
+  ].filter(Boolean).join(' — ').replace(` — at `, ` at `)
 
   const mqContext = assessment
     ? `${firstName}'s MQ scores: Overall ${assessment.overall_score}/100 | Self-awareness ${assessment.d1_score} | Ego & identity ${assessment.d2_score} | Emotional regulation ${assessment.d3_score} | Cognitive flexibility ${assessment.d4_score} | Values & purpose ${assessment.d5_score} | Relational mindset ${assessment.d6_score} | Adaptive resilience ${assessment.d7_score}. Use these as context but do not make them the centre of conversation — this space is about culture and team dynamics, not individual MQ.`
@@ -333,7 +343,7 @@ export async function POST(req: NextRequest) {
     }
   } catch { /* no values data */ }
 
-  const systemPrompt = buildSystemPrompt(topic as Topic, firstName, role, mqContext, valuesContext)
+  const systemPrompt = buildSystemPrompt(topic as Topic, firstName, role, mqContext, valuesContext, participantContext)
 
   // Fetch message history (last 20)
   const { data: history } = await supabaseAdmin

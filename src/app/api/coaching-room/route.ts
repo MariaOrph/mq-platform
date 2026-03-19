@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
 
   const { data: assessments } = await supabaseAdmin
     .from('assessments')
-    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role')
+    .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, participant_role, job_title, company_type')
     .eq('participant_id', participantId).not('overall_score', 'is', null)
     .order('completed_at', { ascending: false }).limit(2)
 
@@ -107,6 +107,15 @@ export async function POST(req: NextRequest) {
   const prevAssessment = assessments?.[1] ?? null
   const firstName      = profile?.full_name?.split(' ')[0] ?? 'there'
   const role           = assessment?.participant_role ?? 'leader'
+  const jobTitle       = (assessment as { job_title?: string | null } | null)?.job_title ?? null
+  const companyType    = (assessment as { company_type?: string | null } | null)?.company_type ?? null
+
+  // Build participant context line
+  const participantContext = [
+    `${firstName}, a ${role}`,
+    jobTitle ? jobTitle : null,
+    companyType ? `at ${companyType}` : null,
+  ].filter(Boolean).join(' — ').replace(` — at `, ` at `)
 
   // Determine session focus dimension
   const sessionFocusDimId: number | null = body.focusDimensionId ?? null
@@ -208,7 +217,7 @@ export async function POST(req: NextRequest) {
 
   const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ is the ability to notice your thoughts, beliefs and emotional triggers — and choose how you respond rather than being driven by them unconsciously.
 
-You are coaching ${firstName}, a ${role}.
+You are coaching ${participantContext}.
 
 MQ Assessment: ${scoresSummary}${sessionFocusInstruction}${progressContext}${valuesContext}${memoryContext}
 
