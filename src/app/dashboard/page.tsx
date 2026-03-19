@@ -258,6 +258,7 @@ export default function ParticipantDashboard() {
   const [prevAssessment,    setPrevAssessment]   = useState<Assessment | null>(null)
   const [showCoachingRoom,  setShowCoachingRoom] = useState(false)
   const [showMQBuilder,     setShowMQBuilder]    = useState(false)
+  const [mqBuilderDimId,    setMQBuilderDimId]   = useState<number | undefined>(undefined)
   const [showOnboarding,    setShowOnboarding]   = useState(false)
   const [authToken,         setAuthToken]        = useState<string | null>(null)
   const [dimModal,          setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
@@ -926,7 +927,8 @@ export default function ParticipantDashboard() {
         <MQBuilder
           token={authToken}
           firstName={firstName}
-          onClose={() => setShowMQBuilder(false)}
+          onClose={() => { setShowMQBuilder(false); setMQBuilderDimId(undefined) }}
+          initialDimId={mqBuilderDimId}
           dimScores={assessment ? [
             assessment.d1_score, assessment.d2_score, assessment.d3_score,
             assessment.d4_score, assessment.d5_score, assessment.d6_score,
@@ -1066,6 +1068,19 @@ export default function ParticipantDashboard() {
                         </div>
                       ))}
                     </div>
+
+                    {/* Work on this dimension CTA */}
+                    <button
+                      onClick={() => {
+                        setDimModal(null)
+                        setMQBuilderDimId(dimModal.dimId)
+                        setShowMQBuilder(true)
+                      }}
+                      className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: dim.color, color: '#0A2E2A' }}
+                    >
+                      Work on {dim.name} in MQ Builder →
+                    </button>
                   </>
                 )}
 

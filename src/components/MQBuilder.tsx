@@ -25,6 +25,7 @@ interface MQBuilderProps {
   onClose:        () => void
   dimScores?:     (number | null)[]
   prevDimScores?: (number | null)[]
+  initialDimId?:  number
 }
 
 // ── Dimension config ───────────────────────────────────────────────────────────
@@ -400,9 +401,9 @@ function formatDate(iso: string) {
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function MQBuilder({ token, firstName, onClose, dimScores, prevDimScores }: MQBuilderProps) {
-  const [view,           setView]           = useState<'home' | 'overview' | 'chat'>('home')
-  const [selectedDimId,  setSelectedDimId]  = useState<number | null>(null)
+export default function MQBuilder({ token, firstName, onClose, dimScores, prevDimScores, initialDimId }: MQBuilderProps) {
+  const [view,           setView]           = useState<'home' | 'overview' | 'chat'>(initialDimId ? 'overview' : 'home')
+  const [selectedDimId,  setSelectedDimId]  = useState<number | null>(initialDimId ?? null)
   const [sessions,       setSessions]       = useState<Session[]>([])
   const [activeSession,  setActiveSession]  = useState<Session | null>(null)
   const [messages,       setMessages]       = useState<Message[]>([])
