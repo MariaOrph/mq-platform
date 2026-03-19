@@ -152,6 +152,10 @@ const SLIDES = [
             </div>
           </div>
         ))}
+        <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.4)', textAlign: 'center', margin: '4px 0 0', lineHeight: 1.5 }}>
+          🔒 Your coaching conversations and individual scores are private and confidential — your organisation only sees aggregated cohort data.{' '}
+          <a href="/privacy" style={{ color: '#05A88E', textDecoration: 'underline' }}>Privacy policy</a>
+        </p>
       </div>
     ),
   },

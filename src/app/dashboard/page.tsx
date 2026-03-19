@@ -1080,6 +1080,19 @@ export default function ParticipantDashboard() {
         <MQOnboarding onComplete={() => setShowOnboarding(false)} />
       )}
 
+      {/* ── Footer ───────────────────────────────────────────────────────── */}
+      <div className="text-center py-6 mt-4">
+        <a
+          href="/privacy"
+          className="text-xs hover:underline transition-opacity hover:opacity-70"
+          style={{ color: '#9CA3AF' }}
+        >
+          Privacy Policy
+        </a>
+        <span className="mx-2 text-xs" style={{ color: '#D1D5DB' }}>·</span>
+        <span className="text-xs" style={{ color: '#9CA3AF' }}>© {new Date().getFullYear()} Mindset Quotient</span>
+      </div>
+
     </main>
   )
 }
