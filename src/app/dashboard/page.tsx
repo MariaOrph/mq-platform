@@ -25,7 +25,6 @@ const DIM_DETAIL: Record<number, {
   why: string
   high: string
   low: string
-  science: string
 }> = {
   1: {
     tagline: 'The ability to see yourself clearly in real time.',
@@ -33,7 +32,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Leaders who lack self-awareness act on unconscious biases, react impulsively under pressure, and misread how they\'re landing on others. Self-aware leaders can pause before reacting, understand what\'s driving them, and choose how to respond rather than defaulting to autopilot. Research consistently shows self-awareness as one of the strongest predictors of leadership effectiveness.',
     high: 'You have a strong internal observer. You notice patterns in your thinking, catch your own triggers before they escalate, and tend to seek honest feedback rather than avoid it.',
     low: 'You may find yourself reacting before you\'ve had a chance to choose your response, or discovering your impact on others after the fact rather than in the moment.',
-    science: 'Tasha Eurich\'s research found that while 95% of people believe they are self-aware, only 10–15% actually are. Goleman\'s emotional intelligence work identifies self-awareness as the foundational pillar on which all other leadership capacities rest — you cannot regulate what you cannot see. Neuroscientifically, genuine self-awareness requires active integration between the prefrontal cortex and the brain\'s Default Mode Network. Daniel Siegel calls this capacity "mindsight" — the brain\'s ability to observe its own activity as it happens.',
   },
   2: {
     tagline: 'Leading from strength, not from the need for approval.',
@@ -41,7 +39,6 @@ const DIM_DETAIL: Record<number, {
     why: 'When ego needs are running the show, leaders defend bad decisions, avoid feedback, over-control their teams, and struggle to acknowledge mistakes. The research is clear: psychological ego defences are one of the most common — and least examined — causes of poor leadership. Leaders who have done this work lead with far greater openness, courage, and authenticity.',
     high: 'You lead from a relatively secure sense of self. You can receive feedback without becoming defensive, admit mistakes without it threatening your identity, and share credit without feeling diminished.',
     low: 'You may notice a pull towards protecting your image in certain situations — perhaps avoiding feedback, over-explaining mistakes, or becoming defensive when challenged. This is normal, and it\'s the most important edge to develop.',
-    science: 'Kegan and Lahey\'s research on "Immunity to Change" found that most leadership development failures are caused by hidden commitments to protecting self-image, not lack of skill. Neuroscience confirms that social threat activates the same fight-or-flight response as physical danger — shutting down the very capacities leaders need most. Brené Brown\'s research connects this to vulnerability: leaders who can\'t tolerate being wrong consistently create cultures of self-protection around them.',
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
@@ -49,7 +46,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Emotions are contagious in teams. A leader who stays grounded under pressure creates psychological safety; one who doesn\'t spreads anxiety. Your emotional state directly shapes the emotional climate of the people around you. Leaders with strong emotional regulation make better decisions under stress, hold difficult conversations more effectively, and recover faster from setbacks.',
     high: 'You stay grounded under pressure and can experience emotional intensity without being controlled by it. Others likely experience you as steady and safe to bring problems to.',
     low: 'Emotional intensity may sometimes hijack your thinking or limit your presence in high-stakes moments. You might notice you regret things you said under pressure, or that you shut down when things get difficult.',
-    science: 'Amy Arnsten\'s research shows that even moderate stress takes the prefrontal cortex offline, reducing your capacity for clear thinking and sound judgment. Joseph LeDoux documented how the amygdala can hijack the whole system in milliseconds. Viktor Frankl captured the core insight: between stimulus and response there is a space — and that space can be deliberately widened through practice.',
   },
   4: {
     tagline: 'The capacity to think in multiple directions at once.',
@@ -57,7 +53,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Rigid thinking is one of the most common causes of leadership blind spots. The world rarely fits the frameworks we already have. Cognitively flexible leaders can revise their assumptions, see the same situation from multiple angles, and avoid the trap of \'I already know how this works.\' In fast-moving environments, this is a survival skill.',
     high: 'You readily update your mental models, entertain contradictory ideas, and avoid black-and-white thinking. People likely experience you as open-minded and intellectually curious.',
     low: 'You may default to familiar frameworks even when the situation calls for fresh thinking, or find it uncomfortable when others challenge your interpretation of events.',
-    science: 'Carol Dweck\'s growth mindset research shows that believing capabilities are developable is one of the strongest predictors of learning and leadership effectiveness. Kahneman\'s work on System 1 and System 2 thinking reveals how much decision-making is governed by automatic, pattern-based thinking. Neuroscience adds a critical insight: cognitive flexibility is directly dependent on prefrontal cortex function — the same system that goes offline under stress — which is why we default to rigid, fixed thinking precisely when we most need fresh perspectives.',
   },
   5: {
     tagline: 'Knowing what you stand for — and where you\'re going.',
@@ -65,7 +60,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Purpose-driven leaders make faster decisions, sustain their energy through difficulty, attract aligned talent, and create cultures of integrity. Values are the invisible architecture of leadership: when they\'re clear and consistently acted on, people feel they can trust you. When there\'s a gap between what you say you value and how you behave under pressure, people notice — even if they can\'t articulate it.',
     high: 'Your decisions are anchored by a clear internal compass and a sense of what you\'re building. Others experience you as consistent and trustworthy; they know what you stand for because your behaviour demonstrates it.',
     low: 'You may hold values you believe in but haven\'t fully translated into consistent, visible behaviour. Or your day-to-day work may feel disconnected from a larger sense of purpose. The gap between intention and action may be wider than you\'d like.',
-    science: 'Viktor Frankl established that meaning and purpose are primary human motivators — and that clarity of purpose is what sustains people through adversity. Self-determination theory (Deci and Ryan) identifies values alignment as a core driver of intrinsic motivation. Brené Brown\'s research shows that values-driven leaders — who act from what they stand for rather than fear of judgment — consistently build higher-trust, higher-performance cultures.',
   },
   6: {
     tagline: 'The quality of presence you bring to every interaction.',
@@ -73,7 +67,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Leadership happens in relationship. The way you listen, the assumptions you hold about people, and the quality of your presence in conversations directly shape team performance, trust, and psychological safety. Transactional leadership produces compliance; relational leadership produces commitment.',
     high: 'You approach relationships with genuine curiosity and care. People feel seen and heard by you, which builds loyalty and creates conditions where others do their best work.',
     low: 'Under pressure, you may shift into transactional mode, treating relationships as means to an end, or giving people less real attention than they need to feel genuinely valued.',
-    science: 'Amy Edmondson\'s Harvard research identified psychological safety as the single biggest determinant of team effectiveness. Daniel Siegel\'s interpersonal neurobiology shows that genuine attunement has measurable neurological effects — reducing the threat response in those being led. Mirror neuron research confirms that a leader\'s internal emotional state is literally contagious, spreading through a team below the level of conscious awareness.',
   },
   7: {
     tagline: 'Bouncing forward, not just back.',
@@ -81,7 +74,6 @@ const DIM_DETAIL: Record<number, {
     why: 'Leadership is inherently uncertain, often difficult, and sometimes brutal. Resilient leaders don\'t just survive hard times; they model equanimity for their teams, make better decisions under stress, and treat difficulty as developmental. This profoundly affects team culture: teams take their cue from how leaders handle adversity.',
     high: 'You have strong internal resources for navigating difficulty. Setbacks tend to become learning rather than defeat, and you likely recover your equilibrium faster than most.',
     low: 'Sustained pressure may be depleting your capacity in ways that affect your thinking, your relationships, and your decision-making. Rest and recovery may not be getting the attention they need.',
-    science: 'Richard Davidson\'s neuroscience research confirms that the brain\'s capacity for regulation and recovery is genuinely plastic — it can be strengthened through deliberate practice. Martin Seligman\'s learned optimism research shows that how people explain adversity to themselves is highly predictive of long-term resilience. Ann Masten reframes resilience as "ordinary magic" — not a rare quality, but a set of everyday capacities that can be built.',
   },
 }
 
@@ -1021,10 +1013,6 @@ export default function ParticipantDashboard() {
                         <p className="text-xs font-bold mb-1" style={{ color: '#D97706' }}>When low</p>
                         <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{detail.low}</p>
                       </div>
-                    </div>
-                    <div className="rounded-2xl p-4" style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD' }}>
-                      <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#0284C7' }}>The evidence</p>
-                      <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{detail.science}</p>
                     </div>
                   </>
                 )}
