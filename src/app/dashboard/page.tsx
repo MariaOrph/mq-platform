@@ -1079,7 +1079,7 @@ export default function ParticipantDashboard() {
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
                       style={{ backgroundColor: dim.color, color: '#0A2E2A' }}
                     >
-                      Work on {dim.name} in MQ Builder →
+                      Strengthen {dim.name} in MQ Builder →
                     </button>
                   </>
                 )}
