@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -16,6 +16,7 @@ interface SparkCard {
   status: 'active' | 'complete'
   assigned_date: string
   completed_date: string | null
+  notes: string | null
 }
 
 interface DailySparkProps {
@@ -81,6 +82,26 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const [showHistory,     setShowHistory]     = useState(false)
   const [noAssessment,    setNoAssessment]    = useState(false)
   const [selectedSpark,   setSelectedSpark]   = useState<SparkCard | null>(null)
+  const [notes,           setNotes]           = useState('')
+  const [notesSaved,      setNotesSaved]      = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const saveNotes = useCallback(async (cardId: string, text: string) => {
+    await fetch('/api/daily-spark', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ cardId, notes: text }),
+    })
+    setNotesSaved(true)
+    setTimeout(() => setNotesSaved(false), 2000)
+  }, [token])
+
+  function handleNotesChange(cardId: string, text: string) {
+    setNotes(text)
+    setNotesSaved(false)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => saveNotes(cardId, text), 1500)
+  }
 
   const loadSparks = useCallback(async () => {
     setLoading(true)
@@ -89,6 +110,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
       const data = await res.json()
       if (data.noAssessment) { setNoAssessment(true); setLoading(false); return }
       setCurrentCard(data.currentCard ?? null)
+      setNotes(data.currentCard?.notes ?? '')
       setCompletedSparks(data.completedSparks ?? [])
       setTotalCompleted(data.totalCompleted ?? 0)
       setTotalCards(data.totalCards ?? 24)
@@ -227,6 +249,36 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               </p>
             )}
 
+            {/* Notes */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
+                  Your reflection
+                </p>
+                {notesSaved && (
+                  <p className="text-xs font-semibold" style={{ color: '#10B981' }}>Saved ✓</p>
+                )}
+              </div>
+              <textarea
+                value={notes}
+                onChange={e => handleNotesChange(currentCard.id, e.target.value)}
+                placeholder="Write your thoughts, what you noticed, or what you'll do differently…"
+                rows={3}
+                className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none"
+                style={{
+                  border: `1.5px solid ${dim.color}50`,
+                  backgroundColor: dim.bg,
+                  color: '#374151',
+                  lineHeight: 1.6,
+                }}
+                onInput={e => {
+                  const el = e.currentTarget
+                  el.style.height = 'auto'
+                  el.style.height = `${el.scrollHeight}px`
+                }}
+              />
+            </div>
+
             {/* Complete */}
             <button
               onClick={handleComplete}
@@ -328,7 +380,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
                   >×</button>
                 </div>
               </div>
-              <div className="overflow-y-auto px-5 py-4 space-y-3" style={{ maxHeight: '60vh' }}>
+              <div className="overflow-y-auto px-5 py-4 space-y-4" style={{ maxHeight: '60vh' }}>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
                   {selectedSpark.exercise}
                 </p>
@@ -337,6 +389,16 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
                      style={{ color: '#9CA3AF', borderLeft: `3px solid ${d.color}55`, paddingLeft: 12 }}>
                     {selectedSpark.insight}
                   </p>
+                )}
+                {selectedSpark.notes && (
+                  <div className="rounded-xl p-4" style={{ backgroundColor: d.bg, border: `1px solid ${d.color}30` }}>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: d.color }}>
+                      Your reflection
+                    </p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#374151' }}>
+                      {selectedSpark.notes}
+                    </p>
+                  </div>
                 )}
               </div>
             </div>

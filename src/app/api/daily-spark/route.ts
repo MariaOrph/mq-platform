@@ -179,3 +179,24 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ currentCard, completedSparks, totalCompleted, dimOrder, totalCards })
 }
+
+// ── PATCH — save notes ────────────────────────────────────────────────────────
+
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get('authorization')?.replace('Bearer ', '')
+  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { data: { user } } = await supabaseAdmin.auth.getUser(token)
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { cardId, notes } = await req.json()
+  if (!cardId) return NextResponse.json({ error: 'cardId required' }, { status: 400 })
+
+  await supabaseAdmin
+    .from('daily_sparks')
+    .update({ notes })
+    .eq('id', cardId)
+    .eq('participant_id', user.id)
+
+  return NextResponse.json({ success: true })
+}

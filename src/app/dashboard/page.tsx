@@ -602,11 +602,11 @@ export default function ParticipantDashboard() {
             className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
             style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
           >
-            {/* Mini radar chart — user's actual 6-dimension profile */}
+            {/* Mini radar chart — user's actual 7-dimension profile */}
             {(() => {
               const cx = 55, cy = 55, maxR = 43
-              const scores = [1,2,3,4,5,6].map(id => getDimScore(assessment, id))
-              const angles = [-90, -30, 30, 90, 150, 210].map(a => a * Math.PI / 180)
+              const scores = [1,2,3,4,5,6,7].map(id => getDimScore(assessment, id))
+              const angles = Array.from({ length: 7 }, (_, i) => (-90 + i * (360 / 7)) * Math.PI / 180)
               const gridLevels = [0.33, 0.66, 1.0]
               const gridPaths = gridLevels.map(level =>
                 angles.map(a => `${cx + maxR * level * Math.cos(a)},${cy + maxR * level * Math.sin(a)}`).join(' ')
@@ -615,7 +615,7 @@ export default function ParticipantDashboard() {
                 const r = ((s ?? 50) / 100) * maxR
                 return `${cx + r * Math.cos(angles[i])},${cy + r * Math.sin(angles[i])}`
               }).join(' ')
-              const dotColours = ['#fdcb5e','#ff9f43','#ff7b7a','#00c9a7','#7ba3ea','#a78bfa']
+              const dotColours = ['#fdcb5e','#EC4899','#ff7b7a','#ff9f43','#00c9a7','#2d4a8a','#a78bfa']
               return (
                 <svg
                   style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none',
