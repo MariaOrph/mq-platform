@@ -845,7 +845,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
               <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7' }}>
                 <p className="text-xs font-bold mb-1.5" style={{ color: '#05A88E' }}>What to expect in this session</p>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  Your coach will open straight away with a question about where you are with {activeDim.name.toLowerCase()} right now. From there you'll work through what's actually going on for you, with practical strategies tailored to what you share.
+                  Your coach will open with a question about where you are with {activeDim.name.toLowerCase()} right now. From there you'll work through what's actually going on for you, with practical strategies tailored to what you share.
                 </p>
               </div>
 
