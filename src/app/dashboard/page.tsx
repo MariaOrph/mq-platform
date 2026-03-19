@@ -129,6 +129,8 @@ interface Assessment {
   d7_score:         number | null
   completed_at:     string | null
   participant_role: string | null
+  job_title:        string | null
+  company_type:     string | null
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -266,6 +268,11 @@ export default function ParticipantDashboard() {
   const [dimModal,          setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
   const [showMQModal,       setShowMQModal]      = useState(false)
   const [valuesStatus,      setValuesStatus]     = useState<{ total: number; rated: number; avgRating: number } | null>(null)
+  const [showEditProfile,   setShowEditProfile]  = useState(false)
+  const [editJobTitle,      setEditJobTitle]     = useState('')
+  const [editCompanyType,   setEditCompanyType]  = useState('')
+  const [editSaving,        setEditSaving]       = useState(false)
+  const [editSaved,         setEditSaved]        = useState(false)
 
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -286,7 +293,7 @@ export default function ParticipantDashboard() {
 
     const { data: assessments } = await supabase
       .from('assessments')
-      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role')
+      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role, job_title, company_type')
       .eq('participant_id', authSession.user.id)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
@@ -328,6 +335,37 @@ export default function ParticipantDashboard() {
   async function signOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
+  }
+
+  function openEditProfile() {
+    setEditJobTitle(assessment?.job_title ?? '')
+    setEditCompanyType(assessment?.company_type ?? '')
+    setEditSaved(false)
+    setShowEditProfile(true)
+  }
+
+  async function saveEditProfile() {
+    if (!profile) return
+    setEditSaving(true)
+    // Get the ID of the most recent completed assessment
+    const { data: rows } = await supabase
+      .from('assessments')
+      .select('id')
+      .eq('participant_id', profile.id)
+      .not('overall_score', 'is', null)
+      .order('completed_at', { ascending: false })
+      .limit(1)
+    const assessmentId = rows?.[0]?.id
+    if (assessmentId) {
+      await supabase.from('assessments')
+        .update({ job_title: editJobTitle.trim() || null, company_type: editCompanyType || null })
+        .eq('id', assessmentId)
+    }
+    // Reload assessment data so UI reflects the change
+    await loadData()
+    setEditSaving(false)
+    setEditSaved(true)
+    setTimeout(() => setShowEditProfile(false), 900)
   }
 
   const firstName       = getFirstName(profile?.full_name ?? null, profile?.email)
@@ -384,6 +422,15 @@ export default function ParticipantDashboard() {
             >
               MQ intro
             </button>
+            {assessment && (
+              <button
+                onClick={openEditProfile}
+                className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+                style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+              >
+                Edit profile
+              </button>
+            )}
             <button
               onClick={signOut}
               className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
@@ -1143,6 +1190,72 @@ export default function ParticipantDashboard() {
       {/* ── Onboarding carousel ──────────────────────────────────────────── */}
       {showOnboarding && (
         <MQOnboarding onComplete={() => setShowOnboarding(false)} />
+      )}
+
+      {/* ── Edit profile modal ───────────────────────────────────────────── */}
+      {showEditProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+             style={{ backgroundColor: 'rgba(10,46,42,0.6)', backdropFilter: 'blur(4px)' }}
+             onClick={e => { if (e.target === e.currentTarget) setShowEditProfile(false) }}>
+          <div className="w-full max-w-md rounded-2xl p-6 shadow-2xl" style={{ backgroundColor: 'white' }}>
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-lg font-semibold" style={{ color: '#0A2E2A' }}>Edit your profile</h2>
+              <button onClick={() => setShowEditProfile(false)}
+                className="text-sm hover:opacity-60 transition-opacity"
+                style={{ color: '#9CA3AF' }}>✕</button>
+            </div>
+            <p className="text-xs mb-5 leading-relaxed" style={{ color: '#05A88E' }}>
+              This helps the AI coach use more relevant examples and better understand your context.
+            </p>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
+                Job title <span className="font-normal" style={{ color: '#9CA3AF' }}>(optional)</span>
+              </label>
+              <input
+                type="text"
+                value={editJobTitle}
+                onChange={e => setEditJobTitle(e.target.value)}
+                placeholder="e.g. Head of Product, Partner, SVP Engineering"
+                className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
+                style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
+                Organisation type <span className="font-normal" style={{ color: '#9CA3AF' }}>(optional)</span>
+              </label>
+              <select
+                value={editCompanyType}
+                onChange={e => setEditCompanyType(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none appearance-none"
+                style={{ borderColor: '#B9F8DD', color: editCompanyType ? '#0A2E2A' : '#9CA3AF' }}
+              >
+                <option value="">Select your organisation type</option>
+                <option value="Corporate / Large enterprise">Corporate / Large enterprise</option>
+                <option value="Scale-up (Series B+)">Scale-up (Series B+)</option>
+                <option value="Early-stage startup">Early-stage startup</option>
+                <option value="Professional services (consulting, legal, accounting)">Professional services (consulting, legal, accounting)</option>
+                <option value="Financial services (banking, investment, PE/VC)">Financial services (banking, investment, PE/VC)</option>
+                <option value="Public sector / Government">Public sector / Government</option>
+                <option value="Non-profit / Social enterprise">Non-profit / Social enterprise</option>
+                <option value="Healthcare / Life sciences">Healthcare / Life sciences</option>
+                <option value="Education">Education</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <button
+              onClick={saveEditProfile}
+              disabled={editSaving}
+              className="w-full py-3 rounded-xl text-sm font-semibold transition-all"
+              style={{ backgroundColor: editSaved ? '#B9F8DD' : '#0AF3CD', color: '#0A2E2A', opacity: editSaving ? 0.6 : 1 }}
+            >
+              {editSaved ? '✓ Saved' : editSaving ? 'Saving…' : 'Save changes'}
+            </button>
+          </div>
+        </div>
       )}
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
