@@ -534,83 +534,69 @@ export default function ParticipantDashboard() {
           <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
         )}
 
-        {/* ── The Coaching Room ─────────────────────────────────────────────── */}
-        <div
-            className="rounded-2xl p-5 flex items-center justify-between"
-            style={{ backgroundColor: '#E8FDF7', border: '2px solid #0AF3CD', boxShadow: '0 2px 12px rgba(10,243,205,0.12)' }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: 'white' }}>
-                💬
-              </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
-                <p className="text-xs mt-0.5" style={{ color: '#05A88E' }}>
-                  Get coached on any challenge or situation
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowCoachingRoom(true)}
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-            >
-              Open →
-            </button>
+        {/* ── AI Coaching (unified tile) ────────────────────────────────────── */}
+        <div className="rounded-2xl overflow-hidden"
+             style={{ backgroundColor: 'white', border: '1px solid #D1FAE5', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+          {/* Header */}
+          <div className="px-5 py-3 flex items-center gap-2" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
+            <span className="text-base">🤖</span>
+            <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>AI Coaching</p>
           </div>
-
-        {/* ── MQ Builder ───────────────────────────────────────────────────── */}
-          <div
-            className="rounded-2xl p-5 flex items-center justify-between"
-            style={{ backgroundColor: '#F5F3FF', border: '2px solid #a78bfa', boxShadow: '0 2px 12px rgba(167,139,250,0.15)' }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: 'white' }}>
-                🧠
+          {/* Three options */}
+          <div className="divide-y" style={{ borderColor: '#F3F4F6' }}>
+            {/* Coaching Room */}
+            <div className="px-5 py-3.5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-lg">💬</span>
+                <div>
+                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Any challenge or situation</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
-                <p className="text-xs mt-0.5" style={{ color: '#7c3aed' }}>
-                  Develop your 7 MQ dimensions
-                </p>
-              </div>
+              <button
+                onClick={() => setShowCoachingRoom(true)}
+                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+              >
+                Open →
+              </button>
             </div>
-            <button
-              onClick={() => setShowMQBuilder(true)}
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#a78bfa', color: '#0A2E2A' }}
-            >
-              Open →
-            </button>
-          </div>
-
-        {/* ── Culture Lab ──────────────────────────────────────────────────── */}
-          <div
-            className="rounded-2xl p-5 flex items-center justify-between"
-            style={{ backgroundColor: '#FFFBEB', border: '2px solid #F59E0B', boxShadow: '0 2px 12px rgba(245,158,11,0.15)' }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: 'white' }}>
-                🧪
+            {/* MQ Builder */}
+            <div className="px-5 py-3.5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-lg">🧠</span>
+                <div>
+                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Develop your 7 MQ dimensions</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
-                <p className="text-xs mt-0.5" style={{ color: '#d97706' }}>
-                  Build a high-performing team culture
-                </p>
-              </div>
+              <button
+                onClick={() => setShowMQBuilder(true)}
+                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#a78bfa', color: '#0A2E2A' }}
+              >
+                Open →
+              </button>
             </div>
-            <a
-              href="/dashboard/culture-lab"
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#F59E0B', color: '#0A2E2A' }}
-            >
-              Open →
-            </a>
+            {/* Culture Lab */}
+            <div className="px-5 py-3.5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-lg">🧪</span>
+                <div>
+                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Build a high-performing team culture</p>
+                </div>
+              </div>
+              <a
+                href="/dashboard/culture-lab"
+                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#F59E0B', color: '#0A2E2A' }}
+              >
+                Open →
+              </a>
+            </div>
           </div>
+        </div>
 
         {/* ── Resource Centre ───────────────────────────────────────────────── */}
         <a
