@@ -10,7 +10,7 @@ const SLIDES = [
     tag: 'Why MQ Exists',
     title: 'Become the leader you\'re capable of being.',
     subtitle: '',
-    body: 'MQ is the only development platform that combines rigorous mindset science and psychology with practical skills development, personalised coaching, and daily practice. Most training tells you what to do. MQ builds your capacity to actually do it — under pressure, in the moments that matter, consistently.',
+    body: 'MQ is the only development platform that combines rigorous mindset science and psychology with practical skills development, and personalised coaching. Most training tells you what to do. MQ builds your capacity to actually do it, under pressure, in the moments that matter.',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, width: '100%' }}>
         {/* Hero lockup */}
