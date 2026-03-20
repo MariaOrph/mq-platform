@@ -569,7 +569,7 @@ export default function ParticipantDashboard() {
               <span className="text-base">🧠</span>
               <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your Coaching Tools</p>
             </div>
-            <p className="text-xs" style={{ color: '#05A88E' }}>Highly personalised to you</p>
+            <p className="text-xs" style={{ color: '#05A88E' }}>Start your growth journey today — explore the 3 coaching zones below</p>
           </div>
           {/* Three options */}
           <div className="divide-y" style={{ borderColor: '#F3F4F6' }}>
@@ -613,7 +613,7 @@ export default function ParticipantDashboard() {
                 <span className="text-lg">🧪</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build a happy, high performing team</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build a happy, high performing team culture</p>
                 </div>
               </div>
               <a
