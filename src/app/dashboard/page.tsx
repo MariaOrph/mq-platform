@@ -437,22 +437,25 @@ export default function ParticipantDashboard() {
             >
               MQ intro
             </button>
-            {assessment && (
+            {/* Hidden on mobile — shown in bottom strip instead */}
+            <div className="hidden sm:flex items-center gap-2">
+              {assessment && (
+                <button
+                  onClick={openEditProfile}
+                  className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+                  style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+                >
+                  Edit profile
+                </button>
+              )}
               <button
-                onClick={openEditProfile}
+                onClick={signOut}
                 className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
-                style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+                style={{ color: 'rgba(185,248,221,0.45)' }}
               >
-                Edit profile
+                Sign out
               </button>
-            )}
-            <button
-              onClick={signOut}
-              className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
-              style={{ color: 'rgba(185,248,221,0.45)' }}
-            >
-              Sign out
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1247,6 +1250,26 @@ export default function ParticipantDashboard() {
           </div>
         </div>
       )}
+
+      {/* ── Mobile-only account strip ─────────────────────────────────── */}
+      <div className="sm:hidden flex items-center justify-center gap-4 px-6 pb-2">
+        {assessment && (
+          <button
+            onClick={openEditProfile}
+            className="text-xs px-4 py-2 rounded-lg hover:opacity-80 transition-opacity"
+            style={{ color: '#6B7280', border: '1px solid #E5E7EB' }}
+          >
+            Edit profile
+          </button>
+        )}
+        <button
+          onClick={signOut}
+          className="text-xs px-4 py-2 rounded-lg hover:opacity-80 transition-opacity"
+          style={{ color: '#9CA3AF', border: '1px solid #E5E7EB' }}
+        >
+          Sign out
+        </button>
+      </div>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <div className="text-center py-6 mt-4">
