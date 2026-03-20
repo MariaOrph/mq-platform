@@ -567,7 +567,7 @@ export default function ParticipantDashboard() {
           <div className="px-5 py-3" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-base">🧠</span>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Where the work happens</p>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your Coaching Tools</p>
             </div>
             <p className="text-xs" style={{ color: '#05A88E' }}>Highly personalised to you</p>
           </div>
@@ -596,7 +596,7 @@ export default function ParticipantDashboard() {
                 <span className="text-lg">🧠</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Gym</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build each of your 7 MQ dimensions</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Build the mental muscles behind all 7 MQ dimensions</p>
                 </div>
               </div>
               <button
