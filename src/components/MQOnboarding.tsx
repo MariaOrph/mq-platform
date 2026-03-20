@@ -37,85 +37,86 @@ const SLIDES = [
   },
 
   {
-    id: 'model',
-    tag: 'The Missing Piece',
-    title: 'The foundation other programmes overlook.',
-    subtitle: '',
-    body: 'Every other development programme focuses on what you do as a leader. MQ works on the layer beneath — the inner operating system that determines whether your skills actually show up when it matters.',
-    visual: (
-      <svg viewBox="0 0 300 192" style={{ width: '100%', height: 'auto' }}>
-        {/* Mindset — top tier */}
-        <polygon points="90,0 210,0 235,60 65,60"
-          fill="rgba(10,243,205,0.10)" stroke="#0A2E2A" strokeWidth="1.5"/>
-        <text x="150" y="25" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Mindset</text>
-        <text x="150" y="43" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">Mastering how you lead yourself</text>
-
-        {/* Relationships — middle tier */}
-        <polygon points="65,64 235,64 265,124 35,124"
-          fill="rgba(10,243,205,0.07)" stroke="#0A2E2A" strokeWidth="1.5"/>
-        <text x="150" y="89" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Relationships</text>
-        <text x="150" y="107" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">How you connect with others and build trust</text>
-
-        {/* Culture — bottom tier */}
-        <polygon points="35,128 265,128 300,192 0,192"
-          fill="rgba(10,243,205,0.04)" stroke="#0A2E2A" strokeWidth="1.5"/>
-        <text x="150" y="155" textAnchor="middle" fill="#0AF3CD" fontSize="12" fontWeight="800">Culture</text>
-        <text x="150" y="173" textAnchor="middle" fill="rgba(10,46,42,0.55)" fontSize="9">How you bring values to life and shape the environment</text>
-      </svg>
-    ),
-  },
-
-  {
     id: 'dimensions',
     tag: 'The Science',
     title: 'Seven dimensions. Decades of research behind every one.',
     subtitle: '',
     body: 'MQ maps the seven dimensions of your inner world most directly linked to how you manage and lead. Grounded in evidence from psychology, neuroscience, and leadership research. And unlike psychometrics that measure your type and leave you there, MQ measures your capacity for effective leadership — and then helps you build it.',
-    visual: (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {[
-          {
-            layer: 'Mindset', color: '#fdcb5e',
-            dims: [
-              { name: 'Self-awareness',        color: '#fdcb5e' },
-              { name: 'Ego & identity',         color: '#EC4899' },
-              { name: 'Emotional regulation',   color: '#ff7b7a' },
-              { name: 'Cognitive flexibility',  color: '#ff9f43' },
-            ],
-          },
-          {
-            layer: 'Relationships & Culture', color: '#0AF3CD',
-            dims: [
-              { name: 'Values & purpose',   color: '#00c9a7' },
-              { name: 'Relational mindset', color: '#2d4a8a' },
-              { name: 'Adaptive resilience', color: '#a78bfa' },
-            ],
-          },
-        ].map((group, gi) => (
-          <div key={gi}>
-            <p style={{
-              fontSize: 10, fontWeight: 700, letterSpacing: '0.07em',
-              textTransform: 'uppercase' as const,
-              color: 'rgba(10,46,42,0.5)', margin: '0 0 6px', paddingLeft: 2,
-            }}>
-              {group.layer}
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 5 }}>
-              {group.dims.map((d, di) => (
-                <div key={di} style={{
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  padding: '5px 10px', borderRadius: 20,
-                  backgroundColor: `${d.color}18`, border: `1px solid ${d.color}45`,
-                }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: d.color, flexShrink: 0 }} />
-                  <span style={{ fontSize: 11, fontWeight: 600, color: '#0A2E2A' }}>{d.name}</span>
-                </div>
-              ))}
-            </div>
+    visual: (() => {
+      const dims = [
+        { lines: ['Self-', 'awareness'],       color: '#fdcb5e' },
+        { lines: ['Ego &', 'identity'],        color: '#EC4899' },
+        { lines: ['Emotional', 'regulation'],  color: '#ff7b7a' },
+        { lines: ['Cognitive', 'flexibility'], color: '#ff9f43' },
+        { lines: ['Values &', 'purpose'],      color: '#00c9a7' },
+        { lines: ['Relational', 'mindset'],    color: '#2d4a8a' },
+        { lines: ['Adaptive', 'resilience'],   color: '#a78bfa' },
+      ]
+      const cx = 130, cy = 130, R = 118, r = 50
+      const gapRad = 0.035
+      const segAngle = (2 * Math.PI) / dims.length
+      const startOff = -Math.PI / 2
+      const midRad = (R + r) / 2
+
+      const p2c = (radius: number, angle: number) => ({
+        x: cx + radius * Math.cos(angle),
+        y: cy + radius * Math.sin(angle),
+      })
+
+      const arcPath = (a1: number, a2: number) => {
+        const s1 = p2c(r, a1), s2 = p2c(R, a1)
+        const e1 = p2c(R, a2), e2 = p2c(r, a2)
+        return `M${s1.x.toFixed(2)},${s1.y.toFixed(2)} L${s2.x.toFixed(2)},${s2.y.toFixed(2)} A${R},${R},0,0,1,${e1.x.toFixed(2)},${e1.y.toFixed(2)} L${e2.x.toFixed(2)},${e2.y.toFixed(2)} A${r},${r},0,0,0,${s1.x.toFixed(2)},${s1.y.toFixed(2)}Z`
+      }
+
+      const textRot = (mid: number) => {
+        let rot = (mid * 180 / Math.PI) + 90
+        while (rot > 180) rot -= 360
+        while (rot < -180) rot += 360
+        if (rot > 90 || rot < -90) rot += 180
+        return rot
+      }
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
+          <svg viewBox="0 0 260 260" style={{ width: '100%', maxWidth: 260, height: 'auto' }}>
+            {dims.map((dim, i) => {
+              const a1 = startOff + i * segAngle + gapRad
+              const a2 = startOff + (i + 1) * segAngle - gapRad
+              const mid = startOff + (i + 0.5) * segAngle
+              const tp = p2c(midRad, mid)
+              const rot = textRot(mid)
+              return (
+                <g key={i}>
+                  <path d={arcPath(a1, a2)} fill={dim.color} />
+                  <text
+                    transform={`translate(${tp.x.toFixed(1)},${tp.y.toFixed(1)}) rotate(${rot.toFixed(1)})`}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="7.5"
+                    fontWeight="800"
+                  >
+                    {dim.lines.map((line, li) => (
+                      <tspan key={li} x="0" dy={li === 0 ? `${-(dim.lines.length - 1) * 0.55}em` : '1.1em'}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                </g>
+              )
+            })}
+            <circle cx={cx} cy={cy} r={r - 4} fill="white" />
+            <text x={cx} y={cy - 4} textAnchor="middle" fill="#0A2E2A" fontSize="17" fontWeight="900">MQ</text>
+            <text x={cx} y={cy + 11} textAnchor="middle" fill="rgba(10,46,42,0.4)" fontSize="6.5" fontWeight="700" style={{ letterSpacing: '0.08em' }}>7 DIMENSIONS</text>
+          </svg>
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(10,46,42,0.4)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Mindset</span>
+            <span style={{ fontSize: 10, color: 'rgba(10,46,42,0.25)' }}>·</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(10,46,42,0.4)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Relationships & Culture</span>
           </div>
-        ))}
-      </div>
-    ),
+        </div>
+      )
+    })(),
   },
 
   {
