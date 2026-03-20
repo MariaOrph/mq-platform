@@ -883,7 +883,7 @@ export default function ParticipantDashboard() {
                             {score}
                           </button>
                         )}
-                        {/* Delta circle — just to the right of the current circle */}
+                        {/* Delta text — just to the right of the current circle */}
                         {score !== null && delta !== null && delta !== 0 && (
                           <div
                             onMouseEnter={() => setBarTip({ dimId: dim.id, type: 'prev' })}
@@ -891,18 +891,15 @@ export default function ParticipantDashboard() {
                             style={{
                               position: 'absolute',
                               top: '50%',
-                              left: `calc(${score}% + 13px)`,
+                              left: `calc(${score}% + 14px)`,
                               transform: 'translateY(-50%)',
-                              width: 18, height: 18,
-                              borderRadius: '50%',
-                              backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
-                              border: `1.5px solid ${delta > 0 ? '#34D399' : '#F87171'}`,
-                              fontSize: 7,
+                              fontSize: 9,
                               fontWeight: 700,
-                              color: delta > 0 ? '#065F46' : '#991B1B',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              color: delta > 0 ? '#059669' : '#DC2626',
                               zIndex: 1,
                               cursor: 'default',
+                              whiteSpace: 'nowrap',
+                              lineHeight: 1,
                             }}
                           >
                             {delta > 0 ? `+${delta}` : `${delta}`}
