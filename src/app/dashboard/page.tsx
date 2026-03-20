@@ -567,7 +567,7 @@ export default function ParticipantDashboard() {
           <div className="px-5 py-3" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-base">🧠</span>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your MQ Coach</p>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Where the work happens</p>
             </div>
             <p className="text-xs" style={{ color: '#05A88E' }}>Highly personalised to you</p>
           </div>
@@ -595,7 +595,7 @@ export default function ParticipantDashboard() {
               <div className="flex items-center gap-3">
                 <span className="text-lg">🧠</span>
                 <div>
-                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
+                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Gym</p>
                   <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build each of your 7 MQ dimensions</p>
                 </div>
               </div>
@@ -1177,7 +1177,7 @@ export default function ParticipantDashboard() {
 
                     {/* Strengthen CTA */}
                     <p className="text-xs text-center" style={{ color: '#6B7280' }}>
-                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Builder will coach you through both.
+                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Gym will coach you through both.
                     </p>
                     <button
                       onClick={() => {
@@ -1188,7 +1188,7 @@ export default function ParticipantDashboard() {
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
                       style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
-                      Strengthen {dim.name} in MQ Builder →
+                      Strengthen {dim.name} in MQ Gym →
                     </button>
                   </>
                 )}
@@ -1245,7 +1245,7 @@ export default function ParticipantDashboard() {
 
                     {/* Work on this dimension CTA */}
                     <p className="text-xs text-center" style={{ color: '#6B7280' }}>
-                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Builder will coach you through both.
+                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Gym will coach you through both.
                     </p>
                     <button
                       onClick={() => {
@@ -1256,7 +1256,7 @@ export default function ParticipantDashboard() {
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
                       style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
-                      Strengthen {dim.name} in MQ Builder →
+                      Strengthen {dim.name} in MQ Gym →
                     </button>
                   </>
                 )}

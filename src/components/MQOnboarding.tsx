@@ -7,8 +7,8 @@ import { useState } from 'react'
 const SLIDES = [
   {
     id: 'welcome',
-    tag: 'Why MQ Exists',
-    title: 'Become the leader you\'re capable of being.',
+    tag: 'Welcome to MQ',
+    title: 'The best managers and leaders share one thing: they know how their mind works.',
     subtitle: '',
     body: 'MQ is the only development platform that combines rigorous mindset science and psychology with practical skills development, and personalised coaching. Most training tells you what to do. MQ builds your capacity to actually do it, under pressure, in the moments that matter.',
     visual: (
@@ -126,7 +126,7 @@ const SLIDES = [
           { icon: '📊', label: 'Start with the assessment',    desc: 'Measure your 7 MQ dimensions. The foundation everything else is built on.',  color: '#0AF3CD' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short daily practice, tailored to your specific development areas.',           color: '#fdcb5e' },
           { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any challenge or situation to a coach that knows your profile deeply.',                    color: '#0AF3CD' },
-          { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
+          { icon: '🧠', label: 'Grow with MQ Gym',             desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
           { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Get tailored coaching support to help you build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
           { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Bite-size management and leadership skill guides, built for the real world.',              color: '#ff7b7a' },
         ] as const).map((item, i) => (

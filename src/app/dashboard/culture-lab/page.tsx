@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import MicButton from '@/components/MicButton'
+import ScenarioSimulator from '@/components/ScenarioSimulator'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -55,7 +56,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   'psych-safety': {
     id:      'psych-safety',
-    name:    'Creating Psychological Safety',
+    name:    'Psychological Safety',
     tagline: 'Create the conditions for your team to speak up, take risks, and learn',
     emoji:   '🛡️',
     color:   '#6366F1',
@@ -70,7 +71,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   accountability: {
     id:      'accountability',
-    name:    'Building a Culture of Accountability',
+    name:    'Accountability',
     tagline: 'Hold people to high standards without creating fear or blame',
     emoji:   '🎯',
     color:   '#06D6A0',
@@ -85,7 +86,7 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
   inclusion: {
     id:      'inclusion',
-    name:    'Fostering an Inclusive Team',
+    name:    'Inclusion',
     tagline: 'Make sure every voice is heard, valued, and given a genuine chance to contribute',
     emoji:   '🤝',
     color:   '#F59E0B',
@@ -112,6 +113,17 @@ function formatDate(iso: string) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
+// ── Section header ────────────────────────────────────────────────────────────
+
+function SectionHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <p className="font-bold text-sm" style={{ color: '#0A2E2A' }}>{title}</p>
+      <p className="text-xs" style={{ color: '#9CA3AF' }}>{subtitle}</p>
+    </div>
+  )
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function CultureLabPage() {
@@ -119,7 +131,6 @@ export default function CultureLabPage() {
   const supabase = createClient()
 
   const [token,       setToken]       = useState<string | null>(null)
-  const [firstName,   setFirstName]   = useState('there')
   const [view,        setView]        = useState<'landing' | 'chat'>('landing')
   const [activeTopic, setActiveTopic] = useState<TopicConfig | null>(null)
 
@@ -137,13 +148,11 @@ export default function CultureLabPage() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
 
-  // Auth + name
+  // Auth
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/login'); return }
       setToken(session.access_token)
-      supabase.from('profiles').select('full_name').eq('id', session.user.id).single()
-        .then(({ data }) => { if (data?.full_name) setFirstName(data.full_name.split(' ')[0]) })
     })
   }, [supabase, router])
 
@@ -181,14 +190,13 @@ export default function CultureLabPage() {
     } finally { setMsgLoaded(true) }
   }, [token])
 
-  // Open topic — starts a new conversation immediately
+  // Open topic
   async function openTopic(topic: TopicConfig) {
     if (!token) return
     setActiveTopic(topic)
     setMessages([])
     setShowHistory(false)
 
-    // Create a new session for this topic
     const res = await fetch('/api/culture-lab', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -235,7 +243,6 @@ export default function CultureLabPage() {
       const reply = res.ok && data.reply ? data.reply : 'Something went wrong. Please try again.'
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: reply }])
 
-      // Update session title if first message
       if (messages.filter(m => m.role === 'user').length === 0) {
         const newTitle = text.length > 52 ? text.slice(0, 49) + '…' : text
         setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
@@ -290,51 +297,98 @@ export default function CultureLabPage() {
           </div>
         </div>
 
-        <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
+        <div className="max-w-2xl mx-auto px-6 py-8 space-y-8">
 
-          {/* Hero */}
+          {/* ── Section 1: Values in Action ─────────────────────────────────── */}
           <div>
-            <h1 className="text-2xl font-black mb-2" style={{ color: '#0A2E2A' }}>
-              Culture Lab
-            </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-              Your coaching space for the cultural dimensions of leadership. Each conversation is focused, practical, and grounded in your specific context.
-            </p>
-          </div>
-
-          {/* Topic cards */}
-          <div className="space-y-3">
-            {Object.values(TOPICS).map(topic => (
-              <div key={topic.id}
-                   className="rounded-2xl overflow-hidden"
-                   style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
-
-                {/* Colour top strip */}
-                <div style={{ height: 4, background: `linear-gradient(90deg, ${topic.color}88, ${topic.color})` }} />
-
-                <div className="p-5">
-                  <div className="flex items-start gap-4">
-                    {/* Emoji badge */}
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl"
-                         style={{ backgroundColor: topic.bg }}>
-                      {topic.emoji}
-                    </div>
-
-                    {/* Text */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold text-base mb-1" style={{ color: '#0A2E2A' }}>{topic.name}</p>
-                      <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>{topic.tagline}</p>
-
-                      <button onClick={() => openTopic(topic)}
-                              className="w-full py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
-                              style={{ backgroundColor: topic.color, color: topic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
-                        Start conversation →
-                      </button>
+            <SectionHeader
+              title="Values in Action"
+              subtitle="How you live your company values"
+            />
+            {(() => {
+              const topic = TOPICS['values']
+              return (
+                <div className="rounded-2xl overflow-hidden"
+                     style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+                  <div style={{ height: 4, background: `linear-gradient(90deg, ${topic.color}88, ${topic.color})` }} />
+                  <div className="p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl"
+                           style={{ backgroundColor: topic.bg }}>
+                        {topic.emoji}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-base mb-1" style={{ color: '#0A2E2A' }}>{topic.name}</p>
+                        <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>{topic.tagline}</p>
+                        <button onClick={() => openTopic(topic)}
+                                className="w-full py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+                                style={{ backgroundColor: topic.color, color: '#0A2E2A' }}>
+                          Start conversation →
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              )
+            })()}
+          </div>
+
+          {/* ── Section 2: Building a happy high performing team ────────────── */}
+          <div>
+            <SectionHeader
+              title="Building a happy, high performing team"
+              subtitle="Coaching on the three pillars of great team culture"
+            />
+            <div className="space-y-3">
+              {(['psych-safety', 'accountability', 'inclusion'] as Topic[]).map(id => {
+                const topic = TOPICS[id]
+                return (
+                  <div key={id}
+                       className="rounded-2xl overflow-hidden"
+                       style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 8px rgba(10,46,42,0.06)' }}>
+                    <div style={{ height: 3, background: `linear-gradient(90deg, ${topic.color}88, ${topic.color})` }} />
+                    <div className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
+                             style={{ backgroundColor: topic.bg }}>
+                          {topic.emoji}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm" style={{ color: '#0A2E2A' }}>{topic.name}</p>
+                          <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>{topic.tagline}</p>
+                        </div>
+                        <button onClick={() => openTopic(topic)}
+                                className="px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition-opacity flex-shrink-0"
+                                style={{ backgroundColor: topic.color, color: topic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
+                          Open →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* ── Section 3: Scenario Simulator ───────────────────────────────── */}
+          <div>
+            <SectionHeader
+              title="Scenario Simulator"
+              subtitle="Practice real leadership situations · earn XP · level up"
+            />
+            <div className="rounded-2xl overflow-hidden"
+                 style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+              <div style={{ height: 4, background: 'linear-gradient(90deg, #0AF3CD88, #0AF3CD)' }} />
+              <div className="p-5">
+                {token ? (
+                  <ScenarioSimulator token={token} />
+                ) : (
+                  <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: 24, height: 24, borderRadius: '50%', border: '2px solid #E5E7EB', borderTopColor: '#0A2E2A', animation: 'spin 0.8s linear infinite' }} />
+                  </div>
+                )}
               </div>
-            ))}
+            </div>
           </div>
 
         </div>
@@ -452,7 +506,6 @@ export default function CultureLabPage() {
           {/* Empty state */}
           {msgLoaded && messages.length === 0 && (
             <div className="py-6">
-              {/* Intro card */}
               <div className="rounded-2xl p-5 mb-6"
                    style={{ backgroundColor: topic.bg, border: `1px solid ${topic.color}40` }}>
                 <div className="flex items-center gap-2 mb-3">
@@ -464,7 +517,6 @@ export default function CultureLabPage() {
                 </p>
               </div>
 
-              {/* Starter prompts */}
               <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-center"
                  style={{ color: '#9CA3AF' }}>
                 Start with a question

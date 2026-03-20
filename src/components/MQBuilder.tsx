@@ -611,7 +611,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
                      style={{ backgroundColor: '#0AF3CD' }}>🧠</div>
                 <div>
-                  <p className="text-sm font-bold" style={{ color: 'white' }}>MQ Builder</p>
+                  <p className="text-sm font-bold" style={{ color: 'white' }}>MQ Gym</p>
                   <p className="text-xs" style={{ color: '#B9F8DD' }}>Develop your 7 dimensions</p>
                 </div>
               </div>
@@ -765,7 +765,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
               </button>
               <div className="flex-1">
                 <p className="text-sm font-bold" style={{ color: 'white' }}>{activeDim.name}</p>
-                <p className="text-xs" style={{ color: '#B9F8DD' }}>MQ Builder</p>
+                <p className="text-xs" style={{ color: '#B9F8DD' }}>MQ Gym</p>
               </div>
               <button onClick={onClose}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
@@ -884,7 +884,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: activeDim.color }} />
                   <p className="text-sm font-bold truncate" style={{ color: 'white' }}>{activeDim.name}</p>
                 </div>
-                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>MQ Builder</p>
+                <p className="text-xs mt-0.5" style={{ color: '#B9F8DD' }}>MQ Gym</p>
               </div>
               <button onClick={onClose}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0"
