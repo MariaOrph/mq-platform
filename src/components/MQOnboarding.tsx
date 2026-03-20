@@ -126,7 +126,7 @@ const SLIDES = [
           { icon: '📊', label: 'Start with the assessment',    desc: 'Measure your 7 MQ dimensions. The foundation everything else is built on.',  color: '#0AF3CD' },
           { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short daily practice, tailored to your specific development areas.',           color: '#fdcb5e' },
           { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any challenge or situation to a coach that knows your profile deeply.',                    color: '#0AF3CD' },
-          { icon: '🏋️', label: 'Grow with MQ Gym',             desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
+          { icon: '🧠', label: 'Grow with MQ Gym',             desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
           { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Get tailored coaching support to help you build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
           { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Bite-size management and leadership skill guides, built for the real world.',              color: '#ff7b7a' },
         ] as const).map((item, i) => (
