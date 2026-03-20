@@ -12,13 +12,13 @@ import FeedbackSection from '@/components/FeedbackSection'
 // ── Dimension config ───────────────────────────────────────────────────────────
 
 const DIMS = [
-  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
-  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 5, name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 6, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 7, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
+  { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9', textColor: '#0A2E2A' },
+  { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3', textColor: '#0A2E2A' },
+  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8', textColor: '#0A2E2A' },
+  { id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0', textColor: '#0A2E2A' },
+  { id: 5, name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF', textColor: '#0A2E2A' },
+  { id: 6, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5', textColor: '#ffffff' },
+  { id: 7, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE', textColor: '#0A2E2A' },
 ]
 
 const DIM_DETAIL: Record<number, {
@@ -1142,7 +1142,7 @@ export default function ParticipantDashboard() {
                       onClick={() => setDimModal(m => m ? { ...m, mode: tab } : m)}
                       className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
                       style={dimModal.mode === tab
-                        ? { backgroundColor: dim.color, color: '#0A2E2A' }
+                        ? { backgroundColor: dim.color, color: dim.textColor }
                         : { backgroundColor: 'rgba(10,46,42,0.08)', color: '#374151' }}
                     >
                       {tab === 'about' ? 'About this dimension' : `Your score: ${score ?? '—'}`}
@@ -1186,7 +1186,7 @@ export default function ParticipantDashboard() {
                         setShowMQBuilder(true)
                       }}
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
-                      style={{ backgroundColor: dim.color, color: '#0A2E2A' }}
+                      style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
                       Strengthen {dim.name} in MQ Builder →
                     </button>
@@ -1199,7 +1199,7 @@ export default function ParticipantDashboard() {
                     <div className="flex items-center gap-4 rounded-2xl p-4" style={{ backgroundColor: dim.bg }}>
                       <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0"
                            style={{ backgroundColor: dim.color }}>
-                        <span className="text-2xl font-black" style={{ color: '#0A2E2A' }}>{score}</span>
+                        <span className="text-2xl font-black" style={{ color: dim.textColor }}>{score}</span>
                       </div>
                       <div>
                         <p className="text-base font-bold" style={{ color: '#0A2E2A' }}>{band.label}</p>
@@ -1254,7 +1254,7 @@ export default function ParticipantDashboard() {
                         setShowMQBuilder(true)
                       }}
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
-                      style={{ backgroundColor: dim.color, color: '#0A2E2A' }}
+                      style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
                       Strengthen {dim.name} in MQ Builder →
                     </button>
