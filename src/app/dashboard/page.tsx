@@ -282,6 +282,7 @@ export default function ParticipantDashboard() {
   const [editCompanyType,   setEditCompanyType]  = useState('')
   const [editSaving,        setEditSaving]       = useState(false)
   const [editSaved,         setEditSaved]        = useState(false)
+  const [barTip,            setBarTip]           = useState<{ dimId: number; type: 'curr' | 'prev' } | null>(null)
 
   const loadData = useCallback(async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession()
@@ -776,17 +777,17 @@ export default function ParticipantDashboard() {
             <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
               Your MQ profile
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {DIMS.map(dim => {
-                const score     = getDimScore(assessment, dim.id)
-                const prevScore = prevAssessment ? getDimScore(prevAssessment, dim.id) : null
-                const isFocus   = dim.id === focusDimId
-                const currDate  = fmtAssessDate(assessment?.completed_at)
-                const prevDate  = fmtAssessDate(prevAssessment?.completed_at)
+                const score    = getDimScore(assessment, dim.id)
+                const delta    = getDelta(assessment, prevAssessment, dim.id)
+                const isFocus  = dim.id === focusDimId
+                const currDate = fmtAssessDate(assessment?.completed_at)
+                const prevDate = fmtAssessDate(prevAssessment?.completed_at)
                 return (
                   <div key={dim.id}>
                     {/* Label row */}
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center mb-1.5">
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
                       <button
                         onClick={() => setDimModal({ dimId: dim.id, mode: 'about' })}
@@ -802,9 +803,9 @@ export default function ParticipantDashboard() {
                         )}
                       </button>
                     </div>
-                    {/* Bar row: [bar] [score circles] [100] */}
+                    {/* Bar row: bar (flex-1) then 100 label */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      {/* Bar: light tint = capacity, solid = current score */}
+                      {/* Bar container — circles positioned inside here */}
                       <div style={{ flex: 1, position: 'relative', height: 6, borderRadius: 3 }}>
                         {/* Capacity track */}
                         <div style={{ position: 'absolute', inset: 0, borderRadius: 3, backgroundColor: `${dim.color}22` }} />
@@ -816,54 +817,98 @@ export default function ParticipantDashboard() {
                           backgroundColor: dim.color,
                           transition: 'width 0.7s ease',
                         }} />
-                      </div>
-                      {/* Score circles */}
-                      {score !== null && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                          {/* Current score — solid circle */}
+                        {/* Tooltip: current date */}
+                        {barTip?.dimId === dim.id && barTip.type === 'curr' && score !== null && (
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 12,
+                            left: `${score}%`,
+                            transform: 'translateX(-50%)',
+                            backgroundColor: '#1F2937',
+                            color: 'white',
+                            fontSize: 9,
+                            padding: '2px 6px',
+                            borderRadius: 4,
+                            whiteSpace: 'nowrap',
+                            zIndex: 20,
+                            pointerEvents: 'none',
+                          }}>
+                            {currDate}
+                          </div>
+                        )}
+                        {/* Tooltip: previous date */}
+                        {barTip?.dimId === dim.id && barTip.type === 'prev' && score !== null && delta !== null && (
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 12,
+                            left: `calc(${score}% + 13px)`,
+                            transform: 'translateX(-50%)',
+                            backgroundColor: '#1F2937',
+                            color: 'white',
+                            fontSize: 9,
+                            padding: '2px 6px',
+                            borderRadius: 4,
+                            whiteSpace: 'nowrap',
+                            zIndex: 20,
+                            pointerEvents: 'none',
+                          }}>
+                            {prevDate}
+                          </div>
+                        )}
+                        {/* Current score circle — at end of fill */}
+                        {score !== null && (
                           <button
-                            title={currDate}
+                            onMouseEnter={() => setBarTip({ dimId: dim.id, type: 'curr' })}
+                            onMouseLeave={() => setBarTip(null)}
                             onClick={() => setDimModal({ dimId: dim.id, mode: 'score' })}
                             style={{
-                              width: 26, height: 26,
+                              position: 'absolute',
+                              top: '50%',
+                              left: `${score}%`,
+                              transform: 'translate(-50%, -50%)',
+                              width: 22, height: 22,
                               borderRadius: '50%',
                               backgroundColor: dim.color,
                               color: 'white',
                               fontSize: 9,
                               fontWeight: 800,
                               border: '2px solid white',
-                              boxShadow: '0 2px 6px rgba(0,0,0,0.18)',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
                               cursor: 'pointer',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              flexShrink: 0,
+                              zIndex: 2,
                               fontFamily: 'inherit',
                             }}
                           >
                             {score}
                           </button>
-                          {/* Previous score — outline circle */}
-                          {prevScore !== null && (
-                            <div
-                              title={prevDate}
-                              style={{
-                                width: 20, height: 20,
-                                borderRadius: '50%',
-                                backgroundColor: 'transparent',
-                                border: `1.5px solid ${dim.color}`,
-                                fontSize: 8,
-                                fontWeight: 700,
-                                color: dim.color,
-                                opacity: 0.65,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                flexShrink: 0,
-                                cursor: 'default',
-                              }}
-                            >
-                              {prevScore}
-                            </div>
-                          )}
-                        </div>
-                      )}
+                        )}
+                        {/* Delta circle — just to the right of the current circle */}
+                        {score !== null && delta !== null && delta !== 0 && (
+                          <div
+                            onMouseEnter={() => setBarTip({ dimId: dim.id, type: 'prev' })}
+                            onMouseLeave={() => setBarTip(null)}
+                            style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: `calc(${score}% + 13px)`,
+                              transform: 'translateY(-50%)',
+                              width: 18, height: 18,
+                              borderRadius: '50%',
+                              backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
+                              border: `1.5px solid ${delta > 0 ? '#34D399' : '#F87171'}`,
+                              fontSize: 7,
+                              fontWeight: 700,
+                              color: delta > 0 ? '#065F46' : '#991B1B',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              zIndex: 1,
+                              cursor: 'default',
+                            }}
+                          >
+                            {delta > 0 ? `+${delta}` : `${delta}`}
+                          </div>
+                        )}
+                      </div>
                       {/* Max label */}
                       <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500, flexShrink: 0 }}>100</span>
                     </div>
