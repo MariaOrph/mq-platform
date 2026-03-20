@@ -593,7 +593,7 @@ export default function ParticipantDashboard() {
             {/* MQ Builder */}
             <div className="px-5 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-lg">🧠</span>
+                <span className="text-lg">🏋️</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Gym</p>
                   <p className="text-xs" style={{ color: '#9CA3AF' }}>Build the mental muscles behind all 7 MQ dimensions</p>
