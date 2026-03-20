@@ -333,6 +333,20 @@ export default function ParticipantDashboard() {
   useEffect(() => { loadData() }, [loadData])
   useEffect(() => { setShowOnboarding(shouldShowOnboarding()) }, [])
 
+  // ── Compulsory assessment + values enforcement ───────────────────────────
+  useEffect(() => {
+    if (loading) return
+    if (showOnboarding) return // onboarding handles the redirect via onComplete
+    if (!assessment) {
+      window.location.href = '/assessment'
+      return
+    }
+    // If the company has values set up and the user hasn't completed all ratings yet
+    if (valuesStatus && valuesStatus.total > 0 && valuesStatus.rated < valuesStatus.total) {
+      window.location.href = '/dashboard/values'
+    }
+  }, [loading, assessment, valuesStatus, showOnboarding])
+
   async function signOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
@@ -814,9 +828,9 @@ export default function ParticipantDashboard() {
           const isComplete  = rated === total
           const isStarted   = rated > 0
           const ratingLabel = avgRating >= 3.5 ? 'Consistently' : avgRating >= 2.5 ? 'Usually' : avgRating >= 1.5 ? 'Sometimes' : 'Rarely'
-          const statusText  = !isStarted  ? 'Rate how your behaviours reflect your company values'
+          const statusText  = !isStarted  ? 'Rate how you live your company values'
                             : !isComplete ? `${rated} of ${total} behaviours rated`
-                            : `All ${total} behaviours rated`
+                            : 'How you live your company values'
           const ctaText     = !isStarted ? 'Start →' : 'Update →'
           return (
             <a
@@ -1165,7 +1179,10 @@ export default function ParticipantDashboard() {
 
       {/* ── Onboarding carousel ──────────────────────────────────────────── */}
       {showOnboarding && (
-        <MQOnboarding onComplete={() => setShowOnboarding(false)} />
+        <MQOnboarding onComplete={() => {
+          setShowOnboarding(false)
+          window.location.href = '/assessment'
+        }} />
       )}
 
       {/* ── Edit profile modal ───────────────────────────────────────────── */}
