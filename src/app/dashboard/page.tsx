@@ -1176,6 +1176,9 @@ export default function ParticipantDashboard() {
                     </div>
 
                     {/* Strengthen CTA */}
+                    <p className="text-xs text-center" style={{ color: '#6B7280' }}>
+                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Builder will coach you through both.
+                    </p>
                     <button
                       onClick={() => {
                         setDimModal(null)
@@ -1241,6 +1244,9 @@ export default function ParticipantDashboard() {
                     </div>
 
                     {/* Work on this dimension CTA */}
+                    <p className="text-xs text-center" style={{ color: '#6B7280' }}>
+                      Awareness and focused practice build {dim.name.toLowerCase()} over time. MQ Builder will coach you through both.
+                    </p>
                     <button
                       onClick={() => {
                         setDimModal(null)
