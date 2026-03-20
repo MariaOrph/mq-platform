@@ -195,7 +195,10 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="text-base">✨</span>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Daily Spark</p>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Daily Spark</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>A short daily practice to build your MQ</p>
+              </div>
             </div>
             <p className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>
               {totalCompleted} / {totalCards} complete
