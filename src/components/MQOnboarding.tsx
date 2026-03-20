@@ -41,7 +41,7 @@ const SLIDES = [
     tag: 'The Science',
     title: 'Seven dimensions. Decades of research behind every one.',
     subtitle: '',
-    body: 'MQ maps the seven dimensions of your inner world most directly linked to how you manage and lead. Grounded in evidence from psychology, neuroscience, and leadership research. And unlike psychometrics that measure your type and leave you there, MQ measures your capacity for effective leadership — and then helps you build it.',
+    body: 'MQ maps the seven dimensions of your inner world most directly linked to how you manage and lead. All grounded in evidence from psychology, neuroscience, and leadership research.\n\nAnd unlike psychometrics that measure your type and leave you there, MQ measures your capacity for effective leadership, and then helps you build it.',
     visual: (() => {
       const dims = [
         { lines: ['Self-', 'awareness'],       color: '#fdcb5e' },
@@ -288,7 +288,7 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
             </p>
           )}
           {current.body && (
-            <p style={{ fontSize: 13, color: 'rgba(10,46,42,0.65)', lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: 13, color: 'rgba(10,46,42,0.65)', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-line' }}>
               {current.body}
             </p>
           )}
