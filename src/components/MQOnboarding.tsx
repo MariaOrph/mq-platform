@@ -36,9 +36,6 @@ const SLIDES = [
             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6, fontStyle: 'italic' }}>
               MQ is the inner operating system behind managers and leaders who make a lasting difference.
             </p>
-            <a href="/dashboard/methodology" style={{ fontSize: 10, color: 'rgba(10,243,205,0.6)', marginTop: 10, display: 'inline-block', textDecoration: 'none' }}>
-              Grounded in psychology and leadership research →
-            </a>
           </div>
         </div>
       </div>
