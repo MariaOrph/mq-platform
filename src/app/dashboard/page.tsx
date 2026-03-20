@@ -738,7 +738,7 @@ export default function ParticipantDashboard() {
                 Reassess now
               </a>
             ) : (
-              <span className="text-xs" style={{ color: 'rgba(185,248,221,0.4)' }}>
+              <span className="text-xs" style={{ color: 'rgba(185,248,221,0.75)' }}>
                 Reassess in {daysToReassess}d
               </span>
             )}
