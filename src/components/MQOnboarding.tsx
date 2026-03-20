@@ -7,10 +7,10 @@ import { useState } from 'react'
 const SLIDES = [
   {
     id: 'welcome',
-    tag: 'Welcome',
-    title: 'Welcome to MQ',
+    tag: 'Why MQ Exists',
+    title: 'Become the leader you\'re capable of being.',
     subtitle: '',
-    body: '',
+    body: 'MQ is the only development platform that combines rigorous mindset science and psychology with practical skills development, personalised coaching, and daily practice. Most training tells you what to do. MQ builds your capacity to actually do it — under pressure, in the moments that matter, consistently.',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, width: '100%' }}>
         {/* Hero lockup */}
@@ -47,10 +47,10 @@ const SLIDES = [
 
   {
     id: 'model',
-    tag: 'The MQ Model',
-    title: 'The 3 foundations of great leadership',
-    subtitle: 'Mindset · Relationships · Culture',
-    body: 'Great management and leadership develops in three layers — beginning with how you manage your inner world, building through the relationships you cultivate with others, and scaling through the culture you help shape around you.',
+    tag: 'The Missing Piece',
+    title: 'The foundation other programmes overlook.',
+    subtitle: '',
+    body: 'MQ — Mindset Quotient — measures your capacity to notice your own thoughts, beliefs and emotional patterns, and to consciously choose how you respond rather than being driven by them automatically. It\'s the foundation of self-directed, effective leadership. Without it, skills stay theoretical. With it, everything changes.',
     visual: (
       <svg viewBox="0 0 300 192" style={{ width: '100%', height: 'auto' }}>
         {/* Mindset — top tier */}
@@ -76,10 +76,10 @@ const SLIDES = [
 
   {
     id: 'dimensions',
-    tag: 'The 7 Dimensions',
-    title: 'The 7 dimensions of MQ',
+    tag: 'The Science',
+    title: 'Seven dimensions. Decades of research behind every one.',
     subtitle: '',
-    body: '',
+    body: 'MQ maps the seven dimensions of your inner world most directly linked to how you manage and lead. Grounded in evidence from psychology, neuroscience, and leadership research. And unlike psychometrics that measure your type and leave you there, MQ measures your capacity for effective leadership — and then helps you build it.',
     visual: (
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
         {[
@@ -129,19 +129,19 @@ const SLIDES = [
 
   {
     id: 'platform',
-    tag: 'The Platform',
-    title: 'How to Use the MQ App',
+    tag: 'Your Journey',
+    title: 'Not a course. A personalised development journey.',
     subtitle: '',
-    body: '',
+    body: 'MQ starts with an assessment of where you actually are across all seven dimensions. Everything that follows is built around your specific profile and development opportunities.',
     visual: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
         {([
-          { icon: '📊', label: 'Start with the assessments',    desc: 'Measure your 7 MQ dimensions and how well you embody your company values. Takes around 15 mins.',  color: '#0AF3CD' },
-          { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short practice, tailored to your individual development areas.',           color: '#fdcb5e' },
-          { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any day-to-day challenge or management situation to your AI coach.',                    color: '#0AF3CD' },
-          { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 MQ dimensions.',                               color: '#a78bfa' },
-          { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
-          { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Practical tools, frameworks and resources to build your leadership skills.',              color: '#ff7b7a' },
+          { icon: '📊', label: 'Start with the assessment',    desc: 'Measure your 7 MQ dimensions. The foundation everything else is built on.',  color: '#0AF3CD' },
+          { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short daily practice, tailored to your specific development areas.',           color: '#fdcb5e' },
+          { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any real management situation to a coach that knows your profile deeply.',                    color: '#0AF3CD' },
+          { icon: '🧠', label: 'Grow with MQ Builder',         desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
+          { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Get tailored coaching support to help you build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
+          { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Bite-size management and leadership skill guides, built for the real world.',              color: '#ff7b7a' },
         ] as const).map((item, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 10,
@@ -162,7 +162,7 @@ const SLIDES = [
   {
     id: 'privacy',
     tag: 'Your Privacy',
-    title: 'Your data is yours',
+    title: 'This only works if it feels safe.',
     subtitle: '',
     body: '',
     visual: (
@@ -171,19 +171,19 @@ const SLIDES = [
           {
             icon: '🔒',
             label: 'Your coaching conversations are private',
-            desc: 'Nobody else can read them — not your employer, not your HR team, not us. What you share with your coach stays between you and your coach.',
+            desc: 'Nobody else can read them — not your employer, not your HR team, not us.',
             color: '#0AF3CD',
           },
           {
             icon: '📊',
             label: 'Your individual scores are confidential',
-            desc: 'Your MQ assessment results belong to you. They are never shared with your organisation without your explicit consent.',
+            desc: 'Your MQ results belong to you. Never shared with your organisation without your explicit consent.',
             color: '#a78bfa',
           },
           {
             icon: '👥',
             label: 'Organisations see aggregated data only',
-            desc: 'Your employer receives cohort-level reporting — averages and patterns across the group — never anything that identifies you individually.',
+            desc: 'Your employer receives cohort-level reporting — averages across the group — never anything that identifies you individually.',
             color: '#fdcb5e',
           },
         ] as const).map((item, i) => (
