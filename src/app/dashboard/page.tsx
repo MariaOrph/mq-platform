@@ -538,9 +538,12 @@ export default function ParticipantDashboard() {
         <div className="rounded-2xl overflow-hidden"
              style={{ backgroundColor: 'white', border: '1px solid #D1FAE5', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
           {/* Header */}
-          <div className="px-5 py-3 flex items-center gap-2" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
-            <span className="text-base">🤖</span>
-            <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>AI Coaching</p>
+          <div className="px-5 py-3" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-base">🧠</span>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your MQ Coach</p>
+            </div>
+            <p className="text-xs" style={{ color: '#05A88E' }}>Highly personalised to you</p>
           </div>
           {/* Three options */}
           <div className="divide-y" style={{ borderColor: '#F3F4F6' }}>
@@ -609,7 +612,7 @@ export default function ParticipantDashboard() {
             <div className="flex items-center gap-2.5">
               <span className="text-base">📚</span>
               <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <span className="text-xs" style={{ color: '#9CA3AF' }}>25 guides</span>
+              <span className="text-xs" style={{ color: '#9CA3AF' }}>Management and leadership skill guides</span>
             </div>
             <span className="text-xs" style={{ color: '#9CA3AF' }}>Browse →</span>
           </a>
