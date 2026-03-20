@@ -598,52 +598,33 @@ export default function ParticipantDashboard() {
           </div>
         </div>
 
-        {/* ── Resource Centre ───────────────────────────────────────────────── */}
-        <a
-          href="/dashboard/resources"
-          className="w-full rounded-2xl p-5 flex items-center justify-between hover:opacity-90 transition-opacity relative overflow-hidden"
-          style={{ backgroundColor: '#FFE8E8', border: '2px solid #ff7b7a', boxShadow: '0 2px 12px rgba(255,123,122,0.15)' }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                 style={{ backgroundColor: 'white' }}>
-              📚
-            </div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <p className="text-xs mt-0.5" style={{ color: '#e85555' }}>
-                25 skill guides — management and leadership
-              </p>
-            </div>
-          </div>
-          <span className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3" style={{ backgroundColor: '#ff7b7a', color: '#0A2E2A' }}>Browse →</span>
-        </a>
-
-        {/* ── My Notes ─────────────────────────────────────────────────────── */}
-          <div
-            className="rounded-2xl p-5 flex items-center justify-between"
-            style={{ backgroundColor: '#FFFBEB', border: '2px solid #fdcb5e', boxShadow: '0 2px 12px rgba(253,203,94,0.15)' }}
+        {/* ── Resource Centre + Notes (compact) ────────────────────────────── */}
+        <div className="rounded-2xl overflow-hidden"
+             style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}>
+          <a
+            href="/dashboard/resources"
+            className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
+            style={{ borderBottom: '1px solid #F3F4F6' }}
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xl"
-                   style={{ backgroundColor: 'white' }}>
-                📓
-              </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
-                <p className="text-xs mt-0.5" style={{ color: '#b45309' }}>
-                  Your private journal
-                </p>
-              </div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-base">📚</span>
+              <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
+              <span className="text-xs" style={{ color: '#9CA3AF' }}>25 guides</span>
             </div>
-            <button
-              onClick={() => setShowNotes(true)}
-              className="text-xs px-4 py-2 rounded-xl font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: '#fdcb5e', color: '#0A2E2A' }}
-            >
-              Open →
-            </button>
-          </div>
+            <span className="text-xs" style={{ color: '#9CA3AF' }}>Browse →</span>
+          </a>
+          <button
+            onClick={() => setShowNotes(true)}
+            className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="text-base">📓</span>
+              <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>My Notes</p>
+              <span className="text-xs" style={{ color: '#9CA3AF' }}>Private journal</span>
+            </div>
+            <span className="text-xs" style={{ color: '#9CA3AF' }}>Open →</span>
+          </button>
+        </div>
 
           </div>{/* end left column */}
 
@@ -652,10 +633,11 @@ export default function ParticipantDashboard() {
 
         {/* ── MQ Score card — desktop only (hidden on mobile, shown in right column) */}
         <div className="hidden lg:block">
+          <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}>
           <button
             onClick={() => setShowMQModal(true)}
-            className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity relative"
-            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)', boxShadow: '0 4px 20px rgba(10,46,42,0.2)' }}
+            className="w-full overflow-hidden hover:opacity-90 transition-opacity relative"
+            style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 100%)' }}
           >
             {/* Mini radar chart — user's actual 7-dimension profile */}
             {(() => {
@@ -728,6 +710,37 @@ export default function ParticipantDashboard() {
               </div>
             </div>
           </button>
+          {/* Report + Reassess — tucked into card footer */}
+          <div className="flex items-center justify-between px-5 py-2.5" style={{ backgroundColor: '#0d3830', borderTop: '1px solid rgba(10,243,205,0.15)' }}>
+            <a
+              href="/dashboard/report"
+              target="_blank"
+              className="flex items-center gap-1.5 text-xs font-semibold hover:opacity-70 transition-opacity"
+              style={{ color: 'rgba(185,248,221,0.7)' }}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download report
+            </a>
+            {canReassess ? (
+              <a
+                href="/assessment"
+                className="flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
+                </svg>
+                Reassess now
+              </a>
+            ) : (
+              <span className="text-xs" style={{ color: 'rgba(185,248,221,0.4)' }}>
+                Reassess in {daysToReassess}d
+              </span>
+            )}
+          </div>
+          </div>
         </div>
 
         {/* ── MQ profile bars ───────────────────────────────────────────────── */}
@@ -831,45 +844,6 @@ export default function ParticipantDashboard() {
             </a>
           )
         })()}
-
-        {/* ── Report + Reassess buttons ─────────────────────────────────────── */}
-        <div className="flex gap-3">
-            <a
-              href="/dashboard/report"
-              target="_blank"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold hover:opacity-80 transition-opacity"
-              style={{ backgroundColor: 'white', color: '#0A2E2A', border: '1px solid #B9F8DD' }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Download my report
-            </a>
-            {canReassess ? (
-              <a
-                href="/assessment"
-                className="flex items-center justify-center gap-1.5 px-5 py-3 rounded-2xl text-sm font-bold hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/>
-                </svg>
-                Reassess now
-              </a>
-            ) : (
-              <div
-                className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-medium"
-                style={{ backgroundColor: '#F9FAFB', color: '#9CA3AF', border: '1px solid #E5E7EB' }}
-                title={`Reassessment available in ${daysToReassess} days`}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                </svg>
-                Reassess in {daysToReassess}d
-              </div>
-            )}
-          </div>
-
 
         {/* ── 360 Feedback ─────────────────────────────────────────────────── */}
         {authToken && assessment && (

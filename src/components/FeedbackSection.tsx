@@ -34,6 +34,7 @@ interface Props {
 export default function FeedbackSection({ token, selfScores }: Props) {
   const [data,          setData]          = useState<FeedbackData | null>(null)
   const [loading,       setLoading]       = useState(true)
+  const [isExpanded,    setIsExpanded]    = useState(false)
   const [activeTab,     setActiveTab]     = useState<'send' | 'results'>('send')
   const [emailInput,    setEmailInput]    = useState('')
   const [nameInput,     setNameInput]     = useState('')
@@ -110,26 +111,36 @@ export default function FeedbackSection({ token, selfScores }: Props) {
     <div className="rounded-2xl overflow-hidden"
          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
 
-      {/* Header */}
-      <div className="px-5 pt-5 pb-4">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <span className="text-base">🔄</span>
-            <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>360 Feedback</p>
-          </div>
-          <p className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>
-            {completed} response{completed !== 1 ? 's' : ''} received
-          </p>
+      {/* Header — always visible, click to expand/collapse */}
+      <button
+        onClick={() => setIsExpanded(v => !v)}
+        className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-base">🔄</span>
+          <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>360 Feedback</p>
+          {completed > 0 && (
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#E8FDF7', color: '#05A88E' }}>
+              {completed} response{completed !== 1 ? 's' : ''}
+            </span>
+          )}
         </div>
-        {!hasResults && completed > 0 && (
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
-            {needed} more needed to unlock results
-          </p>
-        )}
-      </div>
+        <div className="flex items-center gap-2">
+          {!hasResults && completed > 0 && (
+            <span className="text-xs" style={{ color: '#9CA3AF' }}>{needed} more to unlock</span>
+          )}
+          {hasResults && (
+            <span className="text-xs font-semibold" style={{ color: '#05A88E' }}>Results ready</span>
+          )}
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>{isExpanded ? '▲' : '▼'}</span>
+        </div>
+      </button>
+
+      {/* Expandable body */}
+      {isExpanded && <>
 
       {/* Tabs */}
-      <div className="flex gap-0 px-5 mb-4">
+      <div className="flex gap-0 px-5 mb-4" style={{ borderTop: '1px solid #F3F4F6' }}>
         {(['send', 'results'] as const).map(tab => (
           <button
             key={tab}
@@ -374,6 +385,7 @@ export default function FeedbackSection({ token, selfScores }: Props) {
           )
         })()}
       </div>
+      </>}
     </div>
   )
 }
