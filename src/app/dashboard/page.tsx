@@ -187,6 +187,14 @@ function daysSince(dateStr: string | null): number {
   return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
 }
 
+function fmtAssessDate(iso: string | null | undefined): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  const yr = String(d.getFullYear()).slice(-2)
+  return `${months[d.getMonth()]} '${yr}`
+}
+
 // ── Logo component ─────────────────────────────────────────────────────────────
 
 function MQLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
@@ -770,69 +778,94 @@ export default function ParticipantDashboard() {
             </p>
             <div className="space-y-4">
               {DIMS.map(dim => {
-                const score   = getDimScore(assessment, dim.id)
-                const delta   = getDelta(assessment, prevAssessment, dim.id)
-                const isFocus = dim.id === focusDimId
+                const score     = getDimScore(assessment, dim.id)
+                const prevScore = prevAssessment ? getDimScore(prevAssessment, dim.id) : null
+                const isFocus   = dim.id === focusDimId
+                const currDate  = fmtAssessDate(assessment?.completed_at)
+                const prevDate  = fmtAssessDate(prevAssessment?.completed_at)
                 return (
                   <div key={dim.id}>
                     {/* Label row */}
                     <div className="flex items-center mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
-                        <button
-                          onClick={() => setDimModal({ dimId: dim.id, mode: 'about' })}
-                          className="text-xs font-medium text-left flex items-center gap-1"
-                          style={{ color: isFocus ? dim.color : '#374151', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: isFocus ? dim.color : '#9CA3AF' }}
-                        >
-                          {dim.name}
-                          {isFocus && (
-                            <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full"
-                                  style={{ backgroundColor: dim.bg, color: dim.color }}>
-                              focus
-                            </span>
-                          )}
-                        </button>
-                      </div>
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
+                      <button
+                        onClick={() => setDimModal({ dimId: dim.id, mode: 'about' })}
+                        className="text-xs font-medium text-left flex items-center gap-1 ml-2"
+                        style={{ color: isFocus ? dim.color : '#374151', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: isFocus ? dim.color : '#9CA3AF' }}
+                      >
+                        {dim.name}
+                        {isFocus && (
+                          <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full"
+                                style={{ backgroundColor: dim.bg, color: dim.color }}>
+                            focus
+                          </span>
+                        )}
+                      </button>
                     </div>
-                    {/* Bar: light tint = capacity, solid = current score */}
-                    <div style={{ position: 'relative', height: 8, marginBottom: 8 }}>
-                      {/* Capacity track */}
-                      <div style={{ position: 'absolute', inset: 0, borderRadius: 4, backgroundColor: `${dim.color}22` }} />
-                      {/* Current score fill */}
-                      <div style={{
-                        position: 'absolute', left: 0, top: 0, bottom: 0,
-                        borderRadius: 4,
-                        width: score !== null ? `${score}%` : '0%',
-                        backgroundColor: dim.color,
-                        transition: 'width 0.7s ease',
-                      }} />
-                      {/* Score bubble at end of fill */}
+                    {/* Bar row: [bar] [score circles] [100] */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      {/* Bar: light tint = capacity, solid = current score */}
+                      <div style={{ flex: 1, position: 'relative', height: 6, borderRadius: 3 }}>
+                        {/* Capacity track */}
+                        <div style={{ position: 'absolute', inset: 0, borderRadius: 3, backgroundColor: `${dim.color}22` }} />
+                        {/* Current score fill */}
+                        <div style={{
+                          position: 'absolute', left: 0, top: 0, bottom: 0,
+                          borderRadius: 3,
+                          width: score !== null ? `${score}%` : '0%',
+                          backgroundColor: dim.color,
+                          transition: 'width 0.7s ease',
+                        }} />
+                      </div>
+                      {/* Score circles */}
                       {score !== null && (
-                        <button
-                          onClick={() => setDimModal({ dimId: dim.id, mode: 'score' })}
-                          style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: `${score}%`,
-                            transform: 'translate(-50%, -50%)',
-                            backgroundColor: dim.color,
-                            color: 'white',
-                            borderRadius: 20,
-                            padding: '2px 7px',
-                            fontSize: 10,
-                            fontWeight: 800,
-                            border: 'none',
-                            cursor: 'pointer',
-                            whiteSpace: 'nowrap',
-                            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-                            lineHeight: '1.5',
-                            zIndex: 1,
-                            fontFamily: 'inherit',
-                          }}
-                        >
-                          {score}{delta !== null && delta !== 0 ? (delta > 0 ? ` +${delta}` : ` ${delta}`) : ''}
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                          {/* Current score — solid circle */}
+                          <button
+                            title={currDate}
+                            onClick={() => setDimModal({ dimId: dim.id, mode: 'score' })}
+                            style={{
+                              width: 26, height: 26,
+                              borderRadius: '50%',
+                              backgroundColor: dim.color,
+                              color: 'white',
+                              fontSize: 9,
+                              fontWeight: 800,
+                              border: '2px solid white',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.18)',
+                              cursor: 'pointer',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              flexShrink: 0,
+                              fontFamily: 'inherit',
+                            }}
+                          >
+                            {score}
+                          </button>
+                          {/* Previous score — outline circle */}
+                          {prevScore !== null && (
+                            <div
+                              title={prevDate}
+                              style={{
+                                width: 20, height: 20,
+                                borderRadius: '50%',
+                                backgroundColor: 'transparent',
+                                border: `1.5px solid ${dim.color}`,
+                                fontSize: 8,
+                                fontWeight: 700,
+                                color: dim.color,
+                                opacity: 0.65,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                flexShrink: 0,
+                                cursor: 'default',
+                              }}
+                            >
+                              {prevScore}
+                            </div>
+                          )}
+                        </div>
                       )}
+                      {/* Max label */}
+                      <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500, flexShrink: 0 }}>100</span>
                     </div>
                   </div>
                 )
