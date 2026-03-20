@@ -418,7 +418,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                       {[
                         'I have a difficult conversation coming up',
                         "I'm struggling to motivate my team",
-                        "I feel like I'm losing confidence",
+                        'I want to work on my confidence as a leader',
                         'I need help managing up',
                       ].map(prompt => (
                         <button key={prompt}
