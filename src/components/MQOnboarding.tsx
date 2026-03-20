@@ -109,11 +109,6 @@ const SLIDES = [
             <text x={cx} y={cy - 4} textAnchor="middle" fill="#0A2E2A" fontSize="17" fontWeight="900">MQ</text>
             <text x={cx} y={cy + 11} textAnchor="middle" fill="rgba(10,46,42,0.4)" fontSize="6.5" fontWeight="700" style={{ letterSpacing: '0.08em' }}>7 DIMENSIONS</text>
           </svg>
-          <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(10,46,42,0.4)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Mindset</span>
-            <span style={{ fontSize: 10, color: 'rgba(10,46,42,0.25)' }}>·</span>
-            <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(10,46,42,0.4)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Relationships & Culture</span>
-          </div>
         </div>
       )
     })(),
