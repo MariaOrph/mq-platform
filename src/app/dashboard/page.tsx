@@ -415,7 +415,7 @@ export default function ParticipantDashboard() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={() => { resetOnboarding(); setShowOnboarding(true) }}
               className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
@@ -435,7 +435,7 @@ export default function ParticipantDashboard() {
             <button
               onClick={signOut}
               className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
-              style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
+              style={{ color: 'rgba(185,248,221,0.45)' }}
             >
               Sign out
             </button>
