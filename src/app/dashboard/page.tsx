@@ -768,13 +768,15 @@ export default function ParticipantDashboard() {
             <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
               Your MQ profile
             </p>
-            <div className="space-y-3.5">
+            <div className="space-y-4">
               {DIMS.map(dim => {
                 const score   = getDimScore(assessment, dim.id)
+                const delta   = getDelta(assessment, prevAssessment, dim.id)
                 const isFocus = dim.id === focusDimId
                 return (
                   <div key={dim.id}>
-                    <div className="flex justify-between items-center mb-1.5">
+                    {/* Label row */}
+                    <div className="flex items-center mb-2">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
                         <button
@@ -791,33 +793,46 @@ export default function ParticipantDashboard() {
                           )}
                         </button>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        {(() => {
-                          const delta = getDelta(assessment, prevAssessment, dim.id)
-                          if (delta === null || delta === 0) return null
-                          return (
-                            <span className="text-xs font-bold px-1 py-0.5 rounded-full"
-                                  style={{
-                                    backgroundColor: delta > 0 ? '#D1FAE5' : '#FEE2E2',
-                                    color: delta > 0 ? '#065F46' : '#991B1B',
-                                    fontSize: '10px',
-                                  }}>
-                              {delta > 0 ? '+' : ''}{delta}
-                            </span>
-                          )
-                        })()}
-                        <button
-                          onClick={() => score !== null && setDimModal({ dimId: dim.id, mode: 'score' })}
-                          className="text-xs font-bold flex items-center gap-0.5"
-                          style={{ color: dim.color, cursor: score !== null ? 'pointer' : 'default', textDecoration: score !== null ? 'underline' : 'none', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: dim.color }}
-                        >
-                          {score ?? '—'}
-                        </button>
-                      </div>
                     </div>
-                    <div className="h-1.5 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
-                      <div className="h-1.5 rounded-full transition-all duration-700"
-                           style={{ width: score !== null ? `${score}%` : '0%', backgroundColor: dim.color }} />
+                    {/* Bar: light tint = capacity, solid = current score */}
+                    <div style={{ position: 'relative', height: 8, marginBottom: 8 }}>
+                      {/* Capacity track */}
+                      <div style={{ position: 'absolute', inset: 0, borderRadius: 4, backgroundColor: `${dim.color}22` }} />
+                      {/* Current score fill */}
+                      <div style={{
+                        position: 'absolute', left: 0, top: 0, bottom: 0,
+                        borderRadius: 4,
+                        width: score !== null ? `${score}%` : '0%',
+                        backgroundColor: dim.color,
+                        transition: 'width 0.7s ease',
+                      }} />
+                      {/* Score bubble at end of fill */}
+                      {score !== null && (
+                        <button
+                          onClick={() => setDimModal({ dimId: dim.id, mode: 'score' })}
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: `${score}%`,
+                            transform: 'translate(-50%, -50%)',
+                            backgroundColor: dim.color,
+                            color: 'white',
+                            borderRadius: 20,
+                            padding: '2px 7px',
+                            fontSize: 10,
+                            fontWeight: 800,
+                            border: 'none',
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                            lineHeight: '1.5',
+                            zIndex: 1,
+                            fontFamily: 'inherit',
+                          }}
+                        >
+                          {score}{delta !== null && delta !== 0 ? (delta > 0 ? ` +${delta}` : ` ${delta}`) : ''}
+                        </button>
+                      )}
                     </div>
                   </div>
                 )
@@ -945,7 +960,7 @@ export default function ParticipantDashboard() {
                             <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
                             <span className="text-xs" style={{ color: '#374151' }}>{dim.name}</span>
                           </div>
-                          <div className="flex-1 h-2 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+                          <div className="flex-1 h-2 rounded-full" style={{ backgroundColor: `${dim.color}22` }}>
                             <div className="h-2 rounded-full" style={{ width: s !== null ? `${s}%` : '0%', backgroundColor: dim.color }} />
                           </div>
                           <span className="text-xs font-bold w-6 text-right flex-shrink-0" style={{ color: '#374151' }}>{s ?? '—'}</span>
