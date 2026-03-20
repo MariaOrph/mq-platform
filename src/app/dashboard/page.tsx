@@ -579,7 +579,7 @@ export default function ParticipantDashboard() {
                 <span className="text-lg">💬</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Any challenge or situation</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Confidentially discuss any challenge or situation you're facing</p>
                 </div>
               </div>
               <button
@@ -596,7 +596,7 @@ export default function ParticipantDashboard() {
                 <span className="text-lg">🧠</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Builder</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Develop your 7 MQ dimensions</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build each of your 7 MQ dimensions</p>
                 </div>
               </div>
               <button
@@ -613,7 +613,7 @@ export default function ParticipantDashboard() {
                 <span className="text-lg">🧪</span>
                 <div>
                   <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Build a high-performing team culture</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build a happy, high performing team</p>
                 </div>
               </div>
               <a
