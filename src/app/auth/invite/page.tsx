@@ -3,11 +3,17 @@
 import { useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-// Supabase invite emails redirect here with the session tokens in the URL.
-// Two possible formats depending on Supabase version / flow:
-//   Hash fragment: /auth/invite#access_token=xxx&refresh_token=yyy  (magic link / implicit flow)
-//   PKCE code:     /auth/invite?code=xxx                             (invite link / PKCE flow)
-// We handle both explicitly rather than relying on auto-detection.
+// This page handles all invite and magic-link flows.
+//
+// PRIMARY PATH (new approach):
+//   Our invite API extracts the token_hash from Supabase's action_link and
+//   builds our own URL: /auth/invite?token_hash=XXX&type=invite (or magiclink)
+//   We call verifyOtp directly — no Supabase redirect chain involved at all.
+//   This works regardless of the project's PKCE / implicit flow setting.
+//
+// FALLBACK PATHS (for old links already in the wild):
+//   Hash fragment: #access_token=xxx&refresh_token=yyy  (implicit flow)
+//   PKCE code:     ?code=xxx
 
 const ROLE_MAP: Record<string, string> = {
   mq_admin:     '/admin',
@@ -20,10 +26,28 @@ export default function InvitePage() {
     async function handleInvite() {
       const supabase = createClient()
 
-      // ── Case 1: Hash fragment (implicit / magic-link flow) ──────────────
-      // Supabase embeds access_token + refresh_token directly in the URL hash.
-      const hash    = window.location.hash.substring(1)
-      const hParams = new URLSearchParams(hash)
+      // ── Primary: token_hash + type (our custom invite URL) ──────────────────
+      const qParams    = new URLSearchParams(window.location.search)
+      const tokenHash  = qParams.get('token_hash')
+      const otpType    = (qParams.get('type') ?? 'invite') as 'invite' | 'magiclink'
+
+      if (tokenHash) {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type:       otpType,
+        })
+        if (!error) {
+          await redirectAfterAuth(supabase)
+          return
+        }
+        // If verifyOtp failed (e.g. expired), send to login with clear error
+        window.location.href = '/login?error=link_expired'
+        return
+      }
+
+      // ── Fallback 1: Hash fragment (implicit flow) ────────────────────────────
+      const hash         = window.location.hash.substring(1)
+      const hParams      = new URLSearchParams(hash)
       const accessToken  = hParams.get('access_token')
       const refreshToken = hParams.get('refresh_token')
 
@@ -35,11 +59,8 @@ export default function InvitePage() {
         }
       }
 
-      // ── Case 2: PKCE code flow ──────────────────────────────────────────
-      // Invite links send a short-lived code instead of tokens.
-      const qParams = new URLSearchParams(window.location.search)
+      // ── Fallback 2: PKCE code ────────────────────────────────────────────────
       const code = qParams.get('code')
-
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
@@ -48,20 +69,17 @@ export default function InvitePage() {
         }
       }
 
-      // ── Case 3: Session already exists (page refresh / already signed in) ─
+      // ── Fallback 3: Session already exists ───────────────────────────────────
       const { data: { session } } = await supabase.auth.getSession()
       if (session) {
         await redirectAfterAuth(supabase)
         return
       }
 
-      // ── Nothing worked ──────────────────────────────────────────────────
+      // ── Nothing worked ───────────────────────────────────────────────────────
       window.location.href = '/login?error=invalid_link'
     }
 
-    // After a session is established, decide where to send the user:
-    // - No full_name  → first time, needs to set up name + password
-    // - Has full_name → returning user, go straight to their dashboard
     async function redirectAfterAuth(supabase: ReturnType<typeof createClient>) {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {

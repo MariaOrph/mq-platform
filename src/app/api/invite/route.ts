@@ -49,7 +49,12 @@ export async function POST(req: NextRequest) {
   for (const email of emails) {
     // ── Generate invite link (creates user, returns URL, no email sent) ───────
     // Note: we do NOT skip already-invited emails — re-submitting is intentional resend.
-    let inviteUrl = `${appUrl}/auth/callback`
+    //
+    // IMPORTANT: We extract the token_hash from the action_link and build our
+    // OWN invite URL. This bypasses Supabase's redirect chain entirely, which
+    // is unreliable across different auth configurations (PKCE vs implicit flow).
+    // The invite page calls verifyOtp({ token_hash, type }) directly instead.
+    let inviteUrl = `${appUrl}/auth/invite`
 
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type:  'invite',
@@ -57,29 +62,40 @@ export async function POST(req: NextRequest) {
       options: {
         data: {
           role:       role ?? 'participant',
-          company_id: companyId || null,   // treat empty string as null (avoids ::uuid cast error in trigger)
+          company_id: companyId || null,
         },
-        redirectTo: `${appUrl}/auth/callback`,
+        redirectTo: `${appUrl}/auth/invite`,
       },
     })
 
     if (linkError) {
-      // User already exists — generate a magic link for sign-in instead.
-      // Use /auth/callback (server-side) so the code exchange works correctly
-      // with @supabase/ssr's PKCE flow. OTP-derived codes do not need a stored
-      // verifier, so the server-side route handles them fine.
+      // User already exists — generate a magic link instead
       const { data: magicData, error: magicError } = await supabase.auth.admin.generateLink({
         type:  'magiclink',
         email,
-        options: { redirectTo: `${appUrl}/auth/callback` },
+        options: { redirectTo: `${appUrl}/auth/invite` },
       })
       if (magicError) {
         errors.push(`${email}: ${magicError.message}`)
         continue
       }
-      inviteUrl = magicData?.properties?.action_link ?? inviteUrl
+      // Extract token_hash from the action_link and build our own URL
+      const actionLink = magicData?.properties?.action_link ?? ''
+      try {
+        const tokenHash = new URL(actionLink).searchParams.get('token') ?? ''
+        inviteUrl = `${appUrl}/auth/invite?token_hash=${encodeURIComponent(tokenHash)}&type=magiclink`
+      } catch {
+        inviteUrl = actionLink // fallback to raw link
+      }
     } else {
-      inviteUrl = linkData?.properties?.action_link ?? inviteUrl
+      // Extract token_hash from the action_link and build our own URL
+      const actionLink = linkData?.properties?.action_link ?? ''
+      try {
+        const tokenHash = new URL(actionLink).searchParams.get('token') ?? ''
+        inviteUrl = `${appUrl}/auth/invite?token_hash=${encodeURIComponent(tokenHash)}&type=invite`
+      } catch {
+        inviteUrl = actionLink // fallback to raw link
+      }
     }
 
     // ── Look up first name if profile exists ──────────────────────────────────
