@@ -85,7 +85,6 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
   const [notes,           setNotes]           = useState('')
   const [notesSaved,      setNotesSaved]      = useState(false)
   const [expanded,        setExpanded]        = useState(false)
-  const [timeMode,        setTimeMode]        = useState<'5min' | '20min' | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const saveNotes = useCallback(async (cardId: string, text: string) => {
@@ -197,7 +196,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               <span className="text-base">✨</span>
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Daily Spark</p>
-                <p className="text-xs" style={{ color: '#9CA3AF' }}>A short daily practice to build your MQ</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>Your daily leadership challenge</p>
               </div>
             </div>
             <p className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>
@@ -241,60 +240,24 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               {currentCard.title}
             </p>
 
-            {/* Collapsed: teaser + time selector */}
+            {/* Collapsed: teaser + start button */}
             {!expanded && (
               <div>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>
                   {currentCard.teaser}
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium mr-1" style={{ color: '#9CA3AF' }}>I have</span>
-                  <button
-                    onClick={() => { setTimeMode('5min'); setExpanded(true) }}
-                    className="flex-1 text-xs font-bold px-3 py-2 rounded-xl transition-all"
-                    style={{ backgroundColor: dim.bg, color: dim.color, border: `1.5px solid ${dim.color}40` }}
-                  >
-                    ⚡ 5 min
-                  </button>
-                  <button
-                    onClick={() => { setTimeMode('20min'); setExpanded(true) }}
-                    className="flex-1 text-xs font-bold px-3 py-2 rounded-xl transition-all"
-                    style={{ backgroundColor: dim.bg, color: dim.color, border: `1.5px solid ${dim.color}40` }}
-                  >
-                    🎯 20 min
-                  </button>
-                </div>
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="w-full text-sm font-bold px-4 py-2.5 rounded-xl transition-all"
+                  style={{ backgroundColor: dim.bg, color: dim.color, border: `1.5px solid ${dim.color}40` }}
+                >
+                  Start today&apos;s challenge →
+                </button>
               </div>
             )}
 
-            {/* Expanded: 5 min mode */}
-            {expanded && timeMode === '5min' && (
-              <>
-                {/* Research insight as the quick read */}
-                {currentCard.insight && (
-                  <div className="rounded-xl p-4" style={{ backgroundColor: dim.bg }}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
-                      Why this matters
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                      {currentCard.insight}
-                    </p>
-                  </div>
-                )}
-                {/* Focused micro-prompt */}
-                <div className="rounded-xl p-4" style={{ border: `1.5px solid ${dim.color}40`, backgroundColor: 'white' }}>
-                  <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: dim.color }}>
-                    Your micro-practice
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                    Take 2 minutes right now. Think of one moment from the last 48 hours where this dimension showed up in your leadership — positively or negatively. Name it specifically. That awareness is the practice.
-                  </p>
-                </div>
-              </>
-            )}
-
-            {/* Expanded: 20 min mode */}
-            {expanded && timeMode === '20min' && (
+            {/* Expanded: full challenge */}
+            {expanded && (
               <>
                 {/* Full practice */}
                 <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#374151' }}>
@@ -311,8 +274,8 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               </>
             )}
 
-            {/* Notes — 20 min only */}
-            {expanded && timeMode === '20min' && (
+            {/* Notes */}
+            {expanded && (
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
@@ -343,7 +306,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               </div>
             )}
 
-            {/* Complete — shown in both modes */}
+            {/* Complete */}
             {expanded && (
               <div className="space-y-2">
                 <button
@@ -355,11 +318,11 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
                   {completing ? 'Saving…' : '✓ Done for today'}
                 </button>
                 <button
-                  onClick={() => { setExpanded(false); setTimeMode(null) }}
+                  onClick={() => setExpanded(false)}
                   className="w-full py-2 rounded-xl text-xs font-medium hover:opacity-70 transition-opacity"
                   style={{ color: '#9CA3AF' }}
                 >
-                  ← Switch mode
+                  ← Back
                 </button>
               </div>
             )}
