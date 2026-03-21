@@ -28,7 +28,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     3: {
       title:    'Your Leadership Shadow',
       teaser:   'Your mood is your team\'s weather forecast.',
-      insight:  'Research by Sigal Barsade at Wharton found that a leader\'s emotional state spreads through a team within minutes of entering a room, directly impacting performance, creativity, and decision-making quality. You are never "just having a bad day" in private: your state is always broadcasting.',
+      insight:  'In Primal Leadership, Goleman, Boyatzis and McKee established that a leader\'s emotional tone is the single biggest driver of team climate — and that climate directly accounts for up to 30% of business performance. Self-awareness is the prerequisite: you cannot deliberately manage the shadow you are casting if you cannot first see it clearly.',
       exercise: 'Right now, before you do anything else, rate your current emotional state:\n\nEnergy: 1 (flat) to 10 (high)\nFocus: 1 (scattered) to 10 (sharp)\nMood: 1 (low) to 10 (positive)\n\nNow ask: if your team could feel exactly what you\'re feeling, would that help or hinder them today?\n\nIf your score is below 6 on any dimension, choose one of these micro-shifts:\n- Take 5 slow breaths before your next interaction\n- Write down one thing that is genuinely going well\n- Tell someone something specific you appreciate about their work\n- Step outside for 3 minutes\n\nNotice what changes in the room after you\'ve made the shift.',
     },
     4: {
@@ -90,7 +90,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     4: {
       title:    'Regulate to Lead',
       teaser:   'Your calm is your team\'s greatest resource.',
-      insight:  'When a leader is visibly dysregulated, stressed, anxious, or reactive, their team\'s capacity for clear thinking drops measurably. This is co-regulation: our nervous systems are designed to sync with those around us. A regulated leader does not just feel better; they literally improve their team\'s ability to think.',
+      insight:  'Sigal Barsade\'s research at Wharton found that a leader\'s emotional state spreads through a team within minutes of entering a room — directly shaping performance, creativity, and decision quality. This is emotional contagion: our nervous systems are designed to sync with those around us, especially those in authority. A regulated leader does not just feel better; they literally improve their team\'s capacity to think.',
       exercise: 'Identify your most reliable regulation technique by testing these options:\n\n- 3 slow breaths (in for 4, out for 6)\n- A 5-minute walk outside\n- Cold water on your face or wrists\n- Writing down exactly what you\'re feeling\n- 2 minutes of complete silence\n- Naming 5 things you can see right now\n\nIf you already have a go-to, write it down explicitly so it is concrete and committed.\n\nIf you do not yet have one, try 2 or 3 from the list today and note which most quickly shifts your physical state.\n\nThe goal is a personal protocol you can access within 5 minutes, anywhere, any time.',
     },
   },
