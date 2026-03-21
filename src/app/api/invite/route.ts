@@ -65,13 +65,13 @@ export async function POST(req: NextRequest) {
 
     if (linkError) {
       // User already exists — generate a magic link for sign-in instead.
-      // Must point to a CLIENT-SIDE page (/auth/invite) because Supabase magic
-      // links use the hash/implicit flow: the tokens land in #access_token=...
-      // which is invisible to server-side route handlers like /auth/callback.
+      // Use /auth/callback (server-side) so the code exchange works correctly
+      // with @supabase/ssr's PKCE flow. OTP-derived codes do not need a stored
+      // verifier, so the server-side route handles them fine.
       const { data: magicData, error: magicError } = await supabase.auth.admin.generateLink({
         type:  'magiclink',
         email,
-        options: { redirectTo: `${appUrl}/auth/invite` },
+        options: { redirectTo: `${appUrl}/auth/callback` },
       })
       if (magicError) {
         errors.push(`${email}: ${magicError.message}`)
