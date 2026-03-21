@@ -2,11 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// This route handles the magic link that Supabase sends in invitation emails.
-// When a newly-invited user clicks their link, they land here first.
-// We exchange the one-time token for a real session, then send them to
-// set their password (if new) or straight to their dashboard (if returning).
-
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
@@ -37,9 +32,6 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(new URL('/auth/reset-password', origin))
       }
 
-      // Check profile to determine whether this is a first-time user.
-      // A first-timer has no full_name set yet — send them to complete setup
-      // regardless of whether the link type is 'invite' or 'magiclink'.
       const { data: profile } = await supabase
         .from('profiles')
         .select('role, full_name')
@@ -47,24 +39,60 @@ export async function GET(request: NextRequest) {
         .single()
 
       if (!profile?.full_name) {
-        // First time through — name + password not yet set
         return NextResponse.redirect(new URL('/auth/setup', origin))
       }
 
-      // Returning user — route to the right dashboard based on their role
       const roleMap: Record<string, string> = {
         mq_admin:     '/admin',
         client_admin: '/client',
         participant:  '/dashboard',
       }
       const destination = roleMap[profile?.role ?? 'participant'] ?? '/dashboard'
-
       return NextResponse.redirect(new URL(destination, origin))
+    }
+
+    // PKCE exchange failed (common for invite flows where the code verifier
+    // was not stored by our app). Pass the code to the client-side invite page
+    // which tries multiple auth methods including direct OTP verification.
+    if (type !== 'recovery') {
+      return NextResponse.redirect(
+        new URL(`/auth/invite?code=${encodeURIComponent(code)}`, origin)
+      )
     }
   }
 
-  // Something went wrong — send them back to login with an error message
-  return NextResponse.redirect(
-    new URL('/login?error=invalid_link', origin)
+  // No code in the URL — this happens with implicit flow where Supabase puts
+  // access_token + refresh_token in the hash fragment. The server cannot read
+  // hash fragments, so we return an HTML page that reads them client-side and
+  // forwards to the invite page which handles setSession.
+  const qs = searchParams.toString()
+  const queryStr = qs ? `?${qs}` : ''
+
+  return new Response(
+    `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Setting up your account…</title>
+  <style>
+    body { margin: 0; background: #E8FDF7; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, sans-serif; }
+    .box { text-align: center; }
+    .logo { width: 48px; height: 48px; background: #0AF3CD; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo"><span style="font-weight:900;color:#0A2E2A;">MQ</span></div>
+    <p style="color:#05A88E;margin:0;">Setting up your account…</p>
+  </div>
+  <script>
+    // Hash fragments (implicit flow) are only readable client-side.
+    // Forward them to the invite page which calls setSession().
+    var hash = window.location.hash || '';
+    window.location.replace('/auth/invite${queryStr}' + hash);
+  </script>
+</body>
+</html>`,
+    { headers: { 'Content-Type': 'text/html' } }
   )
 }
