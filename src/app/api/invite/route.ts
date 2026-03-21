@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
   for (const email of emails) {
     // ── Generate invite link (creates user, returns URL, no email sent) ───────
     // Note: we do NOT skip already-invited emails — re-submitting is intentional resend.
-    let inviteUrl = `${appUrl}/auth/invite`
+    let inviteUrl = `${appUrl}/auth/callback`
 
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type:  'invite',
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
           role:       role ?? 'participant',
           company_id: companyId || null,   // treat empty string as null (avoids ::uuid cast error in trigger)
         },
-        redirectTo: `${appUrl}/auth/invite`,
+        redirectTo: `${appUrl}/auth/callback`,
       },
     })
 
