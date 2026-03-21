@@ -32,15 +32,14 @@ export default function InvitePage() {
       const otpType    = (qParams.get('type') ?? 'invite') as 'invite' | 'magiclink'
 
       if (tokenHash) {
-        const { error } = await supabase.auth.verifyOtp({
+        const { error: otpError } = await supabase.auth.verifyOtp({
           token_hash: tokenHash,
           type:       otpType,
         })
-        if (!error) {
+        if (!otpError) {
           await redirectAfterAuth(supabase)
           return
         }
-        // If verifyOtp failed (e.g. expired), send to login with clear error
         window.location.href = '/login?error=link_expired'
         return
       }
