@@ -18,7 +18,8 @@ interface Round {
 
 interface Scenario {
   id: string
-  tag: string
+  tag?: string
+  topic?: string
   title: string
   intro: string
   rounds: Round[]
@@ -452,11 +453,34 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   const [result, setResult] = useState<{ stars: number; xpEarned: number; totalXp: number; currentLevel: string; levelIndex: number } | null>(null)
   const [hoveredChoice, setHoveredChoice] = useState<number | null>(null)
   const [revealFlash, setRevealFlash] = useState<'best' | 'good' | 'poor' | null>(null)
+  const [isBonus, setIsBonus] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
 
-  // Pick a random scenario (avoiding the last one played if possible)
+  // Pick a random scenario from the classic set
   function pickScenario() {
     const shuffled = [...SCENARIOS].sort(() => Math.random() - 0.5)
     return shuffled[0]
+  }
+
+  // Generate a fresh AI scenario
+  async function generateScenario() {
+    setIsGenerating(true)
+    try {
+      const res = await fetch('/api/scenario-simulator/generate', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (res.ok) {
+        const { scenario: generated } = await res.json()
+        setScenario(generated)
+        setRoundIndex(0)
+        setRoundScores([])
+        setChoiceIndex(null)
+        setResult(null)
+        setIsBonus(true)
+        setPhase('intro')
+      }
+    } catch { /* silent */ }
+    setIsGenerating(false)
   }
 
   // Load player stats
@@ -482,6 +506,7 @@ export default function ScenarioSimulator({ token }: { token: string }) {
     setRoundScores([])
     setChoiceIndex(null)
     setResult(null)
+    setIsBonus(false)
     setPhase('intro')
   }
 
@@ -594,19 +619,32 @@ export default function ScenarioSimulator({ token }: { token: string }) {
           </div>
         )}
 
-        {/* Play button */}
+        {/* Play buttons */}
         <button
           onClick={startGame}
           style={{
             width: '100%', padding: '14px 0', borderRadius: 12,
             background: '#0A2E2A', color: '#fff', fontSize: 14, fontWeight: 600,
-            border: 'none', cursor: 'pointer',
+            border: 'none', cursor: 'pointer', marginBottom: 8,
           }}
         >
           {hasPlayed ? 'Play Again →' : 'Start →'}
         </button>
+        <button
+          onClick={generateScenario}
+          disabled={isGenerating}
+          style={{
+            width: '100%', padding: '12px 0', borderRadius: 12,
+            background: isGenerating ? '#F3F4F6' : '#EFF6FF',
+            color: isGenerating ? '#9CA3AF' : '#1D4ED8',
+            fontSize: 13, fontWeight: 600,
+            border: '1px solid #BFDBFE', cursor: isGenerating ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {isGenerating ? 'Generating scenario…' : '✦ Generate a bonus scenario →'}
+        </button>
         <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 8 }}>
-          New scenario each time · can you get 3 stars on all 4?
+          Bonus scenarios are AI-generated · new situation every time
         </p>
       </div>
     )
@@ -619,8 +657,13 @@ export default function ScenarioSimulator({ token }: { token: string }) {
       <div style={{ padding: '0 0 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <span style={{ fontSize: 10, fontWeight: 700, color: '#6B7280', background: '#F3F4F6', padding: '3px 8px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {scenario.tag}
+            {scenario.topic ?? scenario.tag}
           </span>
+          {isBonus && (
+            <span style={{ fontSize: 10, fontWeight: 700, color: '#1D4ED8', background: '#EFF6FF', padding: '3px 8px', borderRadius: 20, letterSpacing: '0.05em' }}>
+              ✦ Bonus
+            </span>
+          )}
         </div>
         <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A2E2A', marginBottom: 12 }}>{scenario.title}</h3>
         <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.65, marginBottom: 24 }}>{scenario.intro}</p>
@@ -855,27 +898,42 @@ export default function ScenarioSimulator({ token }: { token: string }) {
         </div>
 
         {/* Buttons */}
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <button
-            onClick={startGame}
+            onClick={generateScenario}
+            disabled={isGenerating}
             style={{
-              flex: 1, padding: '13px 0', borderRadius: 12,
-              background: '#0A2E2A', color: '#fff', fontSize: 13, fontWeight: 700,
-              border: 'none', cursor: 'pointer',
+              width: '100%', padding: '13px 0', borderRadius: 12,
+              background: isGenerating ? '#F3F4F6' : '#0A2E2A',
+              color: isGenerating ? '#9CA3AF' : '#fff',
+              fontSize: 13, fontWeight: 700,
+              border: 'none', cursor: isGenerating ? 'not-allowed' : 'pointer',
             }}
           >
-            Play Again →
+            {isGenerating ? 'Generating…' : '✦ Play another →'}
           </button>
-          <button
-            onClick={() => setPhase('idle')}
-            style={{
-              flex: 1, padding: '13px 0', borderRadius: 12,
-              background: '#F3F4F6', color: '#374151', fontSize: 13, fontWeight: 600,
-              border: 'none', cursor: 'pointer',
-            }}
-          >
-            View Stats
-          </button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={startGame}
+              style={{
+                flex: 1, padding: '11px 0', borderRadius: 12,
+                background: '#F3F4F6', color: '#374151', fontSize: 12, fontWeight: 600,
+                border: 'none', cursor: 'pointer',
+              }}
+            >
+              Classic scenario
+            </button>
+            <button
+              onClick={() => setPhase('idle')}
+              style={{
+                flex: 1, padding: '11px 0', borderRadius: 12,
+                background: '#F3F4F6', color: '#374151', fontSize: 12, fontWeight: 600,
+                border: 'none', cursor: 'pointer',
+              }}
+            >
+              View stats
+            </button>
+          </div>
         </div>
       </div>
     )

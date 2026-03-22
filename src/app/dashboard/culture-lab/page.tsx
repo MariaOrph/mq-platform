@@ -314,11 +314,11 @@ function formatDate(iso: string) {
 
 // ── Section header ────────────────────────────────────────────────────────────
 
-function SectionHeader({ title, subtitle }: { title: string; subtitle: string }) {
+function SectionHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
     <div style={{ marginBottom: 12 }}>
       <p className="font-bold text-sm" style={{ color: '#0A2E2A' }}>{title}</p>
-      <p className="text-xs" style={{ color: '#9CA3AF' }}>{subtitle}</p>
+      {subtitle && <p className="text-xs" style={{ color: '#9CA3AF' }}>{subtitle}</p>}
     </div>
   )
 }
@@ -585,7 +585,6 @@ export default function CultureLabPage() {
           <div>
             <SectionHeader
               title="Building a happy, high performing team"
-              subtitle="Coaching on the three pillars of great team culture"
             />
             <div className="space-y-3">
               {(['psych-safety', 'accountability', 'inclusion'] as Topic[]).map(id => {
