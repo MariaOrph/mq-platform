@@ -273,6 +273,7 @@ export default function ParticipantDashboard() {
   const [showNotes,         setShowNotes]        = useState(false)
   const [mqBuilderDimId,    setMQBuilderDimId]   = useState<number | undefined>(undefined)
   const [showOnboarding,    setShowOnboarding]   = useState(false)
+  const [onboardingManual,  setOnboardingManual] = useState(false)
   const [authToken,         setAuthToken]        = useState<string | null>(null)
   const [dimModal,          setDimModal]         = useState<{ dimId: number; mode: 'about' | 'score' } | null>(null)
   const [showMQModal,       setShowMQModal]      = useState(false)
@@ -440,7 +441,7 @@ export default function ParticipantDashboard() {
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
-              onClick={() => { resetOnboarding(); setShowOnboarding(true) }}
+              onClick={() => { resetOnboarding(); setOnboardingManual(true); setShowOnboarding(true) }}
               className="text-xs px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
               style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.25)' }}
             >
@@ -1274,7 +1275,8 @@ export default function ParticipantDashboard() {
       {showOnboarding && (
         <MQOnboarding onComplete={() => {
           setShowOnboarding(false)
-          window.location.href = '/assessment'
+          if (!onboardingManual) window.location.href = '/assessment'
+          setOnboardingManual(false)
         }} />
       )}
 
