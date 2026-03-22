@@ -196,7 +196,7 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
               <span className="text-base">✨</span>
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Daily Spark</p>
-                <p className="text-xs" style={{ color: '#9CA3AF' }}>Your daily leadership challenge</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>Your daily leadership challenge (smash it in less than 20 mins)</p>
               </div>
             </div>
             <p className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>
