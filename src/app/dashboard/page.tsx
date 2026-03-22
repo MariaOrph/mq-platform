@@ -581,8 +581,8 @@ export default function ParticipantDashboard() {
           {/* Header */}
           <div className="px-5 py-3" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-base">🛠️</span>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your Coaching Tools</p>
+              <span className="text-base">🎯</span>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your MQ Coaching Zones</p>
             </div>
             <p className="text-xs" style={{ color: '#05A88E' }}>Start your growth journey today — explore the 3 coaching zones below</p>
           </div>
@@ -610,7 +610,7 @@ export default function ParticipantDashboard() {
               <div className="flex items-center gap-3">
                 <span className="text-lg">🧠</span>
                 <div>
-                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>MQ Gym</p>
+                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Mindset Gym</p>
                   <p className="text-xs" style={{ color: '#9CA3AF' }}>Build the mental muscles behind all 7 MQ dimensions</p>
                 </div>
               </div>
@@ -1200,7 +1200,7 @@ export default function ParticipantDashboard() {
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
                       style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
-                      Strengthen {dim.name} in MQ Gym →
+                      Strengthen {dim.name} in Mindset Gym →
                     </button>
                   </>
                 )}
@@ -1265,7 +1265,7 @@ export default function ParticipantDashboard() {
                       className="w-full py-3 rounded-2xl text-sm font-semibold transition-opacity hover:opacity-90"
                       style={{ backgroundColor: dim.color, color: dim.textColor }}
                     >
-                      Strengthen {dim.name} in MQ Gym →
+                      Strengthen {dim.name} in Mindset Gym →
                     </button>
                   </>
                 )}

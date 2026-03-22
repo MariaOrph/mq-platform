@@ -132,7 +132,7 @@ const SLIDES = [
           {
             step: '2',
             label: 'Start building',
-            desc: 'Daily challenges targeted to your profile, delivered to your dashboard. Plus three coaching zones available 24/7 — the Coaching Room, MQ Gym, and Culture Lab — all completely confidential, and tailored to you.',
+            desc: 'Daily challenges targeted to your profile, delivered to your dashboard. Plus three coaching zones available 24/7 — the Coaching Room, Mindset Gym, and Culture Lab — all completely confidential, and tailored to you.',
             color: '#fdcb5e',
           },
           {

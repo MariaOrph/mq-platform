@@ -85,7 +85,7 @@ export function inviteEmailHtml({
     <p style="margin:0 0 16px;font-size:14px;color:#444444;line-height:1.7;">
       Daily challenges targeted at your development areas, delivered to your dashboard. Plus three
       coaching zones available 24/7: the <strong style="color:#0A2E2A;">Coaching Room</strong>,
-      <strong style="color:#0A2E2A;">MQ Gym</strong>, and <strong style="color:#0A2E2A;">Culture Lab</strong>.
+      <strong style="color:#0A2E2A;">Mindset Gym</strong>, and <strong style="color:#0A2E2A;">Culture Lab</strong>.
     </p>
 
     <!-- Step 3 -->
@@ -136,7 +136,7 @@ Step 1 — Get your MQ profile
 Take the MQ Assessment (~15 minutes) and get a personalised score across the 7 dimensions of leadership mindset. Your baseline — and the start of everything. You can also invite colleagues to complete a short 360 survey.
 
 Step 2 — Start building
-Daily challenges targeted at your development areas, delivered to your dashboard. Plus three coaching zones available 24/7: the Coaching Room, MQ Gym, and Culture Lab.
+Daily challenges targeted at your development areas, delivered to your dashboard. Plus three coaching zones available 24/7: the Coaching Room, Mindset Gym, and Culture Lab.
 
 Step 3 — Track your growth
 Reassess over time to see how your scores shift — and notice how you show up differently when it counts.
