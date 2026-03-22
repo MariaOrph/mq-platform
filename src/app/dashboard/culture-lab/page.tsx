@@ -571,7 +571,7 @@ export default function CultureLabPage() {
                         <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
                                 className="w-full mt-2 py-2 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
                                 style={{ backgroundColor: 'transparent', color: topic.color, border: `1px solid ${topic.color}40` }}>
-                          Dig deeper into the science →
+                          Dive deeper →
                         </button>
                       </div>
                     </div>
@@ -614,7 +614,7 @@ export default function CultureLabPage() {
                           <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
                                   className="px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity text-center"
                                   style={{ backgroundColor: 'transparent', color: topic.color, border: `1px solid ${topic.color}40` }}>
-                            Science
+                            Dive deeper
                           </button>
                         </div>
                       </div>
@@ -677,7 +677,7 @@ export default function CultureLabPage() {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold" style={{ color: 'white' }}>{ddTopic.name}</p>
-                <p className="text-xs" style={{ color: '#B9F8DD' }}>The science behind this topic</p>
+                <p className="text-xs" style={{ color: '#B9F8DD' }}>Research &amp; insights</p>
               </div>
             </div>
             <button onClick={() => openTopic(ddTopic)}
