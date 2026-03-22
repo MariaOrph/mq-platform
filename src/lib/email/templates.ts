@@ -52,8 +52,6 @@ function layout(content: string): string {
 
 export function inviteEmailHtml({
   firstName,
-  cohortName,
-  companyName,
   inviteUrl,
 }: {
   firstName:   string | null
@@ -71,16 +69,60 @@ export function inviteEmailHtml({
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
 
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
-      MQ (Mindset Quotient) is the ability to notice your thoughts, beliefs and emotional triggers
-      and choose how you respond to them, rather than being unconsciously driven by them. Your MQ
-      journey is a personalised development experience designed to help you lead yourself and others
-      more intentionally.
+      MQ is built on a simple belief: the managers and leaders who make a lasting difference
+      aren't just skilled — they have the right mindset. The ability to lead themselves first.
+      To stay clear and grounded under pressure. To bring out the best in the people around them.
     </p>
 
-    <p style="margin:0 0 28px;font-size:15px;color:#444444;line-height:1.7;">
-      You've been invited to take the MQ Assessment as part of <strong style="color:#0A2E2A;">${cohortName}</strong>
-      at <strong style="color:#0A2E2A;">${companyName}</strong>. It takes around 5 minutes and gives
-      you a personalised MQ score and insights across 6 dimensions of mindset intelligence.
+    <p style="margin:0 0 24px;font-size:15px;color:#444444;line-height:1.7;">
+      That's what we're here to build with you.
+    </p>
+
+    <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0A2E2A;">Here's how it works:</p>
+
+    <!-- Step 1 -->
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#05A88E;">Step 1 — Get your MQ profile</p>
+    <p style="margin:0 0 16px;font-size:14px;color:#444444;line-height:1.7;">
+      Start with the MQ Assessment — around 15 minutes — and get a personalised score across
+      the 7 dimensions of mindset intelligence behind effective people managers and leaders.
+      This is your baseline. You can also invite colleagues to complete a short 360 survey,
+      so you can see how others perceive you against how you see yourself.
+    </p>
+
+    <!-- Step 2 -->
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#05A88E;">Step 2 — Start building</p>
+    <p style="margin:0 0 8px;font-size:14px;color:#444444;line-height:1.7;">
+      Get daily challenges targeted at your biggest development areas, delivered straight to
+      your dashboard. And when you're ready to go deeper, your three coaching zones are
+      waiting — open 24/7 and always confidential:
+    </p>
+    <table cellpadding="0" cellspacing="0" style="margin:0 0 16px;width:100%;">
+      <tr>
+        <td style="padding:6px 0;font-size:14px;color:#444444;line-height:1.6;">
+          <strong style="color:#0A2E2A;">The Coaching Room</strong> — confidentially discuss any challenge or situation you're facing
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:6px 0;font-size:14px;color:#444444;line-height:1.6;">
+          <strong style="color:#0A2E2A;">MQ Gym</strong> — build the mental muscles behind all 7 MQ dimensions and explore the science and psychology behind them
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:6px 0;font-size:14px;color:#444444;line-height:1.6;">
+          <strong style="color:#0A2E2A;">Culture Lab</strong> — be coached on how to build a happy, high-performing team culture
+        </td>
+      </tr>
+    </table>
+
+    <!-- Step 3 -->
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#05A88E;">Step 3 — Track your growth</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#444444;line-height:1.7;">
+      Reassess over time to see how your scores shift — and more importantly, notice how you
+      show up differently when it counts.
+    </p>
+
+    <p style="margin:0 0 24px;font-size:15px;font-weight:600;color:#0A2E2A;line-height:1.6;">
+      The leaders who make the biggest impact never stop building. Your next growth chapter starts here!
     </p>
 
     <!-- CTA Button -->
@@ -96,7 +138,7 @@ export function inviteEmailHtml({
     </table>
 
     <p style="margin:0 0 4px;font-size:15px;color:#444444;line-height:1.7;">
-      Looking forward to your journey,
+      We look forward to supporting you in your journey,
     </p>
     <p style="margin:0;font-size:15px;font-weight:700;color:#0A2E2A;">
       Maria &amp; Richard<br/>
@@ -107,8 +149,6 @@ export function inviteEmailHtml({
 
 export function inviteEmailText({
   firstName,
-  cohortName,
-  companyName,
   inviteUrl,
 }: {
   firstName:   string | null
@@ -121,13 +161,30 @@ export function inviteEmailText({
 
 You've been invited to your MQ journey.
 
-MQ (Mindset Quotient) is the ability to notice your thoughts, beliefs and emotional triggers and choose how you respond to them, rather than being unconsciously driven by them. Your MQ journey is a personalised development experience designed to help you lead yourself and others more intentionally.
+MQ is built on a simple belief: the managers and leaders who make a lasting difference aren't just skilled — they have the right mindset. The ability to lead themselves first. To stay clear and grounded under pressure. To bring out the best in the people around them.
 
-You've been invited to take the MQ Assessment as part of ${cohortName} at ${companyName}. It takes around 5 minutes and gives you a personalised MQ score and insights across 6 dimensions of mindset intelligence.
+That's what we're here to build with you.
+
+Here's how it works:
+
+Step 1 — Get your MQ profile
+Start with the MQ Assessment — around 15 minutes — and get a personalised score across the 7 dimensions of mindset intelligence behind effective people managers and leaders. This is your baseline. You can also invite colleagues to complete a short 360 survey, so you can see how others perceive you against how you see yourself.
+
+Step 2 — Start building
+Get daily challenges targeted at your biggest development areas, delivered straight to your dashboard. And when you're ready to go deeper, your three coaching zones are waiting — open 24/7 and always confidential:
+
+- The Coaching Room — confidentially discuss any challenge or situation you're facing
+- MQ Gym — build the mental muscles behind all 7 MQ dimensions and explore the science and psychology behind them
+- Culture Lab — be coached on how to build a happy, high-performing team culture
+
+Step 3 — Track your growth
+Reassess over time to see how your scores shift — and more importantly, notice how you show up differently when it counts.
+
+The leaders who make the biggest impact never stop building. Your next growth chapter starts here!
 
 Begin your MQ Assessment: ${inviteUrl}
 
-Looking forward to your journey,
+We look forward to supporting you in your journey,
 Maria & Richard
 MQ
 
