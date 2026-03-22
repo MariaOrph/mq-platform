@@ -45,7 +45,7 @@ Return ONLY a valid JSON object with keys: title, teaser, insight, exercise. No 
     return JSON.parse(text)
   } catch {
     return {
-      title:    `Living ${valueName}`,
+      title:    `Living your company value '${valueName}'`,
       teaser:   `What does ${valueName} really look like in action today?`,
       insight:  `${valueName} is more than a wall poster — it shows up in every decision, conversation, and moment of pressure. Leaders who consciously embody their company's values set the standard for what is normal on their teams.`,
       exercise: `Think of one moment in the past week where ${valueName} was either clearly demonstrated or clearly missing in your own behaviour. What happened, and what would it look like to fully embody this value in your next interaction with your team?`,
