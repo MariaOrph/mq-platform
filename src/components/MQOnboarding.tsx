@@ -126,13 +126,13 @@ const SLIDES = [
           {
             step: '1',
             label: 'Get your MQ profile',
-            desc: 'Take the MQ Assessment (~15 mins) and get a personalised score across the 7 dimensions of leadership mindset. Your baseline — and the start of everything. Invite colleagues for a 360 view.',
+            desc: 'Take the MQ Assessment (~15 mins) and get a personalised score across the 7 MQ dimensions, as well as how fully you are living your company\'s values. Your baseline — and the start of everything. Invite colleagues for a 360 view.',
             color: '#0AF3CD',
           },
           {
             step: '2',
             label: 'Start building',
-            desc: 'Daily challenges targeted to your profile, delivered to your dashboard. Plus three coaching zones available 24/7 — the Coaching Room, MQ Gym, and Culture Lab.',
+            desc: 'Daily challenges targeted to your profile, delivered to your dashboard. Plus three coaching zones available 24/7 — the Coaching Room, MQ Gym, and Culture Lab — all completely confidential, and tailored to you.',
             color: '#fdcb5e',
           },
           {
