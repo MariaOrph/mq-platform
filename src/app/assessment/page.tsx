@@ -39,6 +39,13 @@ export default function AssessmentPage() {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { setStep('welcome'); return }
 
+      // Pre-populate first name from profile so we don't ask again
+      const { data: prof } = await supabase
+        .from('profiles').select('full_name').eq('id', session.user.id).single()
+      if (prof?.full_name?.trim()) {
+        setFirstName(prof.full_name.trim().split(' ')[0])
+      }
+
       const { data: existing } = await supabase
         .from('assessments')
         .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at')
@@ -230,20 +237,6 @@ export default function AssessmentPage() {
         <p className="text-sm text-center mb-8" style={{ color: '#05A88E' }}>
           This helps us personalise your results.
         </p>
-
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
-            Your first name
-          </label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-            placeholder="Enter your first name"
-            className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
-            style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
-          />
-        </div>
 
         <div className="mb-6">
           <label className="block text-sm font-medium mb-3" style={{ color: '#0A2E2A' }}>

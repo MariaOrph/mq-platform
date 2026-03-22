@@ -51,6 +51,10 @@ export default function SetupPage() {
       setError('Please enter your first name.')
       return
     }
+    if (!lastName.trim()) {
+      setError('Please enter your last name.')
+      return
+    }
     if (password.length < 8) {
       setError('Password must be at least 8 characters.')
       return
@@ -135,13 +139,14 @@ export default function SetupPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
-                  Last name
+                  Last name <span style={{ color: '#0AF3CD' }}>*</span>
                 </label>
                 <input
                   type="text"
                   value={lastName}
                   onChange={e => setLastName(e.target.value)}
-                  placeholder="Optional"
+                  placeholder="Smith"
+                  required
                   className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
                   style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
                 />
@@ -200,7 +205,7 @@ export default function SetupPage() {
 
             <button
               type="submit"
-              disabled={submitting || !firstName || !password || !confirm}
+              disabled={submitting || !firstName || !lastName || !password || !confirm}
               className="w-full py-3 rounded-xl text-sm font-semibold disabled:opacity-40 hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
             >

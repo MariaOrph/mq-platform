@@ -300,7 +300,21 @@ export default function ParticipantDashboard() {
       window.location.href = '/unauthorised'; return
     }
 
-    setProfile({ id: prof.id, full_name: prof.full_name, email: prof.email })
+    // If profile has no full_name, fall back to first_name saved during assessment
+    let resolvedName = prof.full_name
+    if (!resolvedName?.trim()) {
+      const { data: nameRow } = await supabase
+        .from('assessments')
+        .select('first_name')
+        .eq('participant_id', authSession.user.id)
+        .not('first_name', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (nameRow?.first_name?.trim()) resolvedName = nameRow.first_name.trim()
+    }
+
+    setProfile({ id: prof.id, full_name: resolvedName, email: prof.email })
 
     const { data: assessments } = await supabase
       .from('assessments')
