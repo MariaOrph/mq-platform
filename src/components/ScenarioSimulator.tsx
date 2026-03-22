@@ -537,12 +537,10 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   // ── Idle / lobby ────────────────────────────────────────────────────────────
 
   if (phase === 'idle') {
-    const levelIdx    = stats?.levelIndex ?? 0
-    const levelColour = LEVEL_COLOURS[Math.min(levelIdx, LEVEL_COLOURS.length - 1)]
-    const nextLevel   = stats?.nextLevel
-    const xpForNext   = stats?.xpForNext ?? 0
-    const xpProgress  = stats?.xpProgress ?? 0
-    const progressPct = xpForNext ? Math.round((xpProgress / xpForNext) * 100) : 100
+    const earnedStars  = stats ? Object.values(stats.bestByScenario).reduce((sum, b) => sum + b.stars, 0) : 0
+    const maxStars     = SCENARIOS.length * 3
+    const hasPlayed    = stats && stats.runCount > 0
+    const allPerfect   = earnedStars === maxStars
 
     return (
       <div style={{ padding: '0 0 24px' }}>
@@ -552,55 +550,43 @@ export default function ScenarioSimulator({ token }: { token: string }) {
             <p className="text-sm font-semibold" style={{ color: '#0A2E2A', marginBottom: 2 }}>Play the Simulator</p>
             <p className="text-xs" style={{ color: '#9CA3AF' }}>Ready to put your instincts to the test?</p>
           </div>
-          {!loadingStats && stats && (
+          {!loadingStats && hasPlayed && (
             <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: levelColour, background: `${levelColour}18`, padding: '3px 8px', borderRadius: 20 }}>
-                {stats.currentLevel}
-              </span>
-              <p style={{ fontSize: 11, color: '#9CA3AF', marginTop: 4 }}>{stats.totalXp} XP total</p>
+              <span style={{ fontSize: 13, fontWeight: 800, color: '#FBBF24' }}>{'★'.repeat(earnedStars)}{'☆'.repeat(maxStars - earnedStars)}</span>
+              <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>{earnedStars} / {maxStars} stars</p>
             </div>
           )}
         </div>
 
-        {/* XP progress bar */}
-        {!loadingStats && stats && stats.nextLevel && (
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: 10, color: '#9CA3AF' }}>{stats.xpProgress} / {stats.xpForNext} XP to reach <strong style={{ color: '#6B7280' }}>{stats.nextLevel}</strong></span>
-              <span style={{ fontSize: 10, color: '#9CA3AF' }}>{progressPct}%</span>
-            </div>
-            <div style={{ height: 5, borderRadius: 3, background: '#F3F4F6', overflow: 'hidden' }}>
-              <div style={{ height: '100%', borderRadius: 3, background: levelColour, width: `${progressPct}%`, transition: 'width 0.6s ease' }} />
-            </div>
-            <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 5 }}>
-              XP (experience points) are earned each time you complete a scenario — the better your responses, the more you earn.
-            </p>
-          </div>
-        )}
-        {!loadingStats && stats && !stats.nextLevel && (
+        {/* Perfect score banner */}
+        {!loadingStats && allPerfect && (
           <div style={{ marginBottom: 20, padding: '10px 14px', background: '#FEF5D9', borderRadius: 10, textAlign: 'center' }}>
-            <span style={{ fontSize: 12, color: '#B45309', fontWeight: 600 }}>🏆 Max level reached — Exceptional Manager</span>
+            <span style={{ fontSize: 12, color: '#B45309', fontWeight: 600 }}>🏆 Perfect score — all 12 stars earned!</span>
           </div>
         )}
 
-        {/* Best scores per scenario */}
-        {!loadingStats && stats && Object.keys(stats.bestByScenario).length > 0 && (
+        {/* Scenario grid */}
+        {!loadingStats && (
           <div style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Your Best</p>
+            {!hasPlayed && (
+              <p style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 10 }}>
+                4 scenarios · 3 rounds each · earn up to 3 ★ per scenario
+              </p>
+            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {SCENARIOS.map(s => {
-                const best = stats.bestByScenario[s.id]
-                if (!best) return null
+                const best = stats?.bestByScenario[s.id]
                 return (
-                  <div key={s.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#F9FAFB', borderRadius: 8 }}>
+                  <div key={s.id} style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '9px 12px', background: best ? '#FAFAFA' : '#F9FAFB',
+                    borderRadius: 10, border: '1px solid #F0F0F0',
+                  }}>
                     <div>
-                      <span style={{ fontSize: 12, color: '#0A2E2A', fontWeight: 500 }}>{s.title}</span>
+                      <span style={{ fontSize: 12, color: '#0A2E2A', fontWeight: 600 }}>{s.title}</span>
                       <span style={{ fontSize: 11, color: '#9CA3AF', marginLeft: 6 }}>{s.tag}</span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <Stars count={best.stars} size={14} />
-                      <span style={{ fontSize: 11, color: '#6B7280' }}>{best.xp_earned} XP</span>
-                    </div>
+                    <Stars count={best?.stars ?? 0} size={14} />
                   </div>
                 )
               })}
@@ -617,10 +603,10 @@ export default function ScenarioSimulator({ token }: { token: string }) {
             border: 'none', cursor: 'pointer',
           }}
         >
-          {stats && stats.runCount > 0 ? 'Play Again' : 'Start Scenario'}
+          {hasPlayed ? 'Play Again →' : 'Start →'}
         </button>
         <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 8 }}>
-          3 rounds per scenario · new situation each time
+          New scenario each time · can you get 3 stars on all 4?
         </p>
       </div>
     )
@@ -818,7 +804,6 @@ export default function ScenarioSimulator({ token }: { token: string }) {
 
   if (phase === 'complete' && scenario && result) {
     const stars        = result.stars
-    const levelColour  = LEVEL_COLOURS[Math.min(result.levelIndex, LEVEL_COLOURS.length - 1)]
     const finalScore   = roundScores.reduce((a, b) => a + b, 0)
     const maxScore     = scenario.rounds.length * 2
     const optimalCount = roundScores.filter(s => s === 2).length
@@ -867,24 +852,6 @@ export default function ScenarioSimulator({ token }: { token: string }) {
               </div>
             )
           })}
-        </div>
-
-        {/* XP earned */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '14px 18px', background: `${levelColour}12`, borderRadius: 12,
-          marginBottom: 18, border: `1px solid ${levelColour}25`,
-          animation: 'ssiXpCount 0.4s ease 0.35s both',
-        }}>
-          <div>
-            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '0 0 2px' }}>XP earned</p>
-            <p style={{ fontSize: 24, fontWeight: 800, color: levelColour, margin: 0, lineHeight: 1 }}>+{result.xpEarned}</p>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '0 0 2px' }}>Your level</p>
-            <p style={{ fontSize: 13, fontWeight: 700, color: levelColour, margin: 0 }}>{result.currentLevel}</p>
-            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '2px 0 0' }}>{result.totalXp} XP total</p>
-          </div>
         </div>
 
         {/* Buttons */}

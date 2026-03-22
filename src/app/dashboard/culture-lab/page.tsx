@@ -628,8 +628,8 @@ export default function CultureLabPage() {
           {/* ── Section 3: Scenario Simulator ───────────────────────────────── */}
           <div>
             <SectionHeader
-              title="Scenario Simulator"
-              subtitle="Practice real leadership situations · earn XP · level up"
+              title="Test Your Instincts"
+              subtitle="Real leadership situations. How would you handle it?"
             />
             <div className="rounded-2xl overflow-hidden"
                  style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
