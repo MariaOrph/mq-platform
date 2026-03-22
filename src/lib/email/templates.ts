@@ -63,7 +63,7 @@ export function inviteEmailHtml({
 
   return layout(`
     <h1 style="margin:0 0 20px;font-size:22px;font-weight:800;color:#0A2E2A;line-height:1.3;">
-      You've been invited to your MQ journey
+      You've been invited to start your MQ journey!
     </h1>
 
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
