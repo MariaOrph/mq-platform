@@ -1153,7 +1153,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                       Take a deeper dive
                     </p>
                     <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
-                      The science &amp; psychology behind this dimension
+                      Research &amp; insights
                     </p>
                   </div>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -1316,7 +1316,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
                 <div className="flex items-center gap-2">
                   <span style={{ fontSize: 18 }}>🔬</span>
                   <div>
-                    <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>The science behind</p>
+                    <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Research &amp; insights</p>
                     <p className="text-xs font-semibold" style={{ color: activeDim.color }}>{activeDim.name}</p>
                   </div>
                 </div>
