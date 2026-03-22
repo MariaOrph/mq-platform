@@ -40,6 +40,16 @@ export default function InvitePage() {
           await redirectAfterAuth(supabase)
           return
         }
+        // OTP tokens are single-use — clicking the link a second time always fails here.
+        // But the first click may have already created a valid session (e.g. the user
+        // opened the link, got to /auth/setup, and then clicked the link again before
+        // completing setup). In that case, honour the existing session rather than
+        // showing a "link expired" error.
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session) {
+          await redirectAfterAuth(supabase)
+          return
+        }
         window.location.href = '/login?error=link_expired'
         return
       }
