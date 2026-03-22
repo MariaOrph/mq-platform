@@ -36,6 +36,14 @@ interface Message {
   pending?: boolean
 }
 
+
+interface DeepDiveCard {
+  researcher: string
+  work:       string
+  tagline:    string
+  points:     string[]
+}
+
 // ── Topic config ──────────────────────────────────────────────────────────────
 
 const TOPICS: Record<Topic, TopicConfig> = {
@@ -101,6 +109,186 @@ const TOPICS: Record<Topic, TopicConfig> = {
   },
 }
 
+// ── Dig Deeper data ─────────────────────────────────────────────────────────
+
+const CULTURE_LAB_DEEP_DIVE: Record<Topic, DeepDiveCard[]> = {
+  values: [
+    {
+      researcher: 'Edgar Schein',
+      work: 'Organizational Culture and Leadership (1985, updated 2017)',
+      tagline: 'Culture lives at the level of assumptions — not values on walls',
+      points: [
+        'Culture operates at three levels: visible artifacts (behaviours, rituals, symbols), espoused values (what the organisation says it stands for), and underlying assumptions (the unconscious beliefs that actually drive behaviour).',
+        'Leaders shape underlying assumptions through what they pay attention to, what they reward, and what they tolerate under pressure — not through what they say.',
+        'The gap between stated and lived values almost always reflects a mismatch between espoused values and underlying assumptions.',
+        'Real culture change requires surfacing and examining those assumptions — not rewriting the values statement.',
+      ],
+    },
+    {
+      researcher: 'Brené Brown',
+      work: 'Dare to Lead (2018)',
+      tagline: 'Values only become real when you use them to say no',
+      points: [
+        'Research finding: most people cannot name their top two values without prompting — and fewer still can articulate what those values look like as specific behaviours.',
+        'Her method: identify two core values, translate each into three specific, observable behaviours, and use them as explicit decision-making criteria when things are hard.',
+        'Values are most tested under pressure — the moment when living them costs you something.',
+        'Leaders who cannot tolerate being wrong consistently build cultures of self-protection around them.',
+      ],
+    },
+    {
+      researcher: 'Daniel Coyle',
+      work: 'The Culture Code (2018)',
+      tagline: 'Culture travels through belonging cues, not mission statements',
+      points: [
+        'High-performing cultures are built through belonging cues — small, repeated signals that communicate safety, membership, and shared purpose.',
+        'The most powerful belonging cues communicate: I see you. I know you matter. We are doing something important together.',
+        'Leaders transmit culture in micro-moments: how they start a meeting, respond to a mistake, give credit, or handle a crisis.',
+        'Culture is not what leaders say — it is the pattern of behaviour their teams observe and replicate.',
+      ],
+    },
+  ],
+  'psych-safety': [
+    {
+      researcher: 'Amy Edmondson',
+      work: 'The Fearless Organization (Harvard, 1999 — updated 2018)',
+      tagline: 'Psychological safety is the single strongest predictor of team learning and performance',
+      points: [
+        'Psychological safety is the shared belief that the team is safe for interpersonal risk-taking — speaking up, asking questions, admitting mistakes, and challenging ideas.',
+        'Her original research in hospital teams found that higher-performing teams appeared to make more errors — because they felt safe enough to report them.',
+        'Safety is created or destroyed by leader behaviour, particularly the response in the moment when someone speaks up with bad news, a mistake, or an unpopular view.',
+        'The most powerful building behaviours: explicitly inviting challenge, modelling fallibility, and following through when someone raises a concern.',
+      ],
+    },
+    {
+      researcher: 'Timothy Clark',
+      work: '4 Stages of Psychological Safety (2020)',
+      tagline: 'Teams move through four stages — and leaders often skip the early ones',
+      points: [
+        'Stage 1 — Inclusion safety: I feel safe being myself and belonging to the team.',
+        'Stage 2 — Learner safety: I feel safe asking questions, making mistakes, and experimenting.',
+        'Stage 3 — Contributor safety: I feel safe applying my skills and contributing meaningfully.',
+        'Stage 4 — Challenger safety: I feel safe challenging the status quo and questioning decisions.',
+        'Leaders who push for challenger safety without having built inclusion and learner safety first will find their efforts backfire.',
+      ],
+    },
+    {
+      researcher: 'Anita Woolley',
+      work: 'Collective Intelligence (Science, 2010)',
+      tagline: 'Team intelligence is predicted by social sensitivity — not individual IQ',
+      points: [
+        'A landmark study of 699 people working in groups found that what predicts team performance is not average or maximum individual IQ.',
+        'The strongest predictor is collective intelligence: social sensitivity — reading others\' emotional states — and equality of conversational turn-taking.',
+        'Teams where one or two people dominate the conversation consistently underperform their collective potential.',
+        'This is hard scientific evidence that psychological safety is not a soft concern: it directly determines whether a team uses its full intelligence.',
+      ],
+    },
+    {
+      researcher: 'Edgar Schein',
+      work: 'Humble Inquiry (2013)',
+      tagline: 'Asking with genuine curiosity builds more safety than any process',
+      points: [
+        'Humble inquiry is the art of drawing someone out by asking questions to which you do not already know the answer.',
+        'Most leaders are trained to tell, diagnose, and direct — switching to genuine inquiry is counter-cultural and requires deliberate practice.',
+        'When leaders ask questions they already know the answer to, people learn quickly that it is not safe to diverge from the expected response.',
+        'The discipline is to stay in genuine curiosity — especially when under time pressure or when the answer matters.',
+      ],
+    },
+    {
+      researcher: 'Google Project Aristotle',
+      work: 'Team Effectiveness Research (2012–2016)',
+      tagline: 'Psychological safety beat every other factor in predicting team success at Google',
+      points: [
+        'A two-year study of 180 Google teams tested dozens of factors: team composition, individual skills, seniority, structure, and more.',
+        'The single most important factor was psychological safety — teams where people felt safe to take interpersonal risks significantly outperformed those where they did not.',
+        'The finding held across team types, functions, and seniority levels — making it one of the most robust real-world findings on team performance.',
+        'Critically: it was not who was on the team that mattered most — it was how they interacted.',
+      ],
+    },
+  ],
+  accountability: [
+    {
+      researcher: 'Kim Scott',
+      work: 'Radical Candor (2017)',
+      tagline: 'Ruinous Empathy is the most common leadership failure mode',
+      points: [
+        'Radical Candor sits at the intersection of caring personally and challenging directly — both are required simultaneously.',
+        'Ruinous Empathy (high care, low challenge) is the most common failure mode: leaders who are kind to people but not honest with them.',
+        'The result: poor performance persists, the person never gets to improve, and the team sees that standards are not enforced.',
+        'The reframe: real accountability is an act of respect. Withholding honest feedback is not kindness — it is abdication.',
+      ],
+    },
+    {
+      researcher: 'Kerry Patterson & Joseph Grenny',
+      work: 'Crucial Accountability (2013)',
+      tagline: 'The gap between promising and performing is the central accountability challenge',
+      points: [
+        'When someone fails to meet a commitment, the first question is not why they didn\'t do it, but whether the expectation was truly clear and agreed.',
+        'Effective accountability conversations: name the specific commitment missed (not character), invite their perspective, agree on what changes, and establish a clear check-in.',
+        'Delay is the most corrosive response: every day a missed commitment goes unaddressed, the team recalibrates what the real standard is.',
+        'The goal is not punishment or compliance — it is restoring the agreement and rebuilding confidence that commitments will be kept.',
+      ],
+    },
+    {
+      researcher: 'Chris Argyris',
+      work: 'Defensive Routines and the Ladder of Inference',
+      tagline: 'Leaders avoid accountability conversations because of stories they never test',
+      points: [
+        'The ladder of inference: we select data from what we observe, add meaning, draw conclusions, and adopt beliefs — all rapidly and invisibly, without testing any of it.',
+        'By the time a leader decides to avoid a conversation, they have typically climbed the entire ladder based on unexamined assumptions.',
+        'Defensive routines are organisational patterns that protect everyone from embarrassment by making real performance issues undiscussable.',
+        'The discipline before any accountability conversation: notice your own ladder. What are you assuming? What have you not actually checked?',
+      ],
+    },
+  ],
+  inclusion: [
+    {
+      researcher: 'Iris Bohnet',
+      work: 'What Works: Gender Equality by Design (Harvard Kennedy School, 2016)',
+      tagline: 'Structural changes outperform good intentions — every time',
+      points: [
+        'The most rigorous research on what actually reduces bias: awareness training rarely changes behaviour in the moment of decision.',
+        'Structural solutions have measurable effects: blinded CV reviews, structured interviews with consistent criteria, evaluation rubrics defined before assessment begins.',
+        'The most powerful question a leader can ask: what in our current process makes biased outcomes more likely — and what can I change?',
+        'De-biasing the process is more reliable than de-biasing the person.',
+      ],
+    },
+    {
+      researcher: 'Juliet Bourke',
+      work: 'Which Two Heads Are Better Than One (Deloitte research, 2016)',
+      tagline: 'Six traits distinguish genuinely inclusive leaders from those who mean well',
+      points: [
+        'Commitment: inclusion is visible, personal, and deliberate — not delegated to HR.',
+        'Courage: calling out exclusion when it happens, even when uncomfortable.',
+        'Cognizance of bias: actively acknowledging personal blind spots and systemic patterns.',
+        'Curiosity: genuine interest in others\' perspectives with judgment suspended.',
+        'Cultural intelligence: attentiveness to how context shapes experience and contribution.',
+        'Collaboration: actively seeking diverse input before making decisions — not after.',
+      ],
+    },
+    {
+      researcher: 'Claude Steele',
+      work: 'Whistling Vivaldi: How Stereotypes Affect Us (2010)',
+      tagline: 'Stereotype threat is a performance issue, not just a fairness issue',
+      points: [
+        'Stereotype threat: when people are aware of a negative stereotype about a group they belong to, the fear of confirming it consumes cognitive resources and impairs performance.',
+        'The effect is powerful enough to measurably reduce performance in interviews, tests, and high-stakes moments — even among highly capable people.',
+        'Leaders reduce stereotype threat by: affirming belonging explicitly, giving high-standard feedback paired with expressed confidence, and avoiding identity salience in evaluation moments.',
+        'Inclusion is not a fairness agenda in isolation — it is about creating conditions where everyone can actually perform at their level.',
+      ],
+    },
+    {
+      researcher: 'David Rock / NeuroLeadership Institute',
+      work: 'SCARF Model (2008)',
+      tagline: 'Exclusion triggers the same threat response as physical danger',
+      points: [
+        'The brain monitors five social domains for threat: Status, Certainty, Autonomy, Relatedness, and Fairness.',
+        'Exclusion dynamics almost always activate multiple SCARF threats simultaneously — Status (being overlooked), Relatedness (not feeling in-group), and Fairness (unequal standards).',
+        'When these threats fire, the threat response reduces cognitive capacity — the same prefrontal shutdown that happens under physical stress.',
+        'A leader who repeatedly triggers SCARF threats — even unintentionally — is directly impairing the capability and engagement of those affected.',
+      ],
+    },
+  ],
+}
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function formatDate(iso: string) {
@@ -124,6 +312,49 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle: string })
   )
 }
 
+// ── Expandable researcher card ───────────────────────────────────────────────
+
+function ExpandableCard({ card, color, bg }: { card: DeepDiveCard; color: string; bg: string }) {
+  const [open, setOpen] = useState(false)
+  const initial = card.researcher.split(' ').filter(w => w.length > 1).pop()?.charAt(0) ?? '?'
+  return (
+    <div className="rounded-2xl overflow-hidden cursor-pointer select-none"
+         style={{ backgroundColor: 'white', border: `1px solid ${color}30`, boxShadow: '0 2px 8px rgba(10,46,42,0.06)' }}
+         onClick={() => setOpen(v => !v)}>
+      <div style={{ height: 3, background: `linear-gradient(90deg, ${color}60, ${color})` }} />
+      <div className="p-4">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold"
+               style={{ backgroundColor: bg, color }}>
+            {initial}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-sm leading-tight" style={{ color: '#0A2E2A' }}>{card.researcher}</p>
+            <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{card.work}</p>
+            <p className="text-xs font-semibold mt-1.5" style={{ color }}>{card.tagline}</p>
+          </div>
+          <div className="flex-shrink-0 mt-0.5" style={{ color: '#9CA3AF' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                 style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+        {open && (
+          <div className="mt-3 space-y-2 pl-12">
+            {card.points.map((point, j) => (
+              <div key={j} className="flex gap-2 items-start">
+                <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
+                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{point}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function CultureLabPage() {
@@ -131,7 +362,7 @@ export default function CultureLabPage() {
   const supabase = createClient()
 
   const [token,       setToken]       = useState<string | null>(null)
-  const [view,        setView]        = useState<'landing' | 'chat'>('landing')
+  const [view,        setView]        = useState<'landing' | 'chat' | 'deep-dive'>('landing')
   const [activeTopic, setActiveTopic] = useState<TopicConfig | null>(null)
 
   // Chat state
@@ -144,6 +375,7 @@ export default function CultureLabPage() {
   const [msgLoaded,      setMsgLoaded]      = useState(false)
   const [showHistory,    setShowHistory]    = useState(false)
   const [deletingId,     setDeletingId]     = useState<string | null>(null)
+  const [deepDiveTopic,  setDeepDiveTopic]  = useState<Topic | null>(null)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLTextAreaElement>(null)
@@ -325,6 +557,11 @@ export default function CultureLabPage() {
                                 style={{ backgroundColor: topic.color, color: '#0A2E2A' }}>
                           Start conversation →
                         </button>
+                        <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
+                                className="w-full mt-2 py-2 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
+                                style={{ backgroundColor: 'transparent', color: topic.color, border: `1px solid ${topic.color}40` }}>
+                          Dig deeper into the science →
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -357,11 +594,18 @@ export default function CultureLabPage() {
                           <p className="font-bold text-sm" style={{ color: '#0A2E2A' }}>{topic.name}</p>
                           <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>{topic.tagline}</p>
                         </div>
-                        <button onClick={() => openTopic(topic)}
-                                className="px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition-opacity flex-shrink-0"
-                                style={{ backgroundColor: topic.color, color: topic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
-                          Open →
-                        </button>
+                        <div className="flex flex-col gap-1.5 flex-shrink-0 items-stretch">
+                          <button onClick={() => openTopic(topic)}
+                                  className="px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition-opacity"
+                                  style={{ backgroundColor: topic.color, color: topic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
+                            Open →
+                          </button>
+                          <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
+                                  className="px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity text-center"
+                                  style={{ backgroundColor: 'transparent', color: topic.color, border: `1px solid ${topic.color}40` }}>
+                            Science
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -393,6 +637,59 @@ export default function CultureLabPage() {
 
         </div>
       </main>
+    )
+  }
+
+
+  // ── DEEP DIVE VIEW ──────────────────────────────────────────────────────────
+
+  if (view === 'deep-dive' && deepDiveTopic) {
+    const ddTopic = TOPICS[deepDiveTopic]
+    const ddCards = CULTURE_LAB_DEEP_DIVE[deepDiveTopic]
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9' }}>
+
+        {/* Header */}
+        <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
+            <button onClick={() => setView('landing')}
+                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-80"
+                    style={{ color: '#B9F8DD', border: '1px solid rgba(185,248,221,0.3)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+                   style={{ backgroundColor: ddTopic.bg }}>
+                {ddTopic.emoji}
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold" style={{ color: 'white' }}>{ddTopic.name}</p>
+                <p className="text-xs" style={{ color: '#B9F8DD' }}>The science behind this topic</p>
+              </div>
+            </div>
+            <button onClick={() => openTopic(ddTopic)}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: ddTopic.color, color: ddTopic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
+              Start coaching →
+            </button>
+          </div>
+        </div>
+
+        {/* Cards */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-2xl mx-auto px-6 py-6 space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
+              {ddCards.length} researcher{ddCards.length !== 1 ? 's' : ''} · tap any card to expand
+            </p>
+            {ddCards.map((c, i) => (
+              <ExpandableCard key={i} card={c} color={ddTopic.color} bg={ddTopic.bg} />
+            ))}
+          </div>
+        </div>
+
+      </div>
     )
   }
 
