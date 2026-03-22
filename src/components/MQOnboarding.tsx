@@ -44,13 +44,13 @@ const SLIDES = [
     body: 'MQ maps the seven dimensions of your inner world most directly linked to how you manage and lead. All grounded in evidence from psychology, neuroscience, and leadership research.\n\nAnd unlike psychometrics that measure your type and leave you there, MQ measures your capacity for effective leadership, and then helps you build it.',
     visual: (() => {
       const dims = [
-        { lines: ['Self-', 'awareness'],       color: '#fdcb5e' },
-        { lines: ['Ego &', 'identity'],        color: '#EC4899' },
-        { lines: ['Emotional', 'regulation'],  color: '#ff7b7a' },
-        { lines: ['Cognitive', 'flexibility'], color: '#ff9f43' },
-        { lines: ['Values &', 'purpose'],      color: '#00c9a7' },
-        { lines: ['Relational', 'mindset'],    color: '#2d4a8a' },
-        { lines: ['Adaptive', 'resilience'],   color: '#a78bfa' },
+        { lines: ['Self-', 'awareness'],       color: '#fdcb5e', textColor: '#0A2E2A' },
+        { lines: ['Ego &', 'identity'],        color: '#EC4899', textColor: '#ffffff' },
+        { lines: ['Emotional', 'regulation'],  color: '#ff7b7a', textColor: '#0A2E2A' },
+        { lines: ['Cognitive', 'flexibility'], color: '#ff9f43', textColor: '#0A2E2A' },
+        { lines: ['Values &', 'purpose'],      color: '#00c9a7', textColor: '#0A2E2A' },
+        { lines: ['Relational', 'mindset'],    color: '#2d4a8a', textColor: '#ffffff' },
+        { lines: ['Adaptive', 'resilience'],   color: '#a78bfa', textColor: '#0A2E2A' },
       ]
       const cx = 130, cy = 130, R = 118, r = 50
       const gapRad = 0.035
@@ -92,7 +92,7 @@ const SLIDES = [
                   <text
                     transform={`translate(${tp.x.toFixed(1)},${tp.y.toFixed(1)}) rotate(${rot.toFixed(1)})`}
                     textAnchor="middle"
-                    fill="white"
+                    fill={dim.textColor}
                     fontSize="7.5"
                     fontWeight="800"
                   >
