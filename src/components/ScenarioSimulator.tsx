@@ -363,13 +363,44 @@ const LEVELS = [
   { label: 'Exceptional Manager', minXp: 1000 },
 ]
 
+// ── Animation styles ──────────────────────────────────────────────────────────
+
+const GAME_STYLES = `
+  @keyframes ssiFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ssiScalePop {
+    0%   { opacity: 0; transform: scale(0.7); }
+    65%  { transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes ssiStarPop {
+    0%   { opacity: 0; transform: scale(0) rotate(-20deg); }
+    60%  { transform: scale(1.25) rotate(6deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes ssiSlideLeft {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes ssiXpCount {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+`
+
 // ── Stars component ───────────────────────────────────────────────────────────
 
-function Stars({ count, size = 18 }: { count: number; size?: number }) {
+function Stars({ count, size = 18, animate = false }: { count: number; size?: number; animate?: boolean }) {
   return (
-    <span style={{ display: 'inline-flex', gap: 2 }}>
+    <span style={{ display: 'inline-flex', gap: 4 }}>
       {[1, 2, 3].map(i => (
-        <svg key={i} width={size} height={size} viewBox="0 0 20 20" fill={i <= count ? '#FBBF24' : '#E5E7EB'}>
+        <svg
+          key={i} width={size} height={size} viewBox="0 0 20 20"
+          fill={i <= count ? '#FBBF24' : '#E5E7EB'}
+          style={animate ? { animation: `ssiStarPop 0.45s cubic-bezier(0.175,0.885,0.32,1.275) ${i * 0.13}s both` } : undefined}
+        >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
         </svg>
       ))}
@@ -391,6 +422,7 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   const [roundScores, setRoundScores] = useState<number[]>([])
   const [saving, setSaving] = useState(false)
   const [result, setResult] = useState<{ stars: number; xpEarned: number; totalXp: number; currentLevel: string; levelIndex: number } | null>(null)
+  const [hoveredChoice, setHoveredChoice] = useState<number | null>(null)
 
   // Pick a random scenario (avoiding the last one played if possible)
   function pickScenario() {
@@ -588,33 +620,66 @@ export default function ScenarioSimulator({ token }: { token: string }) {
 
   if (phase === 'choosing' && scenario && currentRound) {
     return (
-      <div style={{ padding: '0 0 24px' }}>
+      <div style={{ padding: '0 0 24px', animation: 'ssiFadeUp 0.3s ease' }}>
+        <style>{GAME_STYLES}</style>
+
         {/* Progress */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
+        <div style={{ display: 'flex', gap: 6, marginBottom: 18 }}>
           {scenario.rounds.map((_, i) => (
-            <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= roundIndex ? '#0A2E2A' : '#E5E7EB' }} />
+            <div key={i} style={{
+              flex: 1, height: 5, borderRadius: 3,
+              background: i < roundIndex ? '#0A2E2A' : i === roundIndex ? '#0AF3CD' : '#E5E7EB',
+              transition: 'background 0.4s ease',
+            }} />
           ))}
         </div>
 
-        <p style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <p style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
           Round {roundIndex + 1} of {scenario.rounds.length}
         </p>
-        <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.65, marginBottom: 20 }}>{currentRound.situation}</p>
+        <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.65, marginBottom: 18 }}>{currentRound.situation}</p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {currentRound.choices.map((choice, idx) => (
-            <button
-              key={idx}
-              onClick={() => selectChoice(idx)}
-              style={{
-                textAlign: 'left', padding: '13px 14px', borderRadius: 10,
-                border: '1.5px solid #E5E7EB', background: '#fff',
-                fontSize: 13, color: '#374151', lineHeight: 1.55, cursor: 'pointer',
-              }}
-            >
-              {choice.label}
-            </button>
-          ))}
+        {/* Prompt */}
+        <p style={{ fontSize: 11, fontWeight: 700, color: '#05A88E', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          Choose your response ↓
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+          {currentRound.choices.map((choice, idx) => {
+            const hovered = hoveredChoice === idx
+            return (
+              <button
+                key={idx}
+                onClick={() => selectChoice(idx)}
+                onMouseEnter={() => setHoveredChoice(idx)}
+                onMouseLeave={() => setHoveredChoice(null)}
+                style={{
+                  textAlign: 'left', padding: '12px 14px', borderRadius: 12,
+                  border: `1.5px solid ${hovered ? '#0A2E2A' : '#E5E7EB'}`,
+                  background: hovered ? '#F0FDF9' : '#fff',
+                  fontSize: 13, color: '#374151', lineHeight: 1.55, cursor: 'pointer',
+                  display: 'flex', alignItems: 'flex-start', gap: 10,
+                  transition: 'border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s',
+                  transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+                  boxShadow: hovered ? '0 4px 14px rgba(10,46,42,0.09)' : 'none',
+                  animation: `ssiSlideLeft 0.25s ease ${idx * 0.07}s both`,
+                }}
+              >
+                <span style={{
+                  width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
+                  background: hovered ? '#0A2E2A' : '#F3F4F6',
+                  color: hovered ? '#0AF3CD' : '#9CA3AF',
+                  fontSize: 10, fontWeight: 800,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.15s, color 0.15s',
+                  lineHeight: '1',
+                }}>
+                  {['A', 'B', 'C'][idx]}
+                </span>
+                <span style={{ flex: 1 }}>{choice.label}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
     )
@@ -625,35 +690,59 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   if (phase === 'reveal' && scenario && currentRound && selectedChoice) {
     const pts = selectedChoice.points
     const ptColour = pts === 2 ? '#059669' : pts === 1 ? '#D97706' : '#DC2626'
+    const ptBg     = pts === 2 ? '#F0FDF4' : pts === 1 ? '#FFFBEB' : '#FEF2F2'
     const ptLabel  = pts === 2 ? 'Best move' : pts === 1 ? 'Good instinct' : 'Room to grow'
+    const ptIcon   = pts === 2 ? '✓' : pts === 1 ? '~' : '✗'
+    const isLast   = roundIndex === scenario.rounds.length - 1
 
     return (
-      <div style={{ padding: '0 0 24px' }}>
+      <div style={{ padding: '0 0 24px', animation: 'ssiFadeUp 0.25s ease' }}>
+        <style>{GAME_STYLES}</style>
+
         {/* Progress */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
+        <div style={{ display: 'flex', gap: 6, marginBottom: 18 }}>
           {scenario.rounds.map((_, i) => (
-            <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= roundIndex ? '#0A2E2A' : '#E5E7EB' }} />
+            <div key={i} style={{
+              flex: 1, height: 5, borderRadius: 3,
+              background: i <= roundIndex ? '#0A2E2A' : '#E5E7EB',
+            }} />
           ))}
         </div>
 
-        {/* Choice badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: ptColour, background: `${ptColour}15`, padding: '3px 10px', borderRadius: 20 }}>
-            {ptLabel}
+        {/* Result badge */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16,
+          animation: 'ssiScalePop 0.35s cubic-bezier(0.175,0.885,0.32,1.275)',
+        }}>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            fontSize: 12, fontWeight: 700, color: ptColour,
+            background: `${ptColour}18`, padding: '5px 12px', borderRadius: 20,
+            border: `1px solid ${ptColour}30`,
+          }}>
+            <span style={{ fontSize: 13 }}>{ptIcon}</span> {ptLabel}
           </span>
-          <span style={{ fontSize: 12, color: '#9CA3AF' }}>+{pts} point{pts !== 1 ? 's' : ''}</span>
+          <span style={{ fontSize: 12, color: '#9CA3AF' }}>+{pts} / 2 pts</span>
         </div>
 
         {/* Consequence */}
-        <div style={{ marginBottom: 16, padding: '12px 14px', background: '#F9FAFB', borderRadius: 10, borderLeft: '3px solid #E5E7EB' }}>
-          <p style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>What happened</p>
-          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{selectedChoice.consequence}</p>
+        <div style={{
+          marginBottom: 12, padding: '12px 14px',
+          background: '#F9FAFB', borderRadius: 12, borderLeft: '3px solid #D1D5DB',
+          animation: 'ssiFadeUp 0.3s ease 0.1s both',
+        }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>What happened</p>
+          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, margin: 0 }}>{selectedChoice.consequence}</p>
         </div>
 
         {/* Coaching */}
-        <div style={{ marginBottom: 24, padding: '12px 14px', background: pts === 2 ? '#F0FDF4' : pts === 1 ? '#FFFBEB' : '#FEF2F2', borderRadius: 10, borderLeft: `3px solid ${ptColour}` }}>
-          <p style={{ fontSize: 11, fontWeight: 600, color: ptColour, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Coach says</p>
-          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{selectedChoice.coaching}</p>
+        <div style={{
+          marginBottom: 22, padding: '12px 14px',
+          background: ptBg, borderRadius: 12, borderLeft: `3px solid ${ptColour}`,
+          animation: 'ssiFadeUp 0.3s ease 0.18s both',
+        }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: ptColour, marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>Coach says</p>
+          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, margin: 0 }}>{selectedChoice.coaching}</p>
         </div>
 
         <button
@@ -663,9 +752,10 @@ export default function ScenarioSimulator({ token }: { token: string }) {
             width: '100%', padding: '13px 0', borderRadius: 12,
             background: '#0A2E2A', color: '#fff', fontSize: 14, fontWeight: 600,
             border: 'none', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1,
+            transition: 'opacity 0.2s',
           }}
         >
-          {saving ? 'Saving…' : roundIndex < scenario.rounds.length - 1 ? 'Next Round' : 'See Results'}
+          {saving ? 'Saving…' : isLast ? 'See Results →' : 'Next Round →'}
         </button>
       </div>
     )
@@ -674,26 +764,74 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   // ── Complete ─────────────────────────────────────────────────────────────────
 
   if (phase === 'complete' && scenario && result) {
-    const stars       = result.stars
-    const levelColour = LEVEL_COLOURS[Math.min(result.levelIndex, LEVEL_COLOURS.length - 1)]
-    const finalScore  = roundScores.reduce((a, b) => a + b, 0)
+    const stars        = result.stars
+    const levelColour  = LEVEL_COLOURS[Math.min(result.levelIndex, LEVEL_COLOURS.length - 1)]
+    const finalScore   = roundScores.reduce((a, b) => a + b, 0)
+    const maxScore     = scenario.rounds.length * 2
+    const optimalCount = roundScores.filter(s => s === 2).length
 
     return (
-      <div style={{ padding: '0 0 24px', textAlign: 'center' }}>
-        <div style={{ marginBottom: 16 }}>
-          <Stars count={stars} size={32} />
+      <div style={{ padding: '0 0 24px', animation: 'ssiFadeUp 0.3s ease' }}>
+        <style>{GAME_STYLES}</style>
+
+        {/* Stars */}
+        <div style={{ textAlign: 'center', marginBottom: 12 }}>
+          <Stars count={stars} size={36} animate />
         </div>
-        <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0A2E2A', marginBottom: 4 }}>
+
+        {/* Headline */}
+        <h3 style={{ fontSize: 20, fontWeight: 800, color: '#0A2E2A', marginBottom: 4, textAlign: 'center' }}>
           {stars === 3 ? 'Excellent leadership' : stars === 2 ? 'Solid approach' : 'Keep practising'}
         </h3>
-        <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 20 }}>
-          {finalScore} / 6 points · {scenario.title}
+        <p style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 18, textAlign: 'center' }}>
+          {scenario.title} · {finalScore}/{maxScore} pts · {optimalCount === 3 ? 'all 3 optimal responses' : optimalCount === 0 ? 'keep working at it' : `${optimalCount} of 3 optimal responses`}
         </p>
 
+        {/* Round breakdown */}
+        <div style={{ marginBottom: 18, borderRadius: 12, border: '1px solid #E5E7EB', overflow: 'hidden' }}>
+          {roundScores.map((score, i) => {
+            const c = score === 2 ? '#059669' : score === 1 ? '#D97706' : '#DC2626'
+            const l = score === 2 ? 'Best move' : score === 1 ? 'Good instinct' : 'Room to grow'
+            const icon = score === 2 ? '✓' : score === 1 ? '~' : '✗'
+            return (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '9px 14px', background: i % 2 === 0 ? '#fff' : '#F9FAFB',
+                borderBottom: i < roundScores.length - 1 ? '1px solid #E5E7EB' : 'none',
+                animation: `ssiFadeUp 0.3s ease ${i * 0.1}s both`,
+              }}>
+                <span style={{ fontSize: 12, color: '#6B7280', fontWeight: 500 }}>Round {i + 1}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{
+                    fontSize: 11, fontWeight: 700, color: c,
+                    background: `${c}12`, padding: '2px 9px', borderRadius: 10,
+                    display: 'flex', alignItems: 'center', gap: 4,
+                  }}>
+                    {icon} {l}
+                  </span>
+                  <span style={{ fontSize: 11, color: '#9CA3AF', minWidth: 28, textAlign: 'right' }}>{score}/2</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
         {/* XP earned */}
-        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', padding: '16px 28px', background: `${levelColour}12`, borderRadius: 14, marginBottom: 20 }}>
-          <span style={{ fontSize: 28, fontWeight: 800, color: levelColour }}>+{result.xpEarned} XP</span>
-          <span style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>{result.totalXp} total · {result.currentLevel}</span>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 18px', background: `${levelColour}12`, borderRadius: 12,
+          marginBottom: 18, border: `1px solid ${levelColour}25`,
+          animation: 'ssiXpCount 0.4s ease 0.35s both',
+        }}>
+          <div>
+            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '0 0 2px' }}>XP earned</p>
+            <p style={{ fontSize: 24, fontWeight: 800, color: levelColour, margin: 0, lineHeight: 1 }}>+{result.xpEarned}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '0 0 2px' }}>Your level</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: levelColour, margin: 0 }}>{result.currentLevel}</p>
+            <p style={{ fontSize: 11, color: '#9CA3AF', margin: '2px 0 0' }}>{result.totalXp} XP total</p>
+          </div>
         </div>
 
         {/* Buttons */}
@@ -702,11 +840,11 @@ export default function ScenarioSimulator({ token }: { token: string }) {
             onClick={startGame}
             style={{
               flex: 1, padding: '13px 0', borderRadius: 12,
-              background: '#0A2E2A', color: '#fff', fontSize: 13, fontWeight: 600,
+              background: '#0A2E2A', color: '#fff', fontSize: 13, fontWeight: 700,
               border: 'none', cursor: 'pointer',
             }}
           >
-            Play Again
+            Play Again →
           </button>
           <button
             onClick={() => setPhase('idle')}

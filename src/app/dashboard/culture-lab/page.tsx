@@ -566,7 +566,7 @@ export default function CultureLabPage() {
                         <button onClick={() => openTopic(topic)}
                                 className="w-full py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
                                 style={{ backgroundColor: topic.color, color: '#0A2E2A' }}>
-                          Start conversation →
+                          Coach me →
                         </button>
                         <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
                                 className="w-full mt-2 py-2 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity"
@@ -609,7 +609,7 @@ export default function CultureLabPage() {
                           <button onClick={() => openTopic(topic)}
                                   className="px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition-opacity"
                                   style={{ backgroundColor: topic.color, color: topic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
-                            Open →
+                            Coach me →
                           </button>
                           <button onClick={() => { setDeepDiveTopic(topic.id); setView('deep-dive') }}
                                   className="px-3 py-1.5 rounded-xl text-xs font-semibold hover:opacity-80 transition-opacity text-center"
@@ -683,7 +683,7 @@ export default function CultureLabPage() {
             <button onClick={() => openTopic(ddTopic)}
                     className="px-3 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 hover:opacity-90 transition-opacity"
                     style={{ backgroundColor: ddTopic.color, color: ddTopic.id === 'psych-safety' ? 'white' : '#0A2E2A' }}>
-              Start coaching →
+              Coach me →
             </button>
           </div>
         </div>
