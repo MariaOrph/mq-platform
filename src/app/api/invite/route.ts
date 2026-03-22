@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
       await resend.emails.send({
         from:    fromAddr,
         to:      email,
-        subject: "You've been invited to your MQ journey",
+        subject: "You've been invited to start your MQ journey!",
         html:    inviteEmailHtml({ firstName, cohortName, companyName, inviteUrl }),
         text:    inviteEmailText({ firstName, cohortName, companyName, inviteUrl }),
       })

@@ -99,7 +99,7 @@ export function inviteEmailHtml({
     <table cellpadding="0" cellspacing="0" style="margin:0 0 16px;width:100%;">
       <tr>
         <td style="padding:6px 0;font-size:14px;color:#444444;line-height:1.6;">
-          <strong style="color:#0A2E2A;">The Coaching Room</strong> — confidentially discuss any challenge or situation you're facing
+          <strong style="color:#0A2E2A;">The Coaching Room</strong> — discuss any challenge or situation you're facing
         </td>
       </tr>
       <tr>
@@ -109,7 +109,7 @@ export function inviteEmailHtml({
       </tr>
       <tr>
         <td style="padding:6px 0;font-size:14px;color:#444444;line-height:1.6;">
-          <strong style="color:#0A2E2A;">Culture Lab</strong> — be coached on how to build a happy, high-performing team culture
+          <strong style="color:#0A2E2A;">Culture Lab</strong> — strengthen the skills and mindset needed to build a happy, high-performing team culture
         </td>
       </tr>
     </table>
@@ -122,7 +122,7 @@ export function inviteEmailHtml({
     </p>
 
     <p style="margin:0 0 24px;font-size:15px;font-weight:600;color:#0A2E2A;line-height:1.6;">
-      The leaders who make the biggest impact never stop building. Your next growth chapter starts here!
+      The leaders who make the biggest impact never stop learning. Your next growth chapter starts here!
     </p>
 
     <!-- CTA Button -->
@@ -173,14 +173,14 @@ Start with the MQ Assessment — around 15 minutes — and get a personalised sc
 Step 2 — Start building
 Get daily challenges targeted at your biggest development areas, delivered straight to your dashboard. And when you're ready to go deeper, your three coaching zones are waiting — open 24/7 and always confidential:
 
-- The Coaching Room — confidentially discuss any challenge or situation you're facing
+- The Coaching Room — discuss any challenge or situation you're facing
 - MQ Gym — build the mental muscles behind all 7 MQ dimensions and explore the science and psychology behind them
-- Culture Lab — be coached on how to build a happy, high-performing team culture
+- Culture Lab — strengthen the skills and mindset needed to build a happy, high-performing team culture
 
 Step 3 — Track your growth
 Reassess over time to see how your scores shift — and more importantly, notice how you show up differently when it counts.
 
-The leaders who make the biggest impact never stop building. Your next growth chapter starts here!
+The leaders who make the biggest impact never stop learning. Your next growth chapter starts here!
 
 Begin your MQ Assessment: ${inviteUrl}
 
