@@ -388,6 +388,34 @@ const GAME_STYLES = `
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  @keyframes ssiFlashFade {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes ssiFloatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    55%  { opacity: 1; transform: translateY(-38px) scale(1.15); }
+    100% { opacity: 0; transform: translateY(-70px) scale(0.85); }
+  }
+  @keyframes ssiShake {
+    0%, 100% { transform: translateX(0); }
+    15%  { transform: translateX(-7px); }
+    30%  { transform: translateX(7px); }
+    45%  { transform: translateX(-5px); }
+    60%  { transform: translateX(5px); }
+    75%  { transform: translateX(-3px); }
+  }
+  @keyframes ssiBestBounce {
+    0%   { opacity: 0; transform: scale(0.5); }
+    55%  { transform: scale(1.18); }
+    75%  { transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes ssiGlowRing {
+    0%   { box-shadow: 0 0 0 0 rgba(5,150,105,0.55); }
+    50%  { box-shadow: 0 0 0 12px rgba(5,150,105,0.1); }
+    100% { box-shadow: 0 0 0 20px rgba(5,150,105,0); }
+  }
 `
 
 // ── Stars component ───────────────────────────────────────────────────────────
@@ -423,6 +451,7 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   const [saving, setSaving] = useState(false)
   const [result, setResult] = useState<{ stars: number; xpEarned: number; totalXp: number; currentLevel: string; levelIndex: number } | null>(null)
   const [hoveredChoice, setHoveredChoice] = useState<number | null>(null)
+  const [revealFlash, setRevealFlash] = useState<'best' | 'good' | 'poor' | null>(null)
 
   // Pick a random scenario (avoiding the last one played if possible)
   function pickScenario() {
@@ -462,6 +491,10 @@ export default function ScenarioSimulator({ token }: { token: string }) {
   }
 
   function selectChoice(idx: number) {
+    const pts = scenario!.rounds[roundIndex].choices[idx].points
+    const flash: 'best' | 'good' | 'poor' = pts === 2 ? 'best' : pts === 1 ? 'good' : 'poor'
+    setRevealFlash(flash)
+    setTimeout(() => setRevealFlash(null), 750)
     setChoiceIndex(idx)
     setPhase('reveal')
   }
@@ -698,69 +731,86 @@ export default function ScenarioSimulator({ token }: { token: string }) {
     const ptIcon   = pts === 2 ? '✓' : pts === 1 ? '~' : '✗'
     const isLast   = roundIndex === scenario.rounds.length - 1
 
+    const flashColour = pts === 2 ? 'rgba(5,150,105,0.13)' : pts === 1 ? 'rgba(217,119,6,0.1)' : 'rgba(220,38,38,0.1)'
+    const badgeAnim   = pts === 2 ? 'ssiBestBounce 0.5s cubic-bezier(0.175,0.885,0.32,1.275)'
+                      : pts === 0 ? 'ssiShake 0.45s ease'
+                      : 'ssiScalePop 0.35s cubic-bezier(0.175,0.885,0.32,1.275)'
+
     return (
-      <div style={{ padding: '0 0 24px', animation: 'ssiFadeUp 0.25s ease' }}>
+      <>
         <style>{GAME_STYLES}</style>
 
-        {/* Progress */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 18 }}>
-          {scenario.rounds.map((_, i) => (
-            <div key={i} style={{
-              flex: 1, height: 5, borderRadius: 3,
-              background: i <= roundIndex ? '#0A2E2A' : '#E5E7EB',
-            }} />
-          ))}
-        </div>
+        {/* Full-screen flash overlay */}
+        {revealFlash && (
+          <div style={{
+            position: 'fixed', inset: 0, zIndex: 9999, pointerEvents: 'none',
+            backgroundColor: flashColour,
+            animation: 'ssiFlashFade 0.75s ease forwards',
+          }} />
+        )}
 
-        {/* Result badge */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16,
-          animation: 'ssiScalePop 0.35s cubic-bezier(0.175,0.885,0.32,1.275)',
-        }}>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-            fontSize: 12, fontWeight: 700, color: ptColour,
-            background: `${ptColour}18`, padding: '5px 12px', borderRadius: 20,
-            border: `1px solid ${ptColour}30`,
+        <div style={{ padding: '0 0 24px', animation: 'ssiFadeUp 0.25s ease', position: 'relative' }}>
+
+          {/* Floating score indicator */}
+          <div style={{
+            position: 'absolute', top: 40, right: 0, pointerEvents: 'none',
+            fontSize: pts === 2 ? 22 : 18, fontWeight: 900,
+            color: ptColour, animation: 'ssiFloatUp 0.85s ease forwards',
           }}>
-            <span style={{ fontSize: 13 }}>{ptIcon}</span> {ptLabel}
-          </span>
-          <span style={{ fontSize: 12, color: '#9CA3AF' }}>+{pts} / 2 pts</span>
-        </div>
+            {pts === 2 ? '✦ Best move!' : pts === 1 ? '+1 pt' : '✗'}
+          </div>
 
-        {/* Consequence */}
-        <div style={{
-          marginBottom: 12, padding: '12px 14px',
-          background: '#F9FAFB', borderRadius: 12, borderLeft: '3px solid #D1D5DB',
-          animation: 'ssiFadeUp 0.3s ease 0.1s both',
-        }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>What happened</p>
-          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, margin: 0 }}>{selectedChoice.consequence}</p>
-        </div>
+          {/* Progress */}
+          <div style={{ display: 'flex', gap: 6, marginBottom: 18 }}>
+            {scenario.rounds.map((_, i) => (
+              <div key={i} style={{
+                flex: 1, height: 5, borderRadius: 3,
+                background: i <= roundIndex ? '#0A2E2A' : '#E5E7EB',
+              }} />
+            ))}
+          </div>
 
-        {/* Coaching */}
-        <div style={{
-          marginBottom: 22, padding: '12px 14px',
-          background: ptBg, borderRadius: 12, borderLeft: `3px solid ${ptColour}`,
-          animation: 'ssiFadeUp 0.3s ease 0.18s both',
-        }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: ptColour, marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>Coach says</p>
-          <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, margin: 0 }}>{selectedChoice.coaching}</p>
-        </div>
+          {/* Result badge */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16,
+            animation: badgeAnim,
+          }}>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              fontSize: 13, fontWeight: 700, color: ptColour,
+              background: `${ptColour}18`, padding: '6px 14px', borderRadius: 20,
+              border: `1px solid ${ptColour}35`,
+              ...(pts === 2 ? { animation: 'ssiGlowRing 0.7s ease 0.2s' } : {}),
+            }}>
+              <span style={{ fontSize: 14 }}>{ptIcon}</span> {ptLabel}
+            </span>
+            <span style={{ fontSize: 12, color: '#9CA3AF' }}>+{pts} / 2 pts</span>
+          </div>
 
-        <button
-          onClick={nextRound}
-          disabled={saving}
-          style={{
-            width: '100%', padding: '13px 0', borderRadius: 12,
-            background: '#0A2E2A', color: '#fff', fontSize: 14, fontWeight: 600,
-            border: 'none', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1,
-            transition: 'opacity 0.2s',
-          }}
-        >
-          {saving ? 'Saving…' : isLast ? 'See Results →' : 'Next Round →'}
-        </button>
-      </div>
+          {/* Coaching */}
+          <div style={{
+            marginBottom: 22, padding: '13px 15px',
+            background: ptBg, borderRadius: 12, borderLeft: `3px solid ${ptColour}`,
+            animation: 'ssiFadeUp 0.35s ease 0.15s both',
+          }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: ptColour, marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>Coach says</p>
+            <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.65, margin: 0 }}>{selectedChoice.coaching}</p>
+          </div>
+
+          <button
+            onClick={nextRound}
+            disabled={saving}
+            style={{
+              width: '100%', padding: '13px 0', borderRadius: 12,
+              background: '#0A2E2A', color: '#fff', fontSize: 14, fontWeight: 600,
+              border: 'none', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1,
+              transition: 'opacity 0.2s',
+            }}
+          >
+            {saving ? 'Saving…' : isLast ? 'See Results →' : 'Next Round →'}
+          </button>
+        </div>
+      </>
     )
   }
 
