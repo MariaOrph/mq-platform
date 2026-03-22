@@ -516,8 +516,8 @@ export default function ScenarioSimulator({ token }: { token: string }) {
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
           <div>
-            <p className="text-sm font-semibold" style={{ color: '#0A2E2A', marginBottom: 2 }}>Scenario Simulator</p>
-            <p className="text-xs" style={{ color: '#9CA3AF' }}>Practice real management situations. Earn XP. Level up.</p>
+            <p className="text-sm font-semibold" style={{ color: '#0A2E2A', marginBottom: 2 }}>Play the Simulator</p>
+            <p className="text-xs" style={{ color: '#9CA3AF' }}>Ready to put your instincts to the test?</p>
           </div>
           {!loadingStats && stats && (
             <div style={{ textAlign: 'right' }}>
@@ -533,12 +533,15 @@ export default function ScenarioSimulator({ token }: { token: string }) {
         {!loadingStats && stats && stats.nextLevel && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: 10, color: '#9CA3AF' }}>{stats.xpProgress} / {stats.xpForNext} XP to {stats.nextLevel}</span>
+              <span style={{ fontSize: 10, color: '#9CA3AF' }}>{stats.xpProgress} / {stats.xpForNext} XP to reach <strong style={{ color: '#6B7280' }}>{stats.nextLevel}</strong></span>
               <span style={{ fontSize: 10, color: '#9CA3AF' }}>{progressPct}%</span>
             </div>
             <div style={{ height: 5, borderRadius: 3, background: '#F3F4F6', overflow: 'hidden' }}>
               <div style={{ height: '100%', borderRadius: 3, background: levelColour, width: `${progressPct}%`, transition: 'width 0.6s ease' }} />
             </div>
+            <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 5 }}>
+              XP (experience points) are earned each time you complete a scenario — the better your responses, the more you earn.
+            </p>
           </div>
         )}
         {!loadingStats && stats && !stats.nextLevel && (
@@ -584,7 +587,7 @@ export default function ScenarioSimulator({ token }: { token: string }) {
           {stats && stats.runCount > 0 ? 'Play Again' : 'Start Scenario'}
         </button>
         <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 8 }}>
-          3 rounds · earn up to 150 XP · new scenario each time
+          3 rounds per scenario · new situation each time
         </p>
       </div>
     )
