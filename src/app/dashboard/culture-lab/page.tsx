@@ -146,6 +146,17 @@ const CULTURE_LAB_DEEP_DIVE: Record<Topic, DeepDiveCard[]> = {
         'Culture is not what leaders say — it is the pattern of behaviour their teams observe and replicate.',
       ],
     },
+    {
+      researcher: 'Simon Sinek',
+      work: 'Start With Why (2009)',
+      tagline: 'Leaders who know their Why inspire; those who only know their What manage',
+      points: [
+        'The Golden Circle: most leaders communicate from the outside in — What they do, How they do it, Why they do it. The most inspiring leaders do the opposite.',
+        'Sinek\'s central insight: people don\'t buy what you do, they buy why you do it. Inside organisations, people follow leaders they believe in — not just leaders with good plans.',
+        'In a values coaching context, the key question is: can the leader articulate their personal Why as clearly as they can recite the company values? If not, the values stay abstract and borrowed rather than lived and owned.',
+        'Sinek is a practitioner and communicator rather than an academic researcher — his framework is the most accessible bridge between values clarity and the practice of inspiring others with it.',
+      ],
+    },
   ],
   'psych-safety': [
     {

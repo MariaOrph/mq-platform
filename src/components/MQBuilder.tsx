@@ -516,6 +516,17 @@ const DEEP_DIVE_DATA: Record<number, DeepDiveSlide[]> = {
         'Grant\'s research also shows that prosocial motivation must be genuine to produce trust — performative generosity (appearing to contribute while actually seeking credit) produces cynicism. The authenticity of the motivation is legible to those on the receiving end of it.',
       ],
     },
+    {
+      researcher: 'Simon Sinek',
+      work:       'Start With Why (2009)',
+      tagline:    'People don\'t follow what you do — they follow why you do it.',
+      points: [
+        'The Golden Circle: most leaders and organisations communicate from the outside in — What they do, then How, then Why. Sinek\'s insight is that the most inspiring leaders do the opposite: they lead with Why (their core belief), then How, then What.',
+        'Sinek\'s central claim: people don\'t buy what you do, they buy why you do it. This explains why some leaders inspire loyalty and followership while others, equally capable, only ever generate compliance.',
+        'The most powerful Why statements are oriented toward contribution rather than achievement — not "I want to build a great company" but "I believe in a world where..." — which connects directly to Frankl\'s meaning and Damon\'s beyond-the-self purpose research.',
+        'Sinek is a practitioner and leadership communicator rather than an academic researcher. His framework is the most accessible bridge between the psychology of purpose (Frankl, Damon, Deci and Ryan) and the practice of articulating and transmitting it to others.',
+      ],
+    },
   ],
   6: [
     {
