@@ -117,28 +117,47 @@ const SLIDES = [
   {
     id: 'platform',
     tag: 'Your Journey',
-    title: 'Your personalised development journey.',
+    title: 'Three steps. A lifetime of better leadership.',
     subtitle: '',
-    body: 'MQ starts with an assessment of where you actually are across all seven dimensions. Everything that follows is built around your specific profile and development opportunities.',
+    body: 'Everything in MQ flows from a clear picture of where you actually are — and a structured path to get where you want to be.',
     visual: (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 7, width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
         {([
-          { icon: '📊', label: 'Start with the assessment',    desc: 'Measure your 7 MQ dimensions. The foundation everything else is built on.',  color: '#0AF3CD' },
-          { icon: '⚡', label: 'Complete Daily Spark each day', desc: 'One short daily practice, tailored to your specific development areas.',           color: '#fdcb5e' },
-          { icon: '💬', label: 'Access on-demand personalised coaching', desc: 'Bring any challenge or situation to a coach that knows your profile deeply.',                    color: '#0AF3CD' },
-          { icon: '🧠', label: 'Grow with MQ Gym',             desc: 'Guided development across all 7 dimensions, to help you build your capacity to lead.',                               color: '#a78bfa' },
-          { icon: '🧪', label: 'Build with the Culture Lab',   desc: 'Get tailored coaching support to help you build values, psychological safety, accountability and inclusion in your team.',  color: '#F59E0B' },
-          { icon: '📚', label: 'Explore the Resource Centre',  desc: 'Bite-size management and leadership skill guides, built for the real world.',              color: '#ff7b7a' },
+          {
+            step: '1',
+            label: 'Get your MQ profile',
+            desc: 'Take the MQ Assessment (~15 mins) and get a personalised score across the 7 dimensions of leadership mindset. Your baseline — and the start of everything. Invite colleagues for a 360 view.',
+            color: '#0AF3CD',
+          },
+          {
+            step: '2',
+            label: 'Start building',
+            desc: 'Daily challenges targeted to your profile, delivered to your dashboard. Plus three coaching zones available 24/7 — the Coaching Room, MQ Gym, and Culture Lab.',
+            color: '#fdcb5e',
+          },
+          {
+            step: '3',
+            label: 'Track your growth',
+            desc: 'Reassess over time to see how your scores shift — and notice how you show up differently when it counts.',
+            color: '#a78bfa',
+          },
         ] as const).map((item, i) => (
           <div key={i} style={{
-            display: 'flex', alignItems: 'flex-start', gap: 10,
-            padding: '9px 12px', borderRadius: 12,
-            backgroundColor: `${item.color}10`, border: `1px solid ${item.color}28`,
+            display: 'flex', alignItems: 'flex-start', gap: 12,
+            padding: '11px 14px', borderRadius: 14,
+            backgroundColor: `${item.color}12`, border: `1px solid ${item.color}35`,
           }}>
-            <span style={{ fontSize: 16, flexShrink: 0, lineHeight: '1.5' }}>{item.icon}</span>
+            <div style={{
+              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+              backgroundColor: item.color,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 13, fontWeight: 900, color: '#0A2E2A',
+            }}>
+              {item.step}
+            </div>
             <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: '0 0 2px' }}>{item.label}</p>
-              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.55)', margin: 0, lineHeight: 1.45 }}>{item.desc}</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: '#0A2E2A', margin: '0 0 3px' }}>{item.label}</p>
+              <p style={{ fontSize: 10, color: 'rgba(10,46,42,0.55)', margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
             </div>
           </div>
         ))}
