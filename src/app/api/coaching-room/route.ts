@@ -554,6 +554,26 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
   return NextResponse.json({ reply })
 }
 
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get('authorization')?.replace('Bearer ', '')
+  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const { data: { user } } = await supabaseAdmin.auth.getUser(token)
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const sessionId = req.nextUrl.searchParams.get('sessionId')
+  if (!sessionId) return NextResponse.json({ error: 'sessionId required' }, { status: 400 })
+
+  const body = await req.json()
+  if (!body.title) return NextResponse.json({ error: 'title required' }, { status: 400 })
+
+  await supabaseAdmin.from('coaching_chats')
+    .update({ title: body.title })
+    .eq('id', sessionId)
+    .eq('participant_id', user.id)
+
+  return NextResponse.json({ success: true })
+}
+
 export async function DELETE(req: NextRequest) {
   const token = req.headers.get('authorization')?.replace('Bearer ', '')
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

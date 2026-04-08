@@ -167,9 +167,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: reply }])
 
       if (messages.filter(m => m.role === 'user').length === 0) {
-        const newTitle = text.length > 52 ? text.slice(0, 49) + '…' : text
-        setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
-        setSessions(prev => prev.map(s => s.id === activeSession.id ? { ...s, title: newTitle } : s))
+        renameSession(activeSession.id, text)
       }
     } catch {
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: 'Something went wrong. Please try again.' }])
@@ -181,6 +179,18 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
   function handleKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() }
+  }
+
+  // ── Rename session from first message ────────────────────────────────────────
+  function renameSession(sessionId: string, text: string) {
+    const newTitle = text.length > 52 ? text.slice(0, 49) + '…' : text
+    setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
+    setSessions(prev => prev.map(s => s.id === sessionId ? { ...s, title: newTitle } : s))
+    fetch(`/api/coaching-room?sessionId=${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ title: newTitle }),
+    }).catch(() => {})
   }
 
   // ── Delete session ──────────────────────────────────────────────────────────
@@ -442,9 +452,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                                       { role: 'user', content: prompt },
                                       { role: 'assistant', content: reply },
                                     ])
-                                    const newTitle = prompt.length > 52 ? prompt.slice(0, 49) + '…' : prompt
-                                    setActiveSession(prev => prev ? { ...prev, title: newTitle } : prev)
-                                    setSessions(prev => prev.map(s => s.id === activeSession!.id ? { ...s, title: newTitle } : s))
+                                    renameSession(activeSession!.id, prompt)
                                   }).catch(() => {
                                     setMessages([
                                       { role: 'user', content: prompt },
