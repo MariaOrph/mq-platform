@@ -466,19 +466,16 @@ function DashboardContent() {
         <div className="absolute bottom-0 left-1/4 w-32 h-16 rounded-full blur-2xl pointer-events-none"
              style={{ backgroundColor: 'rgba(5,168,142,0.1)' }} />
         <div className="relative max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <MQLogo size="md" />
-            <div>
-              <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
-                {getGreeting()}, {firstName}.
-              </h1>
-              <p className="text-xs mt-1 italic leading-snug" style={{ color: 'rgba(185,248,221,0.75)', maxWidth: 520 }}>
-                "{dailyQuote.text}"
-                <span className="not-italic font-semibold ml-1" style={{ color: 'rgba(185,248,221,0.5)' }}>
-                  — {dailyQuote.author}
-                </span>
-              </p>
-            </div>
+          <div>
+            <h1 className="text-lg font-bold leading-tight" style={{ color: 'white' }}>
+              {getGreeting()}, {firstName}.
+            </h1>
+            <p className="text-xs mt-1 italic leading-snug" style={{ color: 'rgba(185,248,221,0.75)', maxWidth: 520 }}>
+              "{dailyQuote.text}"
+              <span className="not-italic font-semibold ml-1" style={{ color: 'rgba(185,248,221,0.5)' }}>
+                — {dailyQuote.author}
+              </span>
+            </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
@@ -1342,24 +1339,28 @@ function DashboardContent() {
       </div>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <div className="text-center py-6 mt-4">
-        <a
-          href="/dashboard/methodology"
-          className="text-xs hover:underline transition-opacity hover:opacity-70"
-          style={{ color: '#9CA3AF' }}
-        >
-          The Research Behind MQ
-        </a>
-        <span className="mx-2 text-xs" style={{ color: '#D1D5DB' }}>·</span>
-        <a
-          href="/privacy"
-          className="text-xs hover:underline transition-opacity hover:opacity-70"
-          style={{ color: '#9CA3AF' }}
-        >
-          Privacy Policy
-        </a>
-        <span className="mx-2 text-xs" style={{ color: '#D1D5DB' }}>·</span>
-        <span className="text-xs" style={{ color: '#9CA3AF' }}>© {new Date().getFullYear()} Mindset Quotient</span>
+      {/* ── Footer ──────────────────────────────────────────────────────────── */}
+      <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-4">
+        <img src="/MQ Favicon.png" alt="MQ" className="h-10 w-auto" />
+        <p className="text-xs font-medium text-center" style={{ color: '#0A2E2A' }}>
+          Develop the mindset that leads.
+        </p>
+        <div className="w-10 h-px" style={{ backgroundColor: '#D1FAE5' }} />
+        <div className="flex items-center gap-3">
+          <a href="/dashboard/methodology" className="text-[11px] hover:underline" style={{ color: '#9CA3AF' }}>
+            Research
+          </a>
+          <span className="text-[11px]" style={{ color: '#D1D5DB' }}>·</span>
+          <a href="/privacy" className="text-[11px] hover:underline" style={{ color: '#9CA3AF' }}>
+            Privacy
+          </a>
+        </div>
+        <p className="text-[10px] text-center max-w-sm leading-relaxed" style={{ color: '#9CA3AF80' }}>
+          MQ is a leadership development tool, not a mental health service. AI-generated insights are personalised to your profile and designed as a starting point for growth, not a replacement for therapy or clinical support.
+        </p>
+        <p className="text-[10px] font-medium tracking-wide" style={{ color: '#D1D5DB' }}>
+          © {new Date().getFullYear()} Mindset Quotient
+        </p>
       </div>
 
     </main>
