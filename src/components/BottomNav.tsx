@@ -27,7 +27,7 @@ const NAV_ITEMS = [
   },
   {
     href: "/dashboard?mq-builder=1",
-    label: "MQ Builder",
+    label: "Mindset Gym",
     isOverlay: true,
     icon: (active: boolean) => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={active ? 0 : 1.5} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -78,7 +78,12 @@ export default function BottomNav() {
   if (!pathname || pathname === "/" || HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
 
   const handleTabClick = (e: React.MouseEvent, item: typeof NAV_ITEMS[0]) => {
-    if (item.isOverlay) return; // Let Link navigate normally for overlay tabs
+    if (item.isOverlay) {
+      e.preventDefault();
+      // Force full navigation so the dashboard useEffect picks up the query param
+      window.location.href = item.href;
+      return;
+    }
     const isActive = getIsActive(item);
     if (isActive) {
       e.preventDefault();
