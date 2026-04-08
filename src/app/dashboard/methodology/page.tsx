@@ -4,17 +4,22 @@ export default function MethodologyPage() {
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
-        <div className="max-w-3xl mx-auto px-6 py-8">
-          <a href="/dashboard" className="text-sm hover:opacity-70 transition-opacity"
-             style={{ color: 'rgba(185,248,221,0.6)' }}>
-            ← Back to dashboard
-          </a>
-          <h1 className="text-2xl font-bold mt-4" style={{ color: 'white' }}>
-            The Research Behind MQ
-          </h1>
-          <p className="text-sm mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>
-            How the MQ framework and Culture Lab are grounded in psychology and leadership research
-          </p>
+        <div className="max-w-3xl mx-auto px-6 py-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-bold" style={{ color: 'white' }}>
+                The Research Behind MQ
+              </h1>
+              <p className="text-sm mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>
+                How the MQ framework and Culture Lab are grounded in psychology and leadership research
+              </p>
+            </div>
+            <a
+              href="/dashboard"
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', fontSize: 20, lineHeight: 1 }}
+            >×</a>
+          </div>
         </div>
       </div>
 

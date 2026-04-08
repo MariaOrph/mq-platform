@@ -524,12 +524,8 @@ export default function CultureLabPage() {
 
         {/* Header */}
         <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
-          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-4">
-            <button onClick={() => router.push('/dashboard')}
-                    className="text-sm hover:opacity-80" style={{ color: '#B9F8DD' }}>
-              ← Back
-            </button>
-            <div className="flex items-center gap-3 flex-1">
+          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
                    style={{ backgroundColor: '#0AF3CD' }}>🤝</div>
               <div>
@@ -537,6 +533,11 @@ export default function CultureLabPage() {
                 <p className="text-xs" style={{ color: '#B9F8DD' }}>Culture and values coaching</p>
               </div>
             </div>
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', fontSize: 20, lineHeight: 1 }}
+            >×</button>
           </div>
         </div>
 
