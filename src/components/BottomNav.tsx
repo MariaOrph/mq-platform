@@ -31,8 +31,12 @@ const NAV_ITEMS = [
     isOverlay: true,
     icon: (active: boolean) => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 1.8 : 1.5} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-        <path d="M12 2a5 5 0 015 5c0 .7-.2 1.4-.5 2a4 4 0 011.5 3.1 3.5 3.5 0 01-1 6.4A3 3 0 0114 21h-2v-9" />
-        <path d="M12 2a5 5 0 00-5 5c0 .7.2 1.4.5 2A4 4 0 006 12.1a3.5 3.5 0 001 6.4A3 3 0 0010 21h2v-9" />
+        <path d="M9.5 2A5.5 5.5 0 005 7.5c0 1.08.31 2.08.85 2.93A4.001 4.001 0 004 14a4 4 0 003 3.87V20a2 2 0 002 2h2V12" />
+        <path d="M14.5 2A5.5 5.5 0 0119 7.5c0 1.08-.31 2.08-.85 2.93A4.001 4.001 0 0120 14a4 4 0 01-3 3.87V20a2 2 0 01-2 2h-2V12" />
+        <path d="M8 12h3" />
+        <path d="M13 12h3" />
+        <path d="M9 7.5c0 1.38.5 2.5 1.5 3.5" />
+        <path d="M15 7.5c0 1.38-.5 2.5-1.5 3.5" />
       </svg>
     ),
   },
