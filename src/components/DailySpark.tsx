@@ -190,16 +190,16 @@ export default function DailySpark({ token, onOpenCoachingRoom }: DailySparkProp
            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
 
         {/* Header: title + progress */}
-        <div className="px-5 pt-5 pb-4">
+        <div className="px-5 pt-4 pb-4" style={{ background: 'linear-gradient(135deg, #E8FDF7 0%, #F0FDF9 50%, #F5FFFB 100%)' }}>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="text-base">✨</span>
               <div>
                 <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Daily Spark</p>
-                <p className="text-xs" style={{ color: '#9CA3AF' }}>Your daily leadership challenge (smash it in less than 20 mins)</p>
+                <p className="text-xs" style={{ color: '#6B7280' }}>Your daily leadership challenge (smash it in less than 20 mins)</p>
               </div>
             </div>
-            <p className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>
+            <p className="text-xs font-semibold" style={{ color: '#6B7280' }}>
               {totalCompleted} / {totalCards} complete
             </p>
           </div>

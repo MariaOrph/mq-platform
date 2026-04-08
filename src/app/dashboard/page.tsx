@@ -602,33 +602,37 @@ function DashboardContent() {
         {/* ── Resource Centre ──────────────────────────────────────────────── */}
         <a
           href="/dashboard/resources"
-          className="flex items-center justify-between px-4 py-3.5 rounded-2xl hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}
+          className="block rounded-2xl overflow-hidden hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
         >
-          <div className="flex items-center gap-2.5">
-            <span className="text-base">📚</span>
-            <div>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <p className="text-xs" style={{ color: '#9CA3AF' }}>Management and leadership skill guides</p>
+          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #E8FDF7 0%, #F0FDF9 50%, #F5FFFB 100%)' }}>
+            <div className="flex items-center gap-2.5">
+              <span className="text-base">📚</span>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
+                <p className="text-xs" style={{ color: '#6B7280' }}>Management and leadership skill guides</p>
+              </div>
             </div>
+            <span className="text-xs font-medium" style={{ color: '#0A2E2A' }}>Browse →</span>
           </div>
-          <span className="text-xs" style={{ color: '#9CA3AF' }}>Browse →</span>
         </a>
 
         {/* ── My Notes ───────────────────────────────────────────────────────── */}
         <button
           onClick={() => setShowNotes(true)}
-          className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl hover:opacity-90 transition-opacity text-left"
-          style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}
+          className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity text-left"
+          style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
         >
-          <div className="flex items-center gap-2.5">
-            <span className="text-base">📓</span>
-            <div>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
-              <p className="text-xs" style={{ color: '#9CA3AF' }}>Private journal</p>
+          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #E8FDF7 0%, #F0FDF9 50%, #F5FFFB 100%)' }}>
+            <div className="flex items-center gap-2.5">
+              <span className="text-base">📓</span>
+              <div>
+                <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
+                <p className="text-xs" style={{ color: '#6B7280' }}>Private journal</p>
+              </div>
             </div>
+            <span className="text-xs font-medium" style={{ color: '#0A2E2A' }}>Open →</span>
           </div>
-          <span className="text-xs" style={{ color: '#9CA3AF' }}>Open →</span>
         </button>
 
         {/* ── 360 Feedback (left column) ─────────────────────────────────────── */}
@@ -757,14 +761,8 @@ function DashboardContent() {
               </span>
             )}
           </div>
-          </div>
-        </div>
-
-        {/* ── MQ profile bars ───────────────────────────────────────────────── */}
-        <div className="rounded-2xl p-5" style={cardStyle}>
-            <p className="text-sm font-bold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
-              Your MQ profile
-            </p>
+          {/* ── MQ profile bars (merged into score card) ─────────────────── */}
+          <div className="p-5" style={{ backgroundColor: 'white' }}>
             <div className="space-y-3.5">
               {DIMS.map(dim => {
                 const score    = getDimScore(assessment, dim.id)
@@ -902,6 +900,87 @@ function DashboardContent() {
               })}
             </div>
           </div>
+          </div>{/* end merged MQ Score + Profile card */}
+        </div>{/* end hidden lg:block */}
+
+        {/* ── MQ profile bars — mobile only (separate card) ───────────────── */}
+        <div className="lg:hidden rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+          <div className="px-5 py-3.5" style={{ background: 'linear-gradient(135deg, #E8FDF7 0%, #F0FDF9 50%, #F5FFFB 100%)' }}>
+            <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your MQ Profile</p>
+          </div>
+          <div className="p-5 pt-3">
+            <div className="space-y-3.5">
+              {DIMS.map(dim => {
+                const score    = getDimScore(assessment, dim.id)
+                const delta    = getDelta(assessment, prevAssessment, dim.id)
+                const isFocus  = dim.id === focusDimId
+                const currDate = fmtAssessDate(assessment?.completed_at)
+                const prevDate = fmtAssessDate(prevAssessment?.completed_at)
+                return (
+                  <div key={`mobile-${dim.id}`}>
+                    <div className="flex items-center mb-1.5">
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dim.color }} />
+                      <button
+                        onClick={() => setDimModal({ dimId: dim.id, mode: 'about' })}
+                        className="text-xs font-medium text-left flex items-center gap-1 ml-2"
+                        style={{ color: isFocus ? dim.color : '#374151', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: '3px', textDecorationColor: isFocus ? dim.color : '#9CA3AF' }}
+                      >
+                        {dim.name}
+                        {isFocus && (
+                          <span className="ml-1 text-xs font-bold px-1.5 py-0.5 rounded-full"
+                                style={{ backgroundColor: dim.bg, color: dim.color }}>
+                            focus
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ flex: 1, position: 'relative', height: 6, borderRadius: 3 }}>
+                        <div style={{ position: 'absolute', inset: 0, borderRadius: 3, backgroundColor: `${dim.color}22` }} />
+                        <div style={{
+                          position: 'absolute', left: 0, top: 0, bottom: 0,
+                          borderRadius: 3,
+                          width: score !== null ? `${score}%` : '0%',
+                          backgroundColor: dim.color,
+                          transition: 'width 0.7s ease',
+                        }} />
+                        {score !== null && (
+                          <button
+                            onClick={() => setDimModal({ dimId: dim.id, mode: 'score' })}
+                            style={{
+                              position: 'absolute', top: '50%', left: `${score}%`,
+                              transform: 'translate(-50%, -50%)',
+                              width: 22, height: 22, borderRadius: '50%',
+                              backgroundColor: dim.color, color: 'white',
+                              fontSize: 9, fontWeight: 800,
+                              border: '2px solid white', boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              zIndex: 2, fontFamily: 'inherit',
+                            }}
+                          >
+                            {score}
+                          </button>
+                        )}
+                        {score !== null && delta !== null && delta !== 0 && (
+                          <div style={{
+                            position: 'absolute', top: '50%', left: `calc(${score}% + 14px)`,
+                            transform: 'translateY(-50%)',
+                            fontSize: 9, fontWeight: 700,
+                            color: delta > 0 ? '#059669' : '#DC2626',
+                            zIndex: 1, cursor: 'default', whiteSpace: 'nowrap', lineHeight: 1,
+                          }}>
+                            {delta > 0 ? `+${delta}` : `${delta}`}
+                          </div>
+                        )}
+                      </div>
+                      <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500, flexShrink: 0 }}>100</span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
 
         {/* ── Values in Action card ────────────────────────────────────────── */}
         {valuesStatus && valuesStatus.total > 0 && (() => {
