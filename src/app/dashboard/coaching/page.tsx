@@ -207,10 +207,10 @@ function CoachingContent() {
 
   // ── Reading screen ────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#E8FDF7' }}>
+    <main className="min-h-screen animate-fadeIn" style={{ backgroundColor: '#E8FDF7' }}>
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: '#0A2E2A' }}>
+      <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-4">
           <button
             onClick={() => router.push('/dashboard')}

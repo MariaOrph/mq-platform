@@ -211,10 +211,10 @@ export default function ResourcesPage() {
   const visibleCategories = activeCategory ? [activeCategory] : CATEGORIES
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f0faf6' }}>
+    <div className="min-h-screen animate-fadeIn" style={{ backgroundColor: '#f0faf6' }}>
 
       {/* Header */}
-      <div className="sticky top-0 z-10" style={{ backgroundColor: '#0A2E2A' }}>
+      <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
         <div className="max-w-2xl mx-auto px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <a

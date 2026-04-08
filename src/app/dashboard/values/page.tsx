@@ -145,10 +145,10 @@ export default function ValuesCheckinPage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#F4FDF9' }}>
+    <main className="min-h-screen animate-fadeIn" style={{ backgroundColor: '#F4FDF9' }}>
 
       {/* Header */}
-      <div style={{ backgroundColor: '#0A2E2A' }}>
+      <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
         <div className="max-w-2xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
             <a href="/dashboard" className="text-xs mb-1 flex items-center gap-1 hover:opacity-70"

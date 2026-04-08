@@ -312,10 +312,13 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                     {filtered.map(session => {
                       const meta = getSessionMeta(session)
                       return (
-                        <button
+                        <div
                           key={session.id}
                           onClick={() => openSession(session)}
-                          className="w-full text-left rounded-2xl p-4 flex items-start justify-between gap-3 hover:opacity-80 transition-opacity"
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openSession(session) }}
+                          className="w-full text-left rounded-2xl p-4 flex items-start justify-between gap-3 hover:opacity-80 transition-opacity cursor-pointer"
                           style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 8px rgba(10,46,42,0.06)' }}
                         >
                           <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -344,7 +347,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                               <path d="M14 11v6"/><path d="M9 6V4h6v2"/>
                             </svg>
                           </button>
-                        </button>
+                        </div>
                       )
                     })}
                   </>

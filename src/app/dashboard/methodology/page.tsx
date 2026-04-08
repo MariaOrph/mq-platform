@@ -1,9 +1,9 @@
 export default function MethodologyPage() {
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#F4FDF9' }}>
+    <main className="min-h-screen animate-fadeIn" style={{ backgroundColor: '#F4FDF9' }}>
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div style={{ backgroundColor: '#0A2E2A' }}>
+      <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
         <div className="max-w-3xl mx-auto px-6 py-8">
           <a href="/dashboard" className="text-sm hover:opacity-70 transition-opacity"
              style={{ color: 'rgba(185,248,221,0.6)' }}>

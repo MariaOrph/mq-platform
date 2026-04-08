@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { Suspense, useEffect, useState, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import CoachingRoom from '@/components/CoachingRoom'
 import MQBuilder from '@/components/MQBuilder'
@@ -262,7 +263,20 @@ function getDailyQuote() {
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function ParticipantDashboard() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F4FDF9' }}>
+        <p className="text-sm" style={{ color: '#05A88E' }}>Loading…</p>
+      </main>
+    }>
+      <DashboardContent />
+    </Suspense>
+  )
+}
+
+function DashboardContent() {
   const supabase = createClient()
+  const searchParams = useSearchParams()
 
   const [loading,           setLoading]          = useState(true)
   const [profile,           setProfile]          = useState<{ id: string; full_name: string | null; email: string } | null>(null)
@@ -371,6 +385,19 @@ export default function ParticipantDashboard() {
     }
   }, [loading, assessment, valuesStatus, showOnboarding])
 
+  // Open overlays when navigated via bottom nav with query params
+  useEffect(() => {
+    if (loading || !authToken) return
+    if (searchParams.get('mq-builder') === '1') {
+      setShowMQBuilder(true)
+      window.history.replaceState({}, '', '/dashboard')
+    }
+    if (searchParams.get('coaching') === '1') {
+      setShowCoachingRoom(true)
+      window.history.replaceState({}, '', '/dashboard')
+    }
+  }, [searchParams, loading, authToken])
+
   async function signOut() {
     await supabase.auth.signOut()
     window.location.href = '/login'
@@ -430,10 +457,10 @@ export default function ParticipantDashboard() {
 
   // ── Home ────────────────────────────────────────────────────────────────────
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#F4FDF9' }}>
+    <main className="min-h-screen animate-fadeIn" style={{ backgroundColor: '#F4FDF9' }}>
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden" style={{ backgroundColor: '#0A2E2A' }}>
+      <div className="relative overflow-hidden sticky top-0 z-30" style={{ backgroundColor: 'rgba(10,46,42,0.97)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
         <div className="absolute top-0 right-0 w-64 h-32 rounded-full blur-3xl pointer-events-none"
              style={{ backgroundColor: 'rgba(10,243,205,0.07)' }} />
         <div className="absolute bottom-0 left-1/4 w-32 h-16 rounded-full blur-2xl pointer-events-none"
@@ -574,73 +601,6 @@ export default function ParticipantDashboard() {
         {authToken && (
           <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
         )}
-
-        {/* ── AI Coaching (unified tile) ────────────────────────────────────── */}
-        <div className="rounded-2xl overflow-hidden"
-             style={{ backgroundColor: 'white', border: '1px solid #D1FAE5', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
-          {/* Header */}
-          <div className="px-5 py-3" style={{ backgroundColor: '#E8FDF7', borderBottom: '1px solid #D1FAE5' }}>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-base">🎯</span>
-              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Your MQ Coaching Zones</p>
-            </div>
-            <p className="text-xs" style={{ color: '#05A88E' }}>Start your growth journey today — explore the 3 coaching zones below</p>
-          </div>
-          {/* Three options */}
-          <div className="divide-y" style={{ borderColor: '#F3F4F6' }}>
-            {/* Coaching Room */}
-            <div className="px-5 py-3.5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-lg">💬</span>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>The Coaching Room</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Confidentially discuss any challenge or situation you're facing</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowCoachingRoom(true)}
-                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
-              >
-                Open →
-              </button>
-            </div>
-            {/* MQ Builder */}
-            <div className="px-5 py-3.5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-lg">🧠</span>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Mindset Gym</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Build the mental muscles behind all 7 MQ dimensions</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowMQBuilder(true)}
-                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#a78bfa', color: '#0A2E2A' }}
-              >
-                Open →
-              </button>
-            </div>
-            {/* Culture Lab */}
-            <div className="px-5 py-3.5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-lg">🧪</span>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: '#0A2E2A' }}>Culture Lab</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>Be coached on how to build a happy, high performing team culture</p>
-                </div>
-              </div>
-              <a
-                href="/dashboard/culture-lab"
-                className="text-xs px-3 py-1.5 rounded-lg font-bold flex-shrink-0 ml-3 hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#F59E0B', color: '#0A2E2A' }}
-              >
-                Open →
-              </a>
-            </div>
-          </div>
-        </div>
 
         {/* ── Resource Centre + Notes (compact) ────────────────────────────── */}
         <div className="rounded-2xl overflow-hidden"

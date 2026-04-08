@@ -159,7 +159,7 @@ export default function ReportPage() {
     .sort((a, b) => a.s - b.s)[0].id
 
   return (
-    <>
+    <div className="animate-fadeIn">
       {/* Print / save button — hidden when printing */}
       <div className="no-print fixed top-4 right-4 z-50 flex gap-2">
         <button
@@ -356,6 +356,6 @@ export default function ReportPage() {
         </div>
 
       </div>
-    </>
+    </div>
   )
 }
