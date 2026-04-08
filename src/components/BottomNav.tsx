@@ -30,7 +30,14 @@ const NAV_ITEMS = [
     label: "MQ Builder",
     isOverlay: true,
     icon: (active: boolean) => (
-      <span className="text-xl leading-none" role="img" aria-label="brain">🧠</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth={active ? 0 : 1.5} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+        <path d="M12 2c-1.7 0-3.2.9-4 2.3C6.7 3.5 5 4.7 5 7c0 1.5.7 2.8 1.7 3.7C5.7 11.5 5 13.2 5 15c0 2.5 1.3 4.5 3 5.5V22h2v-1h4v1h2v-1.5c1.7-1 3-3 3-5.5 0-1.8-.7-3.5-1.7-4.3C19.3 9.8 20 8.5 20 7c0-2.3-1.7-3.5-3-2.7C16.2 2.9 14.7 2 13 2h-1z" />
+        <path d="M12 2v20" />
+        <path d="M8 8c2 0 3 1 4 4" />
+        <path d="M16 8c-2 0-3 1-4 4" />
+        <path d="M8 15c1.5 0 2.5-.5 4-2" />
+        <path d="M16 15c-1.5 0-2.5-.5-4-2" />
+      </svg>
     ),
   },
   {
