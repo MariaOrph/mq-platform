@@ -17,10 +17,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "MQ — Mindset Quotient",
   description: "Measure and develop your inner leadership capacity",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "MQ",
+  },
+  icons: {
+    icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -49,6 +54,17 @@ export default function RootLayout({
           </main>
         </ToastProvider>
         <BottomNav />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js').catch(() => {});
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
