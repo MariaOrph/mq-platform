@@ -28,7 +28,7 @@ const SLIDES = [
           </div>
           <div style={{ textAlign: 'center' }}>
             <p style={{ fontSize: 11, color: 'rgba(185,248,221,0.85)', margin: 0, lineHeight: 1.7 }}>
-              MQ — Mindset Quotient — measures your capacity to notice your own thoughts, beliefs and emotional patterns, and to consciously choose how you respond rather than being driven by them automatically. It&apos;s the foundation of self-directed, effective leadership. Without it, skills stay theoretical. With it, everything changes.
+              MQ — Mindset Quotient® — measures your capacity to notice your own thoughts, beliefs and emotional patterns, and to consciously choose how you respond rather than being driven by them automatically. It&apos;s the foundation of self-directed, effective leadership. Without it, skills stay theoretical. With it, everything changes.
             </p>
           </div>
         </div>

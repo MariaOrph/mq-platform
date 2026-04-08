@@ -117,7 +117,7 @@ export default function LoginPage() {
         {/* Bottom tagline */}
         <div className="absolute bottom-8 left-0 right-0 flex justify-center">
           <p className="text-xs tracking-widest uppercase" style={{ color: 'rgba(10,243,205,0.5)' }}>
-            Mindset Quotient Platform
+            Mindset Quotient® Platform
           </p>
         </div>
       </div>

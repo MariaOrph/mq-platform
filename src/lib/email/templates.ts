@@ -6,7 +6,7 @@ function layout(content: string): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MQ — Mindset Quotient</title>
+  <title>MQ — Mindset Quotient®</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:40px 16px;">
@@ -19,7 +19,7 @@ function layout(content: string): string {
             <td align="center" style="padding-bottom:28px;">
               <div style="display:inline-block;text-align:center;">
                 <span style="font-size:28px;font-weight:900;letter-spacing:-1px;color:#05A88E;">MQ</span><br/>
-                <span style="font-size:11px;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;">Mindset Quotient</span>
+                <span style="font-size:11px;color:#9ca3af;letter-spacing:2px;text-transform:uppercase;">Mindset Quotient®</span>
               </div>
             </td>
           </tr>

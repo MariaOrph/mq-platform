@@ -10,7 +10,7 @@ export default function PrivacyPage() {
           </a>
           <h1 className="text-2xl font-bold mt-4" style={{ color: 'white' }}>Privacy Policy</h1>
           <p className="text-sm mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>
-            Mindset Quotient Ltd &nbsp;·&nbsp; Last updated: March 2026
+            Mindset Quotient® Ltd &nbsp;·&nbsp; Last updated: March 2026
           </p>
         </div>
       </div>
@@ -22,10 +22,10 @@ export default function PrivacyPage() {
           {/* Intro */}
           <section>
             <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-              Mindset Quotient (&quot;MQ&quot;, &quot;we&quot;, &quot;us&quot;) is committed to protecting your personal data and being transparent about how we use it. This policy explains what we collect, why we collect it, who can see it, and your rights under the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.
+              Mindset Quotient® (&quot;MQ&quot;, &quot;we&quot;, &quot;us&quot;) is committed to protecting your personal data and being transparent about how we use it. This policy explains what we collect, why we collect it, who can see it, and your rights under the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.
             </p>
             <p className="text-sm leading-relaxed mt-3" style={{ color: '#374151' }}>
-              Mindset Quotient is the data controller for personal data processed through this platform. If you have any questions about this policy, contact us at{' '}
+              Mindset Quotient® is the data controller for personal data processed through this platform. If you have any questions about this policy, contact us at{' '}
               <a href="mailto:privacy@mindsetquotient.com" className="underline" style={{ color: '#05A88E' }}>
                 privacy@mindsetquotient.com
               </a>.
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
             <div className="space-y-3 text-sm" style={{ color: '#374151' }}>
               <p>Your coaching conversations are private. They are not accessible to your employer, your HR or People team, or any other person within your organisation. This is fundamental to how coaching works — you will only be open and honest if you know the conversation is yours.</p>
               <p>Your personal notes — anything you write in the My Notes section of the platform — are stored securely in our database and are private to you. They are never visible to your organisation, your HR or People team, or any other participant. Only you can read, edit, or delete your notes.</p>
-              <p>Mindset Quotient staff do not read individual coaching conversations or personal notes except where strictly necessary for technical operations (for example, investigating a reported error). Access in these circumstances is logged and restricted to authorised personnel.</p>
+              <p>Mindset Quotient® staff do not read individual coaching conversations or personal notes except where strictly necessary for technical operations (for example, investigating a reported error). Access in these circumstances is logged and restricted to authorised personnel.</p>
               <p>Your individual MQ assessment scores are also private and are not shared with your employer without your explicit consent.</p>
             </div>
           </section>
@@ -174,7 +174,7 @@ export default function PrivacyPage() {
 
       {/* Footer */}
       <div className="text-center pb-10">
-        <p className="text-xs" style={{ color: '#9CA3AF' }}>© {new Date().getFullYear()} Mindset Quotient. All rights reserved.</p>
+        <p className="text-xs" style={{ color: '#9CA3AF' }}>© {new Date().getFullYear()} Mindset Quotient®. All rights reserved.</p>
       </div>
 
     </main>

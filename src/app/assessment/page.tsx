@@ -202,7 +202,7 @@ export default function AssessmentPage() {
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#05A88E' }}>What is MQ?</p>
             <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
-              <strong>MQ (Mindset Quotient)</strong> is the ability to notice your thoughts,
+              <strong>MQ (Mindset Quotient®)</strong> is the ability to notice your thoughts,
               beliefs and emotional triggers, and choose how you respond to them, rather than
               being unconsciously driven by them.
             </p>

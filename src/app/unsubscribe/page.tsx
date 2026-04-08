@@ -32,7 +32,7 @@ function UnsubscribeContent() {
                style={{ backgroundColor: '#0A2E2A' }}>
             <span className="font-black text-lg" style={{ color: '#0AF3CD' }}>MQ</span>
           </div>
-          <p className="text-xs uppercase tracking-widest" style={{ color: '#05A88E' }}>Mindset Quotient</p>
+          <p className="text-xs uppercase tracking-widest" style={{ color: '#05A88E' }}>Mindset Quotient®</p>
         </div>
 
         {status === 'loading' && (

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MQ — Mindset Quotient",
+  title: "MQ — Mindset Quotient®",
   description: "Measure and develop your inner leadership capacity",
   manifest: "/manifest.json",
   appleWebApp: {

@@ -352,7 +352,7 @@ export default function MethodologyPage() {
         {/* ── Footer ───────────────────────────────────────────────────────── */}
         <div className="text-center py-2 pb-8">
           <span className="text-xs" style={{ color: '#9CA3AF' }}>
-            © {new Date().getFullYear()} Mindset Quotient Ltd &nbsp;·&nbsp;
+            © {new Date().getFullYear()} Mindset Quotient® Ltd &nbsp;·&nbsp;
           </span>
           <a href="/privacy" className="text-xs hover:underline" style={{ color: '#9CA3AF' }}>
             Privacy Policy
