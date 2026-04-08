@@ -927,7 +927,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
           <div style={{ backgroundColor: '#0A2E2A' }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
+                <div className="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
                      style={{ backgroundColor: '#0AF3CD' }}>🧠</div>
                 <div>
                   <p className="text-sm font-bold" style={{ color: 'white' }}>Mindset Gym</p>
