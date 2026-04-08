@@ -33,7 +33,7 @@ The specific behaviours associated with this value are:
 ${behavioursText}
 
 Write a Daily Spark card with these four fields:
-- title: A short, punchy title (5–8 words). Should feel like a challenge or invitation.
+- title: A short, punchy title (5–8 words). Should feel like a challenge or invitation. Always put the value name in quotes within the title so it's clear it refers to a company value (e.g. "Living 'On It'" not "Living On It").
 - teaser: One sentence (max 15 words) that hooks the leader into reading more.
 - insight: 2–3 sentences on why this value matters in leadership. Grounded and specific — avoid generic platitudes.
 - exercise: A practical reflection or micro-challenge tied directly to this value and its behaviours. 3–6 sentences. Specific enough to act on today.
@@ -45,7 +45,7 @@ Return ONLY a valid JSON object with keys: title, teaser, insight, exercise. No 
     return JSON.parse(text)
   } catch {
     return {
-      title:    `Living your company value '${valueName}'`,
+      title:    `Living '${valueName}' Today`,
       teaser:   `What does ${valueName} really look like in action today?`,
       insight:  `${valueName} is more than a wall poster — it shows up in every decision, conversation, and moment of pressure. Leaders who consciously embody their company's values set the standard for what is normal on their teams.`,
       exercise: `Think of one moment in the past week where ${valueName} was either clearly demonstrated or clearly missing in your own behaviour. What happened, and what would it look like to fully embody this value in your next interaction with your team?`,
