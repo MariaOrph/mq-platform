@@ -676,7 +676,7 @@ function DashboardContent() {
           className="block rounded-2xl overflow-hidden hover:opacity-90 transition-opacity"
           style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
         >
-          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #D1FAE5 0%, #E0FBF0 50%, #E8FDF7 100%)' }}>
+          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #FFF8E1 0%, #FFFBF0 50%, #FFFDF5 100%)' }}>
             <div className="flex items-center gap-2.5">
               <span className="text-base">📚</span>
               <div>
@@ -694,7 +694,7 @@ function DashboardContent() {
           className="w-full rounded-2xl overflow-hidden hover:opacity-90 transition-opacity text-left"
           style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}
         >
-          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #D1FAE5 0%, #E0FBF0 50%, #E8FDF7 100%)' }}>
+          <div className="flex items-center justify-between px-4 py-3.5" style={{ background: 'linear-gradient(135deg, #FFF8E1 0%, #FFFBF0 50%, #FFFDF5 100%)' }}>
             <div className="flex items-center gap-2.5">
               <span className="text-base">📓</span>
               <div>
