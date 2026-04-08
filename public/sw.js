@@ -1,5 +1,5 @@
 const CACHE_NAME = "mq-v1";
-const PRECACHE_URLS = ["/dashboard", "/offline"];
+const PRECACHE_URLS = ["/offline.html"];
 
 // Install — precache core pages
 self.addEventListener("install", (event) => {
@@ -36,7 +36,7 @@ self.addEventListener("fetch", (event) => {
       })
       .catch(() => {
         return caches.match(event.request).then((cached) => {
-          return cached || caches.match("/offline");
+          return cached || caches.match("/offline.html");
         });
       })
   );
