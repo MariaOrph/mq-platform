@@ -611,7 +611,7 @@ function DashboardContent() {
           <div className="flex items-center gap-2.5">
             <span className="text-base">📚</span>
             <div>
-              <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
               <p className="text-xs" style={{ color: '#9CA3AF' }}>Management and leadership skill guides</p>
             </div>
           </div>
@@ -627,7 +627,7 @@ function DashboardContent() {
           <div className="flex items-center gap-2.5">
             <span className="text-base">📓</span>
             <div>
-              <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>My Notes</p>
+              <p className="text-sm font-bold" style={{ color: '#0A2E2A' }}>My Notes</p>
               <p className="text-xs" style={{ color: '#9CA3AF' }}>Private journal</p>
             </div>
           </div>
@@ -765,7 +765,7 @@ function DashboardContent() {
 
         {/* ── MQ profile bars ───────────────────────────────────────────────── */}
         <div className="rounded-2xl p-5" style={cardStyle}>
-            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
+            <p className="text-sm font-bold uppercase tracking-wider mb-4" style={{ color: '#9CA3AF' }}>
               Your MQ profile
             </p>
             <div className="space-y-3.5">
