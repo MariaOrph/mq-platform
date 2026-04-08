@@ -22,7 +22,7 @@ type FilterType = 'all' | 'coaching' | 'mq_builder' | 'culture_lab'
 const SESSION_META: Record<string, { label: string; icon: string; color: string; bg: string }> = {
   coaching:     { label: 'Coaching Room', icon: '💬', color: '#0AF3CD', bg: '#E8FDF7' },
   mq_builder:   { label: 'Mindset Gym',       icon: '🧠', color: '#a78bfa', bg: '#F5F3FF' },
-  culture_lab:  { label: 'Culture Lab',  icon: '🧪', color: '#F59E0B', bg: '#FFFBEB' },
+  culture_lab:  { label: 'Culture Lab',  icon: '🤝', color: '#F59E0B', bg: '#FFFBEB' },
 }
 
 function getSessionMeta(session: Session) {
@@ -300,7 +300,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                         { key: 'all',          label: 'All' },
                         { key: 'coaching',     label: '💬 Coaching' },
                         { key: 'mq_builder',  label: '🧠 Mindset Gym' },
-                        { key: 'culture_lab', label: '🧪 Culture Lab' },
+                        { key: 'culture_lab', label: '🤝 Culture Lab' },
                       ] as { key: FilterType; label: string }[]).map(f => (
                         <button
                           key={f.key}

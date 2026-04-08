@@ -531,7 +531,7 @@ export default function CultureLabPage() {
             </button>
             <div className="flex items-center gap-3 flex-1">
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
-                   style={{ backgroundColor: '#0AF3CD' }}>🧪</div>
+                   style={{ backgroundColor: '#0AF3CD' }}>🤝</div>
               <div>
                 <p className="text-sm font-bold" style={{ color: 'white' }}>Culture Lab</p>
                 <p className="text-xs" style={{ color: '#B9F8DD' }}>Culture and values coaching</p>
