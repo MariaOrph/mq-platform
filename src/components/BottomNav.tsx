@@ -73,10 +73,12 @@ export default function BottomNav() {
   if (!pathname || pathname === "/" || HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
 
   const handleTabClick = (e: React.MouseEvent, item: typeof NAV_ITEMS[0]) => {
+    if (item.isOverlay) return; // Let Link navigate normally for overlay tabs
     const isActive = getIsActive(item);
-    if (isActive && !item.isOverlay) {
+    if (isActive) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Force a clean navigation to close any overlays, then scroll to top
+      window.location.href = item.href;
     }
   };
 
