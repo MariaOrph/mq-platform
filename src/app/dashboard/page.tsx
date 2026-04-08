@@ -602,33 +602,49 @@ function DashboardContent() {
           <DailySpark token={authToken} onOpenCoachingRoom={() => setShowCoachingRoom(true)} />
         )}
 
-        {/* ── Resource Centre + Notes (compact) ────────────────────────────── */}
-        <div className="rounded-2xl overflow-hidden"
-             style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}>
-          <a
-            href="/dashboard/resources"
-            className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
-            style={{ borderBottom: '1px solid #F3F4F6' }}
-          >
-            <div className="flex items-center gap-2.5">
-              <span className="text-base">📚</span>
+        {/* ── Resource Centre ──────────────────────────────────────────────── */}
+        <a
+          href="/dashboard/resources"
+          className="flex items-center justify-between px-4 py-3.5 rounded-2xl hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}
+        >
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">📚</span>
+            <div>
               <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>Resource Centre</p>
-              <span className="text-xs" style={{ color: '#9CA3AF' }}>Management and leadership skill guides</span>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>Management and leadership skill guides</p>
             </div>
-            <span className="text-xs" style={{ color: '#9CA3AF' }}>Browse →</span>
-          </a>
-          <button
-            onClick={() => setShowNotes(true)}
-            className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
-          >
-            <div className="flex items-center gap-2.5">
-              <span className="text-base">📓</span>
+          </div>
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>Browse →</span>
+        </a>
+
+        {/* ── My Notes ───────────────────────────────────────────────────────── */}
+        <button
+          onClick={() => setShowNotes(true)}
+          className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl hover:opacity-90 transition-opacity text-left"
+          style={{ backgroundColor: 'white', border: '1px solid #E5E7EB' }}
+        >
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">📓</span>
+            <div>
               <p className="text-xs font-semibold" style={{ color: '#0A2E2A' }}>My Notes</p>
-              <span className="text-xs" style={{ color: '#9CA3AF' }}>Private journal</span>
+              <p className="text-xs" style={{ color: '#9CA3AF' }}>Private journal</p>
             </div>
-            <span className="text-xs" style={{ color: '#9CA3AF' }}>Open →</span>
-          </button>
-        </div>
+          </div>
+          <span className="text-xs" style={{ color: '#9CA3AF' }}>Open →</span>
+        </button>
+
+        {/* ── 360 Feedback (left column) ─────────────────────────────────────── */}
+        {authToken && assessment && (
+          <FeedbackSection
+            token={authToken}
+            selfScores={[
+              assessment.d1_score, assessment.d2_score, assessment.d3_score,
+              assessment.d4_score, assessment.d5_score, assessment.d6_score,
+              assessment.d7_score,
+            ]}
+          />
+        )}
 
           </div>{/* end left column */}
 
@@ -929,18 +945,6 @@ function DashboardContent() {
             </a>
           )
         })()}
-
-        {/* ── 360 Feedback ─────────────────────────────────────────────────── */}
-        {authToken && assessment && (
-          <FeedbackSection
-            token={authToken}
-            selfScores={[
-              assessment.d1_score, assessment.d2_score, assessment.d3_score,
-              assessment.d4_score, assessment.d5_score, assessment.d6_score,
-              assessment.d7_score,
-            ]}
-          />
-        )}
 
           </div>
           </div>
