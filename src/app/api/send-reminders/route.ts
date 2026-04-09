@@ -11,12 +11,12 @@ const supabaseAdmin = createClient(
 
 const DIMENSION_NAMES: Record<number, string> = {
   1: 'Self-awareness',
-  2: 'Ego & identity',
+  2: 'Ego management',
   3: 'Emotional regulation',
-  4: 'Cognitive flexibility',
-  5: 'Values & purpose',
-  6: 'Relational mindset',
-  7: 'Adaptive resilience',
+  4: 'Clarity & communication',
+  5: 'Trust & development',
+  6: 'Standards & accountability',
+  7: 'Relational intelligence',
 }
 
 function getFocusDimension(scores: (number | null)[]): number {

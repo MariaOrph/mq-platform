@@ -3,12 +3,12 @@ export type CardContent = { title: string; teaser: string; insight: string; exer
 // 7 dimensions × 4 cards = 28 MQ cards
 // Dimension order:
 //   1 = Self-awareness
-//   2 = Ego & identity      (new)
+//   2 = Ego management       (new)
 //   3 = Emotional regulation
-//   4 = Cognitive flexibility (was 2)
-//   5 = Values & purpose     (was 4)
-//   6 = Relational mindset   (was 5)
-//   7 = Adaptive resilience  (was 6)
+//   4 = Clarity & communication (was 2)
+//   5 = Trust & development     (was 4)
+//   6 = Standards & accountability (was 5)
+//   7 = Relational intelligence  (was 6)
 
 export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
   // ── 1: Self-awareness ────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     },
   },
 
-  // ── 2: Ego & identity ────────────────────────────────────────────────────
+  // ── 2: Ego management ───────────────────────────────────────────────────
   2: {
     1: {
       title:    'The Defence Response',
@@ -95,7 +95,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     },
   },
 
-  // ── 4: Cognitive flexibility (was 2) ─────────────────────────────────────
+  // ── 4: Clarity & communication (was 2) ──────────────────────────────────
   4: {
     1: {
       title:    'The Opposite View',
@@ -123,7 +123,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     },
   },
 
-  // ── 5: Values & purpose (was 4) ──────────────────────────────────────────
+  // ── 5: Trust & development (was 4) ──────────────────────────────────────
   5: {
     1: {
       title:    'Name What You Stand For',
@@ -151,7 +151,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     },
   },
 
-  // ── 6: Relational mindset (was 5) ────────────────────────────────────────
+  // ── 6: Standards & accountability (was 5) ───────────────────────────────
   6: {
     1: {
       title:    'The Trust Inventory',
@@ -179,7 +179,7 @@ export const CARD_LIBRARY: Record<number, Record<number, CardContent>> = {
     },
   },
 
-  // ── 7: Adaptive resilience (was 6) ───────────────────────────────────────
+  // ── 7: Relational intelligence (was 6) ──────────────────────────────────
   7: {
     1: {
       title:    'The Bounce-Back Blueprint',

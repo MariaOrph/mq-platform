@@ -351,7 +351,7 @@ export async function POST(req: NextRequest) {
   ].filter(Boolean).join(' — ').replace(` — at `, ` at `)
 
   const mqContext = assessment
-    ? `${firstName}'s MQ scores: Overall ${assessment.overall_score}/100 | Self-awareness ${assessment.d1_score} | Ego & identity ${assessment.d2_score} | Emotional regulation ${assessment.d3_score} | Cognitive flexibility ${assessment.d4_score} | Values & purpose ${assessment.d5_score} | Relational mindset ${assessment.d6_score} | Adaptive resilience ${assessment.d7_score}. Use these as context but do not make them the centre of conversation — this space is about culture and team dynamics, not individual MQ.`
+    ? `${firstName}'s MQ scores: Overall ${assessment.overall_score}/100 | Self-awareness ${assessment.d1_score} | Ego management ${assessment.d2_score} | Emotional regulation ${assessment.d3_score} | Clarity & communication ${assessment.d4_score} | Trust & development ${assessment.d5_score} | Standards & accountability ${assessment.d6_score} | Relational intelligence ${assessment.d7_score}. Use these as context but do not make them the centre of conversation — this space is about culture and team dynamics, not individual MQ.`
     : 'MQ assessment not yet completed.'
 
   // Fetch company values + participant ratings (for values topic and general context)
@@ -400,8 +400,8 @@ export async function POST(req: NextRequest) {
     if (fbResponses && fbResponses.length >= 3) {
       const dimKeys  = ['d1_score','d2_score','d3_score','d4_score','d5_score','d6_score','d7_score'] as const
       const dimNames: Record<number, string> = {
-        1: 'Self-awareness', 2: 'Ego & identity', 3: 'Emotional regulation',
-        4: 'Cognitive flexibility', 5: 'Values & purpose', 6: 'Relational mindset', 7: 'Adaptive resilience',
+        1: 'Self-awareness', 2: 'Ego management', 3: 'Emotional regulation',
+        4: 'Clarity & communication', 5: 'Trust & development', 6: 'Standards & accountability', 7: 'Relational intelligence',
       }
       const selfScores = assessment
         ? [assessment.d1_score, assessment.d2_score, assessment.d3_score, assessment.d4_score,

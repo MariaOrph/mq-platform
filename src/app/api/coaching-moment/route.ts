@@ -13,12 +13,12 @@ const supabaseAdmin = createClient(
 
 const DIMENSION_NAMES: Record<number, string> = {
   1: 'Self-awareness',
-  2: 'Ego & identity',
+  2: 'Ego management',
   3: 'Emotional regulation',
-  4: 'Cognitive flexibility',
-  5: 'Values & purpose',
-  6: 'Relational mindset',
-  7: 'Adaptive resilience',
+  4: 'Clarity & communication',
+  5: 'Trust & development',
+  6: 'Standards & accountability',
+  7: 'Relational intelligence',
 }
 
 // ── Prompts ───────────────────────────────────────────────────────────────────
@@ -31,27 +31,20 @@ function buildUserPrompt(
   dimensionName: string,
   dimensionScore: number,
   context: string,
-  companyValues?: string | null
 ): string {
   const contextLine = context.trim()
     ? `Context shared by participant: "${context.trim()}"`
     : `Context shared by participant: No context provided — base the session on their MQ profile and focus dimension`
 
-  const valuesLine = (dimensionName === 'Values & purpose' && companyValues?.trim())
-    ? `Company values for this organisation: ${companyValues.trim()}
-Values framing: This leader's Values Clarity coaching should be framed around how well they are living and leading through their COMPANY's values (listed above), not just generic personal values. Reference the specific company values where relevant.`
-    : ''
-
   return `Participant name: ${name}
 Role: ${role}
 Focus dimension today: ${dimensionName} (their score: ${dimensionScore}/100)
 ${contextLine}
-${valuesLine}
 Programme stage: during programme
 
 Generate a coaching moment with exactly three sections:
 
-1. REFLECTION: 3-4 sentences. Speak directly to their situation through the lens of the focus dimension. If they shared context, reference it specifically and personally. Connect their inner mindset to their outer impact as a manager — but always in terms of what becomes possible as this develops, never what's wrong right now. Use their first name at least once.${dimensionName === 'Values & purpose' && companyValues?.trim() ? ' Where relevant, reference the company values by name.' : ''}
+1. REFLECTION: 3-4 sentences. Speak directly to their situation through the lens of the focus dimension. If they shared context, reference it specifically and personally. Connect their inner mindset to their outer impact as a manager — but always in terms of what becomes possible as this develops, never what's wrong right now. Use their first name at least once.
 
 2. PRACTICE: A short practice title (5 words max), then 3-4 sentences describing exactly what to do today. Make it concrete, specific, and achievable in under 10 minutes. Ground it in their actual management situation where possible.
 
@@ -120,7 +113,7 @@ export async function POST(req: NextRequest) {
   }
 
   const dimensionName = DIMENSION_NAMES[dimensionId]
-  const userPrompt    = buildUserPrompt(name, role ?? 'leader', dimensionName, dimensionScore, context ?? '', companyValues)
+  const userPrompt    = buildUserPrompt(name, role ?? 'leader', dimensionName, dimensionScore, context ?? '')
 
   let generated: {
     heading: string

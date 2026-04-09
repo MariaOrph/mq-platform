@@ -10,12 +10,12 @@ const supabaseAdmin = createClient(
 
 const DIMENSION_NAMES: Record<string, string> = {
   d1: 'Self-awareness',
-  d2: 'Ego & identity',
+  d2: 'Ego management',
   d3: 'Emotional regulation',
-  d4: 'Cognitive flexibility',
-  d5: 'Values & purpose',
-  d6: 'Relational mindset',
-  d7: 'Adaptive resilience',
+  d4: 'Clarity & communication',
+  d5: 'Trust & development',
+  d6: 'Standards & accountability',
+  d7: 'Relational intelligence',
 }
 
 const DIMENSION_KEYS = ['d1','d2','d3','d4','d5','d6','d7'] as const
@@ -142,7 +142,7 @@ Aggregate dimension scores:
 ${dimLines}
 - Overall team MQ: ${scores.overall !== null ? `${scores.overall}/100 (${getScoreBand(scores.overall)})` : 'pending'}
 
-MQ is defined as the ability to notice your thoughts, beliefs, and emotional triggers — and choose how to respond rather than being unconsciously driven by them. The 7 dimensions measure: Self-awareness (internal observer), Ego & identity (leading from values not ego protection), Emotional regulation (managing emotional responses under pressure), Cognitive flexibility (holding multiple perspectives), Values & purpose (alignment between stated values, lived behaviour, and sense of direction), Relational mindset (quality of attention in relationships), and Adaptive resilience (sustaining performance under pressure).
+MQ is defined as the ability to notice your thoughts, beliefs, and emotional triggers — and choose how to respond rather than being unconsciously driven by them. The 7 dimensions measure: Self-awareness (internal observer), Ego management (leading from values not ego protection), Emotional regulation (managing emotional responses under pressure), Clarity & communication (holding multiple perspectives), Trust & development (alignment between stated values, lived behaviour, and sense of direction), Standards & accountability (quality of attention in relationships), and Relational intelligence (sustaining performance under pressure).
 
 Return a JSON object with this exact structure:
 {

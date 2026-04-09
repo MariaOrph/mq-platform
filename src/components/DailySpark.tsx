@@ -28,12 +28,12 @@ interface DailySparkProps {
 
 const DIMS: Record<number, { name: string; color: string; bg: string; emoji: string }> = {
   1: { name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9', emoji: '🪞' },
-  2: { name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3', emoji: '🛡️' },
-  3: { name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8', emoji: '🌊' },
-  4: { name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0', emoji: '🧩' },
-  5: { name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF', emoji: '🧭' },
-  6: { name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5', emoji: '🤝' },
-  7: { name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE', emoji: '⚡' },
+  2: { name: 'Ego management',              color: '#EC4899', bg: '#FCE7F3', emoji: '🛡️' },
+  3: { name: 'Emotional regulation',        color: '#ff7b7a', bg: '#FFE8E8', emoji: '🌊' },
+  4: { name: 'Clarity & communication',     color: '#ff9f43', bg: '#FFF0E0', emoji: '🧩' },
+  5: { name: 'Trust & development',         color: '#00c9a7', bg: '#D4F5EF', emoji: '🧭' },
+  6: { name: 'Standards & accountability',  color: '#2d4a8a', bg: '#E0E6F5', emoji: '🤝' },
+  7: { name: 'Relational intelligence',     color: '#a78bfa', bg: '#EDE9FE', emoji: '⚡' },
 }
 
 const VALUES_DIM = { name: 'Company Value', color: '#f59e0b', bg: '#FEF3C7', emoji: '⭐' }

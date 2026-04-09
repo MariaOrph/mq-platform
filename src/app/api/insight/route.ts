@@ -19,12 +19,12 @@ interface InsightRequest {
   companyName: string
   scores: {
     d1: number | null   // Self-awareness
-    d2: number | null   // Ego & identity
+    d2: number | null   // Ego management
     d3: number | null   // Emotional regulation
-    d4: number | null   // Cognitive flexibility
-    d5: number | null   // Values & purpose
-    d6: number | null   // Relational mindset
-    d7: number | null   // Adaptive resilience
+    d4: number | null   // Clarity & communication
+    d5: number | null   // Trust & development
+    d6: number | null   // Standards & accountability
+    d7: number | null   // Relational intelligence
     overall: number | null
   }
 }
@@ -42,12 +42,12 @@ function buildDataHash(req: InsightRequest): string {
 
 const DIMENSION_NAMES: Record<string, string> = {
   d1: 'Self-awareness',
-  d2: 'Ego & identity',
+  d2: 'Ego management',
   d3: 'Emotional regulation',
-  d4: 'Cognitive flexibility',
-  d5: 'Values & purpose',
-  d6: 'Relational mindset',
-  d7: 'Adaptive resilience',
+  d4: 'Clarity & communication',
+  d5: 'Trust & development',
+  d6: 'Standards & accountability',
+  d7: 'Relational intelligence',
 }
 
 function buildUserPrompt(req: InsightRequest): string {

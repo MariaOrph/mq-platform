@@ -8,21 +8,21 @@ import { createClient } from '@/lib/supabase/client'
 
 const DIMS = [
   { id: 1, name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
-  { id: 3, name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 5, name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 6, name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 7, name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
+  { id: 2, name: 'Ego management',              color: '#EC4899', bg: '#FCE7F3' },
+  { id: 3, name: 'Emotional regulation',        color: '#ff7b7a', bg: '#FFE8E8' },
+  { id: 4, name: 'Clarity & communication',     color: '#ff9f43', bg: '#FFF0E0' },
+  { id: 5, name: 'Trust & development',         color: '#00c9a7', bg: '#D4F5EF' },
+  { id: 6, name: 'Standards & accountability',  color: '#2d4a8a', bg: '#E0E6F5' },
+  { id: 7, name: 'Relational intelligence',     color: '#a78bfa', bg: '#EDE9FE' },
 ]
 
 const NEXT_DIM_TEASER: Record<number, string> = {
-  1: 'Ego & identity',
+  1: 'Ego management',
   2: 'Emotional regulation',
-  3: 'Cognitive flexibility',
-  4: 'Values & purpose',
-  5: 'Relational mindset',
-  6: 'Adaptive resilience',
+  3: 'Clarity & communication',
+  4: 'Trust & development',
+  5: 'Standards & accountability',
+  6: 'Relational intelligence',
   7: 'Self-awareness',
 }
 

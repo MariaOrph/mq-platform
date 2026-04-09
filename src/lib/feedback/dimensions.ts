@@ -18,11 +18,11 @@ export const FEEDBACK_DIMENSIONS: FeedbackDimension[] = [
     ],
   },
   {
-    id: 2, name: 'Ego & identity', color: '#EC4899', bg: '#FCE7F3',
+    id: 2, name: 'Ego management', color: '#EC4899', bg: '#FCE7F3',
     statements: [
       'Responds to challenge or disagreement without becoming defensive',
       'Gives credit to others readily and openly',
-      'Admits uncertainty or mistakes without it threatening their confidence',
+      'Lets go of how things get done and focuses on outcomes rather than controlling the process',
     ],
   },
   {
@@ -34,32 +34,35 @@ export const FEEDBACK_DIMENSIONS: FeedbackDimension[] = [
     ],
   },
   {
-    id: 4, name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0',
+    id: 4, name: 'Clarity & communication', color: '#ff9f43', bg: '#FFF0E0',
     statements: [
-      'Genuinely considers different perspectives before reaching a conclusion',
-      'Willing to update their view when presented with a compelling argument or new information',
+      'Communicates expectations, priorities and direction clearly',
+      'Gives feedback that is specific, actionable and helpful',
+      'Keeps the team informed when plans or priorities change',
     ],
   },
   {
-    id: 5, name: 'Values & purpose', color: '#00c9a7', bg: '#D4F5EF',
+    id: 5, name: 'Trust & development', color: '#00c9a7', bg: '#D4F5EF',
     statements: [
-      'Acts consistently with their stated values, even when it is difficult',
-      'Their decisions reflect a clear sense of what matters, beyond short-term gain',
+      'Trusts people to do their work without micromanaging',
+      'Invests time in developing others through coaching and honest feedback',
+      'Creates opportunities for people to stretch and grow',
     ],
   },
   {
-    id: 6, name: 'Relational mindset', color: '#2d4a8a', bg: '#E0E6F5',
+    id: 6, name: 'Standards & accountability', color: '#2d4a8a', bg: '#E0E6F5',
+    statements: [
+      'Sets clear expectations and holds people to them fairly and consistently',
+      'Takes ownership when things go wrong rather than looking for someone to blame',
+      'Leads by example and holds themselves to the same standards as the team',
+    ],
+  },
+  {
+    id: 7, name: 'Relational intelligence', color: '#a78bfa', bg: '#EDE9FE',
     statements: [
       'Makes people feel genuinely heard and valued',
-      'Creates an environment where people feel safe to be honest',
-      'Invests in real relationships, not just transactional ones',
-    ],
-  },
-  {
-    id: 7, name: 'Adaptive resilience', color: '#a78bfa', bg: '#EDE9FE',
-    statements: [
-      'Maintains perspective and energy through setbacks and uncertainty',
-      'Brings a constructive, forward-looking attitude to challenges rather than dwelling on problems',
+      'Creates an environment where people feel safe to be honest and to disagree',
+      'Builds genuine, trust-based relationships, not just transactional ones',
     ],
   },
 ]

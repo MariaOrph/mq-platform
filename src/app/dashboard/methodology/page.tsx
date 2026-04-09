@@ -112,7 +112,7 @@ export default function MethodologyPage() {
                 anchor: 'Tasha Eurich\'s research (Insight, 2017) found that while 95% of leaders believe they are self-aware, only around 10–15% actually are. Green Peak Partners/Cornell research identified self-awareness as the single strongest predictor of leadership success. Also a foundational pillar in Goleman\'s EI model.',
               },
               {
-                emoji: '🪞', name: 'Ego & Identity',
+                emoji: '🪞', name: 'Ego Management',
                 color: '#EC4899', bg: '#FCE7F3',
                 desc: 'The stability and flexibility of the self — how much the ego needs to protect itself, and how attached the leader is to being right, in control, or seen in a particular way.',
                 anchor: 'Robert Kegan\'s subject-object theory and Bill Torbert\'s 25-year longitudinal study found ego development stage to be the strongest predictor of leadership effectiveness and the ability to lead transformation. Also supported by research on narcissistic leadership derailment (Rosenthal & Pittinsky) and Chris Argyris\'s work on defensive reasoning.',
@@ -124,25 +124,25 @@ export default function MethodologyPage() {
                 anchor: 'James Gross\'s process model of emotion regulation (Stanford, 1998) is among the most cited papers in psychology. Richard Davidson\'s neuroscience research demonstrates that emotional regulation is trainable and directly linked to decision quality under stress. Maps to Goleman\'s self-management pillar.',
               },
               {
-                emoji: '🔄', name: 'Cognitive Flexibility',
+                emoji: '🔄', name: 'Clarity & Communication',
                 color: '#ff9f43', bg: '#FFF0E0',
                 desc: 'The ability to hold complexity, revise assumptions, and remain genuinely open to new evidence — including evidence that challenges existing views.',
                 anchor: 'Carol Dweck\'s growth mindset research (Stanford) is the most widely known reference point. Roger Martin\'s integrative thinking and Kegan\'s immunity to change theory cover the deeper developmental layer. McKinsey research consistently identifies cognitive agility as a top differentiator at senior leadership levels.',
               },
               {
-                emoji: '⭐', name: 'Values & Purpose',
+                emoji: '⭐', name: 'Trust & Development',
                 color: '#00c9a7', bg: '#D4F5EF',
                 desc: 'The depth and stability of the leader\'s sense of what they stand for — and how consistently that shows up in decisions and behaviour.',
                 anchor: 'Shalom Schwartz\'s universal values theory (replicated across 80+ countries) provides the foundational academic grounding. The authentic leadership research of Bill George and Bruce Avolio, and Nick Craig/Scott Snook\'s work on purpose, provide leadership-specific grounding. Deci & Ryan\'s self-determination theory supports the performance benefits of intrinsic purpose.',
               },
               {
-                emoji: '🤝', name: 'Relational Mindset',
+                emoji: '🤝', name: 'Standards & Accountability',
                 color: '#2d4a8a', bg: '#E0E6F5',
                 desc: 'The fundamental orientation toward others — whether the leader approaches relationships as transactional or as a source of genuine mutual investment.',
                 anchor: 'Overlaps with Goleman\'s social awareness and relationship management pillars. Supported by Heifetz & Linsky\'s adaptive leadership framework, the Mayer, Davis & Schoorman trust model, and Robert Greenleaf\'s servant leadership research.',
               },
               {
-                emoji: '🔥', name: 'Adaptive Resilience',
+                emoji: '🔥', name: 'Relational Intelligence',
                 color: '#a78bfa', bg: '#EDE9FE',
                 desc: 'The capacity to recover from setbacks, learn from adversity, and remain grounded under sustained pressure.',
                 anchor: 'Martin Seligman\'s positive psychology and PERMA model, Angela Duckworth\'s grit research, and Luthans et al.\'s psychological capital (PsyCap) research — which identified resilience as one of four core psychological resources predicting sustained performance. Also connected to post-traumatic growth research (Tedeschi & Calhoun).',
@@ -281,7 +281,7 @@ export default function MethodologyPage() {
             <div className="space-y-3">
               <div className="rounded-xl p-4" style={{ backgroundColor: '#FCE7F3', border: '1px solid #FBCFE8' }}>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  <span className="font-bold" style={{ color: '#0A2E2A' }}>Ego &amp; Identity — </span>
+                  <span className="font-bold" style={{ color: '#0A2E2A' }}>Ego Management — </span>
                   EQ treats the self as a relatively fixed backdrop and focuses on competencies.
                   It does not examine whether the ego is stable enough to be genuinely challenged,
                   or flexible enough to change. This is why many technically skilled, emotionally
@@ -292,7 +292,7 @@ export default function MethodologyPage() {
               </div>
               <div className="rounded-xl p-4" style={{ backgroundColor: '#FFF0E0', border: '1px solid #FED7AA' }}>
                 <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-                  <span className="font-bold" style={{ color: '#0A2E2A' }}>Cognitive Flexibility — </span>
+                  <span className="font-bold" style={{ color: '#0A2E2A' }}>Clarity &amp; Communication — </span>
                   EQ is fundamentally about emotional and social competence. Cognitive flexibility —
                   the capacity to hold complexity, revise assumptions, and remain genuinely open to
                   being wrong — is a distinct domain, grounded in different research (Dweck, Kegan,

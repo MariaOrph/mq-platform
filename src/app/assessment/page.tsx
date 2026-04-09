@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
-  DIMENSIONS, ALL_QUESTIONS, TOTAL_QUESTIONS, SCALE_OPTIONS,
+  DIMENSIONS, ALL_QUESTIONS, TOTAL_QUESTIONS,
   calculateAllScores, getScoreLabel, getDimensionInsight, getPersonalisedMessage,
 } from '@/lib/assessment/data'
 
@@ -193,8 +193,8 @@ export default function AssessmentPage() {
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#05A88E' }}>Your reassessment</p>
             <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
-              You're ready to reassess. Answer the same 21 questions as honestly as you can —
-              your scores will be compared to your previous results so you can see how you've developed.
+              You're ready to reassess. Answer the same 35 questions as honestly as you can.
+              Your scores will be compared to your previous results so you can see how you've developed.
             </p>
           </div>
         ) : (
@@ -338,9 +338,9 @@ export default function AssessmentPage() {
             &ldquo;{currentQuestion.text}&rdquo;
           </p>
 
-          {/* Scale options */}
+          {/* Answer options */}
           <div className="space-y-3">
-            {SCALE_OPTIONS.map(opt => {
+            {currentQuestion.options.map(opt => {
               const selected = currentResponse === opt.value
               return (
                 <button key={opt.value} onClick={() => handleSelect(opt.value)}
@@ -349,16 +349,9 @@ export default function AssessmentPage() {
                     borderColor: selected ? currentDimension.color : '#E8FDF7',
                     boxShadow:   selected ? `0 0 0 1px ${currentDimension.color}` : 'none',
                   }}>
-                  <span className="text-2xl font-bold w-8 text-center flex-shrink-0"
-                        style={{ color: selected ? currentDimension.color : '#B9F8DD' }}>
-                    {opt.value}
-                  </span>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold" style={{ color: '#0A2E2A' }}>
-                      {opt.short}
-                    </div>
-                    <div className="text-xs mt-0.5" style={{ color: '#05A88E' }}>
-                      {opt.description}
+                    <div className="text-sm leading-relaxed" style={{ color: '#0A2E2A' }}>
+                      {opt.text}
                     </div>
                   </div>
                   {selected && (

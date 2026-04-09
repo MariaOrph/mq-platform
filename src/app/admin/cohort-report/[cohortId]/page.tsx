@@ -40,13 +40,13 @@ interface ReportData {
 // ── Dimension config ─────────────────────────────────────────────────────────
 
 const DIMS = [
-  { key: 'd1', name: 'Self-awareness',        color: '#fdcb5e', bg: '#FEF5D9' },
-  { key: 'd2', name: 'Ego & identity',        color: '#EC4899', bg: '#FCE7F3' },
-  { key: 'd3', name: 'Emotional regulation',  color: '#ff7b7a', bg: '#FFE8E8' },
-  { key: 'd4', name: 'Cognitive flexibility', color: '#ff9f43', bg: '#FFF0E0' },
-  { key: 'd5', name: 'Values & purpose',      color: '#00c9a7', bg: '#D4F5EF' },
-  { key: 'd6', name: 'Relational mindset',    color: '#2d4a8a', bg: '#E0E6F5' },
-  { key: 'd7', name: 'Adaptive resilience',   color: '#a78bfa', bg: '#EDE9FE' },
+  { key: 'd1', name: 'Self-awareness',            color: '#fdcb5e', bg: '#FEF5D9' },
+  { key: 'd2', name: 'Ego management',            color: '#EC4899', bg: '#FCE7F3' },
+  { key: 'd3', name: 'Emotional regulation',      color: '#ff7b7a', bg: '#FFE8E8' },
+  { key: 'd4', name: 'Clarity & communication',   color: '#ff9f43', bg: '#FFF0E0' },
+  { key: 'd5', name: 'Trust & development',       color: '#00c9a7', bg: '#D4F5EF' },
+  { key: 'd6', name: 'Standards & accountability', color: '#2d4a8a', bg: '#E0E6F5' },
+  { key: 'd7', name: 'Relational intelligence',   color: '#a78bfa', bg: '#EDE9FE' },
 ]
 
 function getScoreBand(score: number | null): { label: string; colour: string } {

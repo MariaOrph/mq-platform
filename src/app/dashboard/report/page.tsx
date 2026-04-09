@@ -4,13 +4,13 @@ import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 const DIMS = [
-  { id: 1, name: 'Self-awareness',       color: '#fdcb5e', bg: '#FEF5D9' },
-  { id: 2, name: 'Ego & identity',       color: '#EC4899', bg: '#FCE7F3' },
-  { id: 3, name: 'Emotional regulation', color: '#ff7b7a', bg: '#FFE8E8' },
-  { id: 4, name: 'Cognitive flexibility',color: '#ff9f43', bg: '#FFF0E0' },
-  { id: 5, name: 'Values & purpose',     color: '#00c9a7', bg: '#D4F5EF' },
-  { id: 6, name: 'Relational mindset',   color: '#2d4a8a', bg: '#E0E6F5' },
-  { id: 7, name: 'Adaptive resilience',  color: '#a78bfa', bg: '#EDE9FE' },
+  { id: 1, name: 'Self-awareness',            color: '#fdcb5e', bg: '#FEF5D9' },
+  { id: 2, name: 'Ego management',            color: '#EC4899', bg: '#FCE7F3' },
+  { id: 3, name: 'Emotional regulation',      color: '#ff7b7a', bg: '#FFE8E8' },
+  { id: 4, name: 'Clarity & communication',   color: '#ff9f43', bg: '#FFF0E0' },
+  { id: 5, name: 'Trust & development',       color: '#00c9a7', bg: '#D4F5EF' },
+  { id: 6, name: 'Standards & accountability', color: '#2d4a8a', bg: '#E0E6F5' },
+  { id: 7, name: 'Relational intelligence',   color: '#a78bfa', bg: '#EDE9FE' },
 ]
 
 const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: string; low: string }> = {
@@ -21,10 +21,10 @@ const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: st
     low: 'May react before choosing your response, or discover your impact on others after the fact rather than in the moment.',
   },
   2: {
-    tagline: 'Leading from purpose, not from the need to be right.',
-    what: 'The capacity to acknowledge mistakes, receive challenge with curiosity, and notice when ego protection is driving behaviour rather than genuine purpose.',
-    high: 'Leads with real security — not the kind that comes from always being right, but the kind that comes from knowing who you are.',
-    low: 'Ego protection may show up as defensiveness, reluctance to admit mistakes, or difficulty hearing challenge without feeling threatened.',
+    tagline: 'Letting go of being the expert to enable others.',
+    what: 'How easily you let go of being the expert, accept challenge, and shift your identity from personal performer to enabler of others.',
+    high: 'Leads with real security. Can receive feedback, admit mistakes, share credit and let go of how things get done.',
+    low: 'Ego protection may show up as defensiveness, needing to be the expert, or struggling to let go of control.',
   },
   3: {
     tagline: 'Letting emotions inform you rather than run you.',
@@ -33,28 +33,28 @@ const DIM_DESCRIPTIONS: Record<number, { tagline: string; what: string; high: st
     low: 'Emotional intensity may sometimes hijack thinking or limit presence in high-stakes conversations.',
   },
   4: {
-    tagline: 'Holding your own thinking lightly.',
-    what: 'The capacity to challenge your own assumptions, reframe setbacks as information, and genuinely consider perspectives that differ from your own.',
-    high: 'Readily updates mental models and avoids black-and-white thinking. Setbacks become data rather than failure.',
-    low: 'May default to familiar frameworks even when the situation calls for fresh thinking, or hold beliefs more rigidly than the evidence warrants.',
+    tagline: 'Making complexity clear for everyone around you.',
+    what: 'How effectively you think through complexity and translate it into clear direction, expectations and decisions for others.',
+    high: 'Brings real clarity to communication. Team knows where they stand, what\'s expected, and why.',
+    low: 'People may often be unsure of expectations, or delegation may not always land clearly. Communication clarity is a high-leverage development area.',
   },
   5: {
-    tagline: 'Knowing what you stand for — and why you lead.',
-    what: 'The capacity to make decisions from a clear sense of what you value and what you are ultimately in service of, rather than from fear, habit or external pressure.',
-    high: 'Decisions anchored by a clear internal compass. Others experience you as consistent, trustworthy and purposeful.',
-    low: 'May hold values not yet fully translated into consistent visible behaviour, or lead more from external expectation than internal conviction.',
+    tagline: 'Believing in people and investing in their growth.',
+    what: 'How deeply you believe in others\' ability to grow, how willingly you give autonomy, and how actively you invest in developing people through coaching and honest feedback.',
+    high: 'Genuinely invests in growing people. This is the hallmark of a leader who has made the shift from personal performance to enabling others.',
+    low: 'May be holding on to too much, giving answers instead of coaching, or not making enough time for development conversations.',
   },
   6: {
-    tagline: 'The quality of presence you bring to every interaction.',
-    what: 'The internal orientation that makes genuine leadership of people possible — curiosity about what drives others, awareness of your emotional impact, and a desire to enable rather than control.',
-    high: 'Approaches relationships with genuine curiosity and care. People feel seen, heard and trusted to do their best work.',
-    low: 'Under pressure, may shift into transactional or controlling mode, giving people less real attention or autonomy than they need.',
+    tagline: 'High standards with high support.',
+    what: 'How consistently you set clear expectations, take ownership of outcomes and hold yourself and others to high standards without micromanaging.',
+    high: 'Sets a high bar and holds it consistently with fairness and support. Team knows what\'s expected and trusts the standard is fairly held.',
+    low: 'May be letting things slide, avoiding difficult performance conversations, or being inconsistent about accountability.',
   },
   7: {
-    tagline: 'Staying resourceful when it matters most.',
-    what: 'The capacity to maintain effectiveness, purpose and identity under conditions of pressure, uncertainty and change — accessing your best thinking precisely when conditions make it hardest.',
-    high: 'Strong internal resources for navigating difficulty. Stays effective and purposeful under pressure rather than going into survival mode.',
-    low: 'Sustained pressure may be reducing access to best thinking in ways that affect decisions, relationships and performance.',
+    tagline: 'Building trust and creating space for everyone to contribute.',
+    what: 'How naturally you build trust, collaborate across difference, and create the conditions for others to contribute fully.',
+    high: 'Brings a genuinely relational quality to leadership. People feel seen, heard and enabled.',
+    low: 'Under pressure, may shift into task-focused mode. Investing in trust-based relationships and inclusive practices will amplify effectiveness.',
   },
 }
 
