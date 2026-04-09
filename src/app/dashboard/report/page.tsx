@@ -217,9 +217,8 @@ export default function ReportPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>About MQ</p>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-            MQ (Mindset Quotient®) measures your capacity to notice your own thoughts, beliefs and emotional patterns,
-            and to consciously choose how you respond rather than being driven by them automatically. It is measured
-            across seven dimensions that together define the internal landscape of effective leadership.
+            MQ (Mindset Quotient®) measures how fully you've made the shift from individual performer to effective
+            leader of others, across seven dimensions of the mindset that underpins great management.
           </p>
         </div>
 
