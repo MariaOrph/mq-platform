@@ -151,7 +151,7 @@ export default function AssessmentPage() {
       <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
       <div className="w-full max-w-md text-center relative z-10">
         <div className="flex justify-center mb-6">
-          <img src="/MQ Favicon.png" alt="MQ" className="h-14 w-auto" />
+          <img src="/Favicon_White.png" alt="MQ" className="h-14 w-auto" />
         </div>
         <div className="text-4xl mb-4">🔒</div>
         <h1 className="text-2xl font-semibold mb-3" style={{ color: 'white' }}>
@@ -181,7 +181,7 @@ export default function AssessmentPage() {
 
       <div className="w-full max-w-xl relative z-10">
         <div className="flex justify-center mb-6">
-          <img src="/MQ Favicon.png" alt="MQ" className="h-14 w-auto" />
+          <img src="/Favicon_White.png" alt="MQ" className="h-14 w-auto" />
         </div>
 
         <h1 className="text-3xl font-semibold text-center mb-8" style={{ color: 'white' }}>
@@ -190,7 +190,7 @@ export default function AssessmentPage() {
 
         {isReassessment ? (
           <div className="rounded-2xl p-6 mb-4"
-               style={{ background: 'linear-gradient(135deg, rgba(10,243,205,0.12) 0%, rgba(5,168,142,0.08) 100%)', border: '1px solid rgba(10,243,205,0.15)', backdropFilter: 'blur(12px)' }}>
+               style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(16px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#0AF3CD' }}>Your reassessment</p>
             <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
@@ -200,7 +200,7 @@ export default function AssessmentPage() {
           </div>
         ) : (
           <div className="rounded-2xl p-6 mb-4"
-               style={{ background: 'linear-gradient(135deg, rgba(10,243,205,0.12) 0%, rgba(5,168,142,0.08) 100%)', border: '1px solid rgba(10,243,205,0.15)', backdropFilter: 'blur(12px)' }}>
+               style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(16px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#0AF3CD' }}>What is MQ?</p>
             <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
@@ -212,7 +212,7 @@ export default function AssessmentPage() {
         )}
 
         <div className="rounded-2xl p-5 mb-8"
-             style={{ background: 'linear-gradient(135deg, rgba(185,248,221,0.1) 0%, rgba(10,243,205,0.06) 100%)', border: '1px solid rgba(185,248,221,0.12)' }}>
+             style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <p className="text-sm leading-relaxed" style={{ color: 'rgba(185,248,221,0.7)' }}>
             <strong style={{ color: 'rgba(185,248,221,0.9)' }}>A note on privacy:</strong> Your individual scores, answers, and all coaching
             conversations are completely private and will never be shared. Programme leads only ever
