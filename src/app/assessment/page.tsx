@@ -138,29 +138,28 @@ export default function AssessmentPage() {
 
   // ── LOADING ──────────────────────────────────────────────────
   if (step === 'loading') return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#E8FDF7' }}>
-      <p className="text-sm" style={{ color: '#05A88E' }}>Loading…</p>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 50%, #0A2E2A 100%)' }}>
+      <p className="text-sm" style={{ color: '#0AF3CD' }}>Loading…</p>
     </div>
   )
 
   // ── LOCKED ───────────────────────────────────────────────────
   if (step === 'locked') return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-         style={{ backgroundColor: '#E8FDF7' }}>
-      <div className="w-full max-w-md text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden"
+         style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 50%, #0A2E2A 100%)' }}>
+      {/* Decorative glow */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
+      <div className="w-full max-w-md text-center relative z-10">
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-               style={{ backgroundColor: '#0AF3CD' }}>
-            <span className="font-bold text-lg" style={{ color: '#0A2E2A' }}>MQ</span>
-          </div>
+          <img src="/MQ Favicon.png" alt="MQ" className="h-14 w-auto" />
         </div>
         <div className="text-4xl mb-4">🔒</div>
-        <h1 className="text-2xl font-semibold mb-3" style={{ color: '#0A2E2A' }}>
+        <h1 className="text-2xl font-semibold mb-3" style={{ color: 'white' }}>
           Reassessment not yet available
         </h1>
-        <p className="text-sm leading-relaxed mb-6" style={{ color: '#05A88E' }}>
+        <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(185,248,221,0.7)' }}>
           Meaningful mindset change takes time. You can reassess your MQ in{' '}
-          <strong style={{ color: '#0A2E2A' }}>{daysRemaining} day{daysRemaining !== 1 ? 's' : ''}</strong>.
+          <strong style={{ color: '#0AF3CD' }}>{daysRemaining} day{daysRemaining !== 1 ? 's' : ''}</strong>.
           In the meantime, keep working with your Daily Spark and Coaching Room.
         </p>
         <a href="/dashboard"
@@ -174,44 +173,48 @@ export default function AssessmentPage() {
 
   // ── WELCOME ─────────────────────────────────────────────────
   if (step === 'welcome') return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-         style={{ backgroundColor: '#E8FDF7' }}>
-      <div className="w-full max-w-xl">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden"
+         style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 50%, #0A2E2A 100%)' }}>
+      {/* Decorative glow orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
+      <div className="absolute bottom-1/3 left-1/4 w-64 h-64 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: 'rgba(5,168,142,0.08)' }} />
+
+      <div className="w-full max-w-xl relative z-10">
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-               style={{ backgroundColor: '#0AF3CD' }}>
-            <span className="font-bold text-lg" style={{ color: '#0A2E2A' }}>MQ</span>
-          </div>
+          <img src="/MQ Favicon.png" alt="MQ" className="h-14 w-auto" />
         </div>
 
-        <h1 className="text-3xl font-semibold text-center mb-8" style={{ color: '#0A2E2A' }}>
+        <h1 className="text-3xl font-semibold text-center mb-8" style={{ color: 'white' }}>
           {isReassessment ? 'MQ Reassessment' : 'MQ Assessment'}
         </h1>
 
         {isReassessment ? (
-          <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
+          <div className="rounded-2xl p-6 mb-4"
+               style={{ background: 'linear-gradient(135deg, rgba(10,243,205,0.12) 0%, rgba(5,168,142,0.08) 100%)', border: '1px solid rgba(10,243,205,0.15)', backdropFilter: 'blur(12px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
-               style={{ color: '#05A88E' }}>Your reassessment</p>
-            <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
+               style={{ color: '#0AF3CD' }}>Your reassessment</p>
+            <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
               You're ready to reassess. Answer the same 35 questions as honestly as you can.
               Your scores will be compared to your previous results so you can see how you've developed.
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl p-6 mb-4 shadow-sm">
+          <div className="rounded-2xl p-6 mb-4"
+               style={{ background: 'linear-gradient(135deg, rgba(10,243,205,0.12) 0%, rgba(5,168,142,0.08) 100%)', border: '1px solid rgba(10,243,205,0.15)', backdropFilter: 'blur(12px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
-               style={{ color: '#05A88E' }}>What is MQ?</p>
-            <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
-              <strong>MQ (Mindset Quotient®)</strong> measures how fully you've made the shift
+               style={{ color: '#0AF3CD' }}>What is MQ?</p>
+            <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
+              <strong style={{ color: 'white' }}>MQ (Mindset Quotient®)</strong> measures how fully you've made the shift
               from individual performer to effective leader of others, across seven dimensions
               of the mindset that underpins great management.
             </p>
           </div>
         )}
 
-        <div className="rounded-2xl p-5 mb-8" style={{ backgroundColor: '#B9F8DD' }}>
-          <p className="text-sm leading-relaxed" style={{ color: '#0A2E2A' }}>
-            <strong>A note on privacy:</strong> Your individual scores, answers, and all coaching
+        <div className="rounded-2xl p-5 mb-8"
+             style={{ background: 'linear-gradient(135deg, rgba(185,248,221,0.1) 0%, rgba(10,243,205,0.06) 100%)', border: '1px solid rgba(185,248,221,0.12)' }}>
+          <p className="text-sm leading-relaxed" style={{ color: 'rgba(185,248,221,0.7)' }}>
+            <strong style={{ color: 'rgba(185,248,221,0.9)' }}>A note on privacy:</strong> Your individual scores, answers, and all coaching
             conversations are completely private and will never be shared. Programme leads only ever
             see anonymised, aggregate results across the whole cohort — never individual data.
           </p>
@@ -228,18 +231,19 @@ export default function AssessmentPage() {
 
   // ── INFO ────────────────────────────────────────────────────
   if (step === 'info') return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-         style={{ backgroundColor: '#E8FDF7' }}>
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold text-center mb-2" style={{ color: '#0A2E2A' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden"
+         style={{ background: 'linear-gradient(135deg, #0A2E2A 0%, #0d3830 50%, #0A2E2A 100%)' }}>
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: 'rgba(10,243,205,0.06)' }} />
+      <div className="w-full max-w-md relative z-10">
+        <h1 className="text-2xl font-semibold text-center mb-2" style={{ color: 'white' }}>
           Before you begin
         </h1>
-        <p className="text-sm text-center mb-8" style={{ color: '#05A88E' }}>
+        <p className="text-sm text-center mb-8" style={{ color: 'rgba(185,248,221,0.6)' }}>
           This helps us personalise your results.
         </p>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-3" style={{ color: '#0A2E2A' }}>
+          <label className="block text-sm font-medium mb-3" style={{ color: 'rgba(185,248,221,0.85)' }}>
             I am a…
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -247,9 +251,9 @@ export default function AssessmentPage() {
               <button key={r} onClick={() => setParticipantRole(r)}
                 className="py-5 rounded-xl border-2 text-base font-medium capitalize transition-all"
                 style={{
-                  borderColor:     participantRole === r ? '#0AF3CD' : '#B9F8DD',
-                  backgroundColor: participantRole === r ? '#E8FDF7' : 'white',
-                  color:           '#0A2E2A',
+                  borderColor:     participantRole === r ? '#0AF3CD' : 'rgba(10,243,205,0.2)',
+                  backgroundColor: participantRole === r ? 'rgba(10,243,205,0.12)' : 'rgba(255,255,255,0.05)',
+                  color:           participantRole === r ? '#0AF3CD' : 'rgba(185,248,221,0.7)',
                   boxShadow:       participantRole === r ? '0 0 0 1px #0AF3CD' : 'none',
                 }}>
                 {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -259,28 +263,28 @@ export default function AssessmentPage() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
-            Job title <span className="font-normal" style={{ color: '#05A88E' }}>(optional)</span>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(185,248,221,0.85)' }}>
+            Job title <span className="font-normal" style={{ color: 'rgba(185,248,221,0.45)' }}>(optional)</span>
           </label>
           <input
             type="text"
             value={jobTitle}
             onChange={e => setJobTitle(e.target.value)}
             placeholder="e.g. Head of Product, Partner, SVP Engineering"
-            className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
-            style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
+            className="w-full px-4 py-3 rounded-xl border text-sm outline-none"
+            style={{ borderColor: 'rgba(10,243,205,0.2)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}
           />
         </div>
 
         <div className="mb-8">
-          <label className="block text-sm font-medium mb-2" style={{ color: '#0A2E2A' }}>
-            Organisation type <span className="font-normal" style={{ color: '#05A88E' }}>(optional)</span>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(185,248,221,0.85)' }}>
+            Organisation type <span className="font-normal" style={{ color: 'rgba(185,248,221,0.45)' }}>(optional)</span>
           </label>
           <select
             value={companyType}
             onChange={e => setCompanyType(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none appearance-none"
-            style={{ borderColor: '#B9F8DD', color: companyType ? '#0A2E2A' : '#9CA3AF' }}
+            className="w-full px-4 py-3 rounded-xl border text-sm outline-none appearance-none"
+            style={{ borderColor: 'rgba(10,243,205,0.2)', backgroundColor: 'rgba(255,255,255,0.05)', color: companyType ? 'white' : 'rgba(185,248,221,0.4)' }}
           >
             <option value="">Select your organisation type</option>
             <option value="Corporate / Large enterprise">Corporate / Large enterprise</option>
