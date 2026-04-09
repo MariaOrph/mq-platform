@@ -157,7 +157,7 @@ export default function AssessmentPage() {
         <h1 className="text-2xl font-semibold mb-3" style={{ color: 'white' }}>
           Reassessment not yet available
         </h1>
-        <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(185,248,221,0.7)' }}>
+        <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
           Meaningful mindset change takes time. You can reassess your MQ in{' '}
           <strong style={{ color: '#0AF3CD' }}>{daysRemaining} day{daysRemaining !== 1 ? 's' : ''}</strong>.
           In the meantime, keep working with your Daily Spark and Coaching Room.
@@ -193,7 +193,7 @@ export default function AssessmentPage() {
                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(16px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#0AF3CD' }}>Your reassessment</p>
-            <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
+            <p className="text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>
               You're ready to reassess. Answer the same 35 questions as honestly as you can.
               Your scores will be compared to your previous results so you can see how you've developed.
             </p>
@@ -203,7 +203,7 @@ export default function AssessmentPage() {
                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(16px)' }}>
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#0AF3CD' }}>What is MQ?</p>
-            <p className="text-base leading-relaxed" style={{ color: 'rgba(185,248,221,0.85)' }}>
+            <p className="text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>
               <strong style={{ color: 'white' }}>MQ (Mindset Quotient®)</strong> measures how fully you've made the shift
               from individual performer to effective leader of others, across seven dimensions
               of the mindset that underpins great management.
@@ -213,8 +213,8 @@ export default function AssessmentPage() {
 
         <div className="rounded-2xl p-5 mb-8"
              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <p className="text-sm leading-relaxed" style={{ color: 'rgba(185,248,221,0.7)' }}>
-            <strong style={{ color: 'rgba(185,248,221,0.9)' }}>A note on privacy:</strong> Your individual scores, answers, and all coaching
+          <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <strong style={{ color: 'rgba(255,255,255,0.8)' }}>A note on privacy:</strong> Your individual scores, answers, and all coaching
             conversations are completely private and will never be shared. Programme leads only ever
             see anonymised, aggregate results across the whole cohort — never individual data.
           </p>
@@ -238,12 +238,12 @@ export default function AssessmentPage() {
         <h1 className="text-2xl font-semibold text-center mb-2" style={{ color: 'white' }}>
           Before you begin
         </h1>
-        <p className="text-sm text-center mb-8" style={{ color: 'rgba(185,248,221,0.6)' }}>
+        <p className="text-sm text-center mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
           This helps us personalise your results.
         </p>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-3" style={{ color: 'rgba(185,248,221,0.85)' }}>
+          <label className="block text-sm font-medium mb-3" style={{ color: 'rgba(255,255,255,0.8)' }}>
             I am a…
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -263,8 +263,8 @@ export default function AssessmentPage() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(185,248,221,0.85)' }}>
-            Job title <span className="font-normal" style={{ color: 'rgba(185,248,221,0.45)' }}>(optional)</span>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            Job title <span className="font-normal" style={{ color: 'rgba(255,255,255,0.4)' }}>(optional)</span>
           </label>
           <input
             type="text"
@@ -277,8 +277,8 @@ export default function AssessmentPage() {
         </div>
 
         <div className="mb-8">
-          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(185,248,221,0.85)' }}>
-            Organisation type <span className="font-normal" style={{ color: 'rgba(185,248,221,0.45)' }}>(optional)</span>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            Organisation type <span className="font-normal" style={{ color: 'rgba(255,255,255,0.4)' }}>(optional)</span>
           </label>
           <select
             value={companyType}
@@ -501,7 +501,7 @@ export default function AssessmentPage() {
           <div className="rounded-2xl p-5 mb-4" style={{ backgroundColor: '#0A2E2A' }}>
             <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#0AF3CD' }}>Up next</p>
             <p className="text-base font-bold mb-1" style={{ color: 'white' }}>Values in Action</p>
-            <p className="text-sm mb-4" style={{ color: 'rgba(185,248,221,0.7)' }}>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Rate yourself on how consistently you embody and lead by example through your organisation's values — and see where the biggest opportunities are.
             </p>
             <a href="/dashboard/values"
