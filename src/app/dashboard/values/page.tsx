@@ -151,21 +151,24 @@ export default function ValuesCheckinPage() {
       <div className="sticky top-0 z-30" style={{ backgroundColor: '#0A2E2A' }}>
         <div className="max-w-2xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
-            <a href="/dashboard" className="text-xs mb-1 flex items-center gap-1 hover:opacity-70"
-               style={{ color: 'rgba(185,248,221,0.6)' }}>
-              ← Back to dashboard
-            </a>
             <h1 className="text-lg font-bold" style={{ color: 'white' }}>Values in Action</h1>
             <p className="text-xs mt-0.5" style={{ color: 'rgba(185,248,221,0.6)' }}>
               How consistently do your behaviours reflect your company values?
             </p>
           </div>
-          {/* Progress */}
-          <div className="text-right flex-shrink-0">
-            <p className="text-2xl font-black" style={{ color: '#0AF3CD' }}>
-              {ratedCount()}<span className="text-sm font-normal opacity-60">/{totalBehaviours()}</span>
-            </p>
-            <p className="text-xs" style={{ color: 'rgba(185,248,221,0.6)' }}>rated</p>
+          <div className="flex items-center gap-3">
+            {/* Progress */}
+            <div className="text-right flex-shrink-0">
+              <p className="text-2xl font-black" style={{ color: '#0AF3CD' }}>
+                {ratedCount()}<span className="text-sm font-normal opacity-60">/{totalBehaviours()}</span>
+              </p>
+              <p className="text-xs" style={{ color: 'rgba(185,248,221,0.6)' }}>rated</p>
+            </div>
+            <a
+              href="/dashboard"
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', fontSize: 20, lineHeight: 1 }}
+            >×</a>
           </div>
         </div>
       </div>
