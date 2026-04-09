@@ -10,7 +10,7 @@ import {
 type Step = 'loading' | 'locked' | 'welcome' | 'info' | 'questions' | 'results'
 type ParticipantRole = 'manager' | 'leader'
 
-const LOCK_DAYS = 30
+const LOCK_DAYS = 0
 
 interface Scores { dimensionScores: number[]; overall: number }
 
