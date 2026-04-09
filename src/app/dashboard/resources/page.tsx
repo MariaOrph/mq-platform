@@ -340,6 +340,29 @@ export default function ResourcesPage() {
           )
         })}
 
+        {/* ── Research & Attribution ─────────────────────────────────────── */}
+        <div className="pt-2">
+          <a
+            href="/dashboard/methodology"
+            className="flex items-center gap-4 rounded-2xl p-5 transition-all hover:shadow-md group"
+            style={{ backgroundColor: '#0A2E2A', boxShadow: '0 2px 12px rgba(10,46,42,0.15)' }}
+          >
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+                 style={{ backgroundColor: 'rgba(10,243,205,0.15)' }}>
+              🔬
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold" style={{ color: 'white' }}>Research &amp; Attribution</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(185,248,221,0.6)' }}>
+                The psychology and leadership research behind the MQ
+              </p>
+            </div>
+            <svg className="flex-shrink-0 opacity-50 group-hover:opacity-80 transition-opacity" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0AF3CD" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        </div>
+
       </div>
     </div>
   )

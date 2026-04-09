@@ -8,10 +8,10 @@ export default function MethodologyPage() {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold" style={{ color: 'white' }}>
-                The Research Behind MQ
+                Research &amp; Attribution
               </h1>
               <p className="text-sm mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>
-                How the MQ framework and Culture Lab are grounded in psychology and leadership research
+                The psychology and leadership research behind the MQ
               </p>
             </div>
             <a

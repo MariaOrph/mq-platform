@@ -95,6 +95,7 @@ export default function ProfilePage() {
   const [profile,         setProfile]        = useState<{ id: string; full_name: string | null; email: string } | null>(null)
   const [assessment,      setAssessment]     = useState<Assessment | null>(null)
   const [prevAssessment,  setPrevAssessment] = useState<Assessment | null>(null)
+  const [allAssessments,  setAllAssessments] = useState<Assessment[]>([])
   const [editMode,        setEditMode]       = useState(false)
   const [editJobTitle,    setEditJobTitle]   = useState('')
   const [editCompanyType, setEditCompanyType] = useState('')
@@ -137,7 +138,6 @@ export default function ProfilePage() {
       .eq('participant_id', authSession.user.id)
       .not('overall_score', 'is', null)
       .order('completed_at', { ascending: false })
-      .limit(2)
 
     if (assessments?.[0]) {
       setAssessment(assessments[0])
@@ -145,6 +145,7 @@ export default function ProfilePage() {
       setEditCompanyType(assessments[0].company_type ?? '')
     }
     if (assessments?.[1]) setPrevAssessment(assessments[1])
+    if (assessments && assessments.length > 0) setAllAssessments(assessments)
 
     setLoading(false)
   }, [supabase])
@@ -389,6 +390,73 @@ export default function ProfilePage() {
           </div>
         )}
 
+        {/* ── Score history ──────────────────────────────────────────────── */}
+        {allAssessments.length > 1 && (
+          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
+            <div className="px-5 py-3.5" style={{ borderBottom: '1px solid #F3F4F6' }}>
+              <p className="text-sm font-semibold" style={{ color: '#0A2E2A' }}>Score history</p>
+            </div>
+            <div className="px-5 py-4">
+              <div className="space-y-0">
+                {allAssessments.map((a, idx) => {
+                  const isLatest = idx === 0
+                  const isLast = idx === allAssessments.length - 1
+                  const prev = allAssessments[idx + 1]
+                  const delta = prev && a.overall_score !== null && prev.overall_score !== null
+                    ? (a.overall_score - prev.overall_score)
+                    : null
+                  const band = getScoreBand(a.overall_score ?? 0)
+                  return (
+                    <div key={idx} className="flex gap-3" style={{ minHeight: 56 }}>
+                      {/* Timeline line + dot */}
+                      <div className="flex flex-col items-center" style={{ width: 20 }}>
+                        <div className="flex-shrink-0 rounded-full border-2"
+                             style={{
+                               width: isLatest ? 14 : 10,
+                               height: isLatest ? 14 : 10,
+                               backgroundColor: isLatest ? '#0AF3CD' : 'white',
+                               borderColor: isLatest ? '#0AF3CD' : '#D1D5DB',
+                               marginTop: isLatest ? 2 : 4,
+                             }} />
+                        {!isLast && (
+                          <div className="flex-1" style={{ width: 2, backgroundColor: '#E5E7EB', minHeight: 24 }} />
+                        )}
+                      </div>
+                      {/* Content */}
+                      <div className="flex-1 pb-4" style={{ paddingTop: isLatest ? 0 : 1 }}>
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg font-black" style={{ color: isLatest ? '#0A2E2A' : '#6B7280' }}>
+                            {a.overall_score ?? '—'}
+                          </span>
+                          <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full"
+                                style={{ backgroundColor: band.colour + '22', color: band.colour }}>
+                            {band.label}
+                          </span>
+                          {delta !== null && delta !== 0 && (
+                            <span className="text-xs font-bold"
+                                  style={{ color: delta > 0 ? '#059669' : '#DC2626' }}>
+                              {delta > 0 ? '+' : ''}{delta}
+                            </span>
+                          )}
+                          {isLatest && (
+                            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                                  style={{ backgroundColor: '#E8FDF7', color: '#05A88E' }}>
+                              Latest
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+                          {fmtDate(a.completed_at)}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ── No assessment CTA ───────────────────────────────────────────── */}
         {!assessment && (
           <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'white', border: '2px solid #0AF3CD', boxShadow: '0 2px 12px rgba(10,46,42,0.07)' }}>
@@ -513,19 +581,6 @@ export default function ProfilePage() {
             <div className="flex items-center gap-3">
               <span className="text-base">🔒</span>
               <span className="text-sm font-medium" style={{ color: '#0A2E2A' }}>Privacy policy</span>
-            </div>
-            <span className="text-xs" style={{ color: '#9CA3AF' }}>→</span>
-          </a>
-
-          {/* Research */}
-          <a
-            href="/dashboard/methodology"
-            className="w-full flex items-center justify-between px-5 py-3.5 rounded-2xl hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: 'white', border: '1px solid #E8FDF7', boxShadow: '0 2px 12px rgba(10,46,42,0.07)', display: 'flex' }}
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-base">🔬</span>
-              <span className="text-sm font-medium" style={{ color: '#0A2E2A' }}>The science behind MQ</span>
             </div>
             <span className="text-xs" style={{ color: '#9CA3AF' }}>→</span>
           </a>
