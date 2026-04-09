@@ -253,7 +253,7 @@ export async function POST(req: NextRequest) {
     ? `\n\nThis session is focused on ${DIMENSION_NAMES[sessionFocusDimId]}. ${isFirstMessage ? `This is the opening message. Jump straight in with the opening diagnostic question for ${DIMENSION_NAMES[sessionFocusDimId]} as defined below — no preamble, no explanation of what the dimension is. The participant has already read about it. Start mid-conversation, as if you know them.` : `Keep the conversation anchored to ${DIMENSION_NAMES[sessionFocusDimId]} unless the participant takes it somewhere else.`}${scienceForDim ? `\n\nThe evidence base for this dimension:\n${scienceForDim}\n\nUse this to ground your coaching. Once per conversation — naturally, when you are moving from reflection into strategies — weave in a brief reference to what the research shows. Do not quote researchers in a textbook way. Instead integrate it: "The research on this is pretty clear — [paraphrase the insight in plain language]. What that means practically for you is..." Keep it to one or two sentences. Never lecture. The science should illuminate the coaching, not replace it.` : ''}`
     : ''
 
-  const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of mindset and management skill.
+  const systemPrompt = `You are MQ Coach — a warm, expert leadership coach for MQ (Mindset Quotient). MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of the mindset that underpins great management.
 
 You are coaching ${participantContext}.
 

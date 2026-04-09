@@ -142,7 +142,7 @@ Aggregate dimension scores:
 ${dimLines}
 - Overall team MQ: ${scores.overall !== null ? `${scores.overall}/100 (${getScoreBand(scores.overall)})` : 'pending'}
 
-MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of mindset and management skill. The 7 dimensions are: Self-awareness (seeing yourself clearly), Ego management (letting go of being the expert to enable others), Emotional regulation (managing reactive patterns under pressure), Clarity & communication (translating complexity into clear direction), Trust & development (believing in and growing others), Standards & accountability (setting and holding high standards), and Relational intelligence (building trust and creating space for contribution).
+MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of the mindset that underpins great management. The 7 dimensions are: Self-awareness (seeing yourself clearly), Ego management (letting go of being the expert to enable others), Emotional regulation (managing reactive patterns under pressure), Clarity & communication (translating complexity into clear direction), Trust & development (believing in and growing others), Standards & accountability (setting and holding high standards), and Relational intelligence (building trust and creating space for contribution).
 
 Return a JSON object with this exact structure:
 {

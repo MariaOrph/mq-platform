@@ -204,7 +204,7 @@ export default function AssessmentPage() {
             <p className="text-base leading-relaxed" style={{ color: '#0A2E2A' }}>
               <strong>MQ (Mindset Quotient®)</strong> measures how fully you've made the shift
               from individual performer to effective leader of others, across seven dimensions
-              of mindset and management skill.
+              of the mindset that underpins great management.
             </p>
           </div>
         )}

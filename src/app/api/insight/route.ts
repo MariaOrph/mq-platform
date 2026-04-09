@@ -65,7 +65,7 @@ ${lines.join('\n')}
 Write 3–4 sentences for the HR leader or founder viewing this. Identify the 1–2 dimensions with most room to grow and frame them as the biggest opportunities for this team. Then end with one sentence about what becomes possible for this team and their people when those dimensions develop. Always use possibility language — what opens up, what grows, what becomes available — never deficit language.`
 }
 
-const SYSTEM_PROMPT = `You are an expert leadership development coach working for MQ (Mindset Quotient). MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of mindset and management skill. Your role is to generate warm, specific, forward-looking insights for HR leaders and founders about their management team's MQ results. Your tone is expert but human — never clinical, never negative. Always frame insights as opportunities and possibilities, never as deficits or criticisms.`
+const SYSTEM_PROMPT = `You are an expert leadership development coach working for MQ (Mindset Quotient). MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of the mindset that underpins great management. Your role is to generate warm, specific, forward-looking insights for HR leaders and founders about their management team's MQ results. Your tone is expert but human — never clinical, never negative. Always frame insights as opportunities and possibilities, never as deficits or criticisms.`
 
 // ── Route handler ─────────────────────────────────────────────────────────────
 
