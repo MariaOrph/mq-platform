@@ -142,7 +142,7 @@ Aggregate dimension scores:
 ${dimLines}
 - Overall team MQ: ${scores.overall !== null ? `${scores.overall}/100 (${getScoreBand(scores.overall)})` : 'pending'}
 
-MQ is defined as the ability to notice your thoughts, beliefs, and emotional triggers — and choose how to respond rather than being unconsciously driven by them. The 7 dimensions measure: Self-awareness (internal observer), Ego management (leading from values not ego protection), Emotional regulation (managing emotional responses under pressure), Clarity & communication (holding multiple perspectives), Trust & development (alignment between stated values, lived behaviour, and sense of direction), Standards & accountability (quality of attention in relationships), and Relational intelligence (sustaining performance under pressure).
+MQ measures how fully a leader has made the shift from individual performer to effective leader of others, across seven dimensions of mindset and management skill. The 7 dimensions are: Self-awareness (seeing yourself clearly), Ego management (letting go of being the expert to enable others), Emotional regulation (managing reactive patterns under pressure), Clarity & communication (translating complexity into clear direction), Trust & development (believing in and growing others), Standards & accountability (setting and holding high standards), and Relational intelligence (building trust and creating space for contribution).
 
 Return a JSON object with this exact structure:
 {
