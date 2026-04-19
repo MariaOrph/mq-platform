@@ -250,6 +250,7 @@ export default function AssessmentPage() {
             onChange={e => setFirstName(e.target.value)}
             placeholder="Your first name"
             required
+            autoComplete="given-name"
             className="w-full px-4 py-3 rounded-xl border text-sm outline-none"
             style={{ borderColor: 'rgba(10,243,205,0.2)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}
           />
@@ -284,6 +285,7 @@ export default function AssessmentPage() {
             value={jobTitle}
             onChange={e => setJobTitle(e.target.value)}
             placeholder="e.g. Head of Product, Partner, SVP Engineering"
+            autoComplete="organization-title"
             className="w-full px-4 py-3 rounded-xl border text-sm outline-none"
             style={{ borderColor: 'rgba(10,243,205,0.2)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}
           />

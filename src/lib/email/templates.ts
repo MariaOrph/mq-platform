@@ -162,15 +162,24 @@ const DIMENSION_ONE_LINERS: Record<string, string> = {
   'Relational intelligence':     'Staying grounded when the pressure is on — so your team takes their cues from your calm, not your stress.',
 }
 
-const SUBJECT_LINES = [
+const SUBJECT_LINES_NAMED = [
   (name: string) => `Your coaching moment is ready, ${name}`,
   (name: string) => `5 minutes for your leadership today, ${name}`,
   (name: string) => `Your MQ moment is waiting, ${name}`,
   (name: string) => `A coaching moment for you today, ${name}`,
 ]
+const SUBJECT_LINES_UNNAMED = [
+  'Your coaching moment is ready',
+  '5 minutes for your leadership today',
+  'Your MQ moment is waiting',
+  'A coaching moment for you today',
+]
 
-export function reminderSubjectLine(firstName: string, seed: number): string {
-  return SUBJECT_LINES[seed % SUBJECT_LINES.length](firstName)
+export function reminderSubjectLine(firstName: string | null, seed: number): string {
+  if (!firstName || firstName === 'there') {
+    return SUBJECT_LINES_UNNAMED[seed % SUBJECT_LINES_UNNAMED.length]
+  }
+  return SUBJECT_LINES_NAMED[seed % SUBJECT_LINES_NAMED.length](firstName)
 }
 
 export function reminderEmailHtml({
@@ -179,16 +188,20 @@ export function reminderEmailHtml({
   dashboardUrl,
   unsubscribeUrl,
 }: {
-  firstName:      string
+  firstName:      string | null
   dimensionName:  string
   dashboardUrl:   string
   unsubscribeUrl: string
 }): string {
   const oneLiner = DIMENSION_ONE_LINERS[dimensionName] ?? 'Developing your mindset intelligence so you can lead with more intention every day.'
+  // Gracefully omit name if not set (avoids 'Hi there.' or 'Hi null.')
+  const headline = firstName && firstName !== 'there'
+    ? `Your coaching moment is ready, ${firstName}.`
+    : 'Your coaching moment is ready.'
 
   return layout(`
     <h1 style="margin:0 0 20px;font-size:22px;font-weight:800;color:#0A2E2A;line-height:1.3;">
-      Your coaching moment is ready, ${firstName}.
+      ${headline}
     </h1>
 
     <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
@@ -235,13 +248,14 @@ export function reminderEmailText({
   dashboardUrl,
   unsubscribeUrl,
 }: {
-  firstName:      string
+  firstName:      string | null
   dimensionName:  string
   dashboardUrl:   string
   unsubscribeUrl: string
 }): string {
   const oneLiner = DIMENSION_ONE_LINERS[dimensionName] ?? ''
-  return `Hi ${firstName},
+  const greeting = firstName && firstName !== 'there' ? `Hi ${firstName},` : 'Hi,'
+  return `${greeting}
 
 Today's focus is ${dimensionName} — ${oneLiner}
 

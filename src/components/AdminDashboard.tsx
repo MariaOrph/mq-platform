@@ -89,11 +89,13 @@ function OverviewTab({
   cohortId,
   cohortName,
   companyName,
+  onGoToCohorts,
 }: {
   participants:  CohortParticipant[]
   cohortId:      string
   cohortName:    string
   companyName:   string
+  onGoToCohorts?: () => void
 }) {
   const completed = participants.filter(p => p.overall_score !== null)
   const avg  = avgOverall(participants)
@@ -205,9 +207,23 @@ function OverviewTab({
 
   if (participants.length === 0) {
     return (
-      <div className="text-center py-16">
-        <p className="text-sm" style={{ color: '#05A88E' }}>No participants in this cohort yet.</p>
-        <p className="text-xs mt-2 text-gray-500">Go to the All Cohorts tab to invite participants.</p>
+      <div className="text-center py-16 px-6">
+        <div className="text-4xl mb-4">👥</div>
+        <h3 className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
+          No participants yet
+        </h3>
+        <p className="text-sm mb-6 max-w-sm mx-auto" style={{ color: '#6B7280' }}>
+          Invite people to <strong>{cohortName ?? 'this cohort'}</strong> to get started. They&apos;ll receive an email with a link to create their account and take the MQ assessment.
+        </p>
+        {onGoToCohorts && (
+          <button
+            onClick={onGoToCohorts}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+          >
+            Invite participants →
+          </button>
+        )}
       </div>
     )
   }
@@ -1800,6 +1816,7 @@ export default function AdminDashboard() {
                   cohortId={selectedCohortId}
                   cohortName={selectedCohort?.name ?? ''}
                   companyName={selectedCohort?.company_name ?? userCompanyName}
+                  onGoToCohorts={() => setActiveTab('all-cohorts')}
                 />
             : <NoCohortSelected onGoToAll={() => setActiveTab('all-cohorts')} />
         )}

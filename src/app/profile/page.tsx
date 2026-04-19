@@ -92,6 +92,7 @@ export default function ProfilePage() {
   const supabase = createClient()
 
   const [loading,         setLoading]        = useState(true)
+  const [loadError,       setLoadError]      = useState<string | null>(null)
   const [profile,         setProfile]        = useState<{ id: string; full_name: string | null; email: string } | null>(null)
   const [assessment,      setAssessment]     = useState<Assessment | null>(null)
   const [prevAssessment,  setPrevAssessment] = useState<Assessment | null>(null)
@@ -104,50 +105,62 @@ export default function ProfilePage() {
   const [showOnboarding,  setShowOnboarding] = useState(false)
 
   const loadData = useCallback(async () => {
-    const { data: { session: authSession } } = await supabase.auth.getSession()
-    if (!authSession) { window.location.href = '/login'; return }
+    try {
+      const { data: { session: authSession } } = await supabase.auth.getSession()
+      if (!authSession) { window.location.href = '/login'; return }
 
-    const { data: prof } = await supabase
-      .from('profiles')
-      .select('id, full_name, email, role')
-      .eq('id', authSession.user.id)
-      .single()
+      const { data: prof, error: profErr } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, role')
+        .eq('id', authSession.user.id)
+        .single()
 
-    if (!prof || prof.role !== 'participant') {
-      window.location.href = '/unauthorised'; return
-    }
+      if (profErr) {
+        console.error('[profile] load error:', profErr)
+        setLoadError('We couldn\'t load your profile. Please refresh the page or try again in a moment.')
+        setLoading(false)
+        return
+      }
 
-    let resolvedName = prof.full_name
-    if (!resolvedName?.trim()) {
-      const { data: nameRow } = await supabase
+      if (!prof || prof.role !== 'participant') {
+        window.location.href = '/unauthorised'; return
+      }
+
+      let resolvedName = prof.full_name
+      if (!resolvedName?.trim()) {
+        const { data: nameRow } = await supabase
+          .from('assessments')
+          .select('first_name')
+          .eq('participant_id', authSession.user.id)
+          .not('first_name', 'is', null)
+          .order('completed_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+        if (nameRow?.first_name?.trim()) resolvedName = nameRow.first_name.trim()
+      }
+
+      setProfile({ id: prof.id, full_name: resolvedName, email: prof.email })
+
+      const { data: assessments } = await supabase
         .from('assessments')
-        .select('first_name')
+        .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role, job_title, company_type')
         .eq('participant_id', authSession.user.id)
-        .not('first_name', 'is', null)
+        .not('overall_score', 'is', null)
         .order('completed_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
-      if (nameRow?.first_name?.trim()) resolvedName = nameRow.first_name.trim()
+
+      if (assessments?.[0]) {
+        setAssessment(assessments[0])
+        setEditJobTitle(assessments[0].job_title ?? '')
+        setEditCompanyType(assessments[0].company_type ?? '')
+      }
+      if (assessments?.[1]) setPrevAssessment(assessments[1])
+      if (assessments && assessments.length > 0) setAllAssessments(assessments)
+    } catch (err) {
+      console.error('[profile] unexpected error:', err)
+      setLoadError('Something went wrong loading your profile. Please check your connection and refresh.')
+    } finally {
+      setLoading(false)
     }
-
-    setProfile({ id: prof.id, full_name: resolvedName, email: prof.email })
-
-    const { data: assessments } = await supabase
-      .from('assessments')
-      .select('overall_score, d1_score, d2_score, d3_score, d4_score, d5_score, d6_score, d7_score, completed_at, participant_role, job_title, company_type')
-      .eq('participant_id', authSession.user.id)
-      .not('overall_score', 'is', null)
-      .order('completed_at', { ascending: false })
-
-    if (assessments?.[0]) {
-      setAssessment(assessments[0])
-      setEditJobTitle(assessments[0].job_title ?? '')
-      setEditCompanyType(assessments[0].company_type ?? '')
-    }
-    if (assessments?.[1]) setPrevAssessment(assessments[1])
-    if (assessments && assessments.length > 0) setAllAssessments(assessments)
-
-    setLoading(false)
   }, [supabase])
 
   useEffect(() => { loadData() }, [loadData])
@@ -193,6 +206,30 @@ export default function ProfilePage() {
     return (
       <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F4FDF9' }}>
         <p className="text-sm" style={{ color: '#05A88E' }}>Loading…</p>
+      </main>
+    )
+  }
+
+  // ── Load error ──────────────────────────────────────────────────────────────
+  if (loadError) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-6" style={{ backgroundColor: '#F4FDF9' }}>
+        <div className="max-w-sm w-full text-center">
+          <div className="text-4xl mb-3">⚠️</div>
+          <h1 className="text-lg font-semibold mb-2" style={{ color: '#0A2E2A' }}>
+            Couldn&apos;t load your profile
+          </h1>
+          <p className="text-sm mb-6" style={{ color: '#6B7280', lineHeight: 1.6 }}>
+            {loadError}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="inline-block px-6 py-3 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}
+          >
+            Try again
+          </button>
+        </div>
       </main>
     )
   }

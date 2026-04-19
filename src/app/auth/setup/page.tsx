@@ -149,6 +149,7 @@ export default function SetupPage() {
                   onChange={e => setFirstName(e.target.value)}
                   placeholder="Maria"
                   required
+                  autoComplete="given-name"
                   className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
                   style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
                 />
@@ -163,6 +164,7 @@ export default function SetupPage() {
                   onChange={e => setLastName(e.target.value)}
                   placeholder="Smith"
                   required
+                  autoComplete="family-name"
                   className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none"
                   style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
                 />
@@ -181,10 +183,12 @@ export default function SetupPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
                   required
+                  autoComplete="new-password"
                   className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none pr-12"
                   style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
                 />
-                <button type="button" onClick={() => setShowPassword(v => !v)}
+                <button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowPassword(v => !v)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
                         style={{ color: '#05A88E' }} tabIndex={-1}>
                   {showPassword ? <EyeOff /> : <EyeOpen />}
@@ -204,10 +208,12 @@ export default function SetupPage() {
                   onChange={e => setConfirm(e.target.value)}
                   placeholder="Repeat your password"
                   required
+                  autoComplete="new-password"
                   className="w-full px-4 py-3 rounded-xl border bg-white text-sm outline-none pr-12"
                   style={{ borderColor: '#B9F8DD', color: '#0A2E2A' }}
                 />
-                <button type="button" onClick={() => setShowConfirm(v => !v)}
+                <button type="button" aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowConfirm(v => !v)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
                         style={{ color: '#05A88E' }} tabIndex={-1}>
                   {showConfirm ? <EyeOff /> : <EyeOpen />}

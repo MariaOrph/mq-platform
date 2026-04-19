@@ -137,7 +137,8 @@ export async function GET(req: NextRequest) {
                           assessment.d7_score]
     const focusId      = getFocusDimension(scores)
     const dimName      = DIMENSION_NAMES[focusId]
-    const firstName    = profile.full_name?.split(' ')[0] ?? 'there'
+    // Pass null (not 'there') so the email template can omit the name gracefully
+    const firstName    = profile.full_name?.split(' ')[0] ?? null
     // Use unsubscribe_token (unguessable) instead of raw profile.id
     const unsubUrl     = `${appUrl}/unsubscribe?token=${profile.unsubscribe_token}`
     const dashboardUrl = `${appUrl}/dashboard`

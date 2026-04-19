@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [forgotEmail, setForgotEmail]   = useState('')
   const [forgotSent, setForgotSent]     = useState(false)
   const [forgotLoading, setForgotLoading] = useState(false)
+  const [forgotError, setForgotError]   = useState('')
 
   // Detect OTP expired / error in hash fragment (e.g. from Supabase password reset emails)
   useEffect(() => {
@@ -50,15 +51,33 @@ export default function LoginPage() {
 
   async function handleForgotPassword(e: React.FormEvent) {
     e.preventDefault()
+    const email = forgotEmail.trim()
+    if (!email || !email.includes('@')) {
+      setForgotError('Please enter a valid email address.')
+      return
+    }
     setForgotLoading(true)
-    const supabase = createClient()
-    const appUrl = window.location.origin
-    await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
-      redirectTo: `${appUrl}/auth/callback?type=recovery`,
-    })
-    // Always show success — don't reveal whether the email exists
-    setForgotSent(true)
-    setForgotLoading(false)
+    setForgotError('')
+    try {
+      const supabase = createClient()
+      const appUrl = window.location.origin
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${appUrl}/auth/callback?type=recovery`,
+      })
+      // Note: Supabase intentionally doesn't error when the email doesn't exist
+      // (prevents email enumeration). We only surface real network/server errors.
+      if (error && !/not\s*found|does\s*not\s*exist/i.test(error.message)) {
+        setForgotError('Something went wrong sending your reset email. Please try again or contact hello@mindsetquo.com.')
+        setForgotLoading(false)
+        return
+      }
+      // Show success — whether the email was real or not (don't leak info)
+      setForgotSent(true)
+    } catch {
+      setForgotError('Could not reach our servers. Please check your connection and try again.')
+    } finally {
+      setForgotLoading(false)
+    }
   }
 
   return (
@@ -302,6 +321,7 @@ export default function LoginPage() {
                   <input
                     type="email"
                     required
+                    autoComplete="email"
                     value={forgotEmail}
                     onChange={e => setForgotEmail(e.target.value)}
                     placeholder="you@example.com"
@@ -310,6 +330,11 @@ export default function LoginPage() {
                     onFocus={e => (e.target.style.borderColor = '#0AF3CD')}
                     onBlur={e => (e.target.style.borderColor = '#B9F8DD')}
                   />
+                  {forgotError && (
+                    <p className="text-sm rounded-xl px-4 py-3" style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>
+                      {forgotError}
+                    </p>
+                  )}
                   <button
                     type="submit"
                     disabled={forgotLoading || !forgotEmail.trim()}
