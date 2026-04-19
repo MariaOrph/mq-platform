@@ -82,7 +82,8 @@ Rules:
     const response = await anthropic.messages.create({
       model:      'claude-haiku-4-5-20251001',
       max_tokens: 2000,
-      system:     systemPrompt,
+      // Cache the scenario-generation system prompt (~90% cost cut on repeats within 5 min window)
+      system:     [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages:   [{ role: 'user', content: 'Generate a new leadership scenario.' }],
     })
 

@@ -513,10 +513,14 @@ Do not continue any coaching after this. Keep your response warm, human, and foc
 LEVEL 3 — Concern about someone else (e.g. ${firstName} is worried a colleague or team member may be at risk):
 Acknowledge the weight of what they're carrying. Encourage them to speak with their HR or People team as a first step, or to gently check in with the person directly if they feel safe doing so. If the situation sounds urgent, share the same crisis resources above. You can then offer to help ${firstName} think through how to have that conversation at work if they'd like.`
 
+  // Cost control: only send last 10 messages to the model.
+  // Older context is preserved in coaching_chats.memory_summary (updated at
+  // session start), so the model still has a high-level sense of history
+  // without paying for 20+ messages of raw content on every request.
   const { data: history } = await supabaseAdmin
     .from('coaching_room_messages').select('role, content')
     .eq('participant_id', participantId).eq('session_id', sessionId)
-    .order('created_at', { ascending: false }).limit(20)
+    .order('created_at', { ascending: false }).limit(10)
 
   const pastMessages = (history ?? []).reverse()
     .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
@@ -531,7 +535,13 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
   let reply: string
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: systemPrompt,
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      // Cost control: mark the large system prompt as cacheable. Anthropic
+      // caches it for ~5 minutes and charges ~10% of the normal input price
+      // for cached reads. On subsequent messages in the same session this
+      // cuts system-prompt input cost by ~90%.
+      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages: [...pastMessages, { role: 'user', content: message.trim() }],
     })
     const block = response.content[0]

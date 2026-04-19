@@ -431,11 +431,11 @@ export async function POST(req: NextRequest) {
 
   const systemPrompt = buildSystemPrompt(topic as Topic, firstName, role, mqContext, valuesContext, participantContext, feedbackContext)
 
-  // Fetch message history (last 20)
+  // Cost control: last 10 messages only (was 20). Cuts per-request token cost ~50%.
   const { data: history } = await supabaseAdmin
     .from('coaching_room_messages').select('role, content')
     .eq('participant_id', participantId).eq('session_id', sessionId)
-    .order('created_at', { ascending: false }).limit(20)
+    .order('created_at', { ascending: false }).limit(10)
 
   const pastMessages = (history ?? []).reverse()
     .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
@@ -449,7 +449,11 @@ export async function POST(req: NextRequest) {
   let reply: string
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: systemPrompt,
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      // Cache the huge Culture Lab system prompt (~3500 lines). Cuts repeated
+      // system-prompt input cost by ~90% within a 5-minute window.
+      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages: [...pastMessages, { role: 'user', content: message.trim() }],
     })
     const block = response.content[0]
