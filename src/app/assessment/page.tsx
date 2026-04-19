@@ -243,8 +243,23 @@ export default function AssessmentPage() {
         </p>
 
         <div className="mb-6">
+          <label className="block text-sm font-medium mb-2" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            First name <span style={{ color: '#0AF3CD' }}>*</span>
+          </label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+            placeholder="Your first name"
+            required
+            className="w-full px-4 py-3 rounded-xl border text-sm outline-none"
+            style={{ borderColor: 'rgba(10,243,205,0.2)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}
+          />
+        </div>
+
+        <div className="mb-6">
           <label className="block text-sm font-medium mb-3" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            I am a…
+            I am a… <span style={{ color: '#0AF3CD' }}>*</span>
           </label>
           <div className="grid grid-cols-2 gap-3">
             {(['manager', 'leader'] as const).map(r => (
@@ -300,10 +315,18 @@ export default function AssessmentPage() {
           </select>
         </div>
 
+        {(!firstName.trim() || !participantRole) && (
+          <p className="text-xs text-center mb-3" style={{ color: 'rgba(255,191,100,0.9)' }}>
+            {!firstName.trim() && !participantRole && 'Please enter your first name and select a role to continue.'}
+            {!firstName.trim() && participantRole && 'Please enter your first name to continue.'}
+            {firstName.trim() && !participantRole && 'Please select whether you\'re a manager or leader to continue.'}
+          </p>
+        )}
+
         <button
           onClick={() => setStep('questions')}
           disabled={!firstName.trim() || !participantRole}
-          className="w-full py-4 rounded-xl text-base font-semibold disabled:opacity-40 hover:opacity-90 transition-opacity"
+          className="w-full py-4 rounded-xl text-base font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
           style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
           Start assessment →
         </button>
