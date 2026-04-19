@@ -1,6 +1,6 @@
 // ============================================================
 // MQ ASSESSMENT — QUESTIONS, SCORING & INSIGHTS
-// 7 dimensions × 5 questions = 35 questions total
+// 7 dimensions × 4 questions = 28 questions total
 // 4-point scale (no neutral middle)
 // ============================================================
 
@@ -66,15 +66,6 @@ export const DIMENSIONS: Dimension[] = [
         ],
       },
       {
-        text: 'I understand what situations or dynamics consistently bring out the worst in me.',
-        options: [
-          { value: 1, text: 'I haven\u2019t really thought about this' },
-          { value: 2, text: 'I have a rough sense but couldn\u2019t list them clearly' },
-          { value: 3, text: 'I know my main triggers and patterns' },
-          { value: 4, text: 'I know them well and have strategies to manage them' },
-        ],
-      },
-      {
         text: 'I am honest with myself about the gap between how I think I lead and how others experience me.',
         options: [
           { value: 1, text: 'I tend to assume my intentions match my impact' },
@@ -113,15 +104,6 @@ export const DIMENSIONS: Dimension[] = [
           { value: 2, text: 'I can do it occasionally, but it doesn\u2019t come naturally' },
           { value: 3, text: 'I\u2019m fairly comfortable with it in most situations' },
           { value: 4, text: 'I do this regularly and see it as a strength' },
-        ],
-      },
-      {
-        text: 'When my team succeeds, I think about my role in that success as:',
-        options: [
-          { value: 1, text: 'I was the driving force behind it' },
-          { value: 2, text: 'I played a key role but others contributed' },
-          { value: 3, text: 'It was a team effort and I helped create the conditions' },
-          { value: 4, text: 'The credit belongs to the team. My job was to enable them' },
         ],
       },
       {
@@ -184,15 +166,6 @@ export const DIMENSIONS: Dimension[] = [
         ],
       },
       {
-        text: 'Under sustained pressure over weeks or months, my leadership quality:',
-        options: [
-          { value: 1, text: 'Deteriorates noticeably. I become reactive, short or withdrawn' },
-          { value: 2, text: 'Dips. I know I\u2019m less patient and less effective' },
-          { value: 3, text: 'Stays mostly steady, with occasional slips' },
-          { value: 4, text: 'Remains consistent. I have strategies that keep me grounded' },
-        ],
-      },
-      {
         text: 'I notice when my emotional state is about to affect a decision I\u2019m making.',
         options: [
           { value: 1, text: 'Rarely. I tend to realise after the fact' },
@@ -216,12 +189,12 @@ export const DIMENSIONS: Dimension[] = [
     description: 'How effectively you think through complexity and translate it into clear direction, expectations and decisions for others.',
     questions: [
       {
-        text: 'When I delegate a task, the person I\u2019m delegating to is clear on what success looks like.',
+        text: 'When I give direction or delegate work, the people I\u2019m speaking to walk away clear on what matters most and what success looks like.',
         options: [
-          { value: 1, text: 'They often come back with questions or get it wrong' },
-          { value: 2, text: 'They usually get the gist, but details get lost' },
-          { value: 3, text: 'They generally understand what\u2019s needed and why' },
-          { value: 4, text: 'They consistently walk away knowing exactly what\u2019s expected, why it matters, and what good looks like' },
+          { value: 1, text: 'They often come back with questions or get the priorities wrong' },
+          { value: 2, text: 'They usually get the gist, but details or priorities get lost' },
+          { value: 3, text: 'They generally understand what\u2019s needed, why it matters, and what to focus on' },
+          { value: 4, text: 'They consistently walk away knowing exactly what\u2019s expected, what good looks like, and what takes priority' },
         ],
       },
       {
@@ -240,15 +213,6 @@ export const DIMENSIONS: Dimension[] = [
           { value: 2, text: 'Simplify it quickly, but sometimes miss important nuance' },
           { value: 3, text: 'Work through the complexity and reach a clear position' },
           { value: 4, text: 'Break it down methodically and communicate my thinking so others can follow and contribute' },
-        ],
-      },
-      {
-        text: 'My team would say that after a conversation with me, they know what the priorities are.',
-        options: [
-          { value: 1, text: 'Probably not. I sometimes overcomplicate or change direction' },
-          { value: 2, text: 'Sometimes, but I can be unclear when things are uncertain' },
-          { value: 3, text: 'Usually. I try to be direct about what matters most' },
-          { value: 4, text: 'Almost always. Clarity of direction is something I\u2019m intentional about' },
         ],
       },
       {
@@ -310,15 +274,6 @@ export const DIMENSIONS: Dimension[] = [
           { value: 4, text: 'Lean into it. I see honest feedback as one of the most valuable things I can give someone' },
         ],
       },
-      {
-        text: 'I actively look for opportunities to stretch people beyond their current comfort zone.',
-        options: [
-          { value: 1, text: 'Not really. I assign work based on who can do it best now' },
-          { value: 2, text: 'Occasionally, if the opportunity happens to come up' },
-          { value: 3, text: 'Regularly. I think about development when assigning work' },
-          { value: 4, text: 'Consistently. I deliberately create stretch opportunities and support people through them' },
-        ],
-      },
     ],
     insights: {
       strong:     'You genuinely invest in growing the people around you. This is the hallmark of a leader who has made the shift from personal performance to enabling the performance of others.',
@@ -349,15 +304,6 @@ export const DIMENSIONS: Dimension[] = [
           { value: 2, text: 'Mention it eventually, but often too late or too gently' },
           { value: 3, text: 'Address it clearly within a reasonable timeframe' },
           { value: 4, text: 'Have the conversation early, directly and supportively, with a clear plan for improvement' },
-        ],
-      },
-      {
-        text: 'I hold myself to the same standards I hold my team to.',
-        options: [
-          { value: 1, text: 'Not always. I sometimes expect more from others than from myself' },
-          { value: 2, text: 'I try to, but I\u2019m not always consistent' },
-          { value: 3, text: 'Most of the time. I try to lead by example' },
-          { value: 4, text: 'Always. I see modelling the standard as a non-negotiable part of my role' },
         ],
       },
       {
@@ -402,15 +348,6 @@ export const DIMENSIONS: Dimension[] = [
         ],
       },
       {
-        text: 'In a group setting, I notice who hasn\u2019t spoken and make space for them to contribute.',
-        options: [
-          { value: 1, text: 'Rarely. I focus on the people who are contributing' },
-          { value: 2, text: 'Occasionally, if I happen to notice' },
-          { value: 3, text: 'Regularly. I try to be aware of group dynamics' },
-          { value: 4, text: 'Consistently. I see it as my responsibility to make sure every voice is heard' },
-        ],
-      },
-      {
         text: 'When there\u2019s tension or conflict within my team, I:',
         options: [
           { value: 1, text: 'Avoid it and hope it resolves itself' },
@@ -446,7 +383,9 @@ export const DIMENSIONS: Dimension[] = [
   },
 ]
 
-// Flat list of all 35 questions for easy indexing
+export const QUESTIONS_PER_DIMENSION = 4
+
+// Flat list of all 28 questions for easy indexing
 export const ALL_QUESTIONS = DIMENSIONS.flatMap((dim, dIdx) =>
   dim.questions.map((q, qIdx) => ({
     text: q.text,
@@ -454,16 +393,15 @@ export const ALL_QUESTIONS = DIMENSIONS.flatMap((dim, dIdx) =>
     dimension: dim,
     dimensionIndex: dIdx,
     questionIndexInDimension: qIdx,
-    globalIndex: dIdx * 5 + qIdx,
+    globalIndex: dIdx * QUESTIONS_PER_DIMENSION + qIdx,
   }))
 )
 
-export const TOTAL_QUESTIONS = ALL_QUESTIONS.length // 35
-export const QUESTIONS_PER_DIMENSION = 5
+export const TOTAL_QUESTIONS = ALL_QUESTIONS.length // 28
 
 // ── Scoring ─────────────────────────────────────────────────────
 // 4-point scale: each question scores 1–4
-// Per dimension: 5 questions, max raw = 20, min raw = 5
+// Per dimension: 4 questions, max raw = 16, min raw = 4
 // Normalised to 0–100
 
 export function calculateDimensionScore(responses: number[], dimensionIndex: number): number {
