@@ -67,25 +67,41 @@ export default function SetupPage() {
     setSubmitting(true)
     const supabase = createClient()
 
-    // Set password
-    const { error: updateError } = await supabase.auth.updateUser({ password })
-    if (updateError) {
-      setError(updateError.message)
-      setSubmitting(false)
-      return
-    }
+    try {
+      // Set password
+      const { error: updateError } = await supabase.auth.updateUser({ password })
+      if (updateError) {
+        setError(updateError.message)
+        setSubmitting(false)
+        return
+      }
 
-    // Save name to profile
-    const { data: { session } } = await supabase.auth.getSession()
-    if (session) {
+      // Save name to profile
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        setError('Your session has expired. Please use your invite link again.')
+        setSubmitting(false)
+        return
+      }
+
       const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(' ')
-      await supabase
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({ full_name: fullName })
         .eq('id', session.user.id)
-    }
 
-    window.location.href = '/auth/me'
+      if (profileError) {
+        setError('We couldn\'t save your name. Please try again.')
+        setSubmitting(false)
+        return
+      }
+
+      window.location.href = '/auth/me'
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
+      console.error('[auth/setup] error:', err)
+    }
   }
 
   if (checkingSession) return (

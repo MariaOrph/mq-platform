@@ -31,12 +31,16 @@ function getFocusDimension(scores: (number | null)[]): number {
 
 export async function GET(req: NextRequest) {
   // ── Authorise cron call ───────────────────────────────────────────────────
+  // CRON_SECRET is MANDATORY in production — without it, anyone on the
+  // internet could trigger this endpoint and spam emails.
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret) {
-    const authHeader = req.headers.get('authorization')
-    if (authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  if (!cronSecret) {
+    console.error('[send-reminders] CRON_SECRET is not configured — refusing to run')
+    return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
+  }
+  const authHeader = req.headers.get('authorization')
+  if (authHeader !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const resendKey = process.env.RESEND_API_KEY
@@ -90,10 +94,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ sent: 0, skipped: participantIds.length, message: 'All done today' })
   }
 
-  // ── Load profiles (email, name, unsubscribed flag) ────────────────────────
+  // ── Load profiles (email, name, unsubscribed flag, unsubscribe token) ─────
   const { data: profiles } = await supabaseAdmin
     .from('profiles')
-    .select('id, email, full_name, coaching_reminders_unsubscribed')
+    .select('id, email, full_name, coaching_reminders_unsubscribed, unsubscribe_token')
     .in('id', toRemind)
 
   // ── Load latest assessment per participant ────────────────────────────────
@@ -134,7 +138,8 @@ export async function GET(req: NextRequest) {
     const focusId      = getFocusDimension(scores)
     const dimName      = DIMENSION_NAMES[focusId]
     const firstName    = profile.full_name?.split(' ')[0] ?? 'there'
-    const unsubUrl     = `${appUrl}/unsubscribe?id=${profile.id}`
+    // Use unsubscribe_token (unguessable) instead of raw profile.id
+    const unsubUrl     = `${appUrl}/unsubscribe?token=${profile.unsubscribe_token}`
     const dashboardUrl = `${appUrl}/dashboard`
 
     try {

@@ -6,20 +6,21 @@ import { Suspense } from 'react'
 
 function UnsubscribeContent() {
   const params    = useSearchParams()
-  const id        = params.get('id')
+  // Support both new `token` param and legacy `id` param during transition
+  const token     = params.get('token') ?? params.get('id')
   const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'invalid'>('loading')
 
   useEffect(() => {
-    if (!id) { setStatus('invalid'); return }
+    if (!token) { setStatus('invalid'); return }
 
     fetch('/api/unsubscribe', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ id }),
+      body:    JSON.stringify({ token }),
     })
       .then(r => r.ok ? setStatus('success') : setStatus('error'))
       .catch(() => setStatus('error'))
-  }, [id])
+  }, [token])
 
   return (
     <main className="min-h-screen flex items-center justify-center px-6"

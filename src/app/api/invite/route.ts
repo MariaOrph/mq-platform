@@ -28,15 +28,44 @@ export async function POST(req: NextRequest) {
     auth: { autoRefreshToken: false, persistSession: false },
   })
 
+  // ── Authenticate the caller ────────────────────────────────────────────────
+  // Must be logged in as mq_admin or client_admin. Previously this endpoint
+  // accepted any request — a serious security hole that allowed anonymous
+  // users to invite people to any cohort with any role.
+  const token = req.headers.get('authorization')?.replace('Bearer ', '')
+  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const { data: { user } } = await supabase.auth.getUser(token)
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { data: callerProfile } = await supabase
+    .from('profiles').select('role, company_id').eq('id', user.id).single()
+  if (!callerProfile || (callerProfile.role !== 'mq_admin' && callerProfile.role !== 'client_admin')) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   // ── Look up cohort + company name for email ────────────────────────────────
   const { data: cohortData } = await supabase
     .from('cohorts')
-    .select('name, companies(name)')
+    .select('name, company_id, companies(name)')
     .eq('id', cohortId)
     .single()
 
-  const cohortName  = cohortData?.name ?? 'your cohort'
-  const companyName = (cohortData?.companies as { name?: string } | null)?.name ?? 'your organisation'
+  if (!cohortData) {
+    return NextResponse.json({ error: 'Cohort not found' }, { status: 404 })
+  }
+
+  // client_admin can only invite to cohorts in their own company
+  if (callerProfile.role === 'client_admin' && cohortData.company_id !== callerProfile.company_id) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
+  // Force the role to 'participant' for client_admin (no privilege escalation).
+  // Also force companyId to match the cohort (not whatever was in the body).
+  const safeRole      = callerProfile.role === 'client_admin' ? 'participant' : (role ?? 'participant')
+  const safeCompanyId = cohortData.company_id ?? companyId ?? null
+
+  const cohortName  = cohortData.name ?? 'your cohort'
+  const companyName = (cohortData.companies as { name?: string } | null)?.name ?? 'your organisation'
 
   // ── Resend client (optional — falls back gracefully if not configured) ─────
   const resendKey = process.env.RESEND_API_KEY
@@ -61,8 +90,8 @@ export async function POST(req: NextRequest) {
       email,
       options: {
         data: {
-          role:       role ?? 'participant',
-          company_id: companyId || null,
+          role:       safeRole,
+          company_id: safeCompanyId,
         },
         redirectTo: `${appUrl}/auth/invite`,
       },

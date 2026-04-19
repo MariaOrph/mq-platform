@@ -176,18 +176,30 @@ function OverviewTab({
       overall: avg,
     }
 
-    fetch('/api/insight', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ cohortId, cohortName, companyName, scores }),
-    })
-      .then(res => res.json())
-      .then(data => {
+    ;(async () => {
+      try {
+        const supabase = createClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        const authToken = session?.access_token
+        if (!authToken) { setInsightError(true); return }
+
+        const res = await fetch('/api/insight', {
+          method:  'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+          body:    JSON.stringify({ cohortId, cohortName, companyName, scores }),
+        })
+        const data = await res.json()
         if (data.insight) setInsight(data.insight)
         else setInsightError(true)
-      })
-      .catch(() => setInsightError(true))
-      .finally(() => setInsightLoading(false))
+      } catch {
+        setInsightError(true)
+      } finally {
+        setInsightLoading(false)
+      }
+    })()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cohortId, completed.length])
 
@@ -829,9 +841,20 @@ function AllCohortsTab({
     const companyId = cohort?.company_id ?? userCompanyId ?? ''
 
     try {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      const authToken = session?.access_token
+      if (!authToken) {
+        setInviteMsg('Error: Not logged in')
+        setInviting(false)
+        return
+      }
       const res = await fetch('/api/invite', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
         body: JSON.stringify({ cohortId: inviteCohortId, emails, role: inviteRole, companyId }),
       })
       const data = await res.json()
@@ -1633,6 +1656,19 @@ export default function AdminDashboard() {
 
   // ── Fetch participants for a cohort ─────────────────────────────────────
   const fetchParticipants = useCallback(async (cohortId: string): Promise<CohortParticipant[]> => {
+    // Security: a client_admin must only be able to read participants for cohorts
+    // that belong to their own company. Check cohort ownership before loading
+    // any participant data. (RLS should also enforce this server-side, but this
+    // is a defence-in-depth check on the client.)
+    if (!isMqAdmin) {
+      const { data: cohort } = await supabase
+        .from('cohorts').select('company_id').eq('id', cohortId).maybeSingle()
+      if (!cohort || cohort.company_id !== profile?.company_id) {
+        console.warn('[admin] blocked cross-company cohort access:', cohortId)
+        return []
+      }
+    }
+
     const { data } = await supabase
       .from('cohort_participants')
       .select(`
@@ -1661,7 +1697,7 @@ export default function AdminDashboard() {
       d7_score:         row.assessments?.d7_score         ?? null,
       completed_at:     row.assessments?.completed_at     ?? null,
     }))
-  }, [supabase])
+  }, [supabase, isMqAdmin, profile?.company_id])
 
   // ── Select cohort → switch to Overview tab ──────────────────────────────
   async function viewCohort(cohortId: string) {
