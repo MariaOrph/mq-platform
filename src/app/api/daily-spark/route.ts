@@ -12,22 +12,49 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-type CompanyValue = { id: string; value_name: string; value_order: number; behaviours: string[] }
+type CompanyValue = {
+  id: string
+  value_name: string
+  value_order: number
+  behaviours: string[]
+  // Cached card content (null = not yet generated, generate on first use)
+  spark_title?:    string | null
+  spark_teaser?:   string | null
+  spark_insight?:  string | null
+  spark_exercise?: string | null
+}
 
-// ── AI generation for values cards ────────────────────────────────────────────
+// ── AI generation for values cards (with company-level caching) ─────────────
+//
+// A values card is identical for every user at the same company, so we:
+//   1. Check if cached in company_value_behaviours (spark_* columns)
+//   2. If cached → return instantly, no AI call
+//   3. If not cached → call AI once, save to DB, return
+// This saves ~80-90% of Daily Spark AI costs in a multi-user cohort.
 
 async function generateValuesCard(
-  valueName: string,
-  behaviours: string[],
+  value: CompanyValue,
 ): Promise<{ title: string; teaser: string; insight: string; exercise: string }> {
-  const behavioursText = behaviours.map((b, i) => `${i + 1}. ${b}`).join('\n')
+  // Cache hit — return cached content, no AI call
+  if (value.spark_title && value.spark_teaser && value.spark_insight && value.spark_exercise) {
+    return {
+      title:    value.spark_title,
+      teaser:   value.spark_teaser,
+      insight:  value.spark_insight,
+      exercise: value.spark_exercise,
+    }
+  }
+
+  // Cache miss — generate via AI and persist
+  const behavioursText = value.behaviours.map((b, i) => `${i + 1}. ${b}`).join('\n')
+  let content: { title: string; teaser: string; insight: string; exercise: string }
   try {
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 600,
       messages: [{
         role: 'user',
-        content: `You are writing a Daily Spark card for a leadership development platform. This card explores a company value called "${valueName}".
+        content: `You are writing a Daily Spark card for a leadership development platform. This card explores a company value called "${value.value_name}".
 
 The specific behaviours associated with this value are:
 ${behavioursText}
@@ -42,15 +69,31 @@ Return ONLY a valid JSON object with keys: title, teaser, insight, exercise. No 
       }],
     })
     const text = message.content[0].type === 'text' ? message.content[0].text.trim() : '{}'
-    return JSON.parse(text)
+    content = JSON.parse(text)
   } catch {
-    return {
-      title:    `Living '${valueName}' Today`,
-      teaser:   `What does ${valueName} really look like in action today?`,
-      insight:  `${valueName} is more than a wall poster — it shows up in every decision, conversation, and moment of pressure. Leaders who consciously embody their company's values set the standard for what is normal on their teams.`,
-      exercise: `Think of one moment in the past week where ${valueName} was either clearly demonstrated or clearly missing in your own behaviour. What happened, and what would it look like to fully embody this value in your next interaction with your team?`,
+    content = {
+      title:    `Living '${value.value_name}' Today`,
+      teaser:   `What does ${value.value_name} really look like in action today?`,
+      insight:  `${value.value_name} is more than a wall poster — it shows up in every decision, conversation, and moment of pressure. Leaders who consciously embody their company's values set the standard for what is normal on their teams.`,
+      exercise: `Think of one moment in the past week where ${value.value_name} was either clearly demonstrated or clearly missing in your own behaviour. What happened, and what would it look like to fully embody this value in your next interaction with your team?`,
     }
   }
+
+  // Persist to cache for future users — fire and forget, don't block response on this
+  supabaseAdmin
+    .from('company_value_behaviours')
+    .update({
+      spark_title:    content.title,
+      spark_teaser:   content.teaser,
+      spark_insight:  content.insight,
+      spark_exercise: content.exercise,
+    })
+    .eq('id', value.id)
+    .then(({ error }) => {
+      if (error) console.error('Failed to cache values card:', error)
+    })
+
+  return content
 }
 
 // ── GET ───────────────────────────────────────────────────────────────────────
@@ -92,7 +135,7 @@ export async function GET(req: NextRequest) {
   if (profile?.company_id) {
     const { data: values } = await supabaseAdmin
       .from('company_value_behaviours')
-      .select('id, value_name, value_order, behaviours')
+      .select('id, value_name, value_order, behaviours, spark_title, spark_teaser, spark_insight, spark_exercise')
       .eq('company_id', profile.company_id)
       .order('value_order')
     companyValues = (values ?? []).map(v => ({ ...v, behaviours: v.behaviours as string[] }))
@@ -128,7 +171,7 @@ export async function GET(req: NextRequest) {
           const slotIndex = getValuesSlotIndex(nextCardNumber) // 0–5
           const value     = companyValues[slotIndex % companyValues.length]
 
-          const content = await generateValuesCard(value.value_name, value.behaviours)
+          const content = await generateValuesCard(value)
           const { data: newCard } = await supabaseAdmin
             .from('daily_sparks')
             .insert({
