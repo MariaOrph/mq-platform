@@ -313,9 +313,7 @@ export default function ResourcesPage() {
                 {resources.map(resource => (
                   <a
                     key={resource.filename}
-                    href={`/resources/${resource.filename.replace(/ /g, '%20')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/dashboard/resources/view?file=${encodeURIComponent(resource.filename)}&title=${encodeURIComponent(resource.title)}`}
                     className="flex items-center gap-3 rounded-2xl p-4 transition-all hover:shadow-md group"
                     style={{ backgroundColor: 'white', border: `1px solid #F3F4F6`, boxShadow: '0 1px 4px rgba(10,46,42,0.04)' }}
                   >
@@ -329,9 +327,9 @@ export default function ResourcesPage() {
                       <p className="text-xs mt-0.5 leading-relaxed" style={{ color: '#6B7280' }}>{resource.description}</p>
                     </div>
 
-                    {/* Download icon */}
-                    <svg className="flex-shrink-0 opacity-40 group-hover:opacity-70 transition-opacity" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A2E2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                    {/* Chevron icon */}
+                    <svg className="flex-shrink-0 opacity-40 group-hover:opacity-70 transition-opacity" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A2E2A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6"/>
                     </svg>
                   </a>
                 ))}
