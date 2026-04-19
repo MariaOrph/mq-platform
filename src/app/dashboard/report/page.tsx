@@ -217,8 +217,7 @@ export default function ReportPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: '#9CA3AF' }}>About MQ</p>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
-            MQ (Mindset Quotient®) measures how fully you've made the shift from individual performer to effective
-            leader of others, across seven dimensions of the mindset that underpins great management.
+            MQ measures how fully you&apos;ve made the shift from individual performer to effective leader of others, across seven dimensions of the mindset that underpins great management.
           </p>
         </div>
 

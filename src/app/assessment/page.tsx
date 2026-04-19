@@ -204,9 +204,7 @@ export default function AssessmentPage() {
             <p className="text-xs font-semibold uppercase tracking-wider mb-3"
                style={{ color: '#0AF3CD' }}>What is MQ?</p>
             <p className="text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>
-              <strong style={{ color: 'white' }}>MQ (Mindset Quotient®)</strong> measures how fully you've made the shift
-              from individual performer to effective leader of others, across seven dimensions
-              of the mindset that underpins great management.
+              <strong style={{ color: 'white' }}>MQ</strong> measures how fully you&apos;ve made the shift from individual performer to effective leader of others, across seven dimensions of the mindset that underpins great management.
             </p>
           </div>
         )}
