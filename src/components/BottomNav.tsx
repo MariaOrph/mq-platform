@@ -60,7 +60,7 @@ const NAV_ITEMS = [
 ];
 
 // Pages where bottom nav should NOT show
-const HIDDEN_PATHS = ["/login", "/auth", "/assessment", "/feedback", "/unauthorised", "/privacy"];
+const HIDDEN_PATHS = ["/login", "/auth", "/assessment", "/feedback", "/unauthorised", "/privacy", "/programmes"];
 
 export default function BottomNav() {
   const pathname = usePathname();
