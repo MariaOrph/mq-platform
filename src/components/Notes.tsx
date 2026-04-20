@@ -68,13 +68,41 @@ export default function Notes({ token, onClose, mode = 'fullscreen' }: NotesProp
     if (view === 'editor') setTimeout(() => contentRef.current?.focus(), 100)
   }, [view])
 
-  // Hide the bottom nav while Notes is open in fullscreen mode. In panel
-  // mode Notes is layered over another overlay which already sets the class,
-  // but setting it from here is harmless.
+  // Hide the bottom nav + lock body scroll while Notes is open in
+  // fullscreen mode. Panel mode is layered over another overlay that
+  // already sets these, but setting them here is harmless.
   useEffect(() => {
     if (mode !== 'fullscreen') return
     document.body.classList.add('overlay-open')
-    return () => { document.body.classList.remove('overlay-open') }
+    const prevOverflow = document.body.style.overflow
+    const prevPosition = document.body.style.position
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    return () => {
+      document.body.classList.remove('overlay-open')
+      document.body.style.overflow = prevOverflow
+      document.body.style.position = prevPosition
+      document.body.style.width = ''
+    }
+  }, [mode])
+
+  // Track the real visible viewport height so the overlay resizes when the
+  // mobile keyboard opens (otherwise Android Chrome shifts the overlay up
+  // and cuts off the top).
+  const [visibleHeight, setVisibleHeight] = useState<number | null>(null)
+  useEffect(() => {
+    if (mode !== 'fullscreen') return
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null
+    if (!vv) return
+    const update = () => setVisibleHeight(vv.height)
+    update()
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+    }
   }, [mode])
 
   // ── Auto-save ──────────────────────────────────────────────────────────────
@@ -197,7 +225,13 @@ export default function Notes({ token, onClose, mode = 'fullscreen' }: NotesProp
 
   // Full-screen
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9', height: '100dvh' }}>
+    <div
+      className="fixed left-0 right-0 top-0 z-50 flex flex-col"
+      style={{
+        backgroundColor: '#F4FDF9',
+        height: visibleHeight ? `${visibleHeight}px` : '100dvh',
+      }}
+    >
       <NotesInner
         notes={notes} loaded={loaded} view={view}
         activeNote={activeNote} editTitle={editTitle} editContent={editContent}

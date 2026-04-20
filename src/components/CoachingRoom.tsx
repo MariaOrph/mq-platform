@@ -126,7 +126,38 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   // due to browser keyboard/fixed-positioning quirks.
   useEffect(() => {
     document.body.classList.add('overlay-open')
-    return () => { document.body.classList.remove('overlay-open') }
+    // Also lock body scroll so Android Chrome doesn't shift the whole page
+    // (including this fixed overlay) up when the on-screen keyboard opens.
+    const prevOverflow = document.body.style.overflow
+    const prevPosition = document.body.style.position
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    return () => {
+      document.body.classList.remove('overlay-open')
+      document.body.style.overflow = prevOverflow
+      document.body.style.position = prevPosition
+      document.body.style.width = ''
+    }
+  }, [])
+
+  // ── Track the true visible viewport height so the overlay resizes cleanly
+  // when the mobile on-screen keyboard opens. Using 100dvh alone isn't
+  // reliable on Android Chrome — it can still shift the overlay up and
+  // cut off the top. Reading window.visualViewport.height directly is the
+  // authoritative answer.
+  const [visibleHeight, setVisibleHeight] = useState<number | null>(null)
+  useEffect(() => {
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null
+    if (!vv) return
+    const update = () => setVisibleHeight(vv.height)
+    update()
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+    }
   }, [])
 
   // ── Open a session ──────────────────────────────────────────────────────────
@@ -273,13 +304,15 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col"
+      className="fixed left-0 right-0 top-0 z-50 flex flex-col"
       style={{
         backgroundColor: '#F4FDF9',
-        // Use dynamic viewport height where supported (falls back to 100%)
-        // so the overlay resizes when mobile browser URL bar / keyboard
-        // opens/closes. Prevents content being cut off on Android.
-        height: '100dvh',
+        // Pin the overlay to the actual visible viewport, not the full
+        // layout viewport. Uses visualViewport.height (tracked in effect
+        // above) when available, falling back to 100dvh then 100vh. This
+        // prevents Android Chrome from pushing the overlay off-screen when
+        // the on-screen keyboard opens.
+        height: visibleHeight ? `${visibleHeight}px` : '100dvh',
       }}
     >
 
