@@ -394,8 +394,8 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="max-w-2xl mx-auto px-6 py-6 space-y-4">
+          <div className="flex-1 overflow-y-auto min-h-0">
+            <div className={`max-w-2xl mx-auto px-6 py-6 space-y-4 ${msgLoaded && messages.length === 0 ? 'min-h-full flex flex-col justify-center' : ''}`}>
 
               {!msgLoaded && (
                 <div className="flex justify-center py-8">
@@ -410,12 +410,12 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
               {/* Empty state */}
               {msgLoaded && messages.length === 0 && (
-                <div className="py-8">
-                  <div className="text-center mb-8">
+                <div>
+                  <div className="text-center mb-6">
                     <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
                          style={{ backgroundColor: '#0A2E2A' }}>💬</div>
                     <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
-                      What's on your mind, {firstName}?
+                      What&apos;s on your mind, {firstName}?
                     </p>
                     <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
                       Bring me a challenge, a decision, or anything on your mind at work.
