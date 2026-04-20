@@ -216,8 +216,11 @@ const SLIDES = [
 ]
 
 // ── Storage ────────────────────────────────────────────────────────────────────
+// Note: helpers (shouldShowOnboarding, resetOnboarding, markOnboardingComplete)
+// live in /lib/onboarding-state so pages can check state without loading this
+// whole component.
 
-const STORAGE_KEY = 'mq_onboarding_complete'
+import { markOnboardingComplete } from '@/lib/onboarding-state'
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -227,7 +230,7 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
 
   function finish() {
     setExiting(true)
-    try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* */ }
+    markOnboardingComplete()
     setTimeout(onComplete, 300)
   }
 
@@ -345,10 +348,5 @@ export default function MQOnboarding({ onComplete }: { onComplete: () => void })
 
 // ── Helper ─────────────────────────────────────────────────────────────────────
 
-export function shouldShowOnboarding(): boolean {
-  try { return !localStorage.getItem(STORAGE_KEY) } catch { return false }
-}
-
-export function resetOnboarding(): void {
-  try { localStorage.removeItem(STORAGE_KEY) } catch { /* */ }
-}
+// Named helpers re-exported from the lightweight utility for backwards compat
+export { shouldShowOnboarding, resetOnboarding } from '@/lib/onboarding-state'

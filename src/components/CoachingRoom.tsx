@@ -15,6 +15,10 @@ interface Session {
   updated_at:    string
   message_count: number
   session_type:  SessionType
+  // Draft sessions live only in local state until the user sends their first
+  // message. We defer the DB insert so that abandoned "New conversation"
+  // sessions don't clutter the history list.
+  isDraft?:      boolean
 }
 
 type FilterType = 'all' | 'coaching' | 'mq_builder' | 'culture_lab'
@@ -124,30 +128,57 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
     await loadMessages(session.id)
   }
 
-  // ── Start new conversation ──────────────────────────────────────────────────
-  async function startNewConversation() {
+  // ── Start new conversation (draft — not persisted until first message) ─────
+  function startNewConversation() {
+    const now = new Date().toISOString()
+    const draft: Session = {
+      id:            '__draft__',
+      title:         'New conversation',
+      created_at:    now,
+      updated_at:    now,
+      message_count: 0,
+      session_type:  'coaching',
+      isDraft:       true,
+    }
+    setActiveSession(draft)
+    setMessages([])
+    setMsgLoaded(true)
+    setView('chat')
+    // Do NOT prepend to the sessions list — we only persist once the user sends.
+  }
+
+  // Turn a draft session into a real one. Returns the real session so the
+  // caller can continue using it (e.g. to send the first message against the
+  // real sessionId).
+  async function materialiseDraftSession(firstUserMessage: string): Promise<Session | null> {
     const prevSessionId = sessions[0]?.id
+    // Derive a provisional title from the first message — trimmed and capped.
+    const provisionalTitle = firstUserMessage.trim().slice(0, 80) || 'New conversation'
     const res = await fetch('/api/coaching-room', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body:    JSON.stringify({ action: 'new_session', prevSessionId, sessionType: 'coaching' }),
+      body:    JSON.stringify({
+        action: 'new_session',
+        prevSessionId,
+        sessionType: 'coaching',
+        title: provisionalTitle,
+      }),
     })
-    if (res.ok) {
-      const { session } = await res.json()
-      if (!session) return
-      setActiveSession(session)
-      setMessages([])
-      setMsgLoaded(true)
-      setView('chat')
-      setSessions(prev => [session, ...prev])
-    }
+    if (!res.ok) return null
+    const { session } = await res.json()
+    if (!session) return null
+    setActiveSession(session)
+    setSessions(prev => [session, ...prev])
+    return session
   }
 
   // ── Send message ────────────────────────────────────────────────────────────
-  async function send() {
-    const text = input.trim()
+  // `overrideText` lets situational-prompt buttons send predefined messages
+  // without having to duplicate draft-session and error handling.
+  async function send(overrideText?: string) {
+    const text = (overrideText ?? input).trim()
     if (!text || loading || !activeSession) return
-    setInput('')
+    if (!overrideText) setInput('')
     setLoading(true)
 
     setMessages(prev => [
@@ -156,18 +187,33 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
       { role: 'assistant', content: '',   pending: true  },
     ])
 
+    // If this is a draft session, persist it to the DB first so we have a
+    // real sessionId before sending the message.
+    let sessionForMessage: Session = activeSession
+    if (activeSession.isDraft) {
+      const real = await materialiseDraftSession(text)
+      if (!real) {
+        setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: 'Something went wrong saving your conversation. Please try again.' }])
+        setLoading(false)
+        return
+      }
+      sessionForMessage = real
+    }
+
     try {
       const res = await fetch('/api/coaching-room', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ message: text, sessionId: activeSession.id }),
+        body:    JSON.stringify({ message: text, sessionId: sessionForMessage.id }),
       })
       const data = await res.json()
       const reply = res.ok && data.reply ? data.reply : 'Something went wrong. Please try again.'
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: reply }])
 
+      // Rename session based on first user message (title was a naive slice
+      // during materialisation — this refines it properly).
       if (messages.filter(m => m.role === 'user').length === 0) {
-        renameSession(activeSession.id, text)
+        renameSession(sessionForMessage.id, text)
       }
     } catch {
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: 'Something went wrong. Please try again.' }])
@@ -395,7 +441,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto min-h-0">
-            <div className={`max-w-2xl mx-auto px-6 py-6 space-y-4 ${msgLoaded && messages.length === 0 ? 'min-h-full flex flex-col justify-center' : ''}`}>
+            <div className="max-w-2xl mx-auto px-6 py-4 space-y-4">
 
               {!msgLoaded && (
                 <div className="flex justify-center py-8">
@@ -408,13 +454,13 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 </div>
               )}
 
-              {/* Empty state */}
+              {/* Empty state — compact so input bar stays visible on short viewports */}
               {msgLoaded && messages.length === 0 && (
                 <div>
-                  <div className="text-center mb-6">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+                  <div className="text-center mb-5">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-xl"
                          style={{ backgroundColor: '#0A2E2A' }}>💬</div>
-                    <p className="text-base font-semibold mb-2" style={{ color: '#0A2E2A' }}>
+                    <p className="text-base font-semibold mb-1.5" style={{ color: '#0A2E2A' }}>
                       What&apos;s on your mind, {firstName}?
                     </p>
                     <p className="text-sm max-w-xs mx-auto" style={{ color: '#05A88E' }}>
@@ -435,34 +481,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                         'I need help managing up',
                       ].map(prompt => (
                         <button key={prompt}
-                                onClick={() => {
-                                  setInput('')
-                                  setLoading(true)
-                                  setMessages([
-                                    { role: 'user', content: prompt, pending: false },
-                                    { role: 'assistant', content: '', pending: true },
-                                  ])
-                                  fetch('/api/coaching-room', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                    body: JSON.stringify({ message: prompt, sessionId: activeSession!.id }),
-                                  }).then(r => r.json()).then(data => {
-                                    const reply = data.reply ?? 'Something went wrong. Please try again.'
-                                    setMessages([
-                                      { role: 'user', content: prompt },
-                                      { role: 'assistant', content: reply },
-                                    ])
-                                    renameSession(activeSession!.id, prompt)
-                                  }).catch(() => {
-                                    setMessages([
-                                      { role: 'user', content: prompt },
-                                      { role: 'assistant', content: 'Something went wrong. Please try again.' },
-                                    ])
-                                  }).finally(() => {
-                                    setLoading(false)
-                                    setTimeout(() => inputRef.current?.focus(), 50)
-                                  })
-                                }}
+                                onClick={() => { void send(prompt) }}
                                 onMouseEnter={() => setHoveredPrompt(prompt)}
                                 onMouseLeave={() => setHoveredPrompt(null)}
                                 className="text-xs px-3 py-1.5 rounded-full transition-all duration-150"
@@ -541,7 +560,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                   el.style.height = `${Math.min(el.scrollHeight, 120)}px`
                 }}
               />
-              <button onClick={send} disabled={!input.trim() || loading}
+              <button onClick={() => { void send() }} disabled={!input.trim() || loading}
                       className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 disabled:opacity-40 transition-opacity"
                       style={{ backgroundColor: '#0AF3CD', color: '#0A2E2A' }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
