@@ -182,62 +182,194 @@ export default function ProgrammesPage() {
                       style={{ backgroundColor: '#0a0a0a' }}
                     />
                     {/* App mock: dashboard preview */}
-                    <div className="px-4 pt-10 pb-6 h-full overflow-hidden">
+                    <div className="pt-9 h-full flex flex-col">
                       {/* App header */}
-                      <div className="flex items-center justify-between mb-4 px-1">
+                      <div className="px-4 flex items-center justify-between mb-2.5">
                         <div>
-                          <p className="text-[10px] font-semibold" style={{ color: BRAND.inkSoft }}>Good morning</p>
-                          <p className="text-sm font-black" style={{ color: BRAND.ink }}>Maria</p>
+                          <p className="text-[9px] font-semibold" style={{ color: BRAND.inkSoft }}>Good morning</p>
+                          <p className="text-[13px] font-black leading-tight" style={{ color: BRAND.ink }}>Maria</p>
                         </div>
                         <div
-                          className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-bold"
+                          className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-bold"
                           style={{ backgroundColor: BRAND.teal, color: BRAND.darkGreen }}
                         >MO</div>
                       </div>
 
-                      {/* Score card */}
-                      <div
-                        className="rounded-2xl p-3.5 mb-3"
-                        style={{ background: `linear-gradient(135deg, ${BRAND.darkGreen} 0%, #0d3830 100%)` }}
-                      >
-                        <p className="text-[10px] font-bold text-white mb-0.5">MQ Score</p>
-                        <p className="text-[10px]" style={{ color: BRAND.tealSoft }}>Strong</p>
-                        <div className="flex items-end gap-2 mt-2">
-                          <span className="text-3xl font-black leading-none" style={{ color: BRAND.teal }}>78</span>
-                          <span className="text-[10px] mb-1" style={{ color: BRAND.tealSoft }}>/ 100</span>
+                      {/* Scrollable content */}
+                      <div className="px-3 flex-1 space-y-2 overflow-hidden">
+
+                        {/* Score card with inline radar */}
+                        <div
+                          className="rounded-2xl p-3 relative overflow-hidden"
+                          style={{ background: `linear-gradient(135deg, ${BRAND.darkGreen} 0%, #0d3830 100%)` }}
+                        >
+                          {/* Radar / spider chart */}
+                          {(() => {
+                            const cx = 40, cy = 40, maxR = 32
+                            const dims = [
+                              { v: 82, c: '#fdcb5e' },
+                              { v: 71, c: '#EC4899' },
+                              { v: 88, c: '#ff7b7a' },
+                              { v: 74, c: '#ff9f43' },
+                              { v: 66, c: '#00c9a7' },
+                              { v: 79, c: '#2d4a8a' },
+                              { v: 85, c: '#a78bfa' },
+                            ]
+                            const angles = Array.from({ length: 7 }, (_, i) => (-90 + i * (360 / 7)) * Math.PI / 180)
+                            const gridLevels = [0.33, 0.66, 1.0]
+                            const gridPaths = gridLevels.map(level =>
+                              angles.map(a => `${cx + maxR * level * Math.cos(a)},${cy + maxR * level * Math.sin(a)}`).join(' ')
+                            )
+                            const scorePts = dims.map((d, i) => {
+                              const r = (d.v / 100) * maxR
+                              return `${cx + r * Math.cos(angles[i])},${cy + r * Math.sin(angles[i])}`
+                            }).join(' ')
+                            return (
+                              <svg
+                                className="absolute"
+                                style={{ right: 6, top: '50%', transform: 'translateY(-50%)', filter: 'drop-shadow(0 0 6px rgba(10,243,205,0.4))' }}
+                                width="80" height="80" viewBox="0 0 80 80" fill="none"
+                              >
+                                {gridPaths.map((pts, i) => (
+                                  <polygon key={i} points={pts} stroke={`rgba(10,243,205,${0.1 + i * 0.08})`} strokeWidth="0.5" fill="none" />
+                                ))}
+                                {angles.map((a, i) => (
+                                  <line key={i} x1={cx} y1={cy}
+                                        x2={cx + maxR * Math.cos(a)} y2={cy + maxR * Math.sin(a)}
+                                        stroke="rgba(10,243,205,0.14)" strokeWidth="0.5" />
+                                ))}
+                                <polygon points={scorePts} fill="rgba(10,243,205,0.22)" stroke="rgba(10,243,205,0.85)" strokeWidth="1" strokeLinejoin="round" />
+                                {dims.map((d, i) => {
+                                  const r = (d.v / 100) * maxR
+                                  return (
+                                    <circle key={i}
+                                            cx={cx + r * Math.cos(angles[i])}
+                                            cy={cy + r * Math.sin(angles[i])}
+                                            r="1.8" fill={d.c} />
+                                  )
+                                })}
+                              </svg>
+                            )
+                          })()}
+                          <div className="relative">
+                            <p className="text-[9px] font-bold text-white mb-0.5">MQ Score</p>
+                            <p className="text-[9px]" style={{ color: BRAND.tealSoft }}>Strong</p>
+                            <div className="flex items-end gap-1 mt-1">
+                              <span className="text-[26px] font-black leading-none" style={{ color: BRAND.teal }}>78</span>
+                              <span className="text-[9px] mb-0.5" style={{ color: BRAND.tealSoft }}>/ 100</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* All 7 Dimension bars */}
+                        <div className="space-y-[3px]">
+                          {[
+                            { n: 'Self-awareness', v: 82, c: '#fdcb5e' },
+                            { n: 'Ego management', v: 71, c: '#EC4899' },
+                            { n: 'Emotional regulation', v: 88, c: '#ff7b7a' },
+                            { n: 'Clarity & comms', v: 74, c: '#ff9f43' },
+                            { n: 'Trust & development', v: 66, c: '#00c9a7' },
+                            { n: 'Standards & accountability', v: 79, c: '#2d4a8a' },
+                            { n: 'Relational intelligence', v: 85, c: '#a78bfa' },
+                          ].map(d => (
+                            <div key={d.n}>
+                              <div className="flex justify-between items-center leading-none">
+                                <span className="text-[8px] font-semibold" style={{ color: BRAND.ink }}>{d.n}</span>
+                                <span className="text-[8px] font-bold" style={{ color: d.c }}>{d.v}</span>
+                              </div>
+                              <div className="h-[3px] rounded-full overflow-hidden mt-[2px]" style={{ backgroundColor: '#F3F4F6' }}>
+                                <div className="h-full rounded-full" style={{ width: `${d.v}%`, backgroundColor: d.c }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Daily Spark card */}
+                        <div
+                          className="rounded-lg px-2.5 py-1.5"
+                          style={{ background: 'linear-gradient(135deg, #FFF8E1 0%, #FFFBF0 100%)', border: '1px solid #fdcb5e' }}
+                        >
+                          <p className="text-[7px] font-bold uppercase tracking-wider" style={{ color: '#D97706' }}>Today&apos;s Spark</p>
+                          <p className="text-[9px] font-semibold leading-tight mt-[1px]" style={{ color: BRAND.ink }}>
+                            Build trust through micro-moments
+                          </p>
+                        </div>
+
+                        {/* Two quick-access tiles */}
+                        <div className="grid grid-cols-2 gap-1.5">
+                          <div
+                            className="rounded-lg px-2 py-1.5"
+                            style={{ background: `linear-gradient(135deg, #ffffff 0%, ${BRAND.mintPale} 100%)`, border: `1px solid ${BRAND.tealSoft}` }}
+                          >
+                            <p className="text-[7px] font-bold uppercase tracking-wider" style={{ color: BRAND.inkSoft }}>Coaching</p>
+                            <p className="text-[9px] font-semibold mt-[1px]" style={{ color: BRAND.ink }}>Mon 3pm</p>
+                          </div>
+                          <div
+                            className="rounded-lg px-2 py-1.5"
+                            style={{ background: `linear-gradient(135deg, #ffffff 0%, ${BRAND.mintPale} 100%)`, border: `1px solid ${BRAND.tealSoft}` }}
+                          >
+                            <p className="text-[7px] font-bold uppercase tracking-wider" style={{ color: BRAND.inkSoft }}>Mindset Gym</p>
+                            <p className="text-[9px] font-semibold mt-[1px]" style={{ color: BRAND.ink }}>4 active</p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Dimension bars */}
-                      <div className="space-y-1.5 mb-3">
-                        {[
-                          { n: 'Self-awareness', v: 82, c: '#fdcb5e' },
-                          { n: 'Ego management', v: 71, c: '#EC4899' },
-                          { n: 'Emotional regulation', v: 88, c: '#ff7b7a' },
-                          { n: 'Clarity & comms', v: 74, c: '#ff9f43' },
-                          { n: 'Trust & development', v: 66, c: '#00c9a7' },
-                        ].map(d => (
-                          <div key={d.n}>
-                            <div className="flex justify-between items-center">
-                              <span className="text-[9px] font-semibold" style={{ color: BRAND.ink }}>{d.n}</span>
-                              <span className="text-[9px] font-bold" style={{ color: d.c }}>{d.v}</span>
-                            </div>
-                            <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
-                              <div className="h-full rounded-full" style={{ width: `${d.v}%`, backgroundColor: d.c }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Daily Spark card */}
+                      {/* Bottom nav */}
                       <div
-                        className="rounded-xl p-3"
-                        style={{ background: 'linear-gradient(135deg, #FFF8E1 0%, #FFFBF0 100%)', border: '1px solid #fdcb5e' }}
+                        className="mt-2"
+                        style={{
+                          backgroundColor: 'rgba(232,253,247,0.92)',
+                          borderTop: `1px solid ${BRAND.tealSoft}`,
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                        }}
                       >
-                        <p className="text-[9px] font-bold uppercase tracking-wider mb-1" style={{ color: '#D97706' }}>Today&apos;s Daily Spark</p>
-                        <p className="text-[11px] font-semibold leading-snug" style={{ color: BRAND.ink }}>
-                          Build trust through micro-moments
-                        </p>
+                        <div className="flex justify-around items-center h-10 px-1">
+                          {[
+                            {
+                              label: 'Home', active: true,
+                              path: 'M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
+                            },
+                            {
+                              label: 'Coaching', active: false,
+                              path: 'M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951',
+                            },
+                            {
+                              label: 'Gym', active: false, isGym: true,
+                            },
+                            {
+                              label: 'Culture', active: false,
+                              path: 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584m12-.696a5.971 5.971 0 00-.941-3.197m-5.058-2.325A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z',
+                            },
+                            {
+                              label: 'Profile', active: false,
+                              path: 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z',
+                            },
+                          ].map((item, i) => (
+                            <div key={i} className="relative flex flex-col items-center justify-center gap-[2px]" style={{ color: item.active ? BRAND.darkGreen : '#9CA3AF' }}>
+                              {item.active && (
+                                <span
+                                  className="absolute -top-[3px] left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full"
+                                  style={{ backgroundColor: BRAND.teal }}
+                                />
+                              )}
+                              {item.isGym ? (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M6.5 6.5a2 2 0 013 0V17.5a2 2 0 01-3 0z" />
+                                  <path d="M17.5 6.5a2 2 0 00-3 0V17.5a2 2 0 003 0z" />
+                                  <path d="M9.5 12h5" />
+                                  <path d="M4 9v6" />
+                                  <path d="M20 9v6" />
+                                </svg>
+                              ) : (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill={item.active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={item.active ? 0 : 1.5} strokeLinecap="round" strokeLinejoin="round">
+                                  <path d={item.path} />
+                                </svg>
+                              )}
+                              <span className="text-[6px] font-medium leading-none">{item.label}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
