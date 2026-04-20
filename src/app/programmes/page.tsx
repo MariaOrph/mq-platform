@@ -17,7 +17,7 @@ const BRAND = {
 }
 
 export const metadata: Metadata = {
-  title: 'The Manager Mindset Accelerator — MQ',
+  title: 'The Manager Mindset Accelerator | MQ',
   description: 'Change how your managers think, and they\'ll change how your business performs. A coaching-led development programme for first-time and emerging managers, enhanced by the MQ app.',
   openGraph: {
     title: 'The Manager Mindset Accelerator',
@@ -32,7 +32,7 @@ export default function ProgrammesPage() {
   return (
     <div
       // Negative margin absorbs the pb-20 that the root layout adds for the
-      // (now-hidden) bottom nav — otherwise we get an empty strip under the
+      // (now-hidden) bottom nav. Otherwise we get an empty strip under the
       // footer. This keeps the landing page visually flush.
       style={{ backgroundColor: BRAND.mintPale, color: BRAND.ink, marginBottom: '-5rem' }}
     >
@@ -43,15 +43,15 @@ export default function ProgrammesPage() {
         style={{ backgroundColor: 'rgba(244,253,249,0.85)', borderBottom: `1px solid ${BRAND.tealSoft}` }}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/programmes" className="flex items-center gap-2.5">
+          <Link href="/programmes" className="flex items-center gap-3">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-black tracking-tight"
+              className="w-11 h-11 rounded-xl flex items-center justify-center text-base font-black tracking-tight"
               style={{ backgroundColor: BRAND.darkGreen, color: 'white' }}
             >
               M<span style={{ color: BRAND.teal }}>Q</span>
             </div>
-            <span className="font-bold text-sm tracking-tight" style={{ color: BRAND.ink }}>
-              Mindset Quotient<sup className="text-[9px]">®</sup>
+            <span className="font-bold text-sm sm:text-base tracking-tight" style={{ color: BRAND.ink }}>
+              Mindset Quotient<sup className="text-[10px]">®</sup>
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -95,7 +95,7 @@ export default function ProgrammesPage() {
 
         <div className="relative max-w-6xl mx-auto px-6 pt-16 sm:pt-24 pb-20 sm:pb-28">
           <div className="grid lg:grid-cols-[1.15fr_1fr] gap-12 items-center">
-            {/* Left — copy */}
+            {/* Left: copy */}
             <div>
               <p
                 className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] px-3 py-1.5 rounded-full mb-7"
@@ -155,12 +155,12 @@ export default function ProgrammesPage() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: BRAND.teal }}>
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
-                  8–12 week programme
+                  3 to 6 month programme
                 </span>
               </div>
             </div>
 
-            {/* Right — phone mockup */}
+            {/* Right: phone mockup */}
             <div className="relative flex justify-center lg:justify-end">
               <div
                 className="relative"
@@ -181,7 +181,7 @@ export default function ProgrammesPage() {
                       className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 rounded-full z-10"
                       style={{ backgroundColor: '#0a0a0a' }}
                     />
-                    {/* App mock — dashboard preview */}
+                    {/* App mock: dashboard preview */}
                     <div className="px-4 pt-10 pb-6 h-full overflow-hidden">
                       {/* App header */}
                       <div className="flex items-center justify-between mb-4 px-1">
@@ -271,15 +271,28 @@ export default function ProgrammesPage() {
           {/* Stat cards */}
           <div className="grid md:grid-cols-3 gap-4 mb-14">
             {[
-              { stat: '82%', label: 'of UK managers are "accidental" — no formal development.' },
+              { stat: '82%', label: 'of UK managers are "accidental". No formal development.' },
               { stat: '70%', label: 'of variance in team engagement is determined by the manager. (Gallup)' },
               { stat: '80%', label: 'of people stay in a job because they have a manager they trust.' },
             ].map((s, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-7"
-                style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}`, boxShadow: '0 2px 16px rgba(10,46,42,0.04)' }}
+                className="rounded-2xl p-7 relative overflow-hidden"
+                style={{
+                  background: `linear-gradient(145deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                  border: `1px solid ${BRAND.tealSoft}`,
+                  boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 10px 28px rgba(10,46,42,0.06), 0 24px 48px rgba(10,46,42,0.04)',
+                }}
               >
+                <div
+                  aria-hidden
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: 0, left: 0, right: 0, height: 2,
+                    background: `linear-gradient(90deg, transparent 0%, ${BRAND.teal} 50%, transparent 100%)`,
+                    opacity: 0.4,
+                  }}
+                />
                 <p
                   className="font-black leading-none mb-3"
                   style={{ fontSize: 'clamp(2.5rem, 5vw, 3.25rem)', color: BRAND.darkGreen, fontVariantNumeric: 'tabular-nums' }}
@@ -293,9 +306,19 @@ export default function ProgrammesPage() {
 
           {/* Hidden cost */}
           <div
-            className="rounded-3xl p-8 sm:p-10"
-            style={{ backgroundColor: BRAND.cream, border: `1px solid #fdcb5e` }}
+            className="rounded-3xl p-8 sm:p-10 relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 55%, #FDE68A 100%)',
+              border: '1px solid #FCD34D',
+              boxShadow: '0 1px 2px rgba(180,83,9,0.05), 0 12px 32px rgba(180,83,9,0.08), 0 28px 56px rgba(180,83,9,0.06)',
+            }}
           >
+            <div
+              aria-hidden
+              className="absolute rounded-full blur-3xl opacity-40 pointer-events-none"
+              style={{ width: 320, height: 320, top: -100, right: -80, background: 'radial-gradient(circle, #FCD34D 0%, transparent 70%)' }}
+            />
+            <div className="relative">
             <p className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: '#B45309' }}>
               The hidden cost of doing nothing
             </p>
@@ -316,6 +339,7 @@ export default function ProgrammesPage() {
                   <span>{t}</span>
                 </div>
               ))}
+            </div>
             </div>
           </div>
         </div>
@@ -340,7 +364,7 @@ export default function ProgrammesPage() {
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
               Mindset Quotient<sup className="text-xs">®</sup> measures our capacity to observe, regulate, and reframe the
               thought patterns, beliefs and inner scripts that drive our behaviour. It&apos;s the intelligence of
-              self-direction. When you learn to master it, you amplify your capacity to lead — and create the conditions
+              self-direction. When you learn to master it, you amplify your capacity to lead, and create the conditions
               for others to do the same.
             </p>
           </div>
@@ -353,12 +377,28 @@ export default function ProgrammesPage() {
             ].map((c, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-7"
+                className="rounded-2xl p-7 relative overflow-hidden"
                 style={c.muted
-                  ? { backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}` }
-                  : { background: `linear-gradient(135deg, ${BRAND.darkGreen} 0%, #0d3830 100%)`, color: 'white' }
+                  ? {
+                      background: `linear-gradient(145deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                      border: `1px solid ${BRAND.tealSoft}`,
+                      boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 10px 28px rgba(10,46,42,0.05)',
+                    }
+                  : {
+                      background: `linear-gradient(145deg, ${BRAND.darkGreen} 0%, #0d3830 60%, #0f443a 100%)`,
+                      color: 'white',
+                      boxShadow: '0 1px 2px rgba(10,46,42,0.2), 0 12px 32px rgba(10,46,42,0.25), 0 32px 64px rgba(10,46,42,0.15)',
+                    }
                 }
               >
+                {!c.muted && (
+                  <div
+                    aria-hidden
+                    className="absolute rounded-full blur-3xl pointer-events-none"
+                    style={{ width: 220, height: 220, top: -80, right: -60, background: 'radial-gradient(circle, rgba(10,243,205,0.28) 0%, transparent 70%)' }}
+                  />
+                )}
+                <div className="relative">
                 <p
                   className="font-black mb-2 leading-none"
                   style={{ fontSize: '2.5rem', color: c.muted ? BRAND.greyLight : BRAND.teal }}
@@ -371,18 +411,19 @@ export default function ProgrammesPage() {
                 <p className="text-sm" style={{ color: c.muted ? BRAND.grey : 'rgba(185,248,221,0.8)', lineHeight: 1.6 }}>
                   {c.desc}
                 </p>
+                </div>
               </div>
             ))}
           </div>
 
           <p className="text-sm text-center mt-8 max-w-xl mx-auto" style={{ color: BRAND.greyLight }}>
-            MQ is grounded in evidence-based research from neuroscience, behavioural psychology, and adult learning —
-            so that change isn&apos;t just intellectual. It&apos;s real and lasting.
+            MQ is grounded in evidence-based research from neuroscience, behavioural psychology, and adult learning.
+            So that change isn&apos;t just intellectual. It&apos;s real and lasting.
           </p>
         </div>
       </section>
 
-      {/* ── THE ACCELERATOR — THREE PHASES ─────────────────────────────────── */}
+      {/* ── THE ACCELERATOR: THREE PHASES ─────────────────────────────────── */}
       <section className="py-20 sm:py-28 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
@@ -397,7 +438,7 @@ export default function ProgrammesPage() {
             </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
               A three-part journey rooted in the compounding power of mindset, relationships and culture.
-              A redesign of how your managers think, behave and lead — from the inside out.
+              A redesign of how your managers think, behave and lead, from the inside out.
             </p>
           </div>
 
@@ -407,46 +448,81 @@ export default function ProgrammesPage() {
                 phase: 'Phase 1',
                 title: 'IGNITE',
                 subtitle: 'Leading yourself',
-                summary: 'Mindset — where the making of a manager begins.',
+                summary: 'Mindset. Where the making of a manager begins.',
                 body: 'We help your managers shift from individual contributor to manager, and build the clarity and confidence to lead themselves before they lead others.',
-                icon: '🔥',
+                icon: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                  </svg>
+                ),
               },
               {
                 phase: 'Phase 2',
                 title: 'CONNECT',
                 subtitle: 'Leading one-to-one',
-                summary: 'Relationships — how managers unlock potential in others.',
+                summary: 'Relationships. How managers unlock potential in others.',
                 body: 'We strengthen how your managers connect, coach and build trust. The result: developing talent, fostering ownership, accelerating performance.',
-                icon: '🤝',
+                icon: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="9" cy="12" r="5"/>
+                    <circle cx="15" cy="12" r="5"/>
+                  </svg>
+                ),
               },
               {
                 phase: 'Phase 3',
                 title: 'AMPLIFY',
                 subtitle: 'Leading the collective',
-                summary: 'Culture — where managers scale and multiply their impact.',
+                summary: 'Culture. Where managers scale and multiply their impact.',
                 body: 'We equip your managers to embed the team norms and rituals that build psychological safety, cohesion, and turn your values into visible everyday behaviours.',
-                icon: '✨',
+                icon: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/>
+                    <path d="M6.5 12a5.5 5.5 0 0 1 11 0"/>
+                    <path d="M3 12a9 9 0 0 1 18 0"/>
+                  </svg>
+                ),
               },
             ].map((p, i) => (
               <div
                 key={i}
                 className="rounded-2xl p-7 relative overflow-hidden"
-                style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}`, boxShadow: '0 2px 20px rgba(10,46,42,0.05)' }}
+                style={{
+                  background: `linear-gradient(160deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                  border: `1px solid ${BRAND.tealSoft}`,
+                  boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 12px 32px rgba(10,46,42,0.07), 0 32px 64px rgba(10,46,42,0.04)',
+                }}
               >
-                <div className="flex items-start justify-between mb-5">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: BRAND.greyLight }}>
-                      {p.phase}
-                    </p>
-                    <p className="text-2xl font-black mt-1" style={{ color: BRAND.darkGreen }}>{p.title}</p>
-                    <p className="text-xs font-semibold" style={{ color: BRAND.inkSoft }}>{p.subtitle}</p>
+                <div
+                  aria-hidden
+                  className="absolute rounded-full blur-3xl opacity-30 pointer-events-none"
+                  style={{ width: 200, height: 200, top: -80, right: -60, background: `radial-gradient(circle, ${BRAND.teal} 0%, transparent 70%)` }}
+                />
+                <div className="relative">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: BRAND.greyLight }}>
+                        {p.phase}
+                      </p>
+                      <p className="text-2xl font-black mt-1" style={{ color: BRAND.darkGreen }}>{p.title}</p>
+                      <p className="text-xs font-semibold" style={{ color: BRAND.inkSoft }}>{p.subtitle}</p>
+                    </div>
+                    <div
+                      className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{
+                        background: `linear-gradient(145deg, ${BRAND.darkGreen} 0%, #0d3830 100%)`,
+                        color: BRAND.teal,
+                        boxShadow: '0 6px 20px rgba(10,46,42,0.2), inset 0 1px 0 rgba(10,243,205,0.15)',
+                      }}
+                    >
+                      {p.icon}
+                    </div>
                   </div>
-                  <span className="text-3xl" aria-hidden>{p.icon}</span>
+                  <p className="text-sm font-semibold mb-2.5" style={{ color: BRAND.ink, lineHeight: 1.5 }}>
+                    {p.summary}
+                  </p>
+                  <p className="text-sm" style={{ color: BRAND.grey, lineHeight: 1.65 }}>{p.body}</p>
                 </div>
-                <p className="text-sm font-semibold mb-2.5" style={{ color: BRAND.ink, lineHeight: 1.5 }}>
-                  {p.summary}
-                </p>
-                <p className="text-sm" style={{ color: BRAND.grey, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -477,7 +553,20 @@ export default function ProgrammesPage() {
 
           <div className="grid lg:grid-cols-[1fr_1fr] gap-6">
             {/* Programme inclusions */}
-            <div className="rounded-2xl p-8" style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}` }}>
+            <div
+              className="rounded-2xl p-8 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(160deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                border: `1px solid ${BRAND.tealSoft}`,
+                boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 12px 32px rgba(10,46,42,0.06), 0 32px 64px rgba(10,46,42,0.04)',
+              }}
+            >
+              <div
+                aria-hidden
+                className="absolute rounded-full blur-3xl opacity-25 pointer-events-none"
+                style={{ width: 260, height: 260, top: -100, right: -80, background: `radial-gradient(circle, ${BRAND.teal} 0%, transparent 70%)` }}
+              />
+              <div className="relative">
               <p className="text-xs font-bold uppercase tracking-[0.15em] mb-4" style={{ color: BRAND.inkSoft }}>
                 What&apos;s included
               </p>
@@ -491,7 +580,7 @@ export default function ProgrammesPage() {
                   'Three × 1-hour one-to-one coaching sessions per delegate',
                   'Final 2-hour workshop (including your leadership team)',
                   'Action learning sets so your managers keep developing each other',
-                  'The MQ app — diagnostic, daily coaching, practice tools',
+                  'The MQ app: diagnostic, daily coaching, practice tools',
                   'Customised Impact Dashboard tracking measurable ROI',
                   '360 feedback & psychometrics (optional)',
                 ].map((item, i) => (
@@ -508,10 +597,24 @@ export default function ProgrammesPage() {
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
 
             {/* The process */}
-            <div className="rounded-2xl p-8" style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}` }}>
+            <div
+              className="rounded-2xl p-8 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(160deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                border: `1px solid ${BRAND.tealSoft}`,
+                boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 12px 32px rgba(10,46,42,0.06), 0 32px 64px rgba(10,46,42,0.04)',
+              }}
+            >
+              <div
+                aria-hidden
+                className="absolute rounded-full blur-3xl opacity-25 pointer-events-none"
+                style={{ width: 260, height: 260, bottom: -100, left: -80, background: `radial-gradient(circle, ${BRAND.teal} 0%, transparent 70%)` }}
+              />
+              <div className="relative">
               <p className="text-xs font-bold uppercase tracking-[0.15em] mb-4" style={{ color: BRAND.inkSoft }}>
                 Our process
               </p>
@@ -523,23 +626,27 @@ export default function ProgrammesPage() {
                   {
                     n: '01',
                     title: 'Co-creation',
-                    body: 'We start by deeply understanding your business, culture and goals — context is everything. The programme is shaped around your priorities and people.',
+                    body: 'We start by deeply understanding your business, culture and goals. Context is everything. The programme is shaped around your priorities and people.',
                   },
                   {
                     n: '02',
                     title: 'Delivery',
-                    body: 'A hybrid programme — dynamic workshops, 1:1 coaching and action learning. Coaching-led, always anchored in real challenges from the role.',
+                    body: 'A hybrid programme: dynamic workshops, 1:1 coaching and action learning. Coaching-led, always anchored in real challenges from the role.',
                   },
                   {
                     n: '03',
                     title: 'Evaluation',
-                    body: 'We measure what matters — real change, not attendance or satisfaction. Comprehensive pre/post data demonstrates ROI across people and business metrics.',
+                    body: 'We measure what matters: real change, not attendance or satisfaction. Comprehensive pre/post data demonstrates ROI across people and business metrics.',
                   },
                 ].map((p, i) => (
                   <div key={i} className="flex gap-4">
                     <div
-                      className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black"
-                      style={{ backgroundColor: BRAND.darkGreen, color: BRAND.teal }}
+                      className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-sm font-black"
+                      style={{
+                        background: `linear-gradient(145deg, ${BRAND.darkGreen} 0%, #0d3830 100%)`,
+                        color: BRAND.teal,
+                        boxShadow: '0 6px 20px rgba(10,46,42,0.2), inset 0 1px 0 rgba(10,243,205,0.15)',
+                      }}
                     >
                       {p.n}
                     </div>
@@ -550,12 +657,13 @@ export default function ProgrammesPage() {
                   </div>
                 ))}
               </div>
+              </div>
             </div>
           </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm font-semibold" style={{ color: BRAND.inkSoft }}>
-              Programme length flexes to your needs — 8–12 weeks on average.
+              Programme length flexes to your needs. 3 to 6 months on average.
             </p>
           </div>
         </div>
@@ -637,7 +745,7 @@ export default function ProgrammesPage() {
             </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: 'rgba(185,248,221,0.8)', lineHeight: 1.7 }}>
               The app is not the product. The programme is. But the app is how we extend coaching into the 99% of the
-              time we&apos;re not in the room with your managers — and how we measure whether the programme actually
+              time we&apos;re not in the room with your managers, and how we measure whether the programme actually
               moved the needle.
             </p>
           </div>
@@ -665,34 +773,69 @@ export default function ProgrammesPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
             {[
               {
-                icon: '🧭',
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                  </svg>
+                ),
                 title: 'Self-awareness',
                 body: 'A diagnostic that gives every manager a personal MQ score across seven dimensions. Focus on real weaknesses, not a generic curriculum.',
               },
               {
-                icon: '🎯',
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/>
+                  </svg>
+                ),
                 title: 'Tailoring',
                 body: 'Data-driven insight lets us personalise workshops and coaching beyond what people self-report. We bring evidence, not assumptions.',
               },
               {
-                icon: '📈',
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                    <polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                ),
                 title: 'Progress tracking',
                 body: 'Measurement over time for the individual, the cohort, and the business. Finally, proof the programme moved the numbers.',
               },
               {
-                icon: '💬',
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                  </svg>
+                ),
                 title: 'Embedding',
                 body: 'Daily Spark, Coaching Room, Mindset Gym, Culture Lab, and 24 skill guides extend the programme well past session day.',
               },
             ].map((p, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-6"
-                style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: `1px solid rgba(10,243,205,0.15)`, backdropFilter: 'blur(10px)' }}
+                className="rounded-2xl p-6 relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(10,243,205,0.04) 100%)',
+                  border: `1px solid rgba(10,243,205,0.18)`,
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04)',
+                }}
               >
-                <div className="text-2xl mb-3" aria-hidden>{p.icon}</div>
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                  style={{
+                    background: 'linear-gradient(145deg, rgba(10,243,205,0.22) 0%, rgba(10,243,205,0.06) 100%)',
+                    border: '1px solid rgba(10,243,205,0.3)',
+                    color: BRAND.teal,
+                    boxShadow: '0 6px 20px rgba(10,243,205,0.12), inset 0 1px 0 rgba(10,243,205,0.18)',
+                  }}
+                >
+                  {p.icon}
+                </div>
                 <p className="text-sm font-bold text-white mb-2">{p.title}</p>
-                <p className="text-xs" style={{ color: 'rgba(185,248,221,0.7)', lineHeight: 1.65 }}>{p.body}</p>
+                <p className="text-xs" style={{ color: 'rgba(185,248,221,0.75)', lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -728,10 +871,10 @@ export default function ProgrammesPage() {
               className="font-black tracking-tight mb-5"
               style={{ fontSize: 'clamp(1.875rem, 4vw, 2.75rem)', lineHeight: 1.15, color: BRAND.ink }}
             >
-              Stronger managers.<br />Better businesses.
+              Stronger managers.<br />Happier teams.<br />Better businesses.
             </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
-              We coach managers like Execs — so they start showing up like leaders before they have the title.
+              We coach managers like Execs, so they start showing up like leaders before they have the title.
               Here&apos;s what the research says happens when they do.
             </p>
           </div>
@@ -745,8 +888,12 @@ export default function ProgrammesPage() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-5 text-center"
-                style={{ backgroundColor: BRAND.mint, border: `1px solid ${BRAND.tealSoft}` }}
+                className="rounded-2xl p-5 text-center relative overflow-hidden"
+                style={{
+                  background: `linear-gradient(160deg, ${BRAND.mintPale} 0%, ${BRAND.mint} 60%, ${BRAND.tealSoft} 100%)`,
+                  border: `1px solid ${BRAND.tealSoft}`,
+                  boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 8px 24px rgba(10,46,42,0.06), 0 20px 40px rgba(10,46,42,0.04)',
+                }}
               >
                 <p
                   className="font-black leading-none mb-2"
@@ -803,7 +950,14 @@ export default function ProgrammesPage() {
 
           <div className="grid md:grid-cols-2 gap-5">
             {/* Maria */}
-            <div className="rounded-2xl p-7" style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}` }}>
+            <div
+              className="rounded-2xl p-7 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(160deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                border: `1px solid ${BRAND.tealSoft}`,
+                boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 12px 32px rgba(10,46,42,0.06), 0 32px 64px rgba(10,46,42,0.04)',
+              }}
+            >
               <p className="text-xl font-black mb-1" style={{ color: BRAND.ink }}>Maria Orphanides</p>
               <p className="text-xs font-bold uppercase tracking-[0.15em] mb-4" style={{ color: BRAND.inkSoft }}>
                 Co-founder · People & Talent
@@ -818,7 +972,14 @@ export default function ProgrammesPage() {
             </div>
 
             {/* Richard */}
-            <div className="rounded-2xl p-7" style={{ backgroundColor: 'white', border: `1px solid ${BRAND.tealSoft}` }}>
+            <div
+              className="rounded-2xl p-7 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(160deg, #ffffff 0%, ${BRAND.mintPale} 100%)`,
+                border: `1px solid ${BRAND.tealSoft}`,
+                boxShadow: '0 1px 2px rgba(10,46,42,0.04), 0 12px 32px rgba(10,46,42,0.06), 0 32px 64px rgba(10,46,42,0.04)',
+              }}
+            >
               <p className="text-xl font-black mb-1" style={{ color: BRAND.ink }}>Richard Album</p>
               <p className="text-xs font-bold uppercase tracking-[0.15em] mb-4" style={{ color: BRAND.inkSoft }}>
                 Co-founder · Learning & Coaching
@@ -880,7 +1041,7 @@ export default function ProgrammesPage() {
         style={{
           backgroundColor: BRAND.darkGreen,
           color: 'rgba(185,248,221,0.7)',
-          // Extend footer to absorb the 5rem bottom-margin trick above —
+          // Extend footer to absorb the 5rem bottom-margin trick above,
           // keeps the dark-green section flush to the viewport bottom.
           paddingBottom: 'calc(2.5rem + 5rem)',
         }}
