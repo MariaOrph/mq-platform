@@ -115,9 +115,17 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
     }
   }, [messages, msgLoaded, view])
 
-  // ── Focus input ─────────────────────────────────────────────────────────────
+  // ── Focus input on DESKTOP only. On mobile, auto-focus forces the soft
+  //    keyboard open the moment the user enters the chat — which covers
+  //    half the screen and hides the welcome/prompts. Let mobile users tap
+  //    the input themselves to summon the keyboard when they're ready.
   useEffect(() => {
-    if (view === 'chat') setTimeout(() => inputRef.current?.focus(), 150)
+    if (view !== 'chat') return
+    // Rough mobile detection — pointer: coarse covers phones and tablets.
+    const isTouch = typeof window !== 'undefined' &&
+                    window.matchMedia?.('(pointer: coarse)').matches
+    if (isTouch) return
+    setTimeout(() => inputRef.current?.focus(), 150)
   }, [view])
 
   // ── Hide the bottom nav (and other .hide-when-overlay-open elements) while
@@ -259,7 +267,12 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
       setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: 'Something went wrong. Please try again.' }])
     } finally {
       setLoading(false)
-      setTimeout(() => inputRef.current?.focus(), 50)
+      // Refocus only on desktop. On mobile this would keep forcing the
+      // keyboard open after every send — including when the user sent via
+      // a prompt button and never wanted the keyboard up.
+      const isTouch = typeof window !== 'undefined' &&
+                      window.matchMedia?.('(pointer: coarse)').matches
+      if (!isTouch) setTimeout(() => inputRef.current?.focus(), 50)
     }
   }
 
@@ -608,7 +621,7 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKey}
-                placeholder="Talk to your coach…"
+                placeholder="Start typing or hit mic"
                 rows={1}
                 disabled={loading}
                 className="flex-1 rounded-xl px-4 py-2.5 text-sm outline-none resize-none disabled:opacity-50"
