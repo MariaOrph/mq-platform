@@ -780,6 +780,13 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
     if (view === 'chat') setTimeout(() => inputRef.current?.focus(), 150)
   }, [view])
 
+  // ── Hide the bottom nav while MQ Builder is open (same pattern as
+  //    CoachingRoom — see globals.css .hide-when-overlay-open rule)
+  useEffect(() => {
+    document.body.classList.add('overlay-open')
+    return () => { document.body.classList.remove('overlay-open') }
+  }, [])
+
   // ── Auto-start: send kick-off message on new sessions ───────────────────────
   useEffect(() => {
     if (
@@ -918,13 +925,16 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
   // ────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9' }}>
+    <div
+      className="fixed inset-0 z-50 flex flex-col"
+      style={{ backgroundColor: '#F4FDF9', height: '100dvh' }}
+    >
 
       {/* ── HOME VIEW ───────────────────────────────────────────────────────── */}
       {view === 'home' && (
         <>
           {/* Header */}
-          <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div style={{ backgroundColor: '#0A2E2A', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
@@ -1073,7 +1083,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
       {view === 'overview' && activeDim && (
         <>
           {/* Header */}
-          <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div style={{ backgroundColor: '#0A2E2A', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
               <button onClick={() => setView('home')}
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-80"
@@ -1189,7 +1199,7 @@ export default function MQBuilder({ token, firstName, onClose, dimScores, prevDi
       {view === 'chat' && activeSession && activeDim && (
         <>
           {/* Header */}
-          <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div style={{ backgroundColor: '#0A2E2A', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
               <button onClick={backToHome}
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-80"

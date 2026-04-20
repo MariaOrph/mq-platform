@@ -108,8 +108,9 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30"
+      className="fixed bottom-0 left-0 right-0 z-30 hide-when-overlay-open"
       aria-label="Main navigation"
+      data-bottom-nav="true"
       style={{
         backgroundColor: "rgba(232,253,247,0.88)",
         backdropFilter: "blur(20px)",

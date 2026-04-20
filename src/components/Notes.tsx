@@ -68,6 +68,15 @@ export default function Notes({ token, onClose, mode = 'fullscreen' }: NotesProp
     if (view === 'editor') setTimeout(() => contentRef.current?.focus(), 100)
   }, [view])
 
+  // Hide the bottom nav while Notes is open in fullscreen mode. In panel
+  // mode Notes is layered over another overlay which already sets the class,
+  // but setting it from here is harmless.
+  useEffect(() => {
+    if (mode !== 'fullscreen') return
+    document.body.classList.add('overlay-open')
+    return () => { document.body.classList.remove('overlay-open') }
+  }, [mode])
+
   // ── Auto-save ──────────────────────────────────────────────────────────────
   const save = useCallback(async (note: Note, title: string, content: string) => {
     setSaving(true)
@@ -188,7 +197,7 @@ export default function Notes({ token, onClose, mode = 'fullscreen' }: NotesProp
 
   // Full-screen
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9' }}>
+    <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9', height: '100dvh' }}>
       <NotesInner
         notes={notes} loaded={loaded} view={view}
         activeNote={activeNote} editTitle={editTitle} editContent={editContent}
@@ -236,7 +245,7 @@ function NotesInner({
     return (
       <>
         {/* Header */}
-        <div style={{ backgroundColor: '#0A2E2A', flexShrink: 0 }}>
+        <div style={{ backgroundColor: '#0A2E2A', flexShrink: 0, paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"

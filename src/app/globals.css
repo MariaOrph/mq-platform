@@ -67,6 +67,17 @@ body {
   }
 }
 
+/* ── Overlay helpers ──────────────────────────────────────────────────────── */
+/* When a full-screen overlay (CoachingRoom, MQBuilder, Notes etc.) is open,
+   any element marked with .hide-when-overlay-open is hidden. This avoids
+   z-index/positioning quirks on mobile browsers where the bottom nav would
+   otherwise bleed through an open overlay (especially with the on-screen
+   keyboard up on Android). Overlays toggle `body.overlay-open` on mount. */
+
+body.overlay-open .hide-when-overlay-open {
+  display: none !important;
+}
+
 /* ── Animations ──────────────────────────────────────────────────────────── */
 
 @keyframes fadeIn {

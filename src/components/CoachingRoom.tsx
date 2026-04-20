@@ -120,6 +120,15 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
     if (view === 'chat') setTimeout(() => inputRef.current?.focus(), 150)
   }, [view])
 
+  // ── Hide the bottom nav (and other .hide-when-overlay-open elements) while
+  // the Coaching Room is open. The CoachingRoom covers the viewport at z-50,
+  // but on mobile with the keyboard up this can leak the bottom nav through
+  // due to browser keyboard/fixed-positioning quirks.
+  useEffect(() => {
+    document.body.classList.add('overlay-open')
+    return () => { document.body.classList.remove('overlay-open') }
+  }, [])
+
   // ── Open a session ──────────────────────────────────────────────────────────
   async function openSession(session: Session) {
     setActiveSession(session)
@@ -263,13 +272,26 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
   // ────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ backgroundColor: '#F4FDF9' }}>
+    <div
+      className="fixed inset-0 z-50 flex flex-col"
+      style={{
+        backgroundColor: '#F4FDF9',
+        // Use dynamic viewport height where supported (falls back to 100%)
+        // so the overlay resizes when mobile browser URL bar / keyboard
+        // opens/closes. Prevents content being cut off on Android.
+        height: '100dvh',
+      }}
+    >
 
       {/* ── SESSIONS VIEW ───────────────────────────────────────────────────── */}
       {view === 'sessions' && (
         <>
           {/* Header */}
-          <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div style={{
+            backgroundColor: '#0A2E2A',
+            // Respect iOS safe area (status bar / notch / dynamic island)
+            paddingTop: 'env(safe-area-inset-top, 0px)',
+          }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-base flex-shrink-0"
@@ -418,7 +440,11 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
       {view === 'chat' && activeSession && (
         <>
           {/* Header */}
-          <div style={{ backgroundColor: '#0A2E2A' }}>
+          <div style={{
+            backgroundColor: '#0A2E2A',
+            // Respect iOS safe area (status bar / notch / dynamic island)
+            paddingTop: 'env(safe-area-inset-top, 0px)',
+          }}>
             <div className="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
               <button onClick={backToSessions}
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-80"
