@@ -603,13 +603,15 @@ export default function CoachingRoom({ token, firstName, onClose }: CoachingRoom
 
           {/* Input */}
           <div style={{ backgroundColor: 'white', borderTop: '1px solid #B9F8DD' }}>
-            <div className="max-w-2xl mx-auto px-4 py-3 flex gap-3 items-end">
+            <div className="max-w-2xl mx-auto px-3 sm:px-4 py-3 flex gap-2 sm:gap-3 items-end">
               <button
                 onClick={() => setShowNotes(true)}
-                className="flex items-center gap-1.5 px-3 h-10 rounded-xl flex-shrink-0 hover:opacity-80 transition-opacity text-xs font-semibold"
+                aria-label="Open notes"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 h-10 rounded-xl flex-shrink-0 hover:opacity-80 transition-opacity text-xs font-semibold"
                 style={{ backgroundColor: '#FFFBEB', border: '1px solid #fdcb5e', color: '#0A2E2A' }}
               >
-                📓 Notes
+                📓
+                <span className="hidden sm:inline">Notes</span>
               </button>
               <MicButton
                 onTranscript={t => setInput(prev => prev ? prev + ' ' + t : t)}
