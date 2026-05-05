@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 }
 
 export default function ProgrammesPage() {
-  const bookCallHref = 'https://www.mindsetquo.com/contact'
+  const bookCallHref = '/book-a-call'
 
   return (
     <div
