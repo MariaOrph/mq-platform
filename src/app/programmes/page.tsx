@@ -899,7 +899,7 @@ export default function ProgrammesPage() {
               {
                 file: '1-mindset-gym.png',
                 title: 'Mindset Gym',
-                blurb: 'Personalised coaching on the seven dimensions, focused on each manager\u2019s lowest score first.',
+                blurb: 'Personalised coaching and development on the seven dimensions of MQ.',
               },
               {
                 file: '2-coaching-room.png',
