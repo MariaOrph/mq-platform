@@ -915,7 +915,7 @@ export default function ProgrammesPage() {
                   </svg>
                 ),
                 title: 'Self-awareness',
-                body: 'A diagnostic that gives every manager a personal MQ score across seven dimensions. Focus on real weaknesses, not a generic curriculum.',
+                body: 'A diagnostic and 360 feedback give every manager a personal MQ score across seven dimensions, plus an honest view from the people around them. Focus on real weaknesses, not a generic curriculum.',
               },
               {
                 icon: (
