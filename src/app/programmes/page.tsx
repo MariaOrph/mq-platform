@@ -553,8 +553,8 @@ export default function ProgrammesPage() {
           </div>
 
           <p className="text-sm text-center mt-8 max-w-xl mx-auto" style={{ color: BRAND.greyLight }}>
-            MQ is grounded in evidence-based research from neuroscience, behavioural psychology, and adult learning.
-            So that change is real and lasting.
+            MQ is grounded in evidence-based research from neuroscience, behavioural psychology, and adult learning,
+            so that change is real and lasting.
           </p>
         </div>
       </section>
@@ -712,11 +712,10 @@ export default function ProgrammesPage() {
               <ul className="space-y-3.5">
                 {[
                   'Pre-calls with your leadership team and every delegate',
-                  'Three × 2-hour group coaching workshops',
+                  'Three × 3-hour group coaching workshops',
                   'Three × 1-hour one-to-one coaching sessions per delegate',
-                  'Final 2-hour workshop (including your leadership team)',
                   'Action learning sets so your managers keep developing each other',
-                  'The MQ app: diagnostic, daily coaching, practice tools',
+                  'The MQ app: diagnostic, daily coaching, practice tools, and skill guides',
                   'Customised Impact Dashboard tracking measurable ROI',
                   '360 feedback & psychometrics (optional)',
                 ].map((item, i) => (
@@ -772,7 +771,7 @@ export default function ProgrammesPage() {
                   {
                     n: '03',
                     title: 'Evaluation',
-                    body: 'We measure what matters: real change, not attendance or satisfaction. Comprehensive pre/post data demonstrates ROI across people and business metrics.',
+                    body: 'We measure what matters: real change, not attendance or satisfaction. Comprehensive pre/post data demonstrates ROI across your people and your business.',
                   },
                 ].map((p, i) => (
                   <div key={i} className="flex gap-4">
