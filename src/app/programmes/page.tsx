@@ -893,37 +893,70 @@ export default function ProgrammesPage() {
             </p>
           </div>
 
-          {/* App screenshots — real images load from /public/screenshots/ */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto mb-14">
+          {/* App screenshots — 2x2 grid, larger phones, with titles + one-line descriptions */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-14 max-w-4xl mx-auto mb-14">
             {[
-              { n: 1, file: '1-mindset-gym.png',   label: 'Mindset Gym' },
-              { n: 2, file: '2-coaching-room.png', label: 'MQ Coach' },
-              { n: 3, file: '3-skill-guides.png',  label: 'Skill Guides' },
-              { n: 4, file: '4-culture-lab.png',   label: 'Culture Lab' },
+              {
+                file: '1-mindset-gym.png',
+                title: 'Mindset Gym',
+                blurb: 'Personalised coaching on the seven dimensions, focused on each manager\u2019s lowest score first.',
+              },
+              {
+                file: '2-coaching-room.png',
+                title: 'MQ Coach',
+                blurb: 'On-demand AI coach for the difficult conversations, decisions, and stuck moments between sessions.',
+              },
+              {
+                file: '3-skill-guides.png',
+                title: 'Skill Guides',
+                blurb: '25 practical one-pagers on coaching, feedback, accountability, and the skills that move the needle.',
+              },
+              {
+                file: '4-culture-lab.png',
+                title: 'Culture Lab',
+                blurb: 'Coach your company values and behaviours into how managers actually lead day to day.',
+              },
             ].map((s) => (
-              <div
-                key={s.n}
-                className="relative rounded-[2.25rem] overflow-hidden mx-auto w-full max-w-[200px]"
-                style={{
-                  aspectRatio: '9/19',
-                  backgroundColor: 'rgba(10,46,42,0.6)',
-                  border: `8px solid rgba(10,46,42,0.85)`,
-                  boxShadow: '0 20px 50px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(10,243,205,0.15)',
-                }}
-              >
-                {/* Real screenshot — falls back to label below if file is missing */}
-                <AppScreenshot
-                  src={`/screenshots/${s.file}`}
-                  alt={`MQ app — ${s.label}`}
-                  className="absolute inset-0 w-full h-full object-cover z-10"
-                />
-                {/* Fallback label — shown only if the screenshot is missing */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: BRAND.teal }}>
-                    {s.label}
-                  </p>
-                  <p className="text-[11px]" style={{ color: 'rgba(185,248,221,0.55)', lineHeight: 1.5 }}>
-                    Image coming soon
+              <div key={s.file} className="flex flex-col items-center text-center">
+                {/* Phone frame */}
+                <div
+                  className="relative rounded-[2rem] overflow-hidden w-full max-w-[280px]"
+                  style={{
+                    aspectRatio: '945 / 1898',
+                    backgroundColor: 'rgba(10,46,42,0.6)',
+                    border: `6px solid rgba(10,46,42,0.85)`,
+                    boxShadow: '0 24px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(10,243,205,0.15)',
+                  }}
+                >
+                  {/* Real screenshot — hides itself if file is missing, fallback shows behind */}
+                  <AppScreenshot
+                    src={`/screenshots/${s.file}`}
+                    alt={`MQ app — ${s.title}`}
+                    className="absolute inset-0 w-full h-full object-cover z-10"
+                  />
+                  {/* Fallback label — only visible if image is missing */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: BRAND.teal }}>
+                      {s.title}
+                    </p>
+                    <p className="text-[11px]" style={{ color: 'rgba(185,248,221,0.55)', lineHeight: 1.5 }}>
+                      Image coming soon
+                    </p>
+                  </div>
+                </div>
+
+                {/* Caption: title + blurb */}
+                <div className="mt-6 max-w-[320px]">
+                  <h3
+                    className="font-black mb-2"
+                    style={{ color: BRAND.cream, fontSize: '1.25rem', letterSpacing: '-0.01em' }}
+                  >
+                    {s.title}
+                  </h3>
+                  <p
+                    style={{ color: 'rgba(185,248,221,0.75)', fontSize: '0.9375rem', lineHeight: 1.55 }}
+                  >
+                    {s.blurb}
                   </p>
                 </div>
               </div>
