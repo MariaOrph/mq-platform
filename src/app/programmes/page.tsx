@@ -509,7 +509,7 @@ export default function ProgrammesPage() {
             {[
               { code: 'IQ', label: 'Cognitive intelligence', desc: 'How we process, reason, and solve.', muted: true },
               { code: 'EQ', label: 'Emotional intelligence', desc: 'How we read and relate to others.', muted: true },
-              { code: 'MQ', label: 'Mindset intelligence', desc: 'How we observe, regulate, and reframe the cognitive architecture that drives our behaviour.', muted: false },
+              { code: 'MQ', label: 'Mindset intelligence', desc: 'How we observe and reframe the thinking that drives our behaviour.', muted: false },
             ].map((c, i) => (
               <div
                 key={i}
