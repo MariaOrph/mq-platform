@@ -887,11 +887,11 @@ export default function ProgrammesPage() {
           </div>
 
           {/* App screenshot placeholders — phone format, swap in real images later */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto mb-14">
-            {[1, 2, 3].map((n) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto mb-14">
+            {[1, 2, 3, 4].map((n) => (
               <div
                 key={n}
-                className="relative rounded-[2.25rem] overflow-hidden mx-auto w-full max-w-[220px]"
+                className="relative rounded-[2.25rem] overflow-hidden mx-auto w-full max-w-[200px]"
                 style={{
                   aspectRatio: '9/19',
                   backgroundColor: 'rgba(10,46,42,0.6)',
