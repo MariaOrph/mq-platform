@@ -67,6 +67,15 @@ export default function BookingForm() {
     name: '', email: '', company: '', jobRole: '', phone: '', topic: '',
   })
 
+  // When a slot is picked, scroll back to the top so the booking form is
+  // obviously visible (the slot picker is hidden in this state).
+  function pickSlot(iso: string) {
+    setSelectedSlot(iso)
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  }
+
   useEffect(() => {
     let cancelled = false
     fetch('/api/bookings/availability')
@@ -209,7 +218,8 @@ export default function BookingForm() {
   // ── Picker + form ──────────────────────────────────────────────────────────
   return (
     <div className="space-y-8">
-      {/* Slot picker */}
+      {/* Slot picker — hidden once a slot is chosen */}
+      {!selectedSlot && (
       <div
         className="rounded-2xl p-6 lg:p-8"
         style={{ backgroundColor: '#fff', border: `1px solid ${BRAND.border}` }}
@@ -234,7 +244,7 @@ export default function BookingForm() {
                     <button
                       key={iso}
                       type="button"
-                      onClick={() => setSelectedSlot(iso)}
+                      onClick={() => pickSlot(iso)}
                       className="px-4 py-2 rounded-full text-sm font-medium transition"
                       style={{
                         backgroundColor: isSelected ? BRAND.darkGreen : BRAND.mint,
@@ -251,12 +261,14 @@ export default function BookingForm() {
           ))}
         </div>
       </div>
+      )}
 
       {/* Form (only visible once a slot is picked) */}
       {selectedSlot && (
         <form
+          id="booking-form"
           onSubmit={handleSubmit}
-          className="rounded-2xl p-6 lg:p-8 space-y-5"
+          className="rounded-2xl p-6 lg:p-8 space-y-5 scroll-mt-24"
           style={{ backgroundColor: '#fff', border: `1px solid ${BRAND.border}` }}
         >
           <div>

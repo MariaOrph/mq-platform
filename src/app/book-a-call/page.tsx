@@ -59,7 +59,7 @@ export default function BookCallPage() {
           Book a discovery call
         </h1>
         <p className="text-base lg:text-lg" style={{ color: BRAND.grey, lineHeight: 1.6 }}>
-          A no-pressure 30 minutes with Maria or Richard. Tell us what you're working on, and we'll show you whether the Manager Mindset Accelerator fits.
+          A no-pressure 30 minutes with Maria or Richard. Talk to us about your current situation, and we'll explore how our programmes can help you, and show you how the MQ app works.
         </p>
       </section>
 

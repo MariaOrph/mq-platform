@@ -13,6 +13,8 @@ export const SLOT_TIMES: Array<{ hour: number; minute: number }> = [
   { hour: 10, minute: 30 },
   { hour: 11, minute: 0 },
   { hour: 11, minute: 30 },
+  { hour: 12, minute: 0 },
+  { hour: 12, minute: 30 },
 ]
 
 /** How many Fridays ahead we offer. */
