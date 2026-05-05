@@ -914,7 +914,7 @@ export default function ProgrammesPage() {
               {
                 file: '4-culture-lab.png',
                 title: 'Culture Lab',
-                blurb: 'Measure and develop the behaviours that put your company values into action, day to day.',
+                blurb: 'Measure and develop the behaviours that put your company values into action.',
               },
             ].map((s) => (
               <div key={s.file} className="flex flex-col items-center text-center">
