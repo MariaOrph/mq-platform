@@ -909,7 +909,7 @@ export default function ProgrammesPage() {
               {
                 file: '3-skill-guides.png',
                 title: 'Skill Guides',
-                blurb: '25 practical one-pagers on coaching, feedback, accountability, and the skills that move the needle.',
+                blurb: '25 practical one-pagers on the skills that build manager and leadership effectiveness.',
               },
               {
                 file: '4-culture-lab.png',
