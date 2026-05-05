@@ -1197,7 +1197,7 @@ export default function ProgrammesPage() {
               M<span style={{ color: BRAND.teal }}>Q</span>
             </div>
             <p className="text-xs">
-              Mindset Quotient<sup className="text-[8px]">®</sup> · The Manager Mindset Accelerator
+              Mindset Quotient<sup className="text-[8px]">®</sup>
             </p>
           </div>
           <div className="flex items-center gap-6 text-xs">
