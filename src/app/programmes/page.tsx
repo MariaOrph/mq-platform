@@ -904,7 +904,7 @@ export default function ProgrammesPage() {
               {
                 file: '2-coaching-room.png',
                 title: 'MQ Coach',
-                blurb: 'On-demand AI coach for the difficult conversations, decisions, and stuck moments between sessions.',
+                blurb: 'On-demand AI coach for the difficult conversations and decisions between sessions.',
               },
               {
                 file: '3-skill-guides.png',
