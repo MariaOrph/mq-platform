@@ -837,7 +837,7 @@ export default function ProgrammesPage() {
               { trad: 'Classroom-style teaching', mq: 'Dynamic, interactive, coaching-led sessions' },
               { trad: 'Skills-first', mq: 'Mindset-first. Skills are built on top.' },
               { trad: 'Generic content for everyone', mq: 'Personalised at company and individual level' },
-              { trad: 'Silence on culture', mq: 'Values and behaviours coached and embedded' },
+              { trad: 'Overlooking culture', mq: 'Your company values and behaviours coached and embedded' },
               { trad: 'Trainers who teach theory', mq: 'Practitioners who\'ve done the role' },
             ].map((row, i) => (
               <div key={i} className="grid grid-cols-2" style={{ borderTop: `1px solid ${BRAND.tealSoft}` }}>
