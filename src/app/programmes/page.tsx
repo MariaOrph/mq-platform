@@ -97,14 +97,6 @@ export default function ProgrammesPage() {
           <div className="grid lg:grid-cols-[1.15fr_1fr] gap-12 items-center">
             {/* Left: copy */}
             <div>
-              <p
-                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] px-3 py-1.5 rounded-full mb-7"
-                style={{ backgroundColor: 'rgba(10,243,205,0.12)', color: BRAND.teal, border: `1px solid rgba(10,243,205,0.25)` }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND.teal }} />
-                The Manager Mindset Accelerator
-              </p>
-
               <h1
                 className="font-black tracking-tight mb-6 text-white"
                 style={{ fontSize: 'clamp(2.25rem, 5.2vw, 4rem)', lineHeight: 1.05 }}
@@ -114,7 +106,7 @@ export default function ProgrammesPage() {
               </h1>
 
               <p className="text-base sm:text-lg mb-9 max-w-xl" style={{ color: 'rgba(185,248,221,0.85)', lineHeight: 1.65 }}>
-                A coaching-led development programme for first-time and emerging managers.
+                A coaching-led development programme for first-time and emerging managers and leaders.
                 Built on mindset, measured with data, and enhanced by the MQ app so growth continues long after the workshop ends.
               </p>
 
@@ -403,9 +395,9 @@ export default function ProgrammesPage() {
           {/* Stat cards */}
           <div className="grid md:grid-cols-3 gap-4 mb-14">
             {[
-              { stat: '82%', label: 'of UK managers are "accidental". No formal development.' },
+              { stat: '82%', label: 'of UK managers are "accidental". No formal development. (CMI)' },
               { stat: '70%', label: 'of variance in team engagement is determined by the manager. (Gallup)' },
-              { stat: '80%', label: 'of people stay in a job because they have a manager they trust.' },
+              { stat: '57%', label: 'of employees have quit a job because of their boss. (DDI)' },
             ].map((s, i) => (
               <div
                 key={i}
@@ -493,11 +485,15 @@ export default function ProgrammesPage() {
             >
               The next evolution beyond IQ and EQ.
             </h2>
-            <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
+            <p className="text-base sm:text-lg max-w-2xl mx-auto mb-5" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
               Mindset Quotient<sup className="text-xs">®</sup> measures our capacity to observe, regulate, and reframe the
               thought patterns, beliefs and inner scripts that drive our behaviour. It&apos;s the intelligence of
               self-direction. When you learn to master it, you amplify your capacity to lead, and create the conditions
               for others to do the same.
+            </p>
+            <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
+              The importance of mindset is often overlooked. Without addressing it first, behaviour won&apos;t change,
+              skills won&apos;t be applied effectively, training won&apos;t stick, and little changes in practice.
             </p>
           </div>
 
