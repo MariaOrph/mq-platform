@@ -97,6 +97,14 @@ export default function ProgrammesPage() {
           <div className="grid lg:grid-cols-[1.15fr_1fr] gap-12 items-center">
             {/* Left: copy */}
             <div>
+              <p
+                className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] px-3 py-1.5 rounded-full mb-7"
+                style={{ backgroundColor: 'rgba(10,243,205,0.12)', color: BRAND.teal, border: `1px solid rgba(10,243,205,0.25)` }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND.teal }} />
+                The next evolution beyond IQ and EQ
+              </p>
+
               <h1
                 className="font-black tracking-tight mb-6 text-white"
                 style={{ fontSize: 'clamp(2.25rem, 5.2vw, 4rem)', lineHeight: 1.05 }}
@@ -546,7 +554,7 @@ export default function ProgrammesPage() {
 
           <p className="text-sm text-center mt-8 max-w-xl mx-auto" style={{ color: BRAND.greyLight }}>
             MQ is grounded in evidence-based research from neuroscience, behavioural psychology, and adult learning.
-            So that change isn&apos;t just intellectual. It&apos;s real and lasting.
+            So that change is real and lasting.
           </p>
         </div>
       </section>
