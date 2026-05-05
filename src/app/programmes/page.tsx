@@ -914,7 +914,7 @@ export default function ProgrammesPage() {
               {
                 file: '4-culture-lab.png',
                 title: 'Culture Lab',
-                blurb: 'Coach your company values into how managers actually lead, and measure their values in action over time so you can see the impact on culture.',
+                blurb: 'Measure and develop the behaviours that put your company values into action, so culture shows up in how your managers actually lead.',
               },
             ].map((s) => (
               <div key={s.file} className="flex flex-col items-center text-center">
@@ -995,7 +995,7 @@ export default function ProgrammesPage() {
                   </svg>
                 ),
                 title: 'Progress tracking',
-                body: 'Measurement over time for the individual, the cohort, and the business — including how managers are living your company values in practice. Finally, proof the programme is moving the needle.',
+                body: 'Measurement over time for the individual, the cohort, and the business — including the behaviours that put your company values into action. Finally, proof the programme is moving the needle.',
               },
               {
                 icon: (
