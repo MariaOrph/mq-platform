@@ -1085,7 +1085,7 @@ export default function ProgrammesPage() {
               },
               {
                 eyebrow: 'For the manager',
-                body:    'The capacity to drive performance and hold the hard conversations, without burning out.',
+                body:    'The confidence and capacity to manage and hold hard conversations.',
               },
             ].map((c, i) => (
               <div
