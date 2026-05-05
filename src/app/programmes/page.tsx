@@ -945,7 +945,7 @@ export default function ProgrammesPage() {
                   </svg>
                 ),
                 title: 'Embedding',
-                body: 'Daily Spark, Coaching Room, Mindset Gym, Culture Lab, and 24 skill guides extend the programme well past session day.',
+                body: 'Daily Challenges, AI-powered Coaching Room, Mindset Gym, Culture Lab, and more than 20 skill guides extend the programme well past session day.',
               },
             ].map((p, i) => (
               <div
@@ -981,7 +981,7 @@ export default function ProgrammesPage() {
               What&apos;s in the app
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              {['MQ Diagnostic', 'Daily Spark', 'Coaching Room', 'Mindset Gym', 'Culture Lab', '24 Skill Guides', '360 Feedback', 'Impact Dashboard'].map((f, i) => (
+              {['MQ Diagnostic', 'Daily Challenges', 'AI-powered Coaching Room', 'Mindset Gym', 'Culture Lab', '20+ Skill Guides', '360 Feedback', 'Impact Dashboard'].map((f, i) => (
                 <span
                   key={i}
                   className="text-xs font-semibold px-3.5 py-1.5 rounded-full"
