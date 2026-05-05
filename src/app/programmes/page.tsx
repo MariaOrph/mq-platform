@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import AppScreenshot from './AppScreenshot'
 
 // ── Brand tokens (mirror the app) ──────────────────────────────────────────────
 const BRAND = {
@@ -176,12 +177,18 @@ export default function ProgrammesPage() {
                   }}
                 >
                   <div className="relative w-full h-full" style={{ backgroundColor: BRAND.mintPale }}>
+                    {/* Real app screenshot — falls back to mockup below if file is missing */}
+                    <AppScreenshot
+                      src="/screenshots/home.png"
+                      alt="MQ app home screen showing MQ Score and 7 dimensions"
+                      className="absolute inset-0 w-full h-full object-cover z-20"
+                    />
+                    {/* Fallback dashboard preview — shown if /screenshots/home.png is missing */}
                     {/* Notch */}
                     <div
                       className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 rounded-full z-10"
                       style={{ backgroundColor: '#0a0a0a' }}
                     />
-                    {/* App mock: dashboard preview */}
                     <div className="pt-9 h-full flex flex-col">
                       {/* App header */}
                       <div className="px-4 flex items-center justify-between mb-2.5">
@@ -886,11 +893,16 @@ export default function ProgrammesPage() {
             </p>
           </div>
 
-          {/* App screenshot placeholders — phone format, swap in real images later */}
+          {/* App screenshots — real images load from /public/screenshots/ */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto mb-14">
-            {[1, 2, 3, 4].map((n) => (
+            {[
+              { n: 1, file: '1-mindset-gym.png',   label: 'Mindset Gym' },
+              { n: 2, file: '2-coaching-room.png', label: 'MQ Coach' },
+              { n: 3, file: '3-skill-guides.png',  label: 'Skill Guides' },
+              { n: 4, file: '4-culture-lab.png',   label: 'Culture Lab' },
+            ].map((s) => (
               <div
-                key={n}
+                key={s.n}
                 className="relative rounded-[2.25rem] overflow-hidden mx-auto w-full max-w-[200px]"
                 style={{
                   aspectRatio: '9/19',
@@ -899,9 +911,16 @@ export default function ProgrammesPage() {
                   boxShadow: '0 20px 50px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(10,243,205,0.15)',
                 }}
               >
+                {/* Real screenshot — falls back to label below if file is missing */}
+                <AppScreenshot
+                  src={`/screenshots/${s.file}`}
+                  alt={`MQ app — ${s.label}`}
+                  className="absolute inset-0 w-full h-full object-cover z-10"
+                />
+                {/* Fallback label — shown only if the screenshot is missing */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
                   <p className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: BRAND.teal }}>
-                    Screenshot {n}
+                    {s.label}
                   </p>
                   <p className="text-[11px]" style={{ color: 'rgba(185,248,221,0.55)', lineHeight: 1.5 }}>
                     Image coming soon
