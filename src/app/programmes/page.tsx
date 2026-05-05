@@ -1073,16 +1073,24 @@ export default function ProgrammesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-4">
             {[
-              { n: '69%', l: 'increased engagement' },
-              { n: '66%', l: 'increased commitment' },
-              { n: '73%', l: 'enhanced leadership development' },
-              { n: '85%', l: 'outperform peers in resilience and agility' },
-            ].map((s, i) => (
+              {
+                eyebrow: 'For your business',
+                body:    'Higher team performance, stronger engagement, and retention of the people you can\u2019t afford to lose.',
+              },
+              {
+                eyebrow: 'For their teams',
+                body:    'Clearer expectations, more trust, and the conditions to do the best work of their careers.',
+              },
+              {
+                eyebrow: 'For the manager',
+                body:    'The capacity to drive performance and hold the hard conversations, without burning out.',
+              },
+            ].map((c, i) => (
               <div
                 key={i}
-                className="rounded-2xl p-5 text-center relative overflow-hidden"
+                className="rounded-2xl p-7 relative overflow-hidden"
                 style={{
                   background: `linear-gradient(160deg, ${BRAND.mintPale} 0%, ${BRAND.mint} 60%, ${BRAND.tealSoft} 100%)`,
                   border: `1px solid ${BRAND.tealSoft}`,
@@ -1090,19 +1098,20 @@ export default function ProgrammesPage() {
                 }}
               >
                 <p
-                  className="font-black leading-none mb-2"
-                  style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: BRAND.darkGreen }}
+                  className="text-xs font-bold uppercase tracking-[0.18em] mb-3"
+                  style={{ color: BRAND.darkGreen }}
                 >
-                  {s.n}
+                  {c.eyebrow}
                 </p>
-                <p className="text-xs" style={{ color: BRAND.grey, lineHeight: 1.5 }}>{s.l}</p>
+                <p
+                  className="font-semibold"
+                  style={{ color: BRAND.ink, fontSize: '1.0625rem', lineHeight: 1.55 }}
+                >
+                  {c.body}
+                </p>
               </div>
             ))}
           </div>
-
-          <p className="text-xs text-center" style={{ color: BRAND.greyLight }}>
-            Research across coached manager cohorts.
-          </p>
         </div>
       </section>
 
