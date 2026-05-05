@@ -886,23 +886,29 @@ export default function ProgrammesPage() {
             </p>
           </div>
 
-          {/* Video placeholder */}
-          <div
-            className="relative max-w-3xl mx-auto mb-14 rounded-2xl overflow-hidden"
-            style={{ aspectRatio: '16/9', backgroundColor: 'rgba(10,46,42,0.6)', border: `1px solid rgba(10,243,205,0.2)` }}
-          >
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
+          {/* App screenshot placeholders — phone format, swap in real images later */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto mb-14">
+            {[1, 2, 3].map((n) => (
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-3"
-                style={{ backgroundColor: BRAND.teal }}
+                key={n}
+                className="relative rounded-[2.25rem] overflow-hidden mx-auto w-full max-w-[220px]"
+                style={{
+                  aspectRatio: '9/19',
+                  backgroundColor: 'rgba(10,46,42,0.6)',
+                  border: `8px solid rgba(10,46,42,0.85)`,
+                  boxShadow: '0 20px 50px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(10,243,205,0.15)',
+                }}
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill={BRAND.darkGreen} aria-hidden>
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: BRAND.teal }}>
+                    Screenshot {n}
+                  </p>
+                  <p className="text-[11px]" style={{ color: 'rgba(185,248,221,0.55)', lineHeight: 1.5 }}>
+                    Image coming soon
+                  </p>
+                </div>
               </div>
-              <p className="text-sm font-bold text-white">Walk-through coming soon</p>
-              <p className="text-xs mt-1" style={{ color: 'rgba(185,248,221,0.6)' }}>We&apos;re finishing the product tour</p>
-            </div>
+            ))}
           </div>
 
           {/* Four pillars */}
@@ -1062,7 +1068,7 @@ export default function ProgrammesPage() {
               className="font-black tracking-tight mb-5"
               style={{ fontSize: 'clamp(1.875rem, 4vw, 2.75rem)', lineHeight: 1.15, color: BRAND.ink }}
             >
-              Practitioners, not trainers.
+              Operators, not trainers.
             </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: BRAND.grey, lineHeight: 1.7 }}>
               Two People people who believe that creating the conditions for your team to thrive is a must-have,
