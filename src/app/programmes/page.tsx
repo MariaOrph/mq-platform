@@ -879,9 +879,9 @@ export default function ProgrammesPage() {
               Development that continues between sessions.
             </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: 'rgba(185,248,221,0.8)', lineHeight: 1.7 }}>
-              The app is not the product. The programme is. But the app is how we extend coaching into the 99% of the
-              time we&apos;re not in the room with your managers, and how we measure whether the programme actually
-              moved the needle.
+              We built the MQ app to extend real-time coaching and development into the 99% of the time we&apos;re not
+              in the room with your managers. The app is also how we measure the progress being made in your people so
+              you can see the ROI in practice.
             </p>
           </div>
 
@@ -936,7 +936,7 @@ export default function ProgrammesPage() {
                   </svg>
                 ),
                 title: 'Progress tracking',
-                body: 'Measurement over time for the individual, the cohort, and the business. Finally, proof the programme moved the numbers.',
+                body: 'Measurement over time for the individual, the cohort, and the business. Finally, proof the programme is moving the needle.',
               },
               {
                 icon: (
