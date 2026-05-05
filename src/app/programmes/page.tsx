@@ -834,7 +834,7 @@ export default function ProgrammesPage() {
             </div>
             {[
               { trad: 'One-off workshop', mq: 'A 3+ month programme that embeds change' },
-              { trad: 'Teaching at delegates', mq: 'Dynamic, interactive, coaching-led sessions' },
+              { trad: 'Classroom-style teaching', mq: 'Dynamic, interactive, coaching-led sessions' },
               { trad: 'Skills-first', mq: 'Mindset-first. Skills are built on top.' },
               { trad: 'Generic content for everyone', mq: 'Personalised at company and individual level' },
               { trad: 'Silence on culture', mq: 'Values and behaviours coached and embedded' },
