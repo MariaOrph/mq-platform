@@ -838,7 +838,7 @@ export default function ProgrammesPage() {
               { trad: 'Skills-first', mq: 'Mindset-first. Skills are built on top.' },
               { trad: 'Generic content for everyone', mq: 'Personalised at company and individual level' },
               { trad: 'Overlooking culture', mq: 'Your company values and behaviours coached and embedded' },
-              { trad: 'Trainers who teach theory', mq: 'Practitioners who\'ve done the role' },
+              { trad: 'Trainers who teach theory', mq: 'Operators who\'ve been in your shoes' },
             ].map((row, i) => (
               <div key={i} className="grid grid-cols-2" style={{ borderTop: `1px solid ${BRAND.tealSoft}` }}>
                 <div className="px-6 py-4 text-sm flex items-start gap-2.5" style={{ backgroundColor: 'white', color: BRAND.grey }}>
