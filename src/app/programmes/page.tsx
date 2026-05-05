@@ -1080,12 +1080,12 @@ export default function ProgrammesPage() {
                 body:    'Higher team performance, stronger engagement, and retention of the people you can\u2019t afford to lose.',
               },
               {
-                eyebrow: 'For their teams',
-                body:    'Clearer expectations, more trust, and the conditions to do the best work of their careers.',
-              },
-              {
                 eyebrow: 'For the manager',
                 body:    'The confidence and capacity to manage effectively, hold hard conversations, and develop the talent you fought hard to recruit.',
+              },
+              {
+                eyebrow: 'For their teams',
+                body:    'Clearer expectations, more trust, and the conditions to do the best work of their careers.',
               },
             ].map((c, i) => (
               <div
