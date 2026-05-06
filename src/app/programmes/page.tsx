@@ -23,7 +23,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'The Manager Mindset Accelerator',
     description: 'Change how your managers think, and they\'ll change how your business performs.',
-    images: ['/founders.jpg'],
+    images: [
+      {
+        url:    '/programmes-og.jpg',
+        width:  1200,
+        height: 630,
+        alt:    'The Manager Mindset Accelerator — Change how your managers think. Change how your business performs.',
+      },
+    ],
+  },
+  twitter: {
+    card:        'summary_large_image',
+    title:       'The Manager Mindset Accelerator',
+    description: 'Change how your managers think, and they\'ll change how your business performs.',
+    images:      ['/programmes-og.jpg'],
   },
 }
 
