@@ -59,10 +59,17 @@ export default function ProgrammesPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/programmes" className="flex items-center gap-3">
             <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center text-base font-black tracking-tight"
-              style={{ backgroundColor: BRAND.darkGreen, color: 'white' }}
+              className="w-11 h-11 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: BRAND.darkGreen }}
             >
-              M<span style={{ color: BRAND.teal }}>Q</span>
+              <Image
+                src="/mq-mark-white.png"
+                alt="Mindset Quotient"
+                width={300}
+                height={140}
+                priority
+                className="w-7 h-auto"
+              />
             </div>
             <span className="font-bold text-sm sm:text-base tracking-tight" style={{ color: BRAND.ink }}>
               Mindset Quotient<sup className="text-[10px]">®</sup>
@@ -1264,12 +1271,13 @@ export default function ProgrammesPage() {
       >
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black tracking-tight"
-              style={{ backgroundColor: 'rgba(10,243,205,0.1)', color: 'white' }}
-            >
-              M<span style={{ color: BRAND.teal }}>Q</span>
-            </div>
+            <Image
+              src="/mq-mark-white.png"
+              alt="Mindset Quotient"
+              width={300}
+              height={140}
+              className="h-5 w-auto"
+            />
             <p className="text-xs">
               Mindset Quotient<sup className="text-[8px]">®</sup>
             </p>
