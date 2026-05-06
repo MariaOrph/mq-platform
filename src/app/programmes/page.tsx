@@ -58,19 +58,14 @@ export default function ProgrammesPage() {
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/programmes" className="flex items-center gap-3">
-            <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: BRAND.darkGreen }}
-            >
-              <Image
-                src="/mq-mark-white.png"
-                alt="Mindset Quotient"
-                width={300}
-                height={140}
-                priority
-                className="w-7 h-auto"
-              />
-            </div>
+            <Image
+              src="/mq-tile.png"
+              alt="Mindset Quotient"
+              width={64}
+              height={64}
+              priority
+              className="w-11 h-11 rounded-xl"
+            />
             <span className="font-bold text-sm sm:text-base tracking-tight" style={{ color: BRAND.ink }}>
               Mindset Quotient<sup className="text-[10px]">®</sup>
             </span>

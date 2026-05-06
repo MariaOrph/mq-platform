@@ -25,13 +25,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      // Browser tab favicon — adapts to the user's colour scheme.
-      // Light mode: dark mark (M black, Q teal). Dark mode: white mark (M white, Q teal).
-      { url: "/favicon-light.png",    media: "(prefers-color-scheme: light)", type: "image/png", sizes: "64x64" },
-      { url: "/favicon-light-32.png", media: "(prefers-color-scheme: light)", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-dark.png",     media: "(prefers-color-scheme: dark)",  type: "image/png", sizes: "64x64" },
-      { url: "/favicon-dark-32.png",  media: "(prefers-color-scheme: dark)",  type: "image/png", sizes: "32x32" },
-      // PWA / Android home-screen icons — branded tile background.
+      // Branded tile favicon — dark-green rounded square with the white MQ
+      // logo inside. Reads cleanly on any tab bar (light or dark).
+      { url: "/favicon-64.png", sizes: "64x64", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      // PWA / Android home-screen icons — same branded tile, larger.
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],

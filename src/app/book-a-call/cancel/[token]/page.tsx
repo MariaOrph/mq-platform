@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@supabase/supabase-js'
 import CancelButton from './CancelButton'
 
@@ -62,10 +63,17 @@ export default async function CancelBookingPage({
         style={{ backgroundColor: 'rgba(244,253,249,0.85)', borderBottom: `1px solid ${BRAND.tealSoft}` }}
       >
         <div className="max-w-6xl mx-auto px-6 lg:px-8 py-4">
-          <Link href="/programmes" className="flex items-center gap-2">
-            <span style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-1px', color: BRAND.inkSoft }}>MQ</span>
-            <span style={{ fontSize: 11, color: BRAND.greyLight, letterSpacing: 2, textTransform: 'uppercase' }}>
-              Mindset Quotient<sup>®</sup>
+          <Link href="/programmes" className="flex items-center gap-3">
+            <Image
+              src="/mq-tile.png"
+              alt="Mindset Quotient"
+              width={64}
+              height={64}
+              priority
+              className="w-11 h-11 rounded-xl"
+            />
+            <span className="font-bold text-sm sm:text-base tracking-tight" style={{ color: BRAND.ink }}>
+              Mindset Quotient<sup className="text-[10px]">®</sup>
             </span>
           </Link>
         </div>
