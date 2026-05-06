@@ -136,6 +136,109 @@ export function bookingNotificationHtml(args: NotificationArgs): string {
   `)
 }
 
+/* ── Admin-initiated cancellation ───────────────────────────────────────────── */
+interface CancelledByHostArgs {
+  firstName: string
+  dateLabel: string
+  timeLabel: string
+  rebookUrl: string  // /book-a-call so they can pick a new slot
+  note?:     string  // optional personal note from Maria/Richard
+}
+
+export function bookingCancelledByHostHtml(args: CancelledByHostArgs): string {
+  const greeting = args.firstName ? `Hi ${args.firstName},` : 'Hi there,'
+  const noteBlock = args.note
+    ? `<p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${escapeHtml(args.note)}</p>`
+    : ''
+  return shell(`
+    <h1 style="margin:0 0 20px;font-size:22px;font-weight:800;color:#0A2E2A;line-height:1.3;">
+      We need to cancel your discovery call
+    </h1>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
+      Apologies — we have to cancel your discovery call on <strong>${args.dateLabel}</strong> at <strong>${args.timeLabel}</strong> UK time. The slot has been freed up.
+    </p>
+
+    ${noteBlock}
+
+    <p style="margin:0 0 24px;font-size:15px;color:#444444;line-height:1.7;">
+      We'd still love to speak. Please pick a new time that works for you:
+    </p>
+
+    <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+      <tr>
+        <td>
+          <a href="${args.rebookUrl}" style="display:inline-block;padding:14px 26px;background-color:#05A88E;color:#ffffff;text-decoration:none;border-radius:999px;font-weight:700;font-size:15px;">
+            Pick a new time
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:14px;color:#6b7280;line-height:1.7;">
+      Apologies again,<br/>
+      <strong style="color:#0A2E2A;">Maria & Richard</strong>
+    </p>
+  `)
+}
+
+/* ── Admin-initiated reschedule ─────────────────────────────────────────────── */
+interface RescheduledArgs {
+  firstName:    string
+  oldDateLabel: string
+  oldTimeLabel: string
+  newDateLabel: string
+  newTimeLabel: string
+  cancelUrl:    string  // refreshed cancel link if the user wants to drop the new slot
+  note?:        string
+}
+
+export function bookingRescheduledHtml(args: RescheduledArgs): string {
+  const greeting = args.firstName ? `Hi ${args.firstName},` : 'Hi there,'
+  const noteBlock = args.note
+    ? `<p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${escapeHtml(args.note)}</p>`
+    : ''
+  return shell(`
+    <h1 style="margin:0 0 20px;font-size:22px;font-weight:800;color:#0A2E2A;line-height:1.3;">
+      Your discovery call has moved
+    </h1>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">${greeting}</p>
+
+    <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7;">
+      We've moved your call from <strong>${args.oldDateLabel}, ${args.oldTimeLabel}</strong> to a new time. A fresh calendar invite is attached — accept it to update your calendar.
+    </p>
+
+    ${noteBlock}
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4FDF9;border-radius:12px;padding:20px;margin-bottom:24px;">
+      <tr><td style="padding:0 0 4px;font-size:13px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">New time</td></tr>
+      <tr><td style="padding:0;font-size:17px;color:#0A2E2A;font-weight:700;">${args.newDateLabel}<br/>${args.newTimeLabel} UK time (30 minutes)</td></tr>
+    </table>
+
+    <p style="margin:0 0 24px;font-size:15px;color:#444444;line-height:1.7;">
+      If the new time doesn't work for you, you can cancel below and pick another slot.
+    </p>
+
+    <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+      <tr>
+        <td>
+          <a href="${args.cancelUrl}" style="display:inline-block;padding:12px 22px;background-color:#ffffff;color:#0A2E2A;text-decoration:none;border-radius:999px;font-weight:600;font-size:14px;border:1px solid #d1d5db;">
+            Cancel this call
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:14px;color:#6b7280;line-height:1.7;">
+      Speak soon,<br/>
+      <strong style="color:#0A2E2A;">Maria & Richard</strong>
+    </p>
+  `)
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')

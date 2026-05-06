@@ -35,6 +35,12 @@ export interface IcsBookingArgs {
   organizerName: string
   description:   string
   cancelUrl:     string
+  /**
+   * Bumped when the event is updated (e.g. rescheduled). Per RFC 5545 the
+   * sequence must increase for calendar clients to apply the update.
+   * Defaults to 0 for new bookings.
+   */
+  sequence?:     number
 }
 
 export function buildBookingIcs(args: IcsBookingArgs): string {
@@ -68,7 +74,49 @@ export function buildBookingIcs(args: IcsBookingArgs): string {
     `ORGANIZER;CN=${escapeText(args.organizerName)}:mailto:${args.organizerEmail}`,
     `ATTENDEE;CN=${escapeText(args.attendeeName)};RSVP=TRUE:mailto:${args.attendeeEmail}`,
     'STATUS:CONFIRMED',
-    'SEQUENCE:0',
+    `SEQUENCE:${args.sequence ?? 0}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ]
+  return lines.join('\r\n')
+}
+
+/**
+ * Build a METHOD:CANCEL ics so calendar clients remove the event automatically
+ * when the host cancels (or when a booking is being rescheduled and we want
+ * to clear the original slot from the booker's calendar).
+ */
+export interface IcsCancelArgs {
+  uid:            string
+  startUTC:       Date
+  attendeeEmail:  string
+  attendeeName:   string
+  organizerEmail: string
+  organizerName:  string
+  /** Must be greater than the previous sequence the client received. */
+  sequence:       number
+}
+
+export function buildBookingCancelIcs(args: IcsCancelArgs): string {
+  const start = args.startUTC
+  const end   = new Date(start.getTime() + SLOT_DURATION_MINUTES * 60 * 1000)
+
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Mindset Quotient//Discovery Call//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:CANCEL',
+    'BEGIN:VEVENT',
+    `UID:${args.uid}@mindsetquo.com`,
+    `DTSTAMP:${toICalDate(new Date())}`,
+    `DTSTART:${toICalDate(start)}`,
+    `DTEND:${toICalDate(end)}`,
+    'SUMMARY:Discovery call — Manager Mindset Accelerator (cancelled)',
+    `ORGANIZER;CN=${escapeText(args.organizerName)}:mailto:${args.organizerEmail}`,
+    `ATTENDEE;CN=${escapeText(args.attendeeName)};RSVP=FALSE:mailto:${args.attendeeEmail}`,
+    'STATUS:CANCELLED',
+    `SEQUENCE:${args.sequence}`,
     'END:VEVENT',
     'END:VCALENDAR',
   ]
