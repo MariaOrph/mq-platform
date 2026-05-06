@@ -7,6 +7,12 @@ const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * Returns every offered slot in the upcoming window with a `taken` flag.
+ * The form renders taken slots greyed-out so users see availability density,
+ * not a sparse list of leftovers. The DB still rejects double-bookings via the
+ * partial unique index on slot_at where status='confirmed'.
+ */
 export async function GET() {
   if (!serviceKey) {
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
@@ -37,9 +43,10 @@ export async function GET() {
   }
 
   const taken = new Set((data ?? []).map((r) => new Date(r.slot_at as string).toISOString()))
-  const available = slots
-    .map((s) => s.toISOString())
-    .filter((iso) => !taken.has(iso))
+  const result = slots.map((s) => {
+    const iso = s.toISOString()
+    return { iso, taken: taken.has(iso) }
+  })
 
-  return NextResponse.json({ slots: available })
+  return NextResponse.json({ slots: result })
 }

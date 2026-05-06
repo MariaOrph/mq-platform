@@ -54,8 +54,13 @@ interface FormState {
   topic:   string
 }
 
+interface Slot {
+  iso:   string
+  taken: boolean
+}
+
 export default function BookingForm() {
-  const [slots, setSlots]         = useState<string[]>([])
+  const [slots, setSlots]         = useState<Slot[]>([])
   const [loading, setLoading]     = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
@@ -82,7 +87,7 @@ export default function BookingForm() {
       .then((r) => r.json())
       .then((data) => {
         if (cancelled) return
-        if (Array.isArray(data?.slots)) setSlots(data.slots as string[])
+        if (Array.isArray(data?.slots)) setSlots(data.slots as Slot[])
         else setLoadError('Could not load available slots.')
       })
       .catch(() => {
@@ -96,14 +101,14 @@ export default function BookingForm() {
 
   // Group slots by day (London-local).
   const slotsByDay = useMemo(() => {
-    const groups = new Map<string, string[]>()
-    for (const iso of slots) {
+    const groups = new Map<string, Slot[]>()
+    for (const slot of slots) {
       const dayKey = new Intl.DateTimeFormat('en-GB', {
         timeZone: LONDON_TZ,
         year: 'numeric', month: '2-digit', day: '2-digit',
-      }).format(new Date(iso))
+      }).format(new Date(slot.iso))
       const list = groups.get(dayKey) ?? []
-      list.push(iso)
+      list.push(slot)
       groups.set(dayKey, list)
     }
     // Preserve insertion order from sorted slots (server returns them sorted).
@@ -132,7 +137,7 @@ export default function BookingForm() {
         if (res.status === 409 || res.status === 400) {
           fetch('/api/bookings/availability')
             .then((r) => r.json())
-            .then((d) => Array.isArray(d?.slots) && setSlots(d.slots as string[]))
+            .then((d) => Array.isArray(d?.slots) && setSlots(d.slots as Slot[]))
             .catch(() => null)
           setSelectedSlot(null)
         }
@@ -195,7 +200,7 @@ export default function BookingForm() {
       </div>
     )
   }
-  if (slots.length === 0) {
+  if (slots.length === 0 || slots.every((s) => s.taken)) {
     return (
       <div
         className="rounded-2xl p-8 text-center"
@@ -235,16 +240,35 @@ export default function BookingForm() {
           {slotsByDay.map(([dayKey, daySlots]) => (
             <div key={dayKey}>
               <h3 className="text-sm font-semibold mb-2" style={{ color: BRAND.darkGreen }}>
-                {formatDayHeading(daySlots[0])}
+                {formatDayHeading(daySlots[0].iso)}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {daySlots.map((iso) => {
-                  const isSelected = iso === selectedSlot
+                {daySlots.map((slot) => {
+                  const isSelected = slot.iso === selectedSlot
+                  if (slot.taken) {
+                    return (
+                      <span
+                        key={slot.iso}
+                        aria-disabled="true"
+                        title="Booked"
+                        className="px-4 py-2 rounded-full text-sm font-medium select-none"
+                        style={{
+                          backgroundColor: '#F3F4F6',
+                          color:           BRAND.greyLight,
+                          border:          `1px solid #E5E7EB`,
+                          textDecoration:  'line-through',
+                          cursor:          'not-allowed',
+                        }}
+                      >
+                        {formatTime(slot.iso)}
+                      </span>
+                    )
+                  }
                   return (
                     <button
-                      key={iso}
+                      key={slot.iso}
                       type="button"
-                      onClick={() => pickSlot(iso)}
+                      onClick={() => pickSlot(slot.iso)}
                       className="px-4 py-2 rounded-full text-sm font-medium transition"
                       style={{
                         backgroundColor: isSelected ? BRAND.darkGreen : BRAND.mint,
@@ -252,7 +276,7 @@ export default function BookingForm() {
                         border:          `1px solid ${isSelected ? BRAND.darkGreen : BRAND.tealSoft}`,
                       }}
                     >
-                      {formatTime(iso)}
+                      {formatTime(slot.iso)}
                     </button>
                   )
                 })}
@@ -260,6 +284,15 @@ export default function BookingForm() {
             </div>
           ))}
         </div>
+        <p className="text-xs mt-5" style={{ color: BRAND.grey }}>
+          <span
+            className="inline-block align-middle mr-2 px-2 py-0.5 rounded-full text-xs"
+            style={{ backgroundColor: '#F3F4F6', color: BRAND.greyLight, border: '1px solid #E5E7EB', textDecoration: 'line-through' }}
+          >
+            00:00
+          </span>
+          means already booked.
+        </p>
       </div>
       )}
 
