@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
+import { prepareCoachingHistory } from '@/lib/coaching-history'
 
 const anthropic     = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY ?? '' })
 const supabaseAdmin = createClient(
@@ -513,17 +514,40 @@ Do not continue any coaching after this. Keep your response warm, human, and foc
 LEVEL 3 — Concern about someone else (e.g. ${firstName} is worried a colleague or team member may be at risk):
 Acknowledge the weight of what they're carrying. Encourage them to speak with their HR or People team as a first step, or to gently check in with the person directly if they feel safe doing so. If the situation sounds urgent, share the same crisis resources above. You can then offer to help ${firstName} think through how to have that conversation at work if they'd like.`
 
-  // Cost control: only send last 10 messages to the model.
-  // Older context is preserved in coaching_chats.memory_summary (updated at
-  // session start), so the model still has a high-level sense of history
-  // without paying for 20+ messages of raw content on every request.
+  // Cost + quality control: fetch the full session in chronological order
+  // and let the history-cap helper decide what to send. Sessions ≤ 20
+  // messages send everything verbatim. Longer sessions send the last 20
+  // verbatim plus a rolling Haiku-generated summary of older turns, which
+  // is appended to the cached system text. See src/lib/coaching-history.ts.
+  // The 500-message safety cap is a guardrail against pathological cases —
+  // a real coaching session won't approach it.
   const { data: history } = await supabaseAdmin
     .from('coaching_room_messages').select('role, content')
     .eq('participant_id', participantId).eq('session_id', sessionId)
-    .order('created_at', { ascending: false }).limit(10)
+    .order('created_at', { ascending: true }).limit(500)
 
-  const pastMessages = (history ?? []).reverse()
-    .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+  const fullHistory = (history ?? [])
+    .map(m => ({ role: m.role as string, content: m.content }))
+
+  // Read the stored rolling summary from the chat row. Nullable on first
+  // pass and on any session ≤ 20 messages.
+  const { data: chatRow } = await supabaseAdmin
+    .from('coaching_chats')
+    .select('history_summary, history_summary_through')
+    .eq('id', sessionId)
+    .single()
+
+  const prepared = await prepareCoachingHistory({
+    messages: fullHistory,
+    storedSummary: (chatRow?.history_summary ?? null) as string | null,
+    storedSummaryThrough: (chatRow?.history_summary_through ?? null) as number | null,
+  })
+
+  const finalSystemPrompt = systemPrompt + prepared.historySummaryBlock
+
+  console.log(
+    `[history-cap] participant=${participantId.slice(0, 8)}… session=${sessionId.slice(0, 8)}… total=${prepared.diag.total} kept=${prepared.diag.kept} summarised=${prepared.diag.summarised} didRefresh=${prepared.diag.didRefresh}`,
+  )
 
   // Only persist user message if it's not a hidden trigger (MQ Builder auto-start)
   if (!body.hideTrigger) {
@@ -539,10 +563,11 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
       max_tokens: 1024,
       // Cost control: mark the large system prompt as cacheable. Anthropic
       // caches it for ~5 minutes and charges ~10% of the normal input price
-      // for cached reads. On subsequent messages in the same session this
-      // cuts system-prompt input cost by ~90%.
-      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
-      messages: [...pastMessages, { role: 'user', content: message.trim() }],
+      // for cached reads. The rolling history summary is appended BEFORE
+      // the cache_control wraps the text, so it reuses the same cache hit
+      // while it stays stable (refresh on drift invalidates the prefix).
+      system: [{ type: 'text', text: finalSystemPrompt, cache_control: { type: 'ephemeral' } }],
+      messages: [...prepared.apiMessages, { role: 'user', content: message.trim() }],
     })
     const block = response.content[0]
     if (block.type !== 'text') throw new Error('Unexpected type')
@@ -552,13 +577,31 @@ Acknowledge the weight of what they're carrying. Encourage them to speak with th
     return NextResponse.json({ error: 'Generation failed' }, { status: 502 })
   }
 
-  const newCount = body.hideTrigger ? pastMessages.length + 1 : pastMessages.length + 2
+  const newCount = body.hideTrigger ? fullHistory.length + 1 : fullHistory.length + 2
+
+  // Build the chat-row update. Only persist a fresh history summary on
+  // turns where the helper actually produced one — otherwise we'd
+  // overwrite a known-good summary with NULL.
+  const chatUpdate: {
+    updated_at: string
+    message_count: number
+    history_summary?: string
+    history_summary_through?: number
+  } = {
+    updated_at: new Date().toISOString(),
+    message_count: newCount,
+  }
+  if (prepared.refreshedSummary && prepared.refreshedThrough != null) {
+    chatUpdate.history_summary = prepared.refreshedSummary
+    chatUpdate.history_summary_through = prepared.refreshedThrough
+  }
+
   await Promise.all([
     supabaseAdmin.from('coaching_room_messages').insert({
       participant_id: participantId, session_id: sessionId, role: 'assistant', content: reply,
     }),
     supabaseAdmin.from('coaching_chats')
-      .update({ updated_at: new Date().toISOString(), message_count: newCount }).eq('id', sessionId),
+      .update(chatUpdate).eq('id', sessionId),
   ])
 
   return NextResponse.json({ reply })
